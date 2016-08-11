@@ -243,3 +243,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/ARSnovaPPIntegration/source/ARSnovaPPIntegration.Common/LocalizationService.cs
