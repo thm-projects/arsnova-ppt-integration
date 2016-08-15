@@ -18,12 +18,26 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common", "ARSnovaPPIntegration.Common\ARSnovaPPIntegration.Common.csproj", "{17C619C1-739F-4CD3-8EFA-97ED743B59ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Business", "ARSnovaPPIntegration.Business\ARSnovaPPIntegration.Business.csproj", "{5E15BFC8-635D-4F17-BA95-307B2B52DF20}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E5C6DAB-C772-4EDD-B775-F40395A148A6} = {2E5C6DAB-C772-4EDD-B775-F40395A148A6}
+		{D64793C5-366B-4690-865C-9609507C6B95} = {D64793C5-366B-4690-865C-9609507C6B95}
+		{441718D1-3EC7-471C-963B-4E9E4B025EAA} = {441718D1-3EC7-471C-963B-4E9E4B025EAA}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{7EE5074A-417A-45D7-BF94-D5480B554EBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Presentation", "ARSnovaPPIntegration.Presentation\ARSnovaPPIntegration.Presentation.csproj", "{11B8F9F1-AF66-4FBD-9387-EECD1D166ADF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E5C6DAB-C772-4EDD-B775-F40395A148A6} = {2E5C6DAB-C772-4EDD-B775-F40395A148A6}
+		{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C} = {D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}
+		{D64793C5-366B-4690-865C-9609507C6B95} = {D64793C5-366B-4690-865C-9609507C6B95}
+		{441718D1-3EC7-471C-963B-4E9E4B025EAA} = {441718D1-3EC7-471C-963B-4E9E4B025EAA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common.Contract", "ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj", "{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{441718D1-3EC7-471C-963B-4E9E4B025EAA} = {441718D1-3EC7-471C-963B-4E9E4B025EAA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common.Resources", "ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj", "{441718D1-3EC7-471C-963B-4E9E4B025EAA}"
 EndProject
