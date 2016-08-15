@@ -107,6 +107,10 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Svg, Version=2.2.1.1459, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.2.2.1\lib\net35\Svg.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -152,10 +156,19 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="MainRibbon.cs" />
+    <Compile Include="ARSnovaRibbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ARSnovaRibbon.Designer.cs">
+      <DependentUpon>ARSnovaRibbon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\SVGParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="ARSnovaRibbon.resx">
+      <DependentUpon>ARSnovaRibbon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -166,7 +179,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ARSnovaPPIntegration.Presentation_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -188,7 +201,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainRibbon.xml" />
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Contract\ARSnovaPPIntegration.Business.Contract.csproj">
+      <Project>{d64793c5-366b-4690-865c-9609507c6b95}</Project>
+      <Name>ARSnovaPPIntegration.Business.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
+      <Project>{d5c3f7b6-33f9-45b3-b078-89a8c4b13c3c}</Project>
+      <Name>ARSnovaPPIntegration.Common.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj">
+      <Project>{441718d1-3ec7-471c-963b-4e9e4b025eaa}</Project>
+      <Name>ARSnovaPPIntegration.Common.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

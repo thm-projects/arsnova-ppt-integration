@@ -10,8 +10,6 @@ namespace ARSnovaPPIntegration.Presentation
 {
     public partial class ThisAddIn
     {
-        public MainRibbon Ribbon;
-
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
         }
@@ -33,11 +31,5 @@ namespace ARSnovaPPIntegration.Presentation
         }
 
         #endregion
-
-        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
-        {
-            this.Ribbon = new MainRibbon();
-            return this.Ribbon;
-        }
     }
 }
