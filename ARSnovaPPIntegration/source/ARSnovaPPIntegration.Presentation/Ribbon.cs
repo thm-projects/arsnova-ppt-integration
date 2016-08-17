@@ -6,7 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using Microsoft.Practices.Unity;
 using Office = Microsoft.Office.Core;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
@@ -33,6 +35,9 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
+        [Dependency]
+        public ILocalizationService LocalizationService { get; set; }
+
         private Office.IRibbonUI ribbon;
 
         private SvgParser svgParser;
@@ -50,7 +55,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetQuizGroupLabel(Office.IRibbonControl control)
         {
-            return "Manage Quiz";
+            return this.LocalizationService.Translate("Manage Quiz");
         }
 
         public string GetAddButtonLabel(Office.IRibbonControl control)

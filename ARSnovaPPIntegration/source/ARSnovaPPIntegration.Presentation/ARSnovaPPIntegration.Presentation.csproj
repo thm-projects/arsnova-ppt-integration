@@ -172,7 +172,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\SVGParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -223,6 +222,10 @@
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj">
       <Project>{441718d1-3ec7-471c-963b-4e9e4b025eaa}</Project>
       <Name>ARSnovaPPIntegration.Common.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Presentation.Configuration\ARSnovaPPIntegration.Presentation.Configuration.csproj">
+      <Project>{7186C2F8-5335-46B1-8BEB-9D620080A323}</Project>
+      <Name>ARSnovaPPIntegration.Presentation.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

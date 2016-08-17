@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using ARSnovaPPIntegration.Common.Contract;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
+using ARSnovaPPIntegration.Presentation.Configuration;
+using Microsoft.Practices.Unity;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -12,6 +15,8 @@ namespace ARSnovaPPIntegration.Presentation
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            var unityContainer = Bootstrapper.GetRegisteredUnityContainer();
+            // unityContainer
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
