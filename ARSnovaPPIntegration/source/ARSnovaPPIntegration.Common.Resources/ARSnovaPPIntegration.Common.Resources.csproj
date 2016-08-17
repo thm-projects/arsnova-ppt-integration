@@ -72,6 +72,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="arsnova.svg" />
+    <None Include="Resources\add-2.png" />
     <Content Include="Resources\ARSnova-Logo.png" />
     <None Include="Resources\Info.png" />
   </ItemGroup>

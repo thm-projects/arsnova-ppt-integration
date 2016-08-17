@@ -46,6 +46,35 @@ namespace ARSnovaPPIntegration.Presentation
             this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
         }
 
+        #region manageQuiz
+
+        public string GetQuizGroupLabel(Office.IRibbonControl control)
+        {
+            return "Manage Quiz";
+        }
+
+        public string GetAddButtonLabel(Office.IRibbonControl control)
+        {
+            return "Add";
+        }
+
+        public string GetAddButtonSupertip(Office.IRibbonControl control)
+        {
+            return "Add";
+        }
+
+        public Bitmap GetAddButtonImage(Office.IRibbonControl control)
+        {
+            return ARSnovaPPIntegration.Common.Resources.Images.Add;
+        }
+
+        public void AddButtonClick(Office.IRibbonControl control)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region infoGroup
 
         public string GetInfoGroupLabel(Office.IRibbonControl control)

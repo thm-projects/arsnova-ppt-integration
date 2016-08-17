@@ -3,6 +3,15 @@
     <ribbon>
         <tabs>
             <tab idMso="TabAddIns" label="ARSnova">
+              <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
+                <button id="AddButton"
+                getLabel="GetAddButtonLabel"
+                keytip="CA"
+                getSupertip="GetAddButtonSupertip"
+                onAction="AddButtonClick"
+                getImage="GetAddButtonImage"
+                size="large" />
+              </group>
                 <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
                   <button id="HelpButton"
                   getLabel="GetHelpButtonLabel"
