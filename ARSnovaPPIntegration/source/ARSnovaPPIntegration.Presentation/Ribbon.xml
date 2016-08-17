@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab idMso="TabAddIns" label="ARSnova">
+                <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
+                  <button id="HelpButton"
+                  getLabel="GetHelpButtonLabel"
+                  keytip="CA"
+                  getSupertip="GetHelpButtonSupertip"
+                  onAction="HelpButtonClick"
+                  getImage="GetHelpButtonImage"
+                  size="large" />
+                  <button id="AboutButton"
+                  getLabel="GetAboutButtonLabel"
+                  keytip="CA"
+                  getSupertip="GetAboutButtonSupertip"
+                  onAction="AboutButtonClick"
+                  getImage="GetAboutButtonImage"
+                  size="large" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>

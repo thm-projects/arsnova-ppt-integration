@@ -156,19 +156,10 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ARSnovaRibbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ARSnovaRibbon.Designer.cs">
-      <DependentUpon>ARSnovaRibbon.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\SVGParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="ARSnovaRibbon.resx">
-      <DependentUpon>ARSnovaRibbon.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -188,6 +179,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Ribbon.cs">
+      <XmlRibbon>true</XmlRibbon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -213,6 +207,9 @@
       <Project>{441718d1-3ec7-471c-963b-4e9e4b025eaa}</Project>
       <Name>ARSnovaPPIntegration.Common.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ribbon.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

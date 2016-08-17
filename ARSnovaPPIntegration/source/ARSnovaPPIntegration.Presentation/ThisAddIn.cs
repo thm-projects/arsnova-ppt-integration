@@ -18,6 +18,11 @@ namespace ARSnovaPPIntegration.Presentation
         {
         }
 
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            return new Ribbon();
+        }
+
         #region Von VSTO generierter Code
 
         /// <summary>

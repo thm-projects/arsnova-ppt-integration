@@ -72,7 +72,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="arsnova.svg" />
-    <Content Include="Images\ARSnova-Logo.png" />
+    <Content Include="Resources\ARSnova-Logo.png" />
+    <None Include="Resources\Info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
