@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Office = Microsoft.Office.Core;
@@ -36,6 +37,8 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
+        private IUnityContainer unityContainer;
+
         private readonly ILocalizationService localizationService;
 
         private Office.IRibbonUI ribbon;
@@ -47,6 +50,7 @@ namespace ARSnovaPPIntegration.Presentation
         public Ribbon(IUnityContainer container)
         {
             this.localizationService = container.Resolve<ILocalizationService>();
+            this.unityContainer = container;
             this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
             var arsnovaSvgDoc = this.svgParser.GetSvgDocument(@"..\..\ARSnovaPPIntegration.Common.Resources\arsnova.svg");
             this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
@@ -76,7 +80,10 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
-            throw new NotImplementedException();
+            // TODO Just a test: add header to current slide
+            var currentSlide = SlideTracker.CurrentSlide;
+            var slideManipulator = new SlideManipulator(this.unityContainer, currentSlide);
+            slideManipulator.AddFooter();
         }
 
         #endregion

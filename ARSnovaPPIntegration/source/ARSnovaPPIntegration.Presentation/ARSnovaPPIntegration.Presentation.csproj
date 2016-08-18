@@ -173,6 +173,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Helpers\SlideManipulator.cs" />
+    <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Helpers\SVGParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
