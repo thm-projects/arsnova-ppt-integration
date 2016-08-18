@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Office = Microsoft.Office.Core;
 
@@ -35,8 +36,7 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
-        [Dependency]
-        public ILocalizationService LocalizationService { get; set; }
+        private readonly ILocalizationService localizationService;
 
         private Office.IRibbonUI ribbon;
 
@@ -44,8 +44,9 @@ namespace ARSnovaPPIntegration.Presentation
 
         private List<Svg.SvgGlyph> arsnovaGlyphs;
 
-        public Ribbon()
+        public Ribbon(IUnityContainer container)
         {
+            this.localizationService = container.Resolve<ILocalizationService>();
             this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
             var arsnovaSvgDoc = this.svgParser.GetSvgDocument(@"..\..\ARSnovaPPIntegration.Common.Resources\arsnova.svg");
             this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
@@ -55,17 +56,17 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetQuizGroupLabel(Office.IRibbonControl control)
         {
-            return this.LocalizationService.Translate("Manage Quiz");
+            return this.localizationService.Translate("Manage Quiz");
         }
 
         public string GetAddButtonLabel(Office.IRibbonControl control)
         {
-            return "Add";
+            return this.localizationService.Translate("Add");
         }
 
         public string GetAddButtonSupertip(Office.IRibbonControl control)
         {
-            return "Add";
+            return this.localizationService.Translate("Add");
         }
 
         public Bitmap GetAddButtonImage(Office.IRibbonControl control)
@@ -84,19 +85,19 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetInfoGroupLabel(Office.IRibbonControl control)
         {
-            return "Info";
+            return this.localizationService.Translate("Info");
         }
 
         // HelpButton
 
         public string GetHelpButtonLabel(Office.IRibbonControl control)
         {
-            return "Help";
+            return this.localizationService.Translate("Help");
         }
 
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
-            return "Help";
+            return this.localizationService.Translate("Help");
         }
 
         public Bitmap GetHelpButtonImage(Office.IRibbonControl control)
@@ -115,12 +116,12 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetAboutButtonLabel(Office.IRibbonControl control)
         {
-            return "About";
+            return this.localizationService.Translate("About");
         }
 
         public string GetAboutButtonSupertip(Office.IRibbonControl control)
         {
-            return "About";
+            return this.localizationService.Translate("About");
         }
 
         public Bitmap GetAboutButtonImage(Office.IRibbonControl control)

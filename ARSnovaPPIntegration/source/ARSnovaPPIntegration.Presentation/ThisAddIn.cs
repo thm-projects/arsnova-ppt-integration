@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -8,15 +9,16 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using ARSnovaPPIntegration.Presentation.Configuration;
 using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
 
 namespace ARSnovaPPIntegration.Presentation
 {
     public partial class ThisAddIn
     {
+        private IUnityContainer unityContainer;
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {
-            var unityContainer = Bootstrapper.GetRegisteredUnityContainer();
-            // unityContainer
+        {  
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -25,7 +27,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            return new Ribbon();
+            this.unityContainer = Bootstrapper.GetRegisteredUnityContainer();
+            return new Ribbon(this.unityContainer);
         }
 
         #region Von VSTO generierter Code

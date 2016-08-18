@@ -24,8 +24,6 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
 
             unityContainer.RegisterType<Func<ILocalizationService>>();
 
-
-
             return unityContainer;
         }
     }

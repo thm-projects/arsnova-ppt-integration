@@ -12,11 +12,6 @@ namespace ARSnovaPPIntegration.Common
     public class LocalizationService : ILocalizationService
     {
         /// <summary>
-        /// Regex for all upper case letters
-        /// </summary>
-        private static readonly Regex upperCaseReplace = new Regex(@"([A-ZÄÖÜ])", RegexOptions.Compiled);
-
-        /// <summary>
         /// XML-Replacement keys
         /// </summary>
         private readonly Dictionary<string, string> xmlSpecialCharReplacements = new Dictionary<string, string>
@@ -46,8 +41,6 @@ namespace ARSnovaPPIntegration.Common
         public string Translate(string text)
         {
             string escapedString = this.ConvertAdditionalCharsToXml(text);
-
-            escapedString = upperCaseReplace.Replace(escapedString, "__$1__");
 
             string translationString = this.translations.GetString(escapedString, Thread.CurrentThread.CurrentCulture);
 
