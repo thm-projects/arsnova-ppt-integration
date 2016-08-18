@@ -111,7 +111,7 @@ namespace ARSnovaPPIntegration.Presentation
         {
             return ARSnovaPPIntegration.Common.Resources.Images.Info;
 
-            //return this.svgParser.GetGlyphByName(this.arsnovaGlyphs, "info").Draw(); TODO currently not working as expected
+            // return this.svgParser.GetGlyphByName(this.arsnovaGlyphs, "info").Draw(); TODO currently not working as expected
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
@@ -145,7 +145,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         #region IRibbonExtensibility-Member
 
-        public string GetCustomUI(string ribbonID)
+        public string GetCustomUI(string ribbonId)
         {
             return GetResourceText("ARSnovaPPIntegration.Presentation.Ribbon.xml");
         }

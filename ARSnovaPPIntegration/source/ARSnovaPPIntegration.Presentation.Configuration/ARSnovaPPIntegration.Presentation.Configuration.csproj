@@ -64,14 +64,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Contract\ARSnovaPPIntegration.Business.Contract.csproj">
-      <Project>{d64793c5-366b-4690-865c-9609507c6b95}</Project>
-      <Name>ARSnovaPPIntegration.Business.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Business\ARSnovaPPIntegration.Business.csproj">
-      <Project>{5e15bfc8-635d-4f17-ba95-307b2b52df20}</Project>
-      <Name>ARSnovaPPIntegration.Business</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{d5c3f7b6-33f9-45b3-b078-89a8c4b13c3c}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>
