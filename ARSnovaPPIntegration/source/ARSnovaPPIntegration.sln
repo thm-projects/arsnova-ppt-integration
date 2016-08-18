@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Test", "ARSnovaPPIntegration.Test\ARSnovaPPIntegration.Test.csproj", "{655BFD81-68B4-43BA-8F75-83757D66EC98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Communication", "ARSnovaPPIntegration.Communication\ARSnovaPPIntegration.Communication.csproj", "{2E5C6DAB-C772-4EDD-B775-F40395A148A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{954ED932-5036-4C37-A58D-3C87753AFD57} = {954ED932-5036-4C37-A58D-3C87753AFD57}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common", "ARSnovaPPIntegration.Common\ARSnovaPPIntegration.Common.csproj", "{17C619C1-739F-4CD3-8EFA-97ED743B59ED}"
 EndProject
@@ -36,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Presen
 	ProjectSection(ProjectDependencies) = postProject
 		{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C} = {D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Communication.Contract", "ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj", "{954ED932-5036-4C37-A58D-3C87753AFD57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +76,10 @@ Global
 		{7186C2F8-5335-46B1-8BEB-9D620080A323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7186C2F8-5335-46B1-8BEB-9D620080A323}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7186C2F8-5335-46B1-8BEB-9D620080A323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954ED932-5036-4C37-A58D-3C87753AFD57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954ED932-5036-4C37-A58D-3C87753AFD57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954ED932-5036-4C37-A58D-3C87753AFD57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954ED932-5036-4C37-A58D-3C87753AFD57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,5 +92,6 @@ Global
 		{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C} = {DEDD70F4-0957-483B-82B5-8A30D6AA4148}
 		{441718D1-3EC7-471C-963B-4E9E4B025EAA} = {DEDD70F4-0957-483B-82B5-8A30D6AA4148}
 		{7186C2F8-5335-46B1-8BEB-9D620080A323} = {7EE5074A-417A-45D7-BF94-D5480B554EBA}
+		{954ED932-5036-4C37-A58D-3C87753AFD57} = {FB063BC5-D1FD-466A-9ABC-C8556A27F872}
 	EndGlobalSection
 EndGlobal

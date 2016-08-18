@@ -72,6 +72,14 @@
       <Project>{17c619c1-739f-4cd3-8efa-97ed743b59ed}</Project>
       <Name>ARSnovaPPIntegration.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
+      <Project>{954ed932-5036-4c37-a58d-3c87753afd57}</Project>
+      <Name>ARSnovaPPIntegration.Communication.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Communication\ARSnovaPPIntegration.Communication.csproj">
+      <Project>{2e5c6dab-c772-4edd-b775-f40395a148a6}</Project>
+      <Name>ARSnovaPPIntegration.Communication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

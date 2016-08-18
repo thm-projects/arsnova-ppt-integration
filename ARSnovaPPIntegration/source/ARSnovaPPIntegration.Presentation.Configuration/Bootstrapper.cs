@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ARSnovaPPIntegration.Common;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Communication;
+using ARSnovaPPIntegration.Communication.Contract;
 using Microsoft.Practices.Unity;
 
 namespace ARSnovaPPIntegration.Presentation.Configuration
@@ -18,11 +20,15 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             // Type registration
 
             unityContainer
-                .RegisterType<ILocalizationService, LocalizationService>();
+                .RegisterType<ILocalizationService, LocalizationService>()
+                .RegisterType<IArsnovaEuService, ArsnovaEuService>()
+                .RegisterType<IArsnovaClickService, ArsnovaClickService>();
 
             // Factory registration
 
             unityContainer.RegisterType<Func<ILocalizationService>>();
+            unityContainer.RegisterType<Func<IArsnovaEuService>>();
+            unityContainer.RegisterType<Func<IArsnovaClickService>>();
 
             return unityContainer;
         }
