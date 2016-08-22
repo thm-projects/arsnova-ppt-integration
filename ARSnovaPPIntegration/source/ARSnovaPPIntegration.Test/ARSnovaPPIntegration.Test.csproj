@@ -67,12 +67,25 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BusinessTests.cs" />
     <Compile Include="CommunicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
+      <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
+      <Name>ARSnovaPPIntegration.Communication.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj">
+      <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
+      <Name>ARSnovaPPIntegration.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Presentation.Configuration\ARSnovaPPIntegration.Presentation.Configuration.csproj">
+      <Project>{7186C2F8-5335-46B1-8BEB-9D620080A323}</Project>
+      <Name>ARSnovaPPIntegration.Presentation.Configuration</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

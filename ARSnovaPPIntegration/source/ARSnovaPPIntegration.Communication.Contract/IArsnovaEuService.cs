@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ARSnovaPPIntegration.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace ARSnovaPPIntegration.Communication.Contract
 {
     public interface IArsnovaEuService
     {
+        SessionModel CreateNewSession();
     }
 }
