@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,13 +26,14 @@ namespace ARSnovaPPIntegration.Communication
             new Tuple<string, string>("Accept-Language", "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4")
         };
 
-        private CookieContainer authentificatedCookieContainer;
+        private List<Cookie> arsnovaEuCookies;
 
         public ArsnovaEuService()
         {
             // Login as guest by default
             // TODO how long does the cookie remain? check it everytime before a HTTP-Request is fired!
-            this.authentificatedCookieContainer = this.Login();
+            this.Login();
+            this.Authentification();
         }
 
         public SessionModel CreateNewSession()
@@ -39,13 +41,12 @@ namespace ARSnovaPPIntegration.Communication
             return this.CreateNewSessionTask();
         }
 
-        private CookieContainer Login()
+        private void Login()
         {
             var url = "https://arsnova.eu/api/auth/login?type=guest&user=" + this.GenerateGuestName() + "&_dc=" +
                       this.ConvertToUnixTimestampString(DateTime.Now);
             var request = (HttpWebRequest)WebRequest.Create(url);
-            var cookieContainer = new CookieContainer();
-            request.CookieContainer = cookieContainer;
+            request.CookieContainer = new CookieContainer();
             // TODO sum the next part up! bad code quality in here!
             request.Method = "GET";
             request.Host = "arsnova.eu";
@@ -57,22 +58,72 @@ namespace ARSnovaPPIntegration.Communication
             // TODO swap this one, too! (differ from http-method)
             try
             {
+                this.arsnovaEuCookies = new List<Cookie>();
+
                 var response = (HttpWebResponse)request.GetResponse();
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                foreach (Cookie cookie in response.Cookies)
+                {
+                    this.arsnovaEuCookies.Add(cookie);
+                }
+
+                /*using (var isf = IsolatedStorageFile.GetUserStoreForSite())
+                {
+                    using (var isfs = isf.OpenFile("CookieExCookies", FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        using (StreamWriter sw = new StreamWriter(isfs))
+                        {
+                            this.arsnovaEuCookies = new List<string>();
+
+                            foreach (var cookieValue in response.Cookies)
+                            {
+                                this.arsnovaEuCookies.Add(cookieValue.ToString());
+                            }
+                        }
+                    }
+                }*/
+
+
+                /*using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     if (response.IsMutuallyAuthenticated)
                     {
                         // test purpose only
                     }
-                }
+                }*/
             }
             catch (WebException webException)
             {
                 throw new ArsnovaCommunicationException("Error while creating new session", webException);
             }
+        }
 
-            return request.CookieContainer;
+        private void Authentification()
+        {
+            var url = "https://arsnova.eu/api/auth/";
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.CookieContainer = new CookieContainer();
+            // TODO sum the next part up! bad code quality in here!
+            request.Method = "GET";
+            request.Host = "arsnova.eu";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+            request.Accept = "*/*";
+            request.Referer = "https://arsnova.eu/mobile/";
+
+            foreach (var cookie in this.arsnovaEuCookies)
+            {
+                request.CookieContainer.Add(cookie);
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            /*this.arsnovaEuCookies = new List<Cookie>();
+            foreach (Cookie cookie in response.Cookies)
+            {
+                this.arsnovaEuCookies.Add(cookie);
+            }*/
 
         }
 
@@ -92,15 +143,17 @@ namespace ARSnovaPPIntegration.Communication
             var url = "https://arsnova.eu/api/session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             var request = (HttpWebRequest) WebRequest.Create(url);
-            request.CookieContainer = this.authentificatedCookieContainer;
 
             // The Headers with Properties should be setted with them
             request.Method = "POST";
             request.Host = "arsnova.eu";
             request.KeepAlive = true;
+            //request.Connection = "keep-alive";
+            request.ServicePoint.Expect100Continue = false;
             request.ContentType = "application/json";
             request.Accept = "*/*";
             request.Referer = "https://arsnova.eu/mobile/";
+            request.CookieContainer = new CookieContainer();
 
             foreach (var arsnovaEuHeader in this.arsnovaEuHeaders)
             {
@@ -112,8 +165,8 @@ namespace ARSnovaPPIntegration.Communication
                                "\"courseType\": \"null\"" +
                                "\"creationTime\": \"" + this.ConvertToUnixTimestampString(DateTime.Now) + "\"," +
                                "\"name\": \"testQuizOffice\"" +
-                               "\"ppAuthorMail\": \"tjark.wilhelm.hoeck@mni.thm.de\"," +
-                               "\"ppAuthorName\": \"Tjark Wilhelm Hoeck\"," +
+                               "\"ppAuthorMail\": \"null\"," +
+                               "\"ppAuthorName\": \"null\"," +
                                "\"ppDescription\": \"null\"," +
                                "\"ppFaculty\": \"null\"," +
                                "\"ppLevel\": \"null\"," +
@@ -126,6 +179,11 @@ namespace ARSnovaPPIntegration.Communication
                            "}";
 
             //request.ContentLength = requestBody.Length;
+
+            foreach (var cookie in this.arsnovaEuCookies)
+            {
+                request.CookieContainer.Add(cookie);
+            }
 
             using (Stream stream = this.GenerateStreamFromString(requestBody))
             {
