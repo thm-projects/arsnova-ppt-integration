@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Model;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
@@ -28,23 +25,148 @@ namespace ARSnovaPPIntegration.Communication
 
         private List<Cookie> arsnovaEuCookies;
 
+        private readonly bool local = false;
+
+        private readonly bool ssl = true;
+
+        private string Domain => this.local ? "localhost" : "arsnova.eu";
+
+        private string HttpOrHttps => this.ssl ? "https" : "http";
+
         public ArsnovaEuService()
         {
             // Login as guest by default
             // TODO how long does the cookie remain? check it everytime before a HTTP-Request is fired!
             this.Login();
-            this.Authentification();
+            //this.Authentification();
         }
 
         public SessionModel CreateNewSession()
         {
-            return this.CreateNewSessionTask();
+            var url = this.HttpOrHttps + "://" + this.Domain + "/api/session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+
+            /*using (var client = new HttpClient())
+            {
+                var requestValues = new Dictionary<string, string>
+                {
+                    {"courseId", "null"},
+                    {"courseType", "null"},
+                    {"creationTime", this.ConvertToUnixTimestampString(DateTime.Now)},
+                    {"name", "testQuizOffice"},
+                    {"ppAuthorMail", "null"},
+                    {"ppAuthorName", "null"},
+                    {"ppDescription", "null"},
+                    {"ppFaculty", "null"},
+                    {"ppLevel", "null"},
+                    {"ppLicense", "null"},
+                    {"ppLogo", "null"},
+
+                    {"ppSubject", "null"},
+                    {"ppUniversity", "null"},
+                    {"sessionType", "null"},
+                    {"shortName", "tqo"}
+                };
+
+                var content = new FormUrlEncodedContent(requestValues);
+
+                var response = await client.PostAsync(url, content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                return null;
+            }*/
+
+
+            var requestBody = "{" +
+                               "\"courseId\": \"(null)\"," +
+                               "\"courseType\": \"(null)\"" +
+                               "\"creationTime\": \"" + this.ConvertToUnixTimestampString(DateTime.Now) + "\"," +
+                               "\"name\": \"testQuizOffice\"" +
+                               "\"ppAuthorMail\": \"(null)\"," +
+                               "\"ppAuthorName\": \"(null)\"," +
+                               "\"ppDescription\": \"(null)\"," +
+                               "\"ppFaculty\": \"(null)\"," +
+                               "\"ppLevel\": \"(null)\"," +
+                               "\"ppLicense\": \"(null)\"," +
+                               "\"ppLogo\": \"(null)\"," +
+                               "\"ppSubject\": \"(null)\"," +
+                               "\"ppUniversity\": \"(null)\"," +
+                               "\"sessionType\": \"(null)\"," +
+                               "\"shortName\": \"tqo\"" +
+                           "}";
+
+            var requestBodyData = Encoding.ASCII.GetBytes(requestBody);
+
+            // The Headers with Properties should be setted with them
+            request.Method = "POST";
+            request.Host = "arsnova.eu";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+            request.Accept = "*/*";
+            request.Referer = "https://arsnova.eu/mobile/";
+            request.CookieContainer = new CookieContainer();
+            request.ContentLength = requestBody.Length;
+
+            foreach (var arsnovaEuHeader in this.arsnovaEuHeaders)
+            {
+                request.Headers.Set(arsnovaEuHeader.Item1, arsnovaEuHeader.Item2);
+            }
+
+
+
+            //request.ContentLength = requestBody.Length;
+
+            foreach (var cookie in this.arsnovaEuCookies)
+            {
+                request.CookieContainer.Add(cookie);
+            }
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(requestBodyData, 0, requestBodyData.Length);
+
+                try
+                {
+                    var response = (HttpWebResponse)request.GetResponse();
+
+                    var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                    return null;
+                    /*using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var js = new JavaScriptSerializer();
+                        var objText = reader.ReadToEnd();
+                        return (SessionModel)js.Deserialize(objText, typeof(SessionModel));
+                    }*/
+                }
+                catch (WebException webException)
+                {
+                    throw new ArsnovaCommunicationException("Error while creating new session", webException);
+                }
+            }
+
+            // old try
+
+            /*using (var client = this.CreateArsnovaHttpClient())
+            {
+                var content = new HttpContent
+
+                HttpResponseMessage response = await client.PostAsync("/session", ); // TODO content
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var session = await response.Content.ReadAs
+                }
+            }*/
         }
 
         private void Login()
         {
-            var url = "https://arsnova.eu/api/auth/login?type=guest&user=" + this.GenerateGuestName() + "&_dc=" +
+            var url = this.HttpOrHttps + "://" + this.Domain + "/api/auth/login?type=guest&user=" + this.GenerateGuestName() + "&_dc=" +
                       this.ConvertToUnixTimestampString(DateTime.Now);
+            
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.CookieContainer = new CookieContainer();
             // TODO sum the next part up! bad code quality in here!
@@ -100,7 +222,7 @@ namespace ARSnovaPPIntegration.Communication
 
         private void Authentification()
         {
-            var url = "https://arsnova.eu/api/auth/";
+            var url = this.HttpOrHttps + "://" + this.Domain + "/api/auth/";
 
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.CookieContainer = new CookieContainer();
@@ -136,90 +258,6 @@ namespace ARSnovaPPIntegration.Communication
 
             return randomstring + new string(Enumerable.Repeat(chars, stringLength)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        private SessionModel CreateNewSessionTask()
-        {
-            var url = "https://arsnova.eu/api/session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
-
-            var request = (HttpWebRequest) WebRequest.Create(url);
-
-            // The Headers with Properties should be setted with them
-            request.Method = "POST";
-            request.Host = "arsnova.eu";
-            request.KeepAlive = true;
-            //request.Connection = "keep-alive";
-            request.ServicePoint.Expect100Continue = false;
-            request.ContentType = "application/json";
-            request.Accept = "*/*";
-            request.Referer = "https://arsnova.eu/mobile/";
-            request.CookieContainer = new CookieContainer();
-
-            foreach (var arsnovaEuHeader in this.arsnovaEuHeaders)
-            {
-                request.Headers.Set(arsnovaEuHeader.Item1, arsnovaEuHeader.Item2);
-            }
-
-            var requestBody = "{" +
-                               "\"courseId\": \"null\"," +
-                               "\"courseType\": \"null\"" +
-                               "\"creationTime\": \"" + this.ConvertToUnixTimestampString(DateTime.Now) + "\"," +
-                               "\"name\": \"testQuizOffice\"" +
-                               "\"ppAuthorMail\": \"null\"," +
-                               "\"ppAuthorName\": \"null\"," +
-                               "\"ppDescription\": \"null\"," +
-                               "\"ppFaculty\": \"null\"," +
-                               "\"ppLevel\": \"null\"," +
-                               "\"ppLicense\": \"null\"," +
-                               "\"ppLogo\": \"null\"," +
-                               "\"ppSubject\": \"null\"," +
-                               "\"ppUniversity\": \"null\"," +
-                               "\"sessionType\": \"null\"," +
-                               "\"shortName\": \"tqo\"" +
-                           "}";
-
-            //request.ContentLength = requestBody.Length;
-
-            foreach (var cookie in this.arsnovaEuCookies)
-            {
-                request.CookieContainer.Add(cookie);
-            }
-
-            using (Stream stream = this.GenerateStreamFromString(requestBody))
-            {
-                var dataStream = request.GetRequestStream();
-                stream.CopyTo(dataStream);
-
-                try
-                {
-                    var response = (HttpWebResponse)request.GetResponse();
-
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        var js = new JavaScriptSerializer();
-                        var objText = reader.ReadToEnd();
-                        return (SessionModel)js.Deserialize(objText, typeof(SessionModel));
-                    }
-                }
-                catch (WebException webException)
-                {
-                    throw new ArsnovaCommunicationException("Error while creating new session", webException);
-                }
-            }
-
-            // old try
-
-            /*using (var client = this.CreateArsnovaHttpClient())
-            {
-                var content = new HttpContent
-
-                HttpResponseMessage response = await client.PostAsync("/session", ); // TODO content
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var session = await response.Content.ReadAs
-                }
-            }*/
         }
 
         private HttpClient CreateArsnovaHttpClient()
