@@ -67,13 +67,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CommunicationTests.cs" />
+    <Compile Include="ArsnovaCommunicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+      <Name>ARSnovaPPIntegration.Common.Enum</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
       <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
       <Name>ARSnovaPPIntegration.Communication.Contract</Name>

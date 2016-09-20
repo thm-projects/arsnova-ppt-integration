@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Commun
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Model", "ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj", "{3863C834-B716-4844-947B-BBF358A8FB08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common.Enum", "ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj", "{92871CB4-6B22-484A-9B19-EBD08608E547}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{3863C834-B716-4844-947B-BBF358A8FB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3863C834-B716-4844-947B-BBF358A8FB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3863C834-B716-4844-947B-BBF358A8FB08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92871CB4-6B22-484A-9B19-EBD08608E547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92871CB4-6B22-484A-9B19-EBD08608E547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92871CB4-6B22-484A-9B19-EBD08608E547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92871CB4-6B22-484A-9B19-EBD08608E547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +106,6 @@ Global
 		{7186C2F8-5335-46B1-8BEB-9D620080A323} = {7EE5074A-417A-45D7-BF94-D5480B554EBA}
 		{954ED932-5036-4C37-A58D-3C87753AFD57} = {FB063BC5-D1FD-466A-9ABC-C8556A27F872}
 		{3863C834-B716-4844-947B-BBF358A8FB08} = {FB063BC5-D1FD-466A-9ABC-C8556A27F872}
+		{92871CB4-6B22-484A-9B19-EBD08608E547} = {DEDD70F4-0957-483B-82B5-8A30D6AA4148}
 	EndGlobalSection
 EndGlobal

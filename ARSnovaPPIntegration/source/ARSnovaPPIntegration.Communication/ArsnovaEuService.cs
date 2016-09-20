@@ -4,12 +4,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
+using System.Web.Script.Serialization;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Model;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Communication
 {
@@ -25,59 +25,61 @@ namespace ARSnovaPPIntegration.Communication
 
         private List<Cookie> arsnovaEuCookies;
 
-        private readonly bool local = false;
+        private bool isAuthentificated = false;
 
-        private readonly bool ssl = true;
-
-        private string Domain => this.local ? "localhost" : "arsnova.eu";
-
-        private string HttpOrHttps => this.ssl ? "https" : "http";
-
-        public ArsnovaEuService()
+        public void Login(LoginMethod loginMethod = LoginMethod.Guest)
         {
-            // Login as guest by default
             // TODO how long does the cookie remain? check it everytime before a HTTP-Request is fired!
-            this.Login();
-            //this.Authentification();
+
+            var url = "https://arsnova.eu/api/auth/login?type=guest&user=" + this.GenerateGuestName() + "&_dc=" +
+                      this.ConvertToUnixTimestampString(DateTime.Now);
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.CookieContainer = new CookieContainer();
+            // TODO sum the next part up! bad code quality in here!
+            request.Method = "GET";
+            request.Host = "arsnova.eu";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+            request.Accept = "*/*";
+            request.Referer = "https://arsnova.eu/mobile/";
+
+            // TODO swap this one, too! (differ from http-method)
+            try
+            {
+                this.arsnovaEuCookies = new List<Cookie>();
+
+                var response = (HttpWebResponse)request.GetResponse();
+
+                foreach (Cookie cookie in response.Cookies)
+                {
+                    this.arsnovaEuCookies.Add(cookie);
+                }
+
+                // check for authentification!
+                this.isAuthentificated = true;
+
+                /*using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    if (response.IsMutuallyAuthenticated)
+                    {
+                        // test purpose only
+                    }
+                }*/
+            }
+            catch (WebException webException)
+            {
+                throw new ArsnovaCommunicationException("Authentification Error", webException);
+            }
         }
 
         public SessionModel CreateNewSession()
         {
-            var url = this.HttpOrHttps + "://" + this.Domain + "/api/session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            this.CheckAuthentification();
+
+            var url = "https://arsnova.eu/api/session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             var request = (HttpWebRequest)WebRequest.Create(url);
-
-            /*using (var client = new HttpClient())
-            {
-                var requestValues = new Dictionary<string, string>
-                {
-                    {"courseId", "null"},
-                    {"courseType", "null"},
-                    {"creationTime", this.ConvertToUnixTimestampString(DateTime.Now)},
-                    {"name", "testQuizOffice"},
-                    {"ppAuthorMail", "null"},
-                    {"ppAuthorName", "null"},
-                    {"ppDescription", "null"},
-                    {"ppFaculty", "null"},
-                    {"ppLevel", "null"},
-                    {"ppLicense", "null"},
-                    {"ppLogo", "null"},
-
-                    {"ppSubject", "null"},
-                    {"ppUniversity", "null"},
-                    {"sessionType", "null"},
-                    {"shortName", "tqo"}
-                };
-
-                var content = new FormUrlEncodedContent(requestValues);
-
-                var response = await client.PostAsync(url, content);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                return null;
-            }*/
-
 
             var requestBody = "{" +
                                "\"courseId\": null," +
@@ -132,8 +134,10 @@ namespace ARSnovaPPIntegration.Communication
                     var response = (HttpWebResponse)request.GetResponse();
 
                     var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    var js = new JavaScriptSerializer();
 
-                    return null;
+                    return (SessionModel)js.Deserialize(responseString, typeof(SessionModel));
+
                     /*using (var reader = new StreamReader(response.GetResponseStream()))
                     {
                         var js = new JavaScriptSerializer();
@@ -146,107 +150,14 @@ namespace ARSnovaPPIntegration.Communication
                     throw new ArsnovaCommunicationException("Error while creating new session", webException);
                 }
             }
-
-            // old try
-
-            /*using (var client = this.CreateArsnovaHttpClient())
-            {
-                var content = new HttpContent
-
-                HttpResponseMessage response = await client.PostAsync("/session", ); // TODO content
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var session = await response.Content.ReadAs
-                }
-            }*/
         }
 
-        private void Login()
+        private void CheckAuthentification()
         {
-            var url = this.HttpOrHttps + "://" + this.Domain + "/api/auth/login?type=guest&user=" + this.GenerateGuestName() + "&_dc=" +
-                      this.ConvertToUnixTimestampString(DateTime.Now);
-            
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = new CookieContainer();
-            // TODO sum the next part up! bad code quality in here!
-            request.Method = "GET";
-            request.Host = "arsnova.eu";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-            request.Accept = "*/*";
-            request.Referer = "https://arsnova.eu/mobile/";
-
-            // TODO swap this one, too! (differ from http-method)
-            try
+            if (!this.isAuthentificated)
             {
-                this.arsnovaEuCookies = new List<Cookie>();
-
-                var response = (HttpWebResponse)request.GetResponse();
-
-                foreach (Cookie cookie in response.Cookies)
-                {
-                    this.arsnovaEuCookies.Add(cookie);
-                }
-
-                /*using (var isf = IsolatedStorageFile.GetUserStoreForSite())
-                {
-                    using (var isfs = isf.OpenFile("CookieExCookies", FileMode.OpenOrCreate, FileAccess.Write))
-                    {
-                        using (StreamWriter sw = new StreamWriter(isfs))
-                        {
-                            this.arsnovaEuCookies = new List<string>();
-
-                            foreach (var cookieValue in response.Cookies)
-                            {
-                                this.arsnovaEuCookies.Add(cookieValue.ToString());
-                            }
-                        }
-                    }
-                }*/
-
-
-                /*using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    if (response.IsMutuallyAuthenticated)
-                    {
-                        // test purpose only
-                    }
-                }*/
+                this.Login();
             }
-            catch (WebException webException)
-            {
-                throw new ArsnovaCommunicationException("Error while creating new session", webException);
-            }
-        }
-
-        private void Authentification()
-        {
-            var url = this.HttpOrHttps + "://" + this.Domain + "/api/auth/";
-
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = new CookieContainer();
-            // TODO sum the next part up! bad code quality in here!
-            request.Method = "GET";
-            request.Host = "arsnova.eu";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-            request.Accept = "*/*";
-            request.Referer = "https://arsnova.eu/mobile/";
-
-            foreach (var cookie in this.arsnovaEuCookies)
-            {
-                request.CookieContainer.Add(cookie);
-            }
-
-            var response = (HttpWebResponse)request.GetResponse();
-
-            /*this.arsnovaEuCookies = new List<Cookie>();
-            foreach (Cookie cookie in response.Cookies)
-            {
-                this.arsnovaEuCookies.Add(cookie);
-            }*/
-
         }
 
         private string GenerateGuestName()
@@ -258,26 +169,6 @@ namespace ARSnovaPPIntegration.Communication
 
             return randomstring + new string(Enumerable.Repeat(chars, stringLength)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        private HttpClient CreateArsnovaHttpClient()
-        {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://arsnova.thm.de/");
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            return httpClient;
-        }
-
-        private Stream GenerateStreamFromString(string s)
-        {
-            var stream = new MemoryStream();
-            var writer = new StreamWriter(stream);
-            writer.Write(s);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
         }
 
         private string ConvertToUnixTimestampString(DateTime dateTime)
