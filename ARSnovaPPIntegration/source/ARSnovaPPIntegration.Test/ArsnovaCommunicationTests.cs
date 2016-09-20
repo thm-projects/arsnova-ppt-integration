@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Common.Enum;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ARSnovaPPIntegration.Presentation.Configuration;
-using ARSnovaPPIntegration.Communication.Contract;
+
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ARSnovaPPIntegration.Test
 {

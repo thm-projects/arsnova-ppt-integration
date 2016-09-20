@@ -4,7 +4,6 @@ using System.Linq;
 using ARSnovaPPIntegration.Common.Contract;
 
 using System.Resources;
-using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace ARSnovaPPIntegration.Common
