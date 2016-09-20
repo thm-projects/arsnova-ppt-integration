@@ -80,20 +80,20 @@ namespace ARSnovaPPIntegration.Communication
 
 
             var requestBody = "{" +
-                               "\"courseId\": \"(null)\"," +
-                               "\"courseType\": \"(null)\"" +
+                               "\"courseId\": null," +
+                               "\"courseType\": null," +
                                "\"creationTime\": \"" + this.ConvertToUnixTimestampString(DateTime.Now) + "\"," +
-                               "\"name\": \"testQuizOffice\"" +
-                               "\"ppAuthorMail\": \"(null)\"," +
-                               "\"ppAuthorName\": \"(null)\"," +
-                               "\"ppDescription\": \"(null)\"," +
-                               "\"ppFaculty\": \"(null)\"," +
-                               "\"ppLevel\": \"(null)\"," +
-                               "\"ppLicense\": \"(null)\"," +
-                               "\"ppLogo\": \"(null)\"," +
-                               "\"ppSubject\": \"(null)\"," +
-                               "\"ppUniversity\": \"(null)\"," +
-                               "\"sessionType\": \"(null)\"," +
+                               "\"name\": \"testQuizOffice\"," +
+                               "\"ppAuthorMail\": null," +
+                               "\"ppAuthorName\": null," +
+                               "\"ppDescription\": null," +
+                               "\"ppFaculty\": null," +
+                               "\"ppLevel\": null," +
+                               "\"ppLicense\": null," +
+                               "\"ppLogo\": null," +
+                               "\"ppSubject\": null," +
+                               "\"ppUniversity\": null," +
+                               "\"sessionType\": null," +
                                "\"shortName\": \"tqo\"" +
                            "}";
 
