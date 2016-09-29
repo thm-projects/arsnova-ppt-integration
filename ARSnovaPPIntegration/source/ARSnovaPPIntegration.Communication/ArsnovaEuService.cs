@@ -69,7 +69,7 @@ namespace ARSnovaPPIntegration.Communication
             }
             catch (WebException webException)
             {
-                throw new ArsnovaCommunicationException("Authentification Error", webException);
+                throw new CommunicationException("Authentification Error", webException);
             }
         }
 
@@ -147,7 +147,7 @@ namespace ARSnovaPPIntegration.Communication
                 }
                 catch (WebException webException)
                 {
-                    throw new ArsnovaCommunicationException("Error while creating new session", webException);
+                    throw new CommunicationException("Error while creating new session", webException);
                 }
             }
         }
