@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\ArsnovaCommunicationException.cs" />
+    <Compile Include="Exceptions\CommunicationException.cs" />
     <Compile Include="ILocalizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
