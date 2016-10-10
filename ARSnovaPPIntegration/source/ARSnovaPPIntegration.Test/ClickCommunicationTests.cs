@@ -1,6 +1,6 @@
 ﻿using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Presentation.Configuration;
-
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,13 +18,20 @@ namespace ARSnovaPPIntegration.Test
         }
 
         [TestMethod]
-        public void FirstTest()
+        public void ApiPostTest()
         {
-            var allRestMethods = this.arsnovaClickService.GetAllRestMethods();
-            Assert.IsTrue(string.IsNullOrEmpty(allRestMethods));
+            var answerOptions = this.arsnovaClickService.GetAnswerOptionsForHashtag("TestHashtag");
+            foreach (var answerOption in answerOptions)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(answerOption));
+            } 
+        }
 
+        [TestMethod]
+        public void GetHashtagsTest()
+        {
             var allHashtags = this.arsnovaClickService.FindAllHashtags();
-            Assert.IsTrue(string.IsNullOrEmpty(allHashtags));
+            Assert.IsFalse(string.IsNullOrEmpty(allHashtags));
         }
     }
 }

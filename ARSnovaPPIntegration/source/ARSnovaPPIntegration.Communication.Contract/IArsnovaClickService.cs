@@ -1,11 +1,11 @@
-﻿using System.Reflection.Emit;
+﻿using System.Collections.Generic;
 
 namespace ARSnovaPPIntegration.Communication.Contract
 {
     public interface IArsnovaClickService
     {
-        string GetAllRestMethods();
-
         string FindAllHashtags();
+
+        List<string> GetAnswerOptionsForHashtag(string hashtag);
     }
 }
