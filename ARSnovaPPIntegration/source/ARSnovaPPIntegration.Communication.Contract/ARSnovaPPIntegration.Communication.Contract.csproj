@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>arsnovaPpIntegration.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>arsnovaPpIntegrationCommunicationContract.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,7 +62,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="arsnovaPpIntegration.pfx" />
+    <None Include="arsnovaPpIntegrationCommunicationContract.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

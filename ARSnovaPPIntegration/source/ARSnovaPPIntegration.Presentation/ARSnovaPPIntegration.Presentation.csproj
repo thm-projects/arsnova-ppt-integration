@@ -189,7 +189,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="arsnovaPpIntegration.pfx" />
+    <None Include="arsnovaPpIntegrationPresentation.snk" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -248,7 +248,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>arsnovaPpIntegration.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>arsnovaPpIntegrationPresentation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

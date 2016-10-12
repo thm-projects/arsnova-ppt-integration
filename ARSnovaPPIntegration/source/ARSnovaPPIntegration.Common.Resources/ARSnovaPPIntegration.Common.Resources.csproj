@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>arsnovaPpIntegration.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>arsnovaPpIntegrationCommonResources.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,7 +78,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="arsnova.svg" />
-    <None Include="arsnovaPpIntegration.pfx" />
+    <None Include="arsnovaPpIntegrationCommonResources.snk" />
     <None Include="Resources\add-2.png" />
     <Content Include="Resources\ARSnova-Logo.png" />
     <None Include="Resources\Info.png" />
