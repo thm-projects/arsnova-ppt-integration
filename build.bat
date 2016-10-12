@@ -3,7 +3,7 @@
 SET msbuild="%windir%\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe"
 SET slnPath="C:\Projects\powerpoint-integration\ARSnovaPPIntegration\source\ARSnovaPPIntegration.sln"
 
-%msbuild% %slnPath%
+%msbuild% %slnPath% /p:VisualStudioVersion=14.0
 if errorlevel 1 goto BuildFail
 goto BuildSuccess
 

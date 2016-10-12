@@ -9,6 +9,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ARSnovaPPIntegration.Common.Resources")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Technische Hochschule Mittelhessen")]
+[assembly: AssemblyProduct("ARSnova PowerPoint Integration")]
+[assembly: AssemblyCopyright("Copyright © Tjark Wilhelm Hoeck 2016")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
 // für COM-Komponenten.  Wenn Sie auf einen Zugriffstyp in dieser Assembly aus 
 // COM aus zugreifen müssen, sollten Sie das ComVisible-Attribut für diesen Typ auf "True" festlegen.
@@ -27,6 +32,9 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("ARSnovaPPIntegration.Common, PublicKey=99003ad044eb94b3")]
 [assembly: InternalsVisibleTo("ARSnovaPPIntegration.Presentation, PublicKey=99003ad044eb94b3")]

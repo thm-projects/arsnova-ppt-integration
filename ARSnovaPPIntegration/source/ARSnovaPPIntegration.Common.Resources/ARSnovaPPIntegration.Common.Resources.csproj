@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ARSnovaPPIntegration.Common.Resources</RootNamespace>
     <AssemblyName>ARSnovaPPIntegration.Common.Resources</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
     <Compile Include="Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -73,7 +72,7 @@
     <EmbeddedResource Include="Translations.es.resx" />
     <EmbeddedResource Include="Translations.fr.resx" />
     <EmbeddedResource Include="Translations.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Translations1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
