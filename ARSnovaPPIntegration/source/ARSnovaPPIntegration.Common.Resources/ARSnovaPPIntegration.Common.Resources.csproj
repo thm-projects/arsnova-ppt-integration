@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>arsnovaPpIntegration.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +78,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="arsnova.svg" />
+    <None Include="arsnovaPpIntegration.pfx" />
     <None Include="Resources\add-2.png" />
     <Content Include="Resources\ARSnova-Logo.png" />
     <None Include="Resources\Info.png" />
