@@ -1,6 +1,5 @@
 ﻿using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Presentation.Configuration;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

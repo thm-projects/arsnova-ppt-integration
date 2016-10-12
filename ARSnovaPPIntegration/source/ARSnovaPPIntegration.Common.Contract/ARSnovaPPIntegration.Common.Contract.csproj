@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>arsnovaPpIntegrationCommonContract.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\certificate\arsnovaPpIntegrationKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ARSnovaPPIntegration.Common.Resources, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,9 +55,6 @@
     <Compile Include="Exceptions\CommunicationException.cs" />
     <Compile Include="ILocalizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="arsnovaPpIntegrationCommonContract.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
