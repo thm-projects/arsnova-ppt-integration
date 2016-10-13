@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Resources;
+using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
@@ -43,17 +45,17 @@ namespace ARSnovaPPIntegration.Presentation
 
         private Office.IRibbonUI ribbon;
 
-        private SvgParser svgParser;
+        //private SvgParser svgParser;
 
-        private List<Svg.SvgGlyph> arsnovaGlyphs;
+        //private List<Svg.SvgGlyph> arsnovaGlyphs;
 
         public Ribbon(IUnityContainer container)
         {
             this.localizationService = container.Resolve<ILocalizationService>();
             this.unityContainer = container;
-            this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
-            var arsnovaSvgDoc = this.svgParser.GetSvgDocument(@"..\..\ARSnovaPPIntegration.Common.Resources\arsnova.svg");
-            this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
+            //this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
+            //var arsnovaSvgDoc = this.svgParser.GetSvgDocument(System.Environment.CurrentDirectory + "/Content/arsnova.svg");
+            //this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
         }
 
         #region manageQuiz
@@ -75,7 +77,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetAddButtonImage(Office.IRibbonControl control)
         {
-            return ARSnovaPPIntegration.Common.Resources.Images.Add;
+            return Images.add;
         }
 
         public void AddButtonClick(Office.IRibbonControl control)
@@ -109,7 +111,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetHelpButtonImage(Office.IRibbonControl control)
         {
-            return ARSnovaPPIntegration.Common.Resources.Images.Info;
+            return Images.information;
 
             // return this.svgParser.GetGlyphByName(this.arsnovaGlyphs, "info").Draw(); TODO currently not working as expected
         }
@@ -133,7 +135,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetAboutButtonImage(Office.IRibbonControl control)
         {
-            return ARSnovaPPIntegration.Common.Resources.Images.ARSnova_Logo;
+            return Images.ARSnova_Logo;
         }
 
         public void AboutButtonClick(Office.IRibbonControl control)

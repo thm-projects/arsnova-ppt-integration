@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ARSnovaPPIntegration.Common.Resources;
 using Svg;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
@@ -16,7 +17,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public SvgDocument GetSvgDocument(string filePath)
         {
-            SvgDocument document = SvgDocument.Open(filePath);
+            var document = SvgDocument.Open(filePath);
             return this.AdjustSize(document);
         }
 

@@ -35,6 +35,3 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("ARSnovaPPIntegration.Common, PublicKey=99003ad044eb94b3")]
-[assembly: InternalsVisibleTo("ARSnovaPPIntegration.Presentation, PublicKey=99003ad044eb94b3")]

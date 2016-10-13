@@ -15,10 +15,22 @@ namespace ARSnovaPPIntegration.Common.Contract.Exceptions
 
         public HttpStatusCode? HttpStatusCode { get; set; }
 
-        public bool WithHttpStatusCode => this.HttpStatusCode.HasValue;
+        public bool WithHttpStatusCode
+        {
+            get
+            {
+                return this.HttpStatusCode.HasValue;
+            }
+        } 
 
         public string ServerResponseString { get; set; }
 
-        public bool WithServerResponseString => !string.IsNullOrEmpty(this.ServerResponseString);
+        public bool WithServerResponseString
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.ServerResponseString);
+            }
+        } 
     }
 }
