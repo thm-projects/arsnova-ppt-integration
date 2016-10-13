@@ -1,0 +1,4 @@
+msbuild:
+    stage: build
+    script: 
+        - build.bat
