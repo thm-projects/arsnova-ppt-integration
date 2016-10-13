@@ -39,7 +39,7 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
-        private IUnityContainer unityContainer;
+        private readonly IUnityContainer unityContainer;
 
         private readonly ILocalizationService localizationService;
 
