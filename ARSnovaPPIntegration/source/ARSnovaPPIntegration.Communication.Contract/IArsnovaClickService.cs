@@ -8,5 +8,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
         string FindAllHashtags();
 
         List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag);
+
+        SessionConfiguration GetSessionConfiguration(string hashtag);
     }
 }

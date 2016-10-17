@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
@@ -35,12 +36,10 @@ namespace ARSnovaPPIntegration.Communication
 
         public List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag)
         {
-            var parameters = new
+            var jsonBody = JsonConvert.SerializeObject(new
                 {
                     hashtag
-                };
-
-            var jsonBody = JsonConvert.SerializeObject(parameters);
+                });
 
             var request = this.CreateWebRequest("answerOptions", HttpMethod.Post);
 
@@ -51,6 +50,24 @@ namespace ARSnovaPPIntegration.Communication
             var jsonConvert = JsonConvert.DeserializeObject< AnswerOptionsReturn>(responseString);
 
             return jsonConvert.answeroptions;
+        }
+
+        public SessionConfiguration GetSessionConfiguration(string hashtag)
+        {
+            var jsonBody = JsonConvert.SerializeObject(new
+                {
+                    hashtag
+                });
+
+            var request = this.CreateWebRequest("sessionConfiguration", HttpMethod.Post);
+
+            request = this.AddContentToRequest(request, jsonBody);
+
+            var responseString = this.GetResponseString(request, HttpStatusCode.OK);
+
+            var jsonConvert = JsonConvert.DeserializeObject<SessionConfigurationReturn>(responseString);
+
+            return jsonConvert.sessionConfiguration.FirstOrDefault();
         }
 
         private HttpWebRequest AddContentToRequest(HttpWebRequest request, string data)
@@ -64,19 +81,6 @@ namespace ARSnovaPPIntegration.Communication
             var requestStream = request.GetRequestStream();
 
             requestStream.Write(dataBytes, 0, dataBytes.Length);
-
-            /*   if (content.Length > 0)
-               {
-                   var data = Encoding.ASCII.GetBytes(content);
-
-                   request.ContentType = "application/json";
-                   request.ContentLength = data.Length;
-
-                   using (var stream = request.GetRequestStream())
-                   {
-                       stream.Write(data, 0 , data.Length);
-                   }
-               }*/
 
             return request;
         }
@@ -141,8 +145,14 @@ namespace ARSnovaPPIntegration.Communication
         }
     }
 
+    // Json Result Casting classes
     internal class AnswerOptionsReturn
     {
         public List<AnswerOptionModel> answeroptions { get; set; }
+    }
+
+    internal class SessionConfigurationReturn
+    {
+        public List<SessionConfiguration> sessionConfiguration { get; set; }
     }
 }
