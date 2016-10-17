@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Web.Script.Serialization;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
+using ARSnovaPPIntegration.Model.ArsnovaClick;
+using Newtonsoft.Json;
 
 namespace ARSnovaPPIntegration.Communication
 {
@@ -32,41 +33,32 @@ namespace ARSnovaPPIntegration.Communication
             return responseString;
         }
 
-        public List<string> GetAnswerOptionsForHashtag(string hashtag)
+        public List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag)
         {
-            var jsonBody = this.ObjectToJSON(hashtag);
+            var parameters = new
+                {
+                    hashtag
+                };
+
+            var jsonBody = JsonConvert.SerializeObject(parameters);
 
             var request = this.CreateWebRequest("answerOptions", HttpMethod.Post);
 
-            request = this.AddContentToRequest(request, "hashtag", hashtag);
+            request = this.AddContentToRequest(request, jsonBody);
 
             var responseString = this.GetResponseString(request, HttpStatusCode.OK);
 
-            // test only
-            var result = new List<string> {responseString};
+            var jsonConvert = JsonConvert.DeserializeObject< AnswerOptionsReturn>(responseString);
 
-            return result;
+            return jsonConvert.answeroptions;
         }
 
-        private string ObjectToJSON(object obj)
+        private HttpWebRequest AddContentToRequest(HttpWebRequest request, string data)
         {
-            var serializer = new JavaScriptSerializer();
-            return serializer.Serialize(obj);
-        }
-
-        private object JSONToObject(string json)
-        {
-            var serializer = new JavaScriptSerializer();
-            return serializer.DeserializeObject(json);
-        }
-
-        private HttpWebRequest AddContentToRequest(HttpWebRequest request, string varName, string content)
-        {
-            var data = varName + "=" + content;
             var encoding = new ASCIIEncoding();
             var dataBytes = encoding.GetBytes(data);
 
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/json";
             request.ContentLength = dataBytes.Length;
 
             var requestStream = request.GetRequestStream();
@@ -147,5 +139,10 @@ namespace ARSnovaPPIntegration.Communication
                 throw new CommunicationException("General Exception while requesting response", exception);
             }
         }
+    }
+
+    internal class AnswerOptionsReturn
+    {
+        public List<AnswerOptionModel> answeroptions { get; set; }
     }
 }

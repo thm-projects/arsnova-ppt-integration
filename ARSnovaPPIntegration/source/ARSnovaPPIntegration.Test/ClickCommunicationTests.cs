@@ -22,8 +22,8 @@ namespace ARSnovaPPIntegration.Test
             var answerOptions = this.arsnovaClickService.GetAnswerOptionsForHashtag("TestHashtag");
             foreach (var answerOption in answerOptions)
             {
-                Assert.IsFalse(string.IsNullOrEmpty(answerOption));
-            } 
+                Assert.IsFalse(string.IsNullOrEmpty(answerOption.hashtag));
+            }
         }
 
         [TestMethod]

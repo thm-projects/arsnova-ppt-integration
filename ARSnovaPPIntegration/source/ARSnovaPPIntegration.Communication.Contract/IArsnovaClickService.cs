@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ARSnovaPPIntegration.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication.Contract
 {
@@ -6,6 +7,6 @@ namespace ARSnovaPPIntegration.Communication.Contract
     {
         string FindAllHashtags();
 
-        List<string> GetAnswerOptionsForHashtag(string hashtag);
+        List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag);
     }
 }
