@@ -8,8 +8,6 @@ namespace ARSnovaPPIntegration.Model.ArsnovaClick
 {
     public class SessionConfiguration
     {
-        public string _id { get; set; }
-
         public string hashtag { get; set; }
 
         public MusicConfiguration music { get; set; }

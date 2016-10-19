@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Communication.CastHelpers.Converters;
+using ARSnovaPPIntegration.Communication.CastHelpers.Models;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Model.ArsnovaClick;
 using Newtonsoft.Json;
@@ -15,9 +17,17 @@ namespace ARSnovaPPIntegration.Communication
     public class ArsnovaClickService : IArsnovaClickService
     {
         private readonly string apiUrl;
-        
+
+        private readonly ObjectMapper<AnswerOptionModelWithId, AnswerOptionModel> answerOptionMapper;
+
+        private readonly ObjectMapper<SessionConfigurationWithId, SessionConfiguration> sessionConfigurationMapper;
+
         public ArsnovaClickService()
         {
+            this.answerOptionMapper = new ObjectMapper<AnswerOptionModelWithId, AnswerOptionModel>();
+
+            this.sessionConfigurationMapper = new ObjectMapper<SessionConfigurationWithId, SessionConfiguration>();
+
             #if DEBUG
                 this.apiUrl = "http://localhost:3000/api/";
             #else
@@ -47,9 +57,18 @@ namespace ARSnovaPPIntegration.Communication
 
             var responseString = this.GetResponseString(request, HttpStatusCode.OK);
 
-            var jsonConvert = JsonConvert.DeserializeObject< AnswerOptionsReturn>(responseString);
+            var jsonConvert = JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
 
-            return jsonConvert.answeroptions;
+            var answerOptions = new List<AnswerOptionModel>();
+
+            foreach (var answerOptionModelWithId in jsonConvert.answeroptions)
+            {
+                var answerOptionModel = new AnswerOptionModel();
+                this.answerOptionMapper.Map(answerOptionModelWithId, answerOptionModel);
+                answerOptions.Add(answerOptionModel);
+            }
+
+            return answerOptions;
         }
 
         public SessionConfiguration GetSessionConfiguration(string hashtag)
@@ -67,7 +86,11 @@ namespace ARSnovaPPIntegration.Communication
 
             var jsonConvert = JsonConvert.DeserializeObject<SessionConfigurationReturn>(responseString);
 
-            return jsonConvert.sessionConfiguration.FirstOrDefault();
+            var sessionConfiguration = new SessionConfiguration();
+
+            this.sessionConfigurationMapper.Map(jsonConvert.sessionConfiguration.FirstOrDefault(), sessionConfiguration);
+
+            return sessionConfiguration;
         }
 
         private HttpWebRequest AddContentToRequest(HttpWebRequest request, string data)
@@ -143,16 +166,5 @@ namespace ARSnovaPPIntegration.Communication
                 throw new CommunicationException("General Exception while requesting response", exception);
             }
         }
-    }
-
-    // Json Result Casting classes
-    internal class AnswerOptionsReturn
-    {
-        public List<AnswerOptionModel> answeroptions { get; set; }
-    }
-
-    internal class SessionConfigurationReturn
-    {
-        public List<SessionConfiguration> sessionConfiguration { get; set; }
     }
 }

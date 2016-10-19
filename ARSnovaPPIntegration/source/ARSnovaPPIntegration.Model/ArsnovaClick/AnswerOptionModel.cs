@@ -8,8 +8,6 @@ namespace ARSnovaPPIntegration.Model.ArsnovaClick
 {
     public class AnswerOptionModel
     {
-        public string _id { get; set; }
-
         public string hashtag { get; set; }
 
         public int questionIndex { get; set; }

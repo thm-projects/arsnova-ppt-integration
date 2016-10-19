@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArsnovaClick\AnswerOptionModel.cs" />
-    <Compile Include="ArsnovaClick\SessionConfiguration.cs" />
+    <Compile Include="ArsnovaClick\SessionConfigurationWithId.cs" />
     <Compile Include="ArsnovaEu\SessionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

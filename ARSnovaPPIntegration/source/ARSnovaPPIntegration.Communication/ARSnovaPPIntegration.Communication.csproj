@@ -73,6 +73,9 @@
   <ItemGroup>
     <Compile Include="ArsnovaClickService.cs" />
     <Compile Include="ArsnovaEuService.cs" />
+    <Compile Include="CastHelpers\Converters\ObjectMapper.cs" />
+    <Compile Include="CastHelpers\Models\AnswerOptionsReturn.cs" />
+    <Compile Include="CastHelpers\Models\SessionConfigurationReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +99,7 @@
       <Name>ARSnovaPPIntegration.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
