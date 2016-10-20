@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ARSnovaPPIntegration.Common.Contract;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -16,9 +16,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private Slide slide;
 
-        public SlideManipulator(IUnityContainer unityContainer, Slide slide)
+        public SlideManipulator(Slide slide)
         {
-            this.localizationService = unityContainer.Resolve<ILocalizationService>();
+            this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
 
             this.slide = slide;
         }

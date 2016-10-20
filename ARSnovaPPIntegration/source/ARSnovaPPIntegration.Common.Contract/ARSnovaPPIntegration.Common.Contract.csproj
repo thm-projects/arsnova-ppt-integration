@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\CommunicationException.cs" />
+    <Compile Include="IDependency.cs" />
     <Compile Include="ILocalizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

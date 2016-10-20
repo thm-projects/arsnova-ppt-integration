@@ -12,7 +12,6 @@ using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using Office = Microsoft.Office.Core;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
@@ -39,8 +38,6 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
-        private readonly IUnityContainer unityContainer;
-
         private readonly ILocalizationService localizationService;
 
         private Office.IRibbonUI ribbon;
@@ -49,10 +46,9 @@ namespace ARSnovaPPIntegration.Presentation
 
         //private List<Svg.SvgGlyph> arsnovaGlyphs;
 
-        public Ribbon(IUnityContainer container)
+        public Ribbon()
         {
-            this.localizationService = container.Resolve<ILocalizationService>();
-            this.unityContainer = container;
+            this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
             //this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
             //var arsnovaSvgDoc = this.svgParser.GetSvgDocument(System.Environment.CurrentDirectory + "/Content/arsnova.svg");
             //this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
@@ -84,7 +80,7 @@ namespace ARSnovaPPIntegration.Presentation
         {
             // TODO Just a test: add header to current slide
             var currentSlide = SlideTracker.CurrentSlide;
-            var slideManipulator = new SlideManipulator(this.unityContainer, currentSlide);
+            var slideManipulator = new SlideManipulator(currentSlide);
             slideManipulator.AddFooter();
         }
 

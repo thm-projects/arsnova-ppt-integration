@@ -8,6 +8,8 @@ using ARSnovaPPIntegration.Common.Contract;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using ARSnovaPPIntegration.Presentation.Configuration;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -15,20 +17,21 @@ namespace ARSnovaPPIntegration.Presentation
 {
     public partial class ThisAddIn
     {
-        private IUnityContainer unityContainer;
-
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {  
-        }
-
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+
+        /*private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        {
+        }*/
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            this.unityContainer = Bootstrapper.GetRegisteredUnityContainer();
-            return new Ribbon(this.unityContainer);
+            var serviceLocator = Bootstrapper.GetUnityServiceLocator();
+
+            ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+            return new Ribbon();
         }
 
         #region Von VSTO generierter Code
@@ -40,7 +43,7 @@ namespace ARSnovaPPIntegration.Presentation
         private void InternalStartup()
         {
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            //this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
 
         #endregion
