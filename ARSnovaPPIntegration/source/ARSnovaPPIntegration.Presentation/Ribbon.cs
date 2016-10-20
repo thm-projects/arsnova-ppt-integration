@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Common.Resources;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
@@ -42,16 +41,9 @@ namespace ARSnovaPPIntegration.Presentation
 
         private Office.IRibbonUI ribbon;
 
-        //private SvgParser svgParser;
-
-        //private List<Svg.SvgGlyph> arsnovaGlyphs;
-
         public Ribbon()
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
-            //this.svgParser = new SvgParser(new System.Drawing.Size(4000, 4000));
-            //var arsnovaSvgDoc = this.svgParser.GetSvgDocument(System.Environment.CurrentDirectory + "/Content/arsnova.svg");
-            //this.arsnovaGlyphs = arsnovaSvgDoc.Children.FindSvgElementsOf<Svg.SvgGlyph>().ToList();
         }
 
         #region manageQuiz
@@ -108,8 +100,6 @@ namespace ARSnovaPPIntegration.Presentation
         public Bitmap GetHelpButtonImage(Office.IRibbonControl control)
         {
             return Images.information;
-
-            // return this.svgParser.GetGlyphByName(this.arsnovaGlyphs, "info").Draw(); TODO currently not working as expected
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
