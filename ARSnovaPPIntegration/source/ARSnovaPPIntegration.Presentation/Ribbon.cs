@@ -70,10 +70,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
-            // TODO Just a test: add header to current slide
-            var currentSlide = SlideTracker.CurrentSlide;
+            // Just a test: add header to current slide
+            /*var currentSlide = SlideTracker.CurrentSlide;
             var slideManipulator = new SlideManipulator(currentSlide);
-            slideManipulator.AddFooter();
+            slideManipulator.AddFooter();*/
+
+            var currentSlide = SlideTracker.CurrentSlide;
+            //if (currentSlide == null || currentSlide.SlideIndex == PowerPoint)
         }
 
         #endregion

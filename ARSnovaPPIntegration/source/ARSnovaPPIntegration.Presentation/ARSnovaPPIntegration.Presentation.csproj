@@ -211,7 +211,6 @@
     </Compile>
     <Compile Include="Helpers\SlideManipulator.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
-    <Compile Include="Helpers\SVGParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -271,7 +270,6 @@
     <EmbeddedResource Include="Ribbon.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\arsnova.svg" />
     <Content Include="Content\Images\add.png" />
     <Content Include="Content\Images\ARSnova-Logo.png" />
     <Content Include="Content\Images\information.png" />

@@ -20,7 +20,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 }
                 catch (COMException)
                 {
-                    // currently in view || no slide selected
+                    // no slide selected or currently in view
                     return null;
                 }
             }
