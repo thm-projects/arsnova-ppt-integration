@@ -6,14 +6,14 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
-using ARSnovaPPIntegration.Common.Resources;
-using ARSnovaPPIntegration.Presentation.Content;
-using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
 using Office = Microsoft.Office.Core;
+
+using ARSnovaPPIntegration.Business.Contract;
+using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Presentation.Content;
+using ARSnovaPPIntegration.Presentation.Helpers;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
 
@@ -41,11 +41,15 @@ namespace ARSnovaPPIntegration.Presentation
     {
         private readonly ILocalizationService localizationService;
 
+        private ISlideManipulator slideManipulator;
+
         private Office.IRibbonUI ribbon;
 
         public Ribbon()
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+
+            this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
         }
 
         #region manageQuiz
@@ -84,10 +88,20 @@ namespace ARSnovaPPIntegration.Presentation
             }
 
             var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
-                (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutContentWithCaption);
+                (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutTitle);
 
-            newArsnovaSlide.HeadersFooters.Footer.Visible = Office.MsoTriState.msoTrue;
-            newArsnovaSlide.HeadersFooters.Header.Text = "arsnova test site";
+            var slideHeight = Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Height;
+            var slideWidth = Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Width;
+
+            // this works but for all slides! (master)
+            /*Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Shapes.AddPicture(
+    @"C:\fox.jpg",
+    Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, 0, 0, slideWidth, slideHeight);*/
+            
+            
+            //this.slideManipulator.SetArsnovaClickStyle(newArsnovaSlide);
+            newArsnovaSlide.FollowMasterBackground = Office.MsoTriState.msoFalse;
+            newArsnovaSlide.Background.Fill.UserPicture(@"C:\fox.jpg");
         }
 
         #endregion

@@ -214,7 +214,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\SlideManipulator.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -233,6 +232,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx" />
     <None Include="ARSnovaPPIntegration.Presentation_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -259,6 +259,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Contract\ARSnovaPPIntegration.Business.Contract.csproj">
+      <Project>{8130FB8D-5FDA-4784-819E-A8D6E7D4A36D}</Project>
+      <Name>ARSnovaPPIntegration.Business.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{d5c3f7b6-33f9-45b3-b078-89a8c4b13c3c}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>
@@ -288,10 +292,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>06102F0F00ED4FE7C066BF3B8B002C9523B5EADC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>717C1A765BC7D6D3F9D49F8D1EBBA2E133268BC2</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

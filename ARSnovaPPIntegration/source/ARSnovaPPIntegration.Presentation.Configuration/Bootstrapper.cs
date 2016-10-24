@@ -1,4 +1,6 @@
 ﻿using System;
+using ARSnovaPPIntegration.Business;
+using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Communication;
@@ -22,17 +24,17 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             var unityContainer = new UnityContainer();
 
             // Type registration
-
             unityContainer
                 .RegisterType<ILocalizationService, LocalizationService>()
                 .RegisterType<IArsnovaEuService, ArsnovaEuService>()
+                .RegisterType<ISlideManipulator, SlideManipulator>()
                 .RegisterType<IArsnovaClickService, ArsnovaClickService>();
 
             // Factory registration
-
             unityContainer.RegisterType<Func<ILocalizationService>>();
             unityContainer.RegisterType<Func<IArsnovaEuService>>();
             unityContainer.RegisterType<Func<IArsnovaClickService>>();
+            unityContainer.RegisterType<Func<ISlideManipulator>>();
 
             return unityContainer;
         }
