@@ -135,4 +135,11 @@
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Manage Quiz</value>
   </data>
+  <data name="Please_select_a_slide" xml:space="preserve">
+    <value>Please select a slide</value>
+    <comment>Bitte wählen Sie eine Folie</comment>
+  </data>
+  <data name="Unable_to_add_new_slide" xml:space="preserve">
+    <value>Unable to add a new slide</value>
+  </data>
 </root>

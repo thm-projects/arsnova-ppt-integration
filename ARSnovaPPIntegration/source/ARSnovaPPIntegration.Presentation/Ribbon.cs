@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Resources;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
@@ -76,7 +78,16 @@ namespace ARSnovaPPIntegration.Presentation
             slideManipulator.AddFooter();*/
 
             var currentSlide = SlideTracker.CurrentSlide;
-            //if (currentSlide == null || currentSlide.SlideIndex == PowerPoint)
+            if (currentSlide == null)
+            {
+                System.Windows.Forms.MessageBox.Show(this.localizationService.Translate("Please select a slide"), this.localizationService.Translate("Unable to add new slide"));
+            }
+
+            var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
+                (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutContentWithCaption);
+
+            newArsnovaSlide.HeadersFooters.Footer.Visible = Office.MsoTriState.msoTrue;
+            newArsnovaSlide.HeadersFooters.Header.Text = "arsnova test site";
         }
 
         #endregion
