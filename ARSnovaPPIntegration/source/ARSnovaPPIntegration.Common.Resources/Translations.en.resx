@@ -126,6 +126,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Communication_Error" xml:space="preserve">
+    <value>Communication Error</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
   </data>

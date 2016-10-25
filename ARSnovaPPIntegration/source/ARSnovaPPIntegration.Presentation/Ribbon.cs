@@ -12,8 +12,10 @@ using Office = Microsoft.Office.Core;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.Views;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
 
@@ -54,6 +56,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         #region manageQuiz
 
+        public SlideSetupView SlideSetupView { get; set; }
+
         public string GetQuizGroupLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Manage Quiz");
@@ -85,23 +89,34 @@ namespace ARSnovaPPIntegration.Presentation
             if (currentSlide == null)
             {
                 System.Windows.Forms.MessageBox.Show(this.localizationService.Translate("Please select a slide"), this.localizationService.Translate("Unable to add new slide"));
+                return;
             }
 
             var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
                 (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutTitle);
 
-            var slideHeight = Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Height;
-            var slideWidth = Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Width;
+            // TODO Setup View
+            /*if (SlideSetupView == null || !SlideSetupView.IsOpen)
+            {
+                SlideSetupView = new SlideSetupView();
+                SlideSetupView.Show();
+            }
+            else
+            {
+                SlideSetupView.Activate();
+            }*/
 
-            // this works but for all slides! (master)
-            /*Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.Shapes.AddPicture(
-    @"C:\fox.jpg",
-    Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, 0, 0, slideWidth, slideHeight);*/
+            try
+            {
+                // TODO create hashtag first
+                this.slideManipulator.SetArsnovaClickStyle(newArsnovaSlide, "testhashtag");
+            }
+            catch (CommunicationException exception)
+            {
+                System.Windows.Forms.MessageBox.Show(exception.Message, this.localizationService.Translate("Communication Error"));
+            }
             
             
-            //this.slideManipulator.SetArsnovaClickStyle(newArsnovaSlide);
-            newArsnovaSlide.FollowMasterBackground = Office.MsoTriState.msoFalse;
-            newArsnovaSlide.Background.Fill.UserPicture(@"C:\fox.jpg");
         }
 
         #endregion

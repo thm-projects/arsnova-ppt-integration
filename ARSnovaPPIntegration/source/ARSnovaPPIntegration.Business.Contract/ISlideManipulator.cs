@@ -8,6 +8,6 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void SetArsnovaStyle(Slide slide);
 
-        void SetArsnovaClickStyle(Slide slide);
+        void SetArsnovaClickStyle(Slide slide, string hashtag);
     }
 }
