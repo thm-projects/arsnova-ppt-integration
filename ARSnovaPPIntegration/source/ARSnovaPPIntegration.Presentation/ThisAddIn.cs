@@ -4,14 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using ARSnovaPPIntegration.Common.Contract;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using Office = Microsoft.Office.Core;
-using ARSnovaPPIntegration.Presentation.Configuration;
-using Microsoft.Practices.ObjectBuilder2;
+
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
+
+using ARSnovaPPIntegration.Presentation.Configuration;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -19,6 +15,7 @@ namespace ARSnovaPPIntegration.Presentation
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            Bootstrapper.SetCultureInfo();
         }
 
         /*private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
