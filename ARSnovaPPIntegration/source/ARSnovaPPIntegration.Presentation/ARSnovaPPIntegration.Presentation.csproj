@@ -219,6 +219,8 @@
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SlideTracker.cs" />
+    <Compile Include="Models\SetupViewModel.cs" />
+    <Compile Include="Models\TranslationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
