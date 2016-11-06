@@ -6,12 +6,16 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Presentation.Content;
-using ARSnovaPPIntegration.Presentation.Helpers;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
 using Office = Microsoft.Office.Core;
+
+using ARSnovaPPIntegration.Business.Contract;
+using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Presentation.Content;
+using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.Views;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
 
@@ -39,14 +43,20 @@ namespace ARSnovaPPIntegration.Presentation
     {
         private readonly ILocalizationService localizationService;
 
+        private ISlideManipulator slideManipulator;
+
         private Office.IRibbonUI ribbon;
 
         public Ribbon()
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+
+            this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
         }
 
         #region manageQuiz
+
+        public SlideSetupView SlideSetupView { get; set; }
 
         public string GetQuizGroupLabel(Office.IRibbonControl control)
         {
@@ -70,10 +80,43 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
-            // TODO Just a test: add header to current slide
-            var currentSlide = SlideTracker.CurrentSlide;
+            // Just a test: add header to current slide
+            /*var currentSlide = SlideTracker.CurrentSlide;
             var slideManipulator = new SlideManipulator(currentSlide);
-            slideManipulator.AddFooter();
+            slideManipulator.AddFooter();*/
+
+            var currentSlide = SlideTracker.CurrentSlide;
+            if (currentSlide == null)
+            {
+                System.Windows.Forms.MessageBox.Show(this.localizationService.Translate("Please select a slide"), this.localizationService.Translate("Unable to add new slide"));
+                return;
+            }
+
+            var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
+                (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutTitle);
+
+            // TODO Setup View
+            /*if (SlideSetupView == null || !SlideSetupView.IsOpen)
+            {
+                SlideSetupView = new SlideSetupView();
+                SlideSetupView.Show();
+            }
+            else
+            {
+                SlideSetupView.Activate();
+            }*/
+
+            try
+            {
+                // TODO create hashtag first
+                this.slideManipulator.SetArsnovaClickStyle(newArsnovaSlide, "testhashtag");
+            }
+            catch (CommunicationException exception)
+            {
+                System.Windows.Forms.MessageBox.Show(exception.Message, this.localizationService.Translate("Communication Error"));
+            }
+            
+            
         }
 
         #endregion

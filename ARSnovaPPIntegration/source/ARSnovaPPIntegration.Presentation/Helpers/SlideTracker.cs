@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
@@ -20,7 +21,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 }
                 catch (COMException)
                 {
-                    // currently in view || no slide selected
+                    // no slide selected or currently in view
                     return null;
                 }
             }

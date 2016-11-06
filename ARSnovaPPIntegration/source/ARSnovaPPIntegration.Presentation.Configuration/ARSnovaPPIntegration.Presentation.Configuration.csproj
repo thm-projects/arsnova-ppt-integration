@@ -34,7 +34,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\certificate\arsnovaPpIntegrationKey.pfx</AssemblyOriginatorKeyFile>
@@ -73,6 +73,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Contract\ARSnovaPPIntegration.Business.Contract.csproj">
+      <Project>{8130FB8D-5FDA-4784-819E-A8D6E7D4A36D}</Project>
+      <Name>ARSnovaPPIntegration.Business.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business\ARSnovaPPIntegration.Business.csproj">
+      <Project>{2872EAFD-FDA2-44BD-83AD-B169B17CB379}</Project>
+      <Name>ARSnovaPPIntegration.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{d5c3f7b6-33f9-45b3-b078-89a8c4b13c3c}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>

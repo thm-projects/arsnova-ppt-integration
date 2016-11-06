@@ -126,6 +126,9 @@
   <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
+  <data name="Communication_Error" xml:space="preserve">
+    <value>Kommunikations-Fehler</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Hilfe</value>
   </data>
@@ -134,5 +137,11 @@
   </data>
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Quizverwaltung</value>
+  </data>
+  <data name="Please_select_a_slide" xml:space="preserve">
+    <value>Bitte wählen Sie eine Folie</value>
+  </data>
+  <data name="Unable_to_add_new_slide" xml:space="preserve">
+    <value>Hinzufügen einer neuen Folie nicht möglich</value>
   </data>
 </root>

@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+
+using Newtonsoft.Json;
+
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.CastHelpers.Converters;
 using ARSnovaPPIntegration.Communication.CastHelpers.Models;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Model.ArsnovaClick;
-using Newtonsoft.Json;
 
 namespace ARSnovaPPIntegration.Communication
 {
@@ -51,13 +53,23 @@ namespace ARSnovaPPIntegration.Communication
                     hashtag
                 });
 
-            var request = this.CreateWebRequest("answerOptions", HttpMethod.Post);
+            AnswerOptionsReturn jsonConvert;
 
-            request = this.AddContentToRequest(request, jsonBody);
+            try
+            {
+                var request = this.CreateWebRequest("answerOptions", HttpMethod.Post);
 
-            var responseString = this.GetResponseString(request, HttpStatusCode.OK);
+                request = this.AddContentToRequest(request, jsonBody);
 
-            var jsonConvert = JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
+                var responseString = this.GetResponseString(request, HttpStatusCode.OK);
+
+                jsonConvert = JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
+            }
+            catch (JsonReaderException exception)
+            {
+                // not convertable -> not the object we expected. Possible reasons: arsnova.click api changed or hashtag not active
+                throw new CommunicationException("Json-Object not mappable", exception);
+            }
 
             var answerOptions = new List<AnswerOptionModel>();
 
@@ -78,14 +90,24 @@ namespace ARSnovaPPIntegration.Communication
                     hashtag
                 });
 
-            var request = this.CreateWebRequest("sessionConfiguration", HttpMethod.Post);
+            SessionConfigurationReturn jsonConvert;
 
-            request = this.AddContentToRequest(request, jsonBody);
+            try
+            {
+                var request = this.CreateWebRequest("sessionConfiguration", HttpMethod.Post);
 
-            var responseString = this.GetResponseString(request, HttpStatusCode.OK);
+                request = this.AddContentToRequest(request, jsonBody);
 
-            var jsonConvert = JsonConvert.DeserializeObject<SessionConfigurationReturn>(responseString);
+                var responseString = this.GetResponseString(request, HttpStatusCode.OK);
 
+                jsonConvert = JsonConvert.DeserializeObject<SessionConfigurationReturn>(responseString);
+            }
+            catch (JsonReaderException exception)
+            {
+                // not convertable -> not the object we expected. Possible reasons: arsnova.click api changed or hashtag not active
+                throw new CommunicationException("Json-Object not mappable", exception);
+            }
+            
             var sessionConfiguration = new SessionConfiguration();
 
             this.sessionConfigurationMapper.Map(jsonConvert.sessionConfiguration.FirstOrDefault(), sessionConfiguration);
@@ -100,10 +122,16 @@ namespace ARSnovaPPIntegration.Communication
 
             request.ContentType = "application/json";
             request.ContentLength = dataBytes.Length;
+            try
+            {
+                var requestStream = request.GetRequestStream();
 
-            var requestStream = request.GetRequestStream();
-
-            requestStream.Write(dataBytes, 0, dataBytes.Length);
+                requestStream.Write(dataBytes, 0, dataBytes.Length);
+            }
+            catch (Exception exception)
+            {
+                throw new CommunicationException("The connection to the remote server could not be established.", exception);
+            }
 
             return request;
         }
