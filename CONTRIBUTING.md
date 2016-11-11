@@ -8,7 +8,7 @@
 2. Create a topic branch.
 3. Remember to use test-driven development, it will make your live much easier.
 4. Make your changes. Be sure to provide clean commits and to write [expressive commit messages][commit-message].
-5. Check your style: all style settings are configured in [this file][settings]. Import them and use ReSharper for "on-the-fly" code checking.
+5. Check your style: All style settings are configured in [this file][settings]. Import them and use ReSharper for "on-the-fly" code checking.
 6. Stay up to date with our repository: Rebase to our `staging` branch using `git rebase`.
 7. Push the changes to your topic branch.
 8. Run all the tests.
@@ -16,7 +16,7 @@
 
 If you don't feel like writing code, you could also update the documentation. And if you find any bugs, feel free to [open a new issue][new-issue].
 
-[settings: https://git.thm.de/arsnova/powerpoint-integration/blob/staging/projectSettings.DotSettings
+[settings]: https://git.thm.de/arsnova/powerpoint-integration/blob/staging/projectSettings.DotSettings
 [commit-message]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [merge-request]: https://git.thm.de/arsnova/powerpoint-integration/merge_requests/new
 [new-issue]: https://git.thm.de/arsnova/powerpoint-integration/issues/new
