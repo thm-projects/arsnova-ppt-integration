@@ -1,6 +1,6 @@
 # Contributing
 
-arsnova powerpoint edition needs you! If you are interested in helping, here is a short guide.
+**ARSnova: powerpoint-edition** needs you! If you are interested in helping, here is a short guide.
 
 ## Step-by-step summary
 
