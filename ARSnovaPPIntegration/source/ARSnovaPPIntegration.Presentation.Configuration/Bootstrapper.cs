@@ -14,13 +14,6 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
 {
     public class Bootstrapper
     {
-        public static void SetCultureInfo()
-        {
-            // TODO Get culture and set it
-            // System.Threading.Thread.CurrentThread.CurrentUICulture = 
-            //new System.Globalization.CultureInfo("en-en");
-        }
-
         public static IServiceLocator GetUnityServiceLocator()
         {
             var unityContainer = GetRegisteredUnityContainer();

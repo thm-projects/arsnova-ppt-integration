@@ -113,10 +113,8 @@ namespace ARSnovaPPIntegration.Presentation
             }
             catch (CommunicationException exception)
             {
-                System.Windows.Forms.MessageBox.Show(exception.Message, this.localizationService.Translate("Communication Error"));
+                Globals.ThisAddIn.ExceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
             }
-            
-            
         }
 
         #endregion

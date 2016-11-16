@@ -218,6 +218,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Models\SetupViewModel.cs" />
     <Compile Include="Models\TranslationModel.cs" />
