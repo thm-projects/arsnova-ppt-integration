@@ -76,8 +76,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ClickCommunicationTests.cs" />
-    <Compile Include="ArsnovaCommunicationTests.cs" />
+    <Compile Include="Communication\ClickCommunicationTests.cs" />
+    <Compile Include="Communication\ArsnovaCommunicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
