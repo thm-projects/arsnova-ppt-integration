@@ -218,8 +218,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewPresenter\IViewPresenter.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
+    <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
+    <Compile Include="ViewPresenter\ViewPresenter.cs" />
     <Compile Include="Models\SetupViewModel.cs" />
     <Compile Include="Models\TranslationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -228,8 +231,11 @@
     <Compile Include="Views\SlideSetupView.xaml.cs">
       <DependentUpon>SlideSetupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\SetupWindow.xaml.cs">
-      <DependentUpon>SetupWindow.xaml</DependentUpon>
+    <Compile Include="Window\WindowContainer.xaml.cs">
+      <DependentUpon>WindowContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window\WindowContent.xaml.cs">
+      <DependentUpon>WindowContent.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Content\Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -292,7 +298,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\SetupWindow.xaml">
+    <Page Include="Window\WindowContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\WindowContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,10 +7,10 @@ using System.Text;
 using System.Xml.Linq;
 
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Office.Core;
 
 using ARSnovaPPIntegration.Presentation.Configuration;
 using ARSnovaPPIntegration.Presentation.Helpers;
-using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -45,7 +45,7 @@ namespace ARSnovaPPIntegration.Presentation
             // Setup ViewPresenter
         }
 
-        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             // set the cultureinfo according to the running office instance
             var app = this.GetHostItem<Microsoft.Office.Interop.PowerPoint.Application>(

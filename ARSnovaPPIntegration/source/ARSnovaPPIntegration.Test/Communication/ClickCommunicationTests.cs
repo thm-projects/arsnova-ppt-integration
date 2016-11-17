@@ -1,9 +1,9 @@
-﻿using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Presentation.Configuration;
-using Microsoft.Practices.Unity;
+﻿using ARSnovaPPIntegration.Communication;
+using ARSnovaPPIntegration.Communication.Contract;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ARSnovaPPIntegration.Test
+namespace ARSnovaPPIntegration.Test.Communication
 {
     [TestClass]
     public class ClickCommunicationTests
@@ -12,8 +12,7 @@ namespace ARSnovaPPIntegration.Test
 
         public ClickCommunicationTests()
         {
-            var unityContainer = Bootstrapper.GetRegisteredUnityContainer();
-            this.arsnovaClickService = unityContainer.Resolve<IArsnovaClickService>();
+            this.arsnovaClickService = new ArsnovaClickService();
         }
 
         [TestMethod]

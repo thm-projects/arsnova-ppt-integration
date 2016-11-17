@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Presentation.Helpers;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
     /// <summary>
-    /// Interaktionslogik für SetupWindow.xaml
+    /// Interaktionslogik für WindowContent.xaml
     /// </summary>
-    public partial class SetupWindow
+    public partial class WindowContent : UserControl
     {
-        public SetupWindow()
+        public WindowContent()
         {
             InitializeComponent();
         }

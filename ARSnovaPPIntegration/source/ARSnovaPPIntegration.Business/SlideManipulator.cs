@@ -17,9 +17,10 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly IArsnovaClickService arsnovaClickService;
 
-        public SlideManipulator()
+        public SlideManipulator(ILocalizationService localizationService)
         {
-            this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+            this.localizationService = localizationService;
+            //this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
             this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
         }
 

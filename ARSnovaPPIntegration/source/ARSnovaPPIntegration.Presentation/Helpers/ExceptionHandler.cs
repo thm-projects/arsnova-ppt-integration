@@ -2,16 +2,20 @@
 using System.Diagnostics;
 using System.Windows;
 
-using Microsoft.Practices.ServiceLocation;
-
 using ARSnovaPPIntegration.Common.Contract;
-
+using Microsoft.Practices.ServiceLocation;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
     public class ExceptionHandler
     {
+        private readonly ILocalizationService localizationService;
+
+        public ExceptionHandler()
+        {
+            this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+        }
         // Automatic-catching won't work as expected...
         /*public void Setup()
         {
@@ -38,9 +42,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private void ShowMessageBox(string message, string caption)
         {
-            var localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
-
-            var text = localizationService.Translate("An error occured:");
+            var text = this.localizationService.Translate("An error occured:");
             MessageBox.Show(text + Environment.NewLine + message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 

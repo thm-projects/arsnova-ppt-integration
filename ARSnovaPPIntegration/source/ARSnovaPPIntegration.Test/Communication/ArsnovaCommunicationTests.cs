@@ -1,11 +1,10 @@
 ﻿using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Common.Enum;
-using ARSnovaPPIntegration.Presentation.Configuration;
+using ARSnovaPPIntegration.Communication;
 
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ARSnovaPPIntegration.Test
+namespace ARSnovaPPIntegration.Test.Communication
 {
     [TestClass]
     public class ArsnovaCommunicationTests
@@ -14,8 +13,7 @@ namespace ARSnovaPPIntegration.Test
 
         public ArsnovaCommunicationTests()
         {
-            var unityContainer = Bootstrapper.GetRegisteredUnityContainer();
-            this.arsnovaEuService = unityContainer.Resolve<IArsnovaEuService>();
+            this.arsnovaEuService = new ArsnovaEuService();
         }
 
         [TestMethod]

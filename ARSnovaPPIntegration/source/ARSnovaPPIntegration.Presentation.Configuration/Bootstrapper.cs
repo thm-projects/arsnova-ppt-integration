@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Reflection.Emit;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 
@@ -27,16 +27,21 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
 
             // Type registration
             unityContainer
-                .RegisterType<ILocalizationService, LocalizationService>()
+                .RegisterType<ILocalizationService, LocalizationService>(
+                    new PerResolveLifetimeManager(),
+                    new InjectionConstructor())
+                /*.RegisterType<IExceptionHandler, UiExceptionHandler>(
+                new PerResolveLifetimeManager(),
+                new InjectionConstructor(new ResolvedParameter<ILocalizationService>()))*/
                 .RegisterType<IArsnovaEuService, ArsnovaEuService>()
                 .RegisterType<ISlideManipulator, SlideManipulator>()
                 .RegisterType<IArsnovaClickService, ArsnovaClickService>();
 
             // Factory registration
-            unityContainer.RegisterType<Func<ILocalizationService>>();
+            /*unityContainer.RegisterType<Func<ILocalizationService>>();
             unityContainer.RegisterType<Func<IArsnovaEuService>>();
             unityContainer.RegisterType<Func<IArsnovaClickService>>();
-            unityContainer.RegisterType<Func<ISlideManipulator>>();
+            unityContainer.RegisterType<Func<ISlideManipulator>>();*/
 
             return unityContainer;
         }
