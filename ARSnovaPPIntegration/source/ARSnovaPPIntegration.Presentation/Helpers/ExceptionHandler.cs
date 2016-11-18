@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Windows;
 
-using ARSnovaPPIntegration.Common.Contract;
 using Microsoft.Practices.ServiceLocation;
+
+using ARSnovaPPIntegration.Common.Contract;
+
 using MessageBox = System.Windows.MessageBox;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers

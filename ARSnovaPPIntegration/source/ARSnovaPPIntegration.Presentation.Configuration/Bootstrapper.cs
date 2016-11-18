@@ -21,15 +21,15 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             return new UnityServiceLocator(unityContainer);
         }
 
-        public static IUnityContainer GetRegisteredUnityContainer()
+        private static IUnityContainer GetRegisteredUnityContainer()
         {
             var unityContainer = new UnityContainer();
 
             // Type registration
             unityContainer
-                .RegisterType<ILocalizationService, LocalizationService>(
-                    new PerResolveLifetimeManager(),
-                    new InjectionConstructor())
+                .RegisterType<ILocalizationService, LocalizationService>()
+                    //new PerResolveLifetimeManager(),
+                    //new InjectionConstructor())
                 /*.RegisterType<IExceptionHandler, UiExceptionHandler>(
                 new PerResolveLifetimeManager(),
                 new InjectionConstructor(new ResolvedParameter<ILocalizationService>()))*/
@@ -38,10 +38,10 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
                 .RegisterType<IArsnovaClickService, ArsnovaClickService>();
 
             // Factory registration
-            /*unityContainer.RegisterType<Func<ILocalizationService>>();
+            unityContainer.RegisterType<Func<ILocalizationService>>();
             unityContainer.RegisterType<Func<IArsnovaEuService>>();
             unityContainer.RegisterType<Func<IArsnovaClickService>>();
-            unityContainer.RegisterType<Func<ISlideManipulator>>();*/
+            unityContainer.RegisterType<Func<ISlideManipulator>>();
 
             return unityContainer;
         }

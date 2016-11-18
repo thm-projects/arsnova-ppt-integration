@@ -8,5 +8,5 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              Title="ARSnova Setup">
-    <presentation:WindowContent x:Name="WindowContent" />
+    <local:WindowContent x:Name="WindowContent" />
 </Window>

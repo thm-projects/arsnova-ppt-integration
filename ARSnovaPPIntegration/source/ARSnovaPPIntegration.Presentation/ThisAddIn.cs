@@ -32,15 +32,15 @@ namespace ARSnovaPPIntegration.Presentation
         }*/
         private void Setup()
         {
+            // Setup Unity
+            var serviceLocator = Bootstrapper.GetUnityServiceLocator();
+            ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
             // Setup ExceptionHandler
             this.ExceptionHandler = new ExceptionHandler();
 
             // Setup Bootstrapper
             //this.ootstrapper.SetCultureInfo();
-
-            // Setup Unity
-            var serviceLocator = Bootstrapper.GetUnityServiceLocator();
-            ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             // Setup ViewPresenter
         }
