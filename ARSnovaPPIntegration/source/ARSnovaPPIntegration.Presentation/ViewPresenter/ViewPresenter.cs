@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
-using ARSnovaPPIntegration.Presentation.Models;
+using System.Windows.Controls;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 {
@@ -14,7 +13,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
         private readonly Dictionary<Type, ViewTypeConfiguration> viewTypeConfigurations =
             new Dictionary<Type, ViewTypeConfiguration>();
 
-        private System.Windows.Window window;
+        private readonly List<RunningViewModel> runningViewModels = new List<RunningViewModel>();
 
         public void Add<TViewModel, TView>()
         {
@@ -26,7 +25,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
         }
 
-        public void Show<TViewModel>(Action<TViewModel> viewModelAction = null) where TViewModel : class
+        public void Show<TViewModel>(TViewModel viewModel) where TViewModel : class
         {
             var viewModelType = typeof(TViewModel);
 
@@ -34,23 +33,51 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             {
                 throw new ArgumentException($"ViewModel not found: '{viewModelType.FullName}'");
             }
+
+            var viewTypeConfiguration = this.viewTypeConfigurations[viewModelType];
+            // there are currently no view constructors with params
+            var view =
+                (Control)viewTypeConfiguration.ViewType.GetConstructors()
+                                     .FirstOrDefault(c => !c.GetParameters().Any())
+                                     .Invoke(new object[0]);
+            view.DataContext = viewModel;
+
+            var window = new System.Windows.Window {Content = view};
+
+            this.SetWindowCommandBindings(viewModel, window);
+
+            var runningViewModel = new RunningViewModel { Window = window, ViewModel = viewModel, View = view };
+
+            if (!this.runningViewModels.Contains(runningViewModel))
+            {
+                this.runningViewModels.Add(runningViewModel);
+            }
+
+            window.ShowDialog();
+
+            // TODO show in taskbar
         }
 
-        public void Start()
+        public void Close<TViewModel>()
+            where TViewModel : class
         {
-            var startViewModel = new SetupViewModel();
+            var viewModelType = typeof(TViewModel);
+            var runningViewModel = this.runningViewModels.FirstOrDefault(avm => avm.ViewModel.GetType() == viewModelType);
+
+            if (runningViewModel != null)
+            {
+                var window = runningViewModel.Window;
+                
+                window.Close();
+                // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
+                this.RemoveWindowCommandBindings(runningViewModel.ViewModel, runningViewModel.Window);
+
+                (runningViewModel.ViewModel as IDisposable)?.Dispose();
+                (runningViewModel.View as IDisposable)?.Dispose();
+            }
         }
 
-        public void Exit()
-        {
-            this.window.Close();
-            this.window.Visibility = Visibility.Collapsed;
-            this.window.ShowInTaskbar = false;
-
-            Application.Current.Shutdown();
-        }
-
-        public void Minimize()
+        /*public void Minimize()
         {
             this.window.WindowState = WindowState.Minimized;
         }
@@ -63,6 +90,36 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
         public void Restore()
         {
             this.window.WindowState = WindowState.Normal;
+        }*/
+
+        private void SetWindowCommandBindings(object viewModel, System.Windows.Window window)
+        {
+            var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
+
+            var windowCommandBindings = windowCommandsInViewModel?.WindowCommandBindings;
+
+            if (windowCommandBindings == null)
+            {
+                throw new ArgumentException($"IWindowCommandBindings not implemented for ViewModel: '{viewModel.GetType().FullName}'");
+            }
+
+            window.CommandBindings.AddRange(windowCommandBindings);
+
+        }
+
+        private void RemoveWindowCommandBindings(object viewModel, System.Windows.Window window)
+        {
+            var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
+
+            var windowCommandBindings = windowCommandsInViewModel?.WindowCommandBindings;
+
+            if (windowCommandBindings != null)
+            {
+                foreach (var windowCommandBinding in windowCommandBindings)
+                {
+                    window.CommandBindings.Remove(windowCommandBinding);
+                }
+            }
         }
     }
 }

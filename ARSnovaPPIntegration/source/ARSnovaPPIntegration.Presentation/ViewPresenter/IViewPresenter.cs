@@ -8,6 +8,6 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 {
     public interface IViewPresenter
     {
-        void Show<TViewModel>(Action<TViewModel> viewModelAction = null) where TViewModel : class;
+        void Show<TViewModel>(TViewModel viewModel) where TViewModel : class;
     }
 }
