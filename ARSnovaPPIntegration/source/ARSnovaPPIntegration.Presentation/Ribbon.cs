@@ -15,6 +15,8 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.Models;
+using ARSnovaPPIntegration.Presentation.ViewPresenter;
 using ARSnovaPPIntegration.Presentation.Views;
 
 // TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
@@ -41,6 +43,8 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
+        private readonly IViewPresenter viewPresenter;
+
         private readonly ILocalizationService localizationService;
 
         private ISlideManipulator slideManipulator;
@@ -52,11 +56,11 @@ namespace ARSnovaPPIntegration.Presentation
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
 
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
+
+            this.viewPresenter = Globals.ThisAddIn.ViewPresenter;
         }
 
         #region manageQuiz
-
-        public SlideSetupView SlideSetupView { get; set; }
 
         public string GetQuizGroupLabel(Office.IRibbonControl control)
         {
@@ -80,6 +84,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
+            // First try with WPF startup and ViewPresenter
+            Globals.ThisAddIn.ViewPresenter.Show(
+                new EditArsnovaVotingViewModel(
+                    this.viewPresenter,
+                    this.localizationService));
+
+
             // Just a test: add header to current slide
             /*var currentSlide = SlideTracker.CurrentSlide;
             var slideManipulator = new SlideManipulator(currentSlide);

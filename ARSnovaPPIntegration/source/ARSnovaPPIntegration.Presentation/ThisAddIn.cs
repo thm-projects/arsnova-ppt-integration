@@ -11,6 +11,8 @@ using Microsoft.Office.Core;
 
 using ARSnovaPPIntegration.Presentation.Configuration;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.Models;
+using ARSnovaPPIntegration.Presentation.Views;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -18,8 +20,7 @@ namespace ARSnovaPPIntegration.Presentation
     {
         public ExceptionHandler ExceptionHandler;
 
-        // TODO ViewPresenter
-        // private readonly ViewPresenter viewPresenter;
+        public ViewPresenter.ViewPresenter ViewPresenter;
 
         /*private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -43,6 +44,8 @@ namespace ARSnovaPPIntegration.Presentation
             //this.ootstrapper.SetCultureInfo();
 
             // Setup ViewPresenter
+            this.ViewPresenter = new ViewPresenter.ViewPresenter();
+            this.ViewPresenter.Add<EditArsnovaVotingViewModel, EditArsnovaVotingView>();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()

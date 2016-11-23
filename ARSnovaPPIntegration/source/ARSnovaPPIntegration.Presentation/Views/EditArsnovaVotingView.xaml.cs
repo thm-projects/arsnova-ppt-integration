@@ -12,16 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ARSnovaPPIntegration.Common.Contract;
 
 namespace ARSnovaPPIntegration.Presentation.Views
 {
     /// <summary>
-    /// Interaktionslogik für SlideSetupView.xaml
+    /// Interaktionslogik für EditArsnovaVotingView.xaml
     /// </summary>
-    public partial class SlideSetupView : UserControl
+    public partial class EditArsnovaVotingView : UserControl
     {
-        public SlideSetupView()
+        public readonly ILocalizationService LocalizationService;
+
+        public EditArsnovaVotingView(ILocalizationService localizationService)
         {
+            this.LocalizationService = localizationService;
             InitializeComponent();
         }
     }
