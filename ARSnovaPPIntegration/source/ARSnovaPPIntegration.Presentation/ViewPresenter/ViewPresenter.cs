@@ -42,6 +42,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                      .Invoke(new object[0]);
             view.DataContext = viewModel;
 
+            // TODO new MyContentWindow
             var window = new System.Windows.Window {Content = view};
 
             this.SetWindowCommandBindings(viewModel, window);
@@ -52,6 +53,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             {
                 this.runningViewModels.Add(runningViewModel);
             }
+
+            window.ShowInTaskbar = true;
 
             window.ShowDialog();
 

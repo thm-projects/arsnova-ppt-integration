@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.Helpers;
 
 namespace ARSnovaPPIntegration.Presentation.Window
@@ -23,9 +24,26 @@ namespace ARSnovaPPIntegration.Presentation.Window
     /// </summary>
     public partial class WindowContainer
     {
+        // TODO Do I need onPropertyChanged Events here (will there be any changing tooltips / button bindings?)
+
+        private readonly NavigationButtonsVisibilities navigationButtonsVisibilities = new NavigationButtonsVisibilities();
+
+        public NavigationButtonsToolTips NavigationButtonsToolTips { get; } = new NavigationButtonsToolTips();
+
         public WindowContainer()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+        }
+
+        public bool BackButtonVisibility
+        {
+            get
+            {
+                var hasCommandBinding =
+                    this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Back);
+                var isVisible = this.navigationButtonsVisibilities.Back;
+                return hasCommandBinding && isVisible;
+            }
         }
     }
 }

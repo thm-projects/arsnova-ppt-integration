@@ -166,9 +166,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -213,6 +216,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Commands\NavigationButtonCommands.cs" />
     <Compile Include="Content\Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,6 +225,8 @@
     <Compile Include="ViewPresenter\IViewPresenter.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
+    <Compile Include="ViewPresenter\IWithWindowCommandBindings.cs" />
+    <Compile Include="ViewPresenter\RunningViewModel.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
     <Compile Include="ViewPresenter\ViewPresenter.cs" />
     <Compile Include="Models\SetupViewModel.cs" />
@@ -231,16 +237,16 @@
     <Compile Include="Views\SlideSetupView.xaml.cs">
       <DependentUpon>SlideSetupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\NavigationButtonsToolTips.cs" />
+    <Compile Include="Window\NavigationButtonsVisibilities.cs" />
     <Compile Include="Window\WindowContainer.xaml.cs">
       <DependentUpon>WindowContainer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window\WindowContent.xaml.cs">
-      <DependentUpon>WindowContent.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Content\Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx" />
     <None Include="ARSnovaPPIntegration.Presentation_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -291,6 +297,7 @@
     <Content Include="Content\Images\add.png" />
     <Content Include="Content\Images\ARSnova-Logo.png" />
     <Content Include="Content\Images\information.png" />
+    <None Include="Resources\favicon.bmp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -299,10 +306,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Window\WindowContainer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Window\WindowContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -315,10 +318,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9294590B52C4D7CA9A516491BDEC89935E9A62C6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>ED61454ED748F546A5DCB863B90ADD25F93B750A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

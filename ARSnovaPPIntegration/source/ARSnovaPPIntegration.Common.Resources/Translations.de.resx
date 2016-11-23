@@ -129,6 +129,9 @@
   <data name="An_error_occured:" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten:</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Kommunikations-Fehler</value>
   </data>

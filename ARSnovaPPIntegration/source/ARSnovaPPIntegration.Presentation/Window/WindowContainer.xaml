@@ -3,10 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:presentation="clr-namespace:ARSnovaPPIntegration.Presentation"
-             xmlns:local="clr-namespace:ARSnovaPPIntegration.Presentation.Window"
+             xmlns:content="clr-namespace:ARSnovaPPIntegration.Presentation.Content"
+             xmlns:navigationButtonsCommands="clr-namespace:ARSnovaPPIntegration.Presentation.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Title="ARSnova Setup">
-    <local:WindowContent x:Name="WindowContent" />
+             Title="ARSnova Setup"
+        Icon="{Binding Source={x:Static content:Images.ARSnova_Logo}}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+         <Grid Grid.Row="1" x:Name="Content" x:FieldModifier="public" Height="Auto">
+             
+         </Grid>  
+        
+        <!-- Window Controls, bind needed ones in ViewModel! -->
+        <Border Grid.Row="2" BorderThickness="0 1 0 0" Margin="0"/>
+        
+        <Grid Grid.Row="3">
+            <StackPanel x:Name="NavigationButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
+                <Button Content="{DynamicResource Back}" ToolTip="{Binding Path=NavigationButtonsToolTips.Back}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Back" Visibility="{Binding Path=BackButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
 </Window>
