@@ -217,6 +217,10 @@
   -->
   <ItemGroup>
     <Compile Include="Commands\NavigationButtonCommands.cs" />
+    <Page Include="Content\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Content\Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

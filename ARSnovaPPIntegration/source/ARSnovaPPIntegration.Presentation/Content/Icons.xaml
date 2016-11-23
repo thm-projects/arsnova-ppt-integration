@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
+    
+    <!-- Colors -->
+    <SolidColorBrush x:Key="NavigationButtonColor" Color="#000000"/>
+    
+    <!-- Free Icons taken from http://modernuiicons.com/ (23.11.2016) -->
+    <PathGeometry x:Key="ArrowLeft">M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z</PathGeometry>
+
+    <!-- Path: Navigation buttons -->
+    <Path x:Key="Back" x:Shared="False" Data="{StaticResource ArrowLeft}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="20" Height="20" />
+</ResourceDictionary>
