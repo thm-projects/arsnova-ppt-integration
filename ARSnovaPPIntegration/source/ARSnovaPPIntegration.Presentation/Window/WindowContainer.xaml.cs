@@ -32,6 +32,7 @@ namespace ARSnovaPPIntegration.Presentation.Window
 
         public WindowContainer()
         {
+            this.DataContext = this;
             this.InitializeComponent();
         }
 

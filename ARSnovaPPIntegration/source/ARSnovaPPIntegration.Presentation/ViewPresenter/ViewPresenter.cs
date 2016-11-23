@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 {
-    public class ViewPresenter : IViewPresenter
+    public class ViewPresenter
     {
         private readonly Dictionary<Type, ViewTypeConfiguration> viewTypeConfigurations =
             new Dictionary<Type, ViewTypeConfiguration>();
@@ -42,8 +43,9 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                      .Invoke(new object[0]);
             view.DataContext = viewModel;
 
-            // TODO new MyContentWindow
-            var window = new System.Windows.Window {Content = view};
+            var window = new WindowContainer {ShowInTaskbar = true};
+            window.Content.Children.Clear();
+            window.Content.Children.Add(view);
 
             this.SetWindowCommandBindings(viewModel, window);
 
@@ -54,11 +56,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 this.runningViewModels.Add(runningViewModel);
             }
 
-            window.ShowInTaskbar = true;
-
+            // show -> calling prog doesn't wait (and freezes), showDialog() -> caller waits.... do we want to freeze pp?
             window.ShowDialog();
-
-            // TODO show in taskbar
         }
 
         public void Close<TViewModel>()

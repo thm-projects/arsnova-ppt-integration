@@ -10,6 +10,7 @@
     <Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
             <Label Width="300" Content="{Binding Path=Model.LabelTest}" />
+                <Label Content="TESt"></Label>
             </StackPanel>
     </Grid>
 </UserControl>

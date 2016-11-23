@@ -43,7 +43,7 @@ namespace ARSnovaPPIntegration.Presentation
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
-        private readonly IViewPresenter viewPresenter;
+        private readonly ViewPresenter.ViewPresenter viewPresenter;
 
         private readonly ILocalizationService localizationService;
 
@@ -51,13 +51,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         private Office.IRibbonUI ribbon;
 
-        public Ribbon()
+        public Ribbon(ViewPresenter.ViewPresenter viewPresenter)
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
 
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
 
-            this.viewPresenter = Globals.ThisAddIn.ViewPresenter;
+            this.viewPresenter = viewPresenter;
         }
 
         #region manageQuiz
@@ -85,7 +85,7 @@ namespace ARSnovaPPIntegration.Presentation
         public void AddButtonClick(Office.IRibbonControl control)
         {
             // First try with WPF startup and ViewPresenter
-            Globals.ThisAddIn.ViewPresenter.Show(
+            this.viewPresenter.Show(
                 new EditArsnovaVotingViewModel(
                     this.viewPresenter,
                     this.localizationService));

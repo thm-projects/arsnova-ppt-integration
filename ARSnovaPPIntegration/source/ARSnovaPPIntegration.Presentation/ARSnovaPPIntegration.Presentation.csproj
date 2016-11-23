@@ -226,7 +226,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewPresenter\IViewPresenter.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
@@ -249,7 +248,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx" />
+    <None Include="ARSnovaPPIntegration.Presentation_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -320,10 +319,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>ED61454ED748F546A5DCB863B90ADD25F93B750A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>84D4FBB3D92AB4E0DC41FB354FF8D9530FB898BD</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

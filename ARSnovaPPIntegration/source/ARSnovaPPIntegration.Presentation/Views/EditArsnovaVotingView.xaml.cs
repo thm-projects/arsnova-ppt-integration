@@ -21,11 +21,8 @@ namespace ARSnovaPPIntegration.Presentation.Views
     /// </summary>
     public partial class EditArsnovaVotingView : UserControl
     {
-        public readonly ILocalizationService LocalizationService;
-
-        public EditArsnovaVotingView(ILocalizationService localizationService)
+        public EditArsnovaVotingView()
         {
-            this.LocalizationService = localizationService;
             InitializeComponent();
         }
     }

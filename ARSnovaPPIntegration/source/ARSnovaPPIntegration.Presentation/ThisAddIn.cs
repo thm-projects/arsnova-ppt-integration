@@ -20,7 +20,7 @@ namespace ARSnovaPPIntegration.Presentation
     {
         public ExceptionHandler ExceptionHandler;
 
-        public ViewPresenter.ViewPresenter ViewPresenter;
+        private ViewPresenter.ViewPresenter viewPresenter;
 
         /*private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -44,8 +44,8 @@ namespace ARSnovaPPIntegration.Presentation
             //this.ootstrapper.SetCultureInfo();
 
             // Setup ViewPresenter
-            this.ViewPresenter = new ViewPresenter.ViewPresenter();
-            this.ViewPresenter.Add<EditArsnovaVotingViewModel, EditArsnovaVotingView>();
+            this.viewPresenter = new ViewPresenter.ViewPresenter();
+            this.viewPresenter.Add<EditArsnovaVotingViewModel, EditArsnovaVotingView>();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
@@ -59,7 +59,7 @@ namespace ARSnovaPPIntegration.Presentation
             // is called on office load (create ribbon bar) -> init here instead of startup because some dependencies are already needed
             this.Setup();
 
-            return new Ribbon();
+            return new Ribbon(this.viewPresenter);
         }
 
         #region Von VSTO generierter Code

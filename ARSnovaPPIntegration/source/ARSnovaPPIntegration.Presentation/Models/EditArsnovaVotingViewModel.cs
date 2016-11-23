@@ -12,14 +12,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class EditArsnovaVotingViewModel : IWindowCommandBindings
     {
-        private readonly IViewPresenter viewPresenter;
+        private readonly ViewPresenter.ViewPresenter viewPresenter;
 
         private readonly ILocalizationService localizationService;
 
         public List<CommandBinding> WindowCommandBindings { get; } = new List<CommandBinding>();
 
         public EditArsnovaVotingViewModel(
-            IViewPresenter viewPresenter,
+            ViewPresenter.ViewPresenter viewPresenter,
             ILocalizationService localizationService)
         {
             this.viewPresenter = viewPresenter;
