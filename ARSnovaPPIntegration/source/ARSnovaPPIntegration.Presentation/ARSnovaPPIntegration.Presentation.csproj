@@ -319,11 +319,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>84D4FBB3D92AB4E0DC41FB354FF8D9530FB898BD</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F19D956571829A1FADC966AD4F80BD907070A125</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

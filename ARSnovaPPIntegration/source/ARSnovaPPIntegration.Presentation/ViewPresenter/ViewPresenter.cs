@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter
@@ -36,7 +38,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
 
             var viewTypeConfiguration = this.viewTypeConfigurations[viewModelType];
-            // there are currently no view constructors with params
+
+            // there are currently no view constructors with params -> add option for constructor calls with elements when necessary
             var view =
                 (Control)viewTypeConfiguration.ViewType.GetConstructors()
                                      .FirstOrDefault(c => !c.GetParameters().Any())
@@ -44,6 +47,13 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             view.DataContext = viewModel;
 
             var window = new WindowContainer {ShowInTaskbar = true};
+            var logoBitmap = Images.ARSnova_Logo;
+            var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                logoBitmap.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromWidthAndHeight(16, 16));
+            window.Icon = iconBitmapSource;
             window.Content.Children.Clear();
             window.Content.Children.Add(view);
 
