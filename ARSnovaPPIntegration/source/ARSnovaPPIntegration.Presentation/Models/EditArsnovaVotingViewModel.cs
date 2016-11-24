@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
-using Microsoft.Practices.ServiceLocation;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -24,8 +24,19 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             this.viewPresenter = viewPresenter;
             this.localizationService = localizationService;
+
+            this.InitializeWindowCommandBindings();
         }
 
         public string LabelTest => "testText";
+
+        private void InitializeWindowCommandBindings()
+        {
+            this.WindowCommandBindings.Add(
+                new CommandBinding(
+                    NavigationButtonCommands.Back,
+                    (e, o) => {  },
+                    (e, o) => o.CanExecute = true));
+        }
     }
 }

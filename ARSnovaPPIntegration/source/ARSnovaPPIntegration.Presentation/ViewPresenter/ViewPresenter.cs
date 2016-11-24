@@ -46,7 +46,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                      .Invoke(new object[0]);
             view.DataContext = viewModel;
 
-            var window = new WindowContainer {ShowInTaskbar = true};
+            var window = new WindowContainer() {ShowInTaskbar = true};
             var logoBitmap = Images.ARSnova_Logo;
             var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 logoBitmap.GetHbitmap(),
@@ -54,10 +54,11 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromWidthAndHeight(16, 16));
             window.Icon = iconBitmapSource;
-            window.Content.Children.Clear();
-            window.Content.Children.Add(view);
 
             this.SetWindowCommandBindings(viewModel, window);
+
+            window.Content.Children.Clear();
+            window.Content.Children.Add(view);
 
             var runningViewModel = new RunningViewModel { Window = window, ViewModel = viewModel, View = view };
 
@@ -89,22 +90,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
         }
 
-        /*public void Minimize()
-        {
-            this.window.WindowState = WindowState.Minimized;
-        }
-
-        public void Maximize()
-        {
-            this.window.WindowState = WindowState.Maximized;
-        }
-
-        public void Restore()
-        {
-            this.window.WindowState = WindowState.Normal;
-        }*/
-
-        private void SetWindowCommandBindings(object viewModel, System.Windows.Window window)
+        private void SetWindowCommandBindings(object viewModel, WindowContainer window)
         {
             var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
 
@@ -115,10 +101,9 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 throw new ArgumentException($"IWindowCommandBindings not implemented for ViewModel: '{viewModel.GetType().FullName}'");
             }
 
-            window.CommandBindings.AddRange(windowCommandBindings);
-
+            window.SetWindowCommandBindings(windowCommandBindings);
         }
-
+        
         private void RemoveWindowCommandBindings(object viewModel, System.Windows.Window window)
         {
             var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
