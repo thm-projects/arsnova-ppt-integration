@@ -1,0 +1,13 @@
+/* This Gradle build script is currently only used for SonarQube Scanner */
+plugins {
+	id "org.sonarqube" version "2.1"
+}
+group = "de.thm.arsnova"
+sonarqube {
+	properties {
+		property "sonar.sourceEncoding", "UTF-8"
+		property "sonar.language", "cs"
+		property "sonar.sources", "ARSnovaPPIntegration/source"
+		property "sonar.host.url", "https://scm.thm.de/sonar/"
+	}
+}
