@@ -2,3 +2,12 @@ msbuild:
     stage: build
     script: 
         - build.bat
+    tags:
+        - MSBUILD
+sonar:
+    stage: test
+    script:
+        - gradle sonarqube
+    allow_failure: true
+    tags:
+        - gradle
