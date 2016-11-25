@@ -45,19 +45,25 @@ namespace ARSnovaPPIntegration.Presentation
     {
         private readonly ViewPresenter.ViewPresenter viewPresenter;
 
+        private readonly ExceptionHandler exceptionHandler;
+
         private readonly ILocalizationService localizationService;
 
         private ISlideManipulator slideManipulator;
 
         private Office.IRibbonUI ribbon;
 
-        public Ribbon(ViewPresenter.ViewPresenter viewPresenter)
+        public Ribbon(
+            ViewPresenter.ViewPresenter viewPresenter,
+            ExceptionHandler exceptionHandler)
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
 
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
 
             this.viewPresenter = viewPresenter;
+
+            this.exceptionHandler = exceptionHandler;
         }
 
         #region manageQuiz
@@ -124,7 +130,7 @@ namespace ARSnovaPPIntegration.Presentation
             }
             catch (CommunicationException exception)
             {
-                Globals.ThisAddIn.ExceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
+                this.exceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
             }
         }
 

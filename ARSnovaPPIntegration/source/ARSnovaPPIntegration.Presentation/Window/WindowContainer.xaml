@@ -38,8 +38,13 @@
         <Border Grid.Row="2" BorderThickness="0 1 0 0" Margin="0"/>
         
         <Grid Grid.Row="3">
+            <StackPanel x:Name="CancelButtonBar" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6">
+                <Button Content="{DynamicResource Cancel}" ToolTip="{Binding Path=NavigationButtonsToolTips.Cancel}" HorizontalAlignment="Left" Command="navigationButtonsCommands:NavigationButtonCommands.Cancel" Visibility="{Binding Path=CancelButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="6 0 0 0"/>
+            </StackPanel>
             <StackPanel x:Name="NavigationButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
-                <Button Content="{DynamicResource Back}" ToolTip="{Binding Path=NavigationButtonsToolTips.Back}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Back" Visibility="{Binding Path=BackButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="{DynamicResource Back}" ToolTip="{Binding Path=NavigationButtonsToolTips.Back}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Back" Visibility="{Binding Path=BackButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
+                <Button Content="{DynamicResource Forward}" ToolTip="{Binding Path=NavigationButtonsToolTips.Forward}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Forward" Visibility="{Binding Path=ForwardButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
+                <Button Content="{DynamicResource Finish}" ToolTip="{Binding Path=NavigationButtonsToolTips.Finish}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Finish" Visibility="{Binding Path=FinishButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
             </StackPanel>
         </Grid>
     </Grid>

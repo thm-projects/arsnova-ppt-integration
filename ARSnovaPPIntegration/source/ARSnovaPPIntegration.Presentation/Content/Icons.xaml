@@ -8,8 +8,14 @@
     <SolidColorBrush x:Key="NavigationButtonColor" Color="#000000"/>
     
     <!-- Free Icons taken from http://modernuiicons.com/ (23.11.2016) -->
-    <PathGeometry x:Key="ArrowLeft">M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z</PathGeometry>
+    <PathGeometry x:Key="ArrowLeftSvg">M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z</PathGeometry>
+    <PathGeometry x:Key="ArrowRightSvg">M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z</PathGeometry>
+    <PathGeometry x:Key="CheckSvg">M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z</PathGeometry>
+    <PathGeometry x:Key="CancelSvg">M 38,19C 48.4934,19 57,27.5066 57,38C 57,48.4934 48.4934,57 38,57C 27.5066,57 19,48.4934 19,38C 19,27.5066 27.5066,19 38,19 Z M 38,23.75C 35.2116,23.75 32.6102,24.5509 30.4134,25.9352L 50.0648,45.5866C 51.4491,43.3898 52.25,40.7884 52.25,38C 52.25,30.13 45.87,23.75 38,23.75 Z M 23.75,38C 23.75,45.8701 30.1299,52.25 38,52.25C 40.7884,52.25 43.3897,51.4491 45.5865,50.0649L 25.9351,30.4136C 24.5509,32.6103 23.75,35.2117 23.75,38 Z</PathGeometry>
 
     <!-- Path: Navigation buttons -->
-    <Path x:Key="Back" x:Shared="False" Data="{StaticResource ArrowLeft}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="20" Height="20" />
+    <Path x:Key="Back" x:Shared="False" Data="{StaticResource ArrowLeftSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+    <Path x:Key="Forward" x:Shared="False" Data="{StaticResource ArrowRightSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+    <Path x:Key="Cancel" x:Shared="False" Data="{StaticResource CancelSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+    <Path x:Key="Finish" x:Shared="False" Data="{StaticResource CheckSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
 </ResourceDictionary>

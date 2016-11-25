@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+﻿using System.Globalization;
 
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
@@ -18,7 +12,7 @@ namespace ARSnovaPPIntegration.Presentation
 {
     public partial class ThisAddIn
     {
-        public ExceptionHandler ExceptionHandler;
+        private ExceptionHandler exceptionHandler;
 
         private ViewPresenter.ViewPresenter viewPresenter;
 
@@ -38,7 +32,7 @@ namespace ARSnovaPPIntegration.Presentation
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             // Setup ExceptionHandler
-            this.ExceptionHandler = new ExceptionHandler();
+            this.exceptionHandler = new ExceptionHandler();
 
             // Setup Bootstrapper
             //this.ootstrapper.SetCultureInfo();
@@ -59,7 +53,7 @@ namespace ARSnovaPPIntegration.Presentation
             // is called on office load (create ribbon bar) -> init here instead of startup because some dependencies are already needed
             this.Setup();
 
-            return new Ribbon(this.viewPresenter);
+            return new Ribbon(this.viewPresenter, this.exceptionHandler);
         }
 
         #region Von VSTO generierter Code

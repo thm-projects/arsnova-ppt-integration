@@ -32,11 +32,20 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         private void InitializeWindowCommandBindings()
         {
-            this.WindowCommandBindings.Add(
-                new CommandBinding(
-                    NavigationButtonCommands.Back,
-                    (e, o) => {  },
-                    (e, o) => o.CanExecute = true));
+            this.WindowCommandBindings.AddRange(
+                    new List<CommandBinding>
+                    {
+                        new CommandBinding(
+                            NavigationButtonCommands.Forward,
+                            (e, o) => { },
+                            (e, o) => o.CanExecute = true),
+                        new CommandBinding(
+                            NavigationButtonCommands.Cancel,
+                            (e, o) => { },
+                            (e, o) => o.CanExecute = true)
+                    });
         }
+
+        // TODO User should decide whether he wants to use a voting or click session
     }
 }

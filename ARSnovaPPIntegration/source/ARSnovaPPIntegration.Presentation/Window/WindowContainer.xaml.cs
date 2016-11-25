@@ -42,6 +42,30 @@ namespace ARSnovaPPIntegration.Presentation.Window
             }
         }
 
+        public bool ForwardButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Forward);
+            }
+        }
+
+        public bool CancelButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Cancel);
+            }
+        }
+
+        public bool FinishButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Finish);
+            }
+        }
+
         public void SetWindowCommandBindings(List<CommandBinding> commandBindings)
         {
             this.CommandBindings.AddRange(commandBindings);
