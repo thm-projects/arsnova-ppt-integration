@@ -239,6 +239,7 @@
     <Compile Include="Views\EditArsnovaVotingView.xaml.cs">
       <DependentUpon>EditArsnovaVotingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\PopUpWindow.cs" />
     <Compile Include="Window\NavigationButtonsToolTips.cs" />
     <Compile Include="Window\WindowContainer.xaml.cs">
       <DependentUpon>WindowContainer.xaml</DependentUpon>

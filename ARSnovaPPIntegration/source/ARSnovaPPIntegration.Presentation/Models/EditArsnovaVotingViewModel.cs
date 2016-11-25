@@ -7,6 +7,7 @@ using System.Windows.Input;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -36,12 +37,25 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     new List<CommandBinding>
                     {
                         new CommandBinding(
-                            NavigationButtonCommands.Forward,
-                            (e, o) => { },
+                            NavigationButtonCommands.Cancel,
+                            (e, o) =>
+                            {
+                                var cancel = PopUpWindow.ConfirmationWindow(
+                                    this.localizationService.Translate("Cancel"),
+                                    this.localizationService.Translate(
+                                            "If this process is canceld, every progress will be deleted. Do you like to continue?"));
+                                if (cancel)
+                                {
+                                    this.viewPresenter.Close<EditArsnovaVotingViewModel>();
+                                }
+                            },
                             (e, o) => o.CanExecute = true),
                         new CommandBinding(
-                            NavigationButtonCommands.Cancel,
-                            (e, o) => { },
+                            NavigationButtonCommands.Forward,
+                            (e, o) =>
+                            {
+                                // TODO ViewPresenter: Forward to next view
+                            },
                             (e, o) => o.CanExecute = true)
                     });
         }

@@ -13,5 +13,11 @@ namespace ARSnovaPPIntegration.Presentation.Window
         }
 
         public string Back => this.localizationService.Translate("Back");
+
+        public string Forward => this.localizationService.Translate("Forward");
+
+        public string Cancel => this.localizationService.Translate("Cancel");
+
+        public string Finish => this.localizationService.Translate("Finish");
     }
 }

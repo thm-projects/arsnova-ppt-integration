@@ -132,11 +132,23 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Communication Error</value>
   </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="If_this_process_is_canceld,_every_progress_will_be_deleted._Do_you_like_to_continue?" xml:space="preserve">
+    <value>If this process is canceld, every progress will be deleted. Do you like to continue?</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>

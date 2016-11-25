@@ -39,12 +39,13 @@
         
         <Grid Grid.Row="3">
             <StackPanel x:Name="CancelButtonBar" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6">
-                <Button Content="{DynamicResource Cancel}" ToolTip="{Binding Path=NavigationButtonsToolTips.Cancel}" HorizontalAlignment="Left" Command="navigationButtonsCommands:NavigationButtonCommands.Cancel" Visibility="{Binding Path=CancelButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="6 0 0 0"/>
+                <Button Content="{DynamicResource Cancel}" ToolTip="{Binding Path=NavigationButtonsToolTips.Cancel}" HorizontalAlignment="Left" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Cancel}" Visibility="{Binding Path=CancelButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="6 0 0 0"/>
             </StackPanel>
+            <!-- TODO: Icon and text needed in buttons (forward, back, cancel, check, etc...) note: maybe not needed for cancel-->
             <StackPanel x:Name="NavigationButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
-                <Button Content="{DynamicResource Back}" ToolTip="{Binding Path=NavigationButtonsToolTips.Back}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Back" Visibility="{Binding Path=BackButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
-                <Button Content="{DynamicResource Forward}" ToolTip="{Binding Path=NavigationButtonsToolTips.Forward}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Forward" Visibility="{Binding Path=ForwardButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
-                <Button Content="{DynamicResource Finish}" ToolTip="{Binding Path=NavigationButtonsToolTips.Finish}" HorizontalAlignment="Right" Command="navigationButtonsCommands:NavigationButtonCommands.Finish" Visibility="{Binding Path=FinishButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
+                <Button Content="{DynamicResource Back}" ToolTip="{Binding Path=NavigationButtonsToolTips.Back}" HorizontalAlignment="Right" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Back}" Visibility="{Binding Path=BackButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
+                <Button Content="{DynamicResource Forward}" ToolTip="{Binding Path=NavigationButtonsToolTips.Forward}" HorizontalAlignment="Right" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Forward}" Visibility="{Binding Path=ForwardButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
+                <Button Content="{DynamicResource Finish}" ToolTip="{Binding Path=NavigationButtonsToolTips.Finish}" HorizontalAlignment="Right" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Finish}" Visibility="{Binding Path=FinishButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 6 0"/>
             </StackPanel>
         </Grid>
     </Grid>
