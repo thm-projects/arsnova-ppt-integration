@@ -13,7 +13,7 @@ using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
-    public class EditArsnovaVotingViewModel : IWindowCommandBindings
+    public class EditArsnovaVotingViewModel : OnPropertyChangedBaseModel, IWindowCommandBindings
     {
         private readonly ViewPresenter.ViewPresenter viewPresenter;
 
@@ -43,10 +43,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    this.slideSessionModel.SessionType = SessionType.ArsnovaClick;;
+                    this.slideSessionModel.SessionType = SessionType.ArsnovaClick;
+                    this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
                 }
-
-                // TODO OnPropertyChanged
             }
         }
 
@@ -57,7 +56,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    this.slideSessionModel.SessionType = SessionType.ArsnovaVoting; ;
+                    this.slideSessionModel.SessionType = SessionType.ArsnovaVoting;
+                    this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
                 }
             }
         }
