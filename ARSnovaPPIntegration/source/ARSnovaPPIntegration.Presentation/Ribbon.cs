@@ -107,15 +107,14 @@ namespace ARSnovaPPIntegration.Presentation
                 return;
             }
 
-            var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
-                (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutTitle);
+            var newSlide = this.ribbonHelper.CreateNewSlide();
 
-            this.ribbonHelper.AddQuizToSlide(newArsnovaSlide);
+            this.ribbonHelper.StartQuizSetup(newSlide);
 
             try
             {
                 // TODO create hashtag first
-                this.slideManipulator.SetArsnovaClickStyle(newArsnovaSlide, "testhashtag");
+                this.slideManipulator.SetArsnovaClickStyle(newSlide, "testhashtag");
             }
             catch (CommunicationException exception)
             {
@@ -140,8 +139,11 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
         {
-            // TODO!
-            throw new NotImplementedException();
+            var currentSlide = SlideTracker.CurrentSlide;
+
+            // There can't be no selected slide because this event is fired after clicking on a slide
+            this.ribbonHelper.StartQuizSetup(currentSlide);
+            
         }
 
         public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
@@ -151,8 +153,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
         {
-            // TODO!
-            throw new NotImplementedException();
+            var newSlide = this.ribbonHelper.CreateNewSlide();
+            this.ribbonHelper.StartQuizSetup(newSlide);
         }
 
         public bool AnySlideSelected(Office.IRibbonControl control)

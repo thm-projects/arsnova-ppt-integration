@@ -279,9 +279,17 @@
       <Project>{8130FB8D-5FDA-4784-819E-A8D6E7D4A36D}</Project>
       <Name>ARSnovaPPIntegration.Business.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
+      <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
+      <Name>ARSnovaPPIntegration.Business.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{d5c3f7b6-33f9-45b3-b078-89a8c4b13c3c}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+      <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj">
       <Project>{441718d1-3ec7-471c-963b-4e9e4b025eaa}</Project>

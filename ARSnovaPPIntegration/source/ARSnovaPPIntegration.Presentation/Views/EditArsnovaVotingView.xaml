@@ -8,9 +8,15 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Background="White">
     <Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <Label Width="300" Content="{Binding LabelTest, Mode=OneWay}" />
-                <Label Content="TESt"></Label>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton IsChecked="{Binding IsArsnovaClickSession}" Margin="5 6 0 0"/>
+                <Label Content="Arsnova.click" />
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton IsChecked="{Binding IsArsnovaVotingSession}" Margin="5 6 0 0"/>
+                <Label Content="Arsnova.voting" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
 using ARSnovaPPIntegration.Presentation.Window;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -17,19 +19,48 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         private readonly ILocalizationService localizationService;
 
+        private SlideSessionModel slideSessionModel;
+
         public List<CommandBinding> WindowCommandBindings { get; } = new List<CommandBinding>();
 
         public EditArsnovaVotingViewModel(
             ViewPresenter.ViewPresenter viewPresenter,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            SlideSessionModel slideSessionModel)
         {
             this.viewPresenter = viewPresenter;
             this.localizationService = localizationService;
 
+            this.slideSessionModel = slideSessionModel;
+
             this.InitializeWindowCommandBindings();
         }
 
-        public string LabelTest => "testText";
+        public bool IsArsnovaClickSession
+        {
+            get { return this.slideSessionModel.SessionType == SessionType.ArsnovaClick; }
+            set
+            {
+                if (value)
+                {
+                    this.slideSessionModel.SessionType = SessionType.ArsnovaClick;;
+                }
+
+                // TODO OnPropertyChanged
+            }
+        }
+
+        public bool IsArsnovaVotingSession
+        {
+            get { return this.slideSessionModel.SessionType == SessionType.ArsnovaVoting; }
+            set
+            {
+                if (value)
+                {
+                    this.slideSessionModel.SessionType = SessionType.ArsnovaVoting; ;
+                }
+            }
+        }
 
         private void InitializeWindowCommandBindings()
         {
@@ -59,7 +90,5 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) => o.CanExecute = true)
                     });
         }
-
-        // TODO User should decide whether he wants to use a voting or click session
     }
 }
