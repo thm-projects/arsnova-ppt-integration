@@ -51,6 +51,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         private ISlideManipulator slideManipulator;
 
+        private RibbonHelper ribbonHelper;
+
         private Office.IRibbonUI ribbon;
 
         public Ribbon(
@@ -64,6 +66,8 @@ namespace ARSnovaPPIntegration.Presentation
             this.viewPresenter = viewPresenter;
 
             this.exceptionHandler = exceptionHandler;
+
+            this.ribbonHelper = new RibbonHelper(this.viewPresenter, this.localizationService);
         }
 
         #region manageQuiz
@@ -90,19 +94,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
-            // First try with WPF startup and ViewPresenter
-            this.viewPresenter.Show(
-                new EditArsnovaVotingViewModel(
-                    this.viewPresenter,
-                    this.localizationService));
-
-
             // Just a test: add header to current slide
             /*var currentSlide = SlideTracker.CurrentSlide;
             var slideManipulator = new SlideManipulator(currentSlide);
             slideManipulator.AddFooter();*/
 
             var currentSlide = SlideTracker.CurrentSlide;
+            // if there is no slide selected, insert new slide at the end of the presentation?
             if (currentSlide == null)
             {
                 System.Windows.Forms.MessageBox.Show(this.localizationService.Translate("Please select a slide"), this.localizationService.Translate("Unable to add new slide"));
@@ -112,16 +110,7 @@ namespace ARSnovaPPIntegration.Presentation
             var newArsnovaSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add
                 (currentSlide.SlideIndex + 1, PpSlideLayout.ppLayoutTitle);
 
-            // TODO Setup View
-            /*if (SlideSetupView == null || !SlideSetupView.IsOpen)
-            {
-                SlideSetupView = new SlideSetupView();
-                SlideSetupView.Show();
-            }
-            else
-            {
-                SlideSetupView.Activate();
-            }*/
+            this.ribbonHelper.AddQuizToSlide(newArsnovaSlide);
 
             try
             {
@@ -132,6 +121,45 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 this.exceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
             }
+        }
+
+        public string GetArsnovaSlideContextMenuLabel(Office.IRibbonControl control)
+        {
+            return "ARSnova";
+        }
+
+        public Bitmap GetArsnovaFavIcon(Office.IRibbonControl control)
+        {
+            return Images.ARSnova_Logo;
+        }
+
+        public string GetAddQuizToSlideLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Add voting to this slide");
+        }
+
+        public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
+        {
+            // TODO!
+            throw new NotImplementedException();
+        }
+
+        public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Add voting to new slide");
+        }
+
+        public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
+        {
+            // TODO!
+            throw new NotImplementedException();
+        }
+
+        public bool AnySlideSelected(Office.IRibbonControl control)
+        {
+            var currentSlide = SlideTracker.CurrentSlide;
+            // if there is no slide selected, insert new slide at the end of the presentation?
+            return currentSlide != null;
         }
 
         #endregion
@@ -201,7 +229,7 @@ namespace ARSnovaPPIntegration.Presentation
         #region Menübandrückrufe
         //Erstellen Sie hier Rückrufmethoden. Weitere Informationen zum Hinzufügen von Rückrufmethoden finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=271226".
 
-        public void Ribbon_Load(Office.IRibbonUI ribbonUI)
+        public void RibbonLoad(Office.IRibbonUI ribbonUI)
         {
             this.ribbon = ribbonUI;
         }

@@ -227,6 +227,7 @@
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ExceptionHandler.cs" />
+    <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
     <Compile Include="ViewPresenter\RunningViewModel.cs" />
@@ -292,7 +293,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ribbon.xml" />
+    <EmbeddedResource Include="Ribbon.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\add.png" />

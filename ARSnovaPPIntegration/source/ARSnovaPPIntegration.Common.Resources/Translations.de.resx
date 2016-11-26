@@ -126,6 +126,12 @@
   <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
+  <data name="Add_voting_to_new_slide" xml:space="preserve">
+    <value>Umfrage in neuer Folie hinzufügen</value>
+  </data>
+  <data name="Add_voting_to_this_slide" xml:space="preserve">
+    <value>Umfrage zu dieser Folie hinzufügen</value>
+  </data>
   <data name="An_error_occured:" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten:</value>
   </data>

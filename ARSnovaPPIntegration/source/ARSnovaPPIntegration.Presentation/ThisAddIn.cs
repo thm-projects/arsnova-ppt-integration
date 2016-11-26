@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-
+using System.Windows.Controls;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 
@@ -7,6 +7,7 @@ using ARSnovaPPIntegration.Presentation.Configuration;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Presentation.Views;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -15,16 +16,32 @@ namespace ARSnovaPPIntegration.Presentation
         private ExceptionHandler exceptionHandler;
 
         private ViewPresenter.ViewPresenter viewPresenter;
-
-        /*private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        
+        private void ThisAddInStartup(object sender, System.EventArgs e)
         {
-            
+            // Add new context menu entries
+            // Supported from v2000 until v2016 (current): http://officeone.mvps.org/vba/events_version.html
+            this.Application.WindowBeforeRightClick +=
+                new EApplication_WindowBeforeRightClickEventHandler(this.application_windowBeforeRightClick);
+
+            //var commandBar = this.Application.CommandBars["Text"];
+           //ar slideCommandBar = this.Application.CommandBars["Shape"];
+            //  var button = commandBar.Context;
+        }
+        
+        /* private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        {
+            // Clean up events?
+        }*/
+
+        public void application_windowBeforeRightClick(Selection selection, ref bool cancel)
+        {
+            /*if (selection != null && selection.Type == PpSelectionType.ppSelectionSlides && selection.SlideRange != null)
+            {
+                
+            }*/
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
-
-        }*/
         private void Setup()
         {
             // Setup Unity
@@ -65,7 +82,7 @@ namespace ARSnovaPPIntegration.Presentation
        private void InternalStartup()
         {
             // already init on CreateRibbon
-            //this.Startup += new System.EventHandler(this.ThisAddIn_Startup);
+            this.Startup += new System.EventHandler(this.ThisAddInStartup);
             //this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
 

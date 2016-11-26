@@ -1,34 +1,49 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
-    <ribbon>
-        <tabs>
-            <tab idMso="TabAddIns" label="ARSnova">
-              <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
-                <button id="AddButton"
-                getLabel="GetAddButtonLabel"
+<customUI  xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoad">
+  <ribbon>
+      <tabs>
+          <tab idMso="TabAddIns" label="ARSnova">
+            <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
+              <button id="AddButton"
+              getLabel="GetAddButtonLabel"
+              keytip="CA"
+              getSupertip="GetAddButtonSupertip"
+              onAction="AddButtonClick"
+              getImage="GetAddButtonImage"
+              size="large" />
+            </group>
+              <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
+                <button id="HelpButton"
+                getLabel="GetHelpButtonLabel"
                 keytip="CA"
-                getSupertip="GetAddButtonSupertip"
-                onAction="AddButtonClick"
-                getImage="GetAddButtonImage"
+                getSupertip="GetHelpButtonSupertip"
+                onAction="HelpButtonClick"
+                getImage="GetHelpButtonImage"
+                size="large" />
+                <button id="AboutButton"
+                getLabel="GetAboutButtonLabel"
+                keytip="CA"
+                getSupertip="GetAboutButtonSupertip"
+                onAction="AboutButtonClick"
+                getImage="GetAboutButtonImage"
                 size="large" />
               </group>
-                <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
-                  <button id="HelpButton"
-                  getLabel="GetHelpButtonLabel"
-                  keytip="CA"
-                  getSupertip="GetHelpButtonSupertip"
-                  onAction="HelpButtonClick"
-                  getImage="GetHelpButtonImage"
-                  size="large" />
-                  <button id="AboutButton"
-                  getLabel="GetAboutButtonLabel"
-                  keytip="CA"
-                  getSupertip="GetAboutButtonSupertip"
-                  onAction="AboutButtonClick"
-                  getImage="GetAboutButtonImage"
-                  size="large" />
-                </group>
-            </tab>
-        </tabs>
-    </ribbon>
+          </tab>
+      </tabs>
+  </ribbon>
+  <contextMenus>
+    <contextMenu idMso="ContextMenuThumbnail">
+      <menuSeparator id="separatorThumbnail"/>
+      <menu id="menuThumbnail" getLabel="GetArsnovaSlideContextMenuLabel" getImage="GetArsnovaFavIcon">
+        <button id="addQuizContentToSlide"
+          getLabel="GetAddQuizToSlideLabel"
+          getImage="GetAddButtonImage"
+          onAction="AddQuizToSlideButtonClick"/>
+        <button id="addQuizContentToNewSlide"
+          getLabel="GetAddQuizToNewSlideLabel"
+          getImage="GetAddButtonImage"
+          onAction="AddQuizToNewSlideButtonClick"/>
+      </menu>
+    </contextMenu>
+  </contextMenus>
 </customUI>
