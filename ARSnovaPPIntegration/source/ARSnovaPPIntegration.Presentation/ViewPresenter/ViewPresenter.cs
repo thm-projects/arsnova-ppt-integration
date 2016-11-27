@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Presentation.Window;
@@ -17,7 +16,11 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
         private readonly Dictionary<Type, ViewTypeConfiguration> viewTypeConfigurations =
             new Dictionary<Type, ViewTypeConfiguration>();
 
-        private readonly List<RunningViewModel> runningViewModels = new List<RunningViewModel>();
+        private object runningViewModel;
+
+        private Control runningView;
+
+        private WindowContainer window;
 
         public void Add<TViewModel, TView>()
         {
@@ -47,51 +50,50 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                      .Invoke(new object[0]);
             view.DataContext = viewModel;
 
-            var window = new WindowContainer() {ShowInTaskbar = true};
-            var logoBitmap = Images.ARSnova_Logo;
-            var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                logoBitmap.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromWidthAndHeight(16, 16));
-            window.Icon = iconBitmapSource;
-
-            this.SetWindowCommandBindings(viewModel, window);
-
-            window.Content.Children.Clear();
-            window.Content.Children.Add(view);
-
-            var runningViewModel = new RunningViewModel { Window = window, ViewModel = viewModel, View = view };
-
-            if (!this.runningViewModels.Contains(runningViewModel))
+            if (this.window == null)
             {
-                this.runningViewModels.Add(runningViewModel);
+                this.window = new WindowContainer() {ShowInTaskbar = true};
+                var logoBitmap = Images.ARSnova_Logo;
+                var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                                                 logoBitmap.GetHbitmap(),
+                                                 IntPtr.Zero,
+                                                 Int32Rect.Empty,
+                                                 BitmapSizeOptions.FromWidthAndHeight(16, 16));
+                this.window.Icon = iconBitmapSource;
+            }
+            else
+            {
+                // Clean up
+                this.RemoveWindowCommandBindings(this.runningViewModel);
             }
 
-            // show -> calling prog doesn't wait (and freezes), showDialog() -> caller waits.... do we want to freeze pp?
-            window.ShowDialog();
+            this.SetWindowCommandBindings(viewModel);
+
+            this.window.Content.Children.Clear();
+            this.window.Content.Children.Add(view);
+
+            this.runningViewModel = viewModel;
+            this.runningView = view;
+
+            // show -> calling prog doesn't wait (and freezes), showDialog() -> caller waits.... do we want to freeze pp? -> we want to freeze! 
+            // side effect: we don't have to handle multiple windows -> the freshly openend one needs to be closed before opening another one (popups doesn't matter)
+            this.window.ShowDialog();
         }
 
-        public void Close<TViewModel>()
-            where TViewModel : class
-        {
-            var viewModelType = typeof(TViewModel);
-            var runningViewModel = this.runningViewModels.FirstOrDefault(avm => avm.ViewModel.GetType() == viewModelType);
+        public void Close()
+        { 
+            this.window.Close();
 
-            if (runningViewModel != null)
-            {
-                var window = runningViewModel.Window;
-                window.Close();
+            // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
+            this.RemoveWindowCommandBindings(this.runningViewModel);
 
-                // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
-                this.RemoveWindowCommandBindings(runningViewModel.ViewModel, runningViewModel.Window);
-
-                (runningViewModel.ViewModel as IDisposable)?.Dispose();
-                (runningViewModel.View as IDisposable)?.Dispose();
-            }
+            (this.runningViewModel as IDisposable)?.Dispose();
+            (this.runningView as IDisposable)?.Dispose();
+            this.runningViewModel = null;
+            this.runningView = null;
         }
 
-        private void SetWindowCommandBindings(object viewModel, WindowContainer window)
+        private void SetWindowCommandBindings(object viewModel)
         {
             var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
 
@@ -102,7 +104,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 throw new ArgumentException($"IWindowCommandBindings not implemented for ViewModel: '{viewModel.GetType().FullName}'");
             }
 
-            window.SetWindowCommandBindings(windowCommandBindings);
+            this.window.SetWindowCommandBindings(windowCommandBindings);
 
             // Display warning before closing the window
 
@@ -114,7 +116,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
         }
         
-        private void RemoveWindowCommandBindings(object viewModel, System.Windows.Window window)
+        private void RemoveWindowCommandBindings(object viewModel)
         {
             var windowCommandsInViewModel = viewModel as IWindowCommandBindings;
 
@@ -124,7 +126,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             {
                 foreach (var windowCommandBinding in windowCommandBindings)
                 {
-                    window.CommandBindings.Remove(windowCommandBinding);
+                    this.window.CommandBindings.Remove(windowCommandBinding);
                 }
             }
         }

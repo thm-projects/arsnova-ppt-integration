@@ -99,27 +99,27 @@ namespace ARSnovaPPIntegration.Presentation
             var slideManipulator = new SlideManipulator(currentSlide);
             slideManipulator.AddFooter();*/
 
-            var currentSlide = SlideTracker.CurrentSlide;
+            var arsnovaSlide = SlideTracker.CurrentSlide;
             // if there is no slide selected, insert new slide at the end of the presentation?
-            if (currentSlide == null)
+            if (arsnovaSlide == null)
             {
-                System.Windows.Forms.MessageBox.Show(this.localizationService.Translate("Please select a slide"), this.localizationService.Translate("Unable to add new slide"));
-                return;
+                arsnovaSlide = this.ribbonHelper.CreateNewSlide();
             }
 
-            var newSlide = this.ribbonHelper.CreateNewSlide();
+            this.ribbonHelper.StartQuizSetup(arsnovaSlide);
 
-            this.ribbonHelper.StartQuizSetup(newSlide);
-
+            /*
+             * test only -> should be called be helper after successful setup
+            // TODO create hashtag first
             try
             {
-                // TODO create hashtag first
-                this.slideManipulator.SetArsnovaClickStyle(newSlide, "testhashtag");
+                
+                this.slideManipulator.SetArsnovaClickStyle(arsnovaSlide, "testhashtag");
             }
             catch (CommunicationException exception)
             {
                 this.exceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
-            }
+            }*/
         }
 
         public string GetArsnovaSlideContextMenuLabel(Office.IRibbonControl control)

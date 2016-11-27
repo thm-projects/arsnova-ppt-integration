@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
+
+using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
-using ARSnovaPPIntegration.Presentation.Window;
-using ARSnovaPPIntegration.Presentation.Commands;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -15,12 +14,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         protected readonly ILocalizationService LocalizationService;
 
+        protected SlideSessionModel SlideSessionModel;
+
         protected BaseModel(
             ViewPresenter.ViewPresenter viewPresenter,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            SlideSessionModel slideSessionModel)
         {
             this.ViewPresenter = viewPresenter;
             this.LocalizationService = localizationService;
+
+            this.SlideSessionModel = slideSessionModel;
 
             // Question if window should be closed is triggered twice. Can't find a solution atm -> cancel button is defered
             /*this.WindowCommandBindings.AddRange(new List<CommandBinding>

@@ -13,27 +13,23 @@ namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class SelectArsnovaTypeViewModel : BaseModel
     {
-        private SlideSessionModel slideSessionModel;
-
         public SelectArsnovaTypeViewModel(
             ViewPresenter.ViewPresenter viewPresenter,
             ILocalizationService localizationService,
             SlideSessionModel slideSessionModel) 
-            : base(viewPresenter, localizationService)
+            : base(viewPresenter, localizationService, slideSessionModel)
         {
-            this.slideSessionModel = slideSessionModel;
-
             this.InitializeWindowCommandBindings();
         }
 
         public bool IsArsnovaClickSession
         {
-            get { return this.slideSessionModel.SessionType == SessionType.ArsnovaClick; }
+            get { return this.SlideSessionModel.SessionType == SessionType.ArsnovaClick; }
             set
             {
                 if (value)
                 {
-                    this.slideSessionModel.SessionType = SessionType.ArsnovaClick;
+                    this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
                     this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
                 }
             }
@@ -41,12 +37,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public bool IsArsnovaVotingSession
         {
-            get { return this.slideSessionModel.SessionType == SessionType.ArsnovaVoting; }
+            get { return this.SlideSessionModel.SessionType == SessionType.ArsnovaVoting; }
             set
             {
                 if (value)
                 {
-                    this.slideSessionModel.SessionType = SessionType.ArsnovaVoting;
+                    this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
                     this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
                 }
             }

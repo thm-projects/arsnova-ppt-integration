@@ -24,7 +24,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public void StartQuizSetup(Slide slide)
         {
-            var slideSessionModel = new SlideSessionModel();
+            var slideSessionModel = new SlideSessionModel(slide);
 
             this.viewPresenter.Show(
                 new SelectArsnovaTypeViewModel(

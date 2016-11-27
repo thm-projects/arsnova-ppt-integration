@@ -231,7 +231,6 @@
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
-    <Compile Include="ViewPresenter\RunningViewModel.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
     <Compile Include="ViewPresenter\ViewPresenter.cs" />
     <Compile Include="Models\SelectArsnovaTypeViewModel.cs" />
