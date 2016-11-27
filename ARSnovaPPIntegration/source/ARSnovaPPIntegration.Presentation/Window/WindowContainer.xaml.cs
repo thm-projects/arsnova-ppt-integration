@@ -78,5 +78,14 @@ namespace ARSnovaPPIntegration.Presentation.Window
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            var close = PopUpWindow.CloseWindowPrompt();
+
+            if (!close) {
+                e.Cancel = true;
+            }
+        }
     }
 }

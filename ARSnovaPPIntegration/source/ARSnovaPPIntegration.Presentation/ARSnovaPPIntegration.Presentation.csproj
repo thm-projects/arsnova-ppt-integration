@@ -229,6 +229,7 @@
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
     <Compile Include="ViewPresenter\RunningViewModel.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />

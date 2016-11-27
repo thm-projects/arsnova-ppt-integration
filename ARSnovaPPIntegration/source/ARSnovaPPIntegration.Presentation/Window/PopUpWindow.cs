@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ARSnovaPPIntegration.Common.Contract;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
@@ -10,6 +12,20 @@ namespace ARSnovaPPIntegration.Presentation.Window
             var messageBoxResult = MessageBox.Show(text, title, MessageBoxButton.YesNoCancel);
 
             return messageBoxResult == MessageBoxResult.Yes;
+        }
+
+        /// <summary>
+        /// Prompts a confirmation window whether the user wants to close this window or not. Returns answer as bool (true for yes, false for no or cancel)
+        /// </summary>
+        /// <returns></returns>
+        public static bool CloseWindowPrompt()
+        {
+            var localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+
+            return ConfirmationWindow(
+                localizationService.Translate("Cancel"),
+                localizationService.Translate(
+                    "If this process is canceld, every progress will be deleted. Do you like to continue?"));
         }
     }
 }

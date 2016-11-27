@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ARSnovaPPIntegration.Presentation.Content;
+using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter
@@ -80,8 +81,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             if (runningViewModel != null)
             {
                 var window = runningViewModel.Window;
-                
                 window.Close();
+
                 // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
                 this.RemoveWindowCommandBindings(runningViewModel.ViewModel, runningViewModel.Window);
 
@@ -102,6 +103,15 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
 
             window.SetWindowCommandBindings(windowCommandBindings);
+
+            // Display warning before closing the window
+
+            var baseViewModel = viewModel as BaseModel;
+
+            if (baseViewModel == null)
+            {
+                throw new ArgumentException($"ViewModel isn't implementing the BaseModel: '{viewModel.GetType().FullName}'");
+            }
         }
         
         private void RemoveWindowCommandBindings(object viewModel, System.Windows.Window window)
