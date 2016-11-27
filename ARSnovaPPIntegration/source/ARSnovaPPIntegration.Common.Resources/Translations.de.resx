@@ -126,11 +126,11 @@
   <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
-  <data name="Add_voting_to_new_slide" xml:space="preserve">
-    <value>Umfrage in neuer Folie hinzufügen</value>
+  <data name="Add_question_to_new_slide" xml:space="preserve">
+    <value>Frage in neuer Folie hinzufügen</value>
   </data>
-  <data name="Add_voting_to_this_slide" xml:space="preserve">
-    <value>Umfrage zu dieser Folie hinzufügen</value>
+  <data name="Add_question_to_this_slide" xml:space="preserve">
+    <value>Frage zu dieser Folie hinzufügen</value>
   </data>
   <data name="An_error_occured:" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten:</value>
@@ -162,10 +162,16 @@
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Quizverwaltung</value>
   </data>
+  <data name="New_question" xml:space="preserve">
+    <value>Neue Frage</value>
+  </data>
   <data name="Please_select_a_slide" xml:space="preserve">
     <value>Bitte wählen Sie eine Folie</value>
   </data>
   <data name="Unable_to_add_new_slide" xml:space="preserve">
     <value>Hinzufügen einer neuen Folie nicht möglich</value>
+  </data>
+  <data name="Which_type_of_question_do_you_want_to_ask?_Arsnova.voting_is_the_serious,_grown_up_one_while_arsnova.click_is_faster,_more_colorful_and_crammed_up_with_gamification." xml:space="preserve">
+    <value>Welche von Art von Frage willst du stellen? Arsnova.voting ist die seriöse, erwachsene Version während arsnova.click schneller, bunter und voller Gamifizierung steckt.</value>
   </data>
 </root>

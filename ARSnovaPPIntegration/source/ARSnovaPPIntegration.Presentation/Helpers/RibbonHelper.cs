@@ -27,7 +27,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             var slideSessionModel = new SlideSessionModel();
 
             this.viewPresenter.Show(
-                new EditArsnovaVotingViewModel(
+                new SelectArsnovaTypeViewModel(
                     this.viewPresenter,
                     this.localizationService,
                     slideSessionModel));

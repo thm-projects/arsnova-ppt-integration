@@ -19,9 +19,9 @@ namespace ARSnovaPPIntegration.Presentation.Views
     /// <summary>
     /// Interaktionslogik für EditArsnovaVotingView.xaml
     /// </summary>
-    public partial class EditArsnovaVotingView : UserControl
+    public partial class SelectArsnovaTypeView : UserControl
     {
-        public EditArsnovaVotingView()
+        public SelectArsnovaTypeView()
         {
             InitializeComponent();
         }

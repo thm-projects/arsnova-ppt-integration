@@ -233,12 +233,12 @@
     <Compile Include="ViewPresenter\RunningViewModel.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
     <Compile Include="ViewPresenter\ViewPresenter.cs" />
-    <Compile Include="Models\EditArsnovaVotingViewModel.cs" />
+    <Compile Include="Models\SelectArsnovaTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\EditArsnovaVotingView.xaml.cs">
-      <DependentUpon>EditArsnovaVotingView.xaml</DependentUpon>
+    <Compile Include="Views\SelectArsnovaTypeView.xaml.cs">
+      <DependentUpon>SelectArsnovaTypeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window\PopUpWindow.cs" />
     <Compile Include="Window\NavigationButtonsToolTips.cs" />
@@ -313,7 +313,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Views\EditArsnovaVotingView.xaml">
+    <Page Include="Views\SelectArsnovaTypeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

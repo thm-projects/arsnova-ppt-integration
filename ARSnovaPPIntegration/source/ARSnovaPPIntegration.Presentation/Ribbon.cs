@@ -134,7 +134,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetAddQuizToSlideLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Add voting to this slide");
+            return this.localizationService.Translate("Add question to this slide");
         }
 
         public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
@@ -148,7 +148,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Add voting to new slide");
+            return this.localizationService.Translate("Add question to new slide");
         }
 
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)

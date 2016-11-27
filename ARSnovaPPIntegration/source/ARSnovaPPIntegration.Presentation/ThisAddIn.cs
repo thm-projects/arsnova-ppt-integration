@@ -56,14 +56,13 @@ namespace ARSnovaPPIntegration.Presentation
 
             // Setup ViewPresenter
             this.viewPresenter = new ViewPresenter.ViewPresenter();
-            this.viewPresenter.Add<EditArsnovaVotingViewModel, EditArsnovaVotingView>();
+            this.viewPresenter.Add<SelectArsnovaTypeViewModel, SelectArsnovaTypeView>();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             // set the cultureinfo according to the running office instance
-            var app = this.GetHostItem<Microsoft.Office.Interop.PowerPoint.Application>(
-                typeof(Microsoft.Office.Interop.PowerPoint.Application), "Application");
+            var app = this.GetHostItem<Application>(typeof(Application), "Application");
             var languageId = app.LanguageSettings.LanguageID[MsoAppLanguageID.msoLanguageIDUI];
             System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageId);
 

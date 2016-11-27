@@ -13,7 +13,7 @@ using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
-    public class EditArsnovaVotingViewModel : OnPropertyChangedBaseModel, IWindowCommandBindings
+    public class SelectArsnovaTypeViewModel : OnPropertyChangedBaseModel, IWindowCommandBindings
     {
         private readonly ViewPresenter.ViewPresenter viewPresenter;
 
@@ -23,7 +23,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public List<CommandBinding> WindowCommandBindings { get; } = new List<CommandBinding>();
 
-        public EditArsnovaVotingViewModel(
+        public SelectArsnovaTypeViewModel(
             ViewPresenter.ViewPresenter viewPresenter,
             ILocalizationService localizationService,
             SlideSessionModel slideSessionModel)
@@ -62,6 +62,13 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
+        public string Header => this.localizationService.Translate("New question");
+
+        public string Text
+            =>
+            this.localizationService.Translate(
+                    "Which type of question do you want to ask? Arsnova.voting is the serious, grown up one while arsnova.click is faster, more colorful and crammed up with gamification.");
+
         private void InitializeWindowCommandBindings()
         {
             this.WindowCommandBindings.AddRange(
@@ -77,7 +84,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                             "If this process is canceld, every progress will be deleted. Do you like to continue?"));
                                 if (cancel)
                                 {
-                                    this.viewPresenter.Close<EditArsnovaVotingViewModel>();
+                                    this.viewPresenter.Close<SelectArsnovaTypeViewModel>();
                                 }
                             },
                             (e, o) => o.CanExecute = true),

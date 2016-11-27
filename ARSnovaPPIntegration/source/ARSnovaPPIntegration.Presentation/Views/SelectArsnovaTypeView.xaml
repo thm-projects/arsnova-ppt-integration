@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ARSnovaPPIntegration.Presentation.Views.SelectArsnovaTypeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="White">
+    <Grid>
+        <StackPanel>
+            <StackPanel>
+                <Label Content="{Binding Header}" HorizontalAlignment="Center">
+                    <Label.Style>
+                        <Style>
+                            <Setter Property="Label.FontSize" Value="36" />
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12 15 15 0" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton IsChecked="{Binding IsArsnovaClickSession}" Margin="5 6 0 0"/>
+                    <Label Content="Arsnova.click" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton IsChecked="{Binding IsArsnovaVotingSession}" Margin="5 6 0 0"/>
+                    <Label Content="Arsnova.voting" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

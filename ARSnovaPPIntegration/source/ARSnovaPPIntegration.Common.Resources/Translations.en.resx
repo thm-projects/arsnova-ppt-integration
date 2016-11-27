@@ -126,11 +126,11 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="Add_voting_to_new_slide" xml:space="preserve">
-    <value>Add voting to new slide</value>
+  <data name="Add_question_to_new_slide" xml:space="preserve">
+    <value>Add question to new slide</value>
   </data>
-  <data name="Add_voting_to_this_slide" xml:space="preserve">
-    <value>Add voting to this slide</value>
+  <data name="Add_question_to_this_slide" xml:space="preserve">
+    <value>Add question to this slide</value>
   </data>
   <data name="An_error_occured:" xml:space="preserve">
     <value>An error occured:</value>
@@ -162,11 +162,17 @@
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Manage Quiz</value>
   </data>
+  <data name="New_question" xml:space="preserve">
+    <value>New question</value>
+  </data>
   <data name="Please_select_a_slide" xml:space="preserve">
     <value>Please select a slide</value>
     <comment>Bitte wählen Sie eine Folie</comment>
   </data>
   <data name="Unable_to_add_new_slide" xml:space="preserve">
     <value>Unable to add a new slide</value>
+  </data>
+  <data name="Which_type_of_question_do_you_want_to_ask?_Arsnova.voting_is_the_serious,_grown_up_one_while_arsnova.click_is_faster,_more_colorful_and_crammed_up_with_gamification." xml:space="preserve">
+    <value>Which type of question do you want to ask? Arsnova.voting is the serious, grown up one while arsnova.click is faster, more colorful and crammed up with gamification.</value>
   </data>
 </root>
