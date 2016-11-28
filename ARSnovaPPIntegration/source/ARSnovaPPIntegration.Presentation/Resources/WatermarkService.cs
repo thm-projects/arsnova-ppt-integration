@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using ARSnovaPPIntegration.Common.Contract;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ARSnovaPPIntegration.Presentation.Resources
 {
@@ -199,10 +201,12 @@ namespace ARSnovaPPIntegration.Presentation.Resources
         {
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
 
+            var localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
+
             // layer could be null if control is no longer in the visual tree
             if (layer != null)
             {
-                layer.Add(new WatermarkAdorner(control, GetWatermark(control)));
+                layer.Add(new WatermarkAdorner(control, localizationService.Translate("Enter the question text here.")));
             }
         }
 
