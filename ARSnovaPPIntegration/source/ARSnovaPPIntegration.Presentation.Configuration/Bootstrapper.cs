@@ -7,6 +7,8 @@ using ARSnovaPPIntegration.Business;
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common;
 using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Translators;
+using ARSnovaPPIntegration.Common.Translators;
 using ARSnovaPPIntegration.Communication;
 using ARSnovaPPIntegration.Communication.Contract;
 
@@ -35,13 +37,16 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
                 new InjectionConstructor(new ResolvedParameter<ILocalizationService>()))*/
                 .RegisterType<IArsnovaEuService, ArsnovaEuService>()
                 .RegisterType<ISlideManipulator, SlideManipulator>()
-                .RegisterType<IArsnovaClickService, ArsnovaClickService>();
+                .RegisterType<IArsnovaClickService, ArsnovaClickService>()
+                .RegisterType<IQuestionTypeTranslator, QuestionTypeTranslator>()
+                .RegisterType<ISessionInformationProvider, SessionInformationProvider>();
 
             // Factory registration
             unityContainer.RegisterType<Func<ILocalizationService>>();
             unityContainer.RegisterType<Func<IArsnovaEuService>>();
             unityContainer.RegisterType<Func<IArsnovaClickService>>();
             unityContainer.RegisterType<Func<ISlideManipulator>>();
+            unityContainer.RegisterType<Func<IQuestionTypeTranslator>>();
 
             return unityContainer;
         }

@@ -57,6 +57,13 @@
     <Compile Include="Exceptions\CommunicationException.cs" />
     <Compile Include="ILocalizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Translators\IQuestionTypeTranslator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+      <Name>ARSnovaPPIntegration.Common.Enum</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

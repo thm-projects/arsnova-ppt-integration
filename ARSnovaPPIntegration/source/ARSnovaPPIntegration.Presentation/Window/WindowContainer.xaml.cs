@@ -16,20 +16,22 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.Models;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
     /// <summary>
     /// Interaktionslogik für WindowContainer.xaml
     /// </summary>
-    public partial class WindowContainer
+    public partial class WindowContainer : INotifyPropertyChanged
     {
-        // TODO Do I need onPropertyChanged Events here (will there be any changing tooltips / button bindings?)
+        private ViewPresenter.ViewPresenter viewPresenter;
 
         public NavigationButtonsToolTips NavigationButtonsToolTips { get; } = new NavigationButtonsToolTips();
 
-        public WindowContainer()
+        public WindowContainer(ViewPresenter.ViewPresenter viewPresenter)
         {
+            this.viewPresenter = viewPresenter;
             this.InitializeComponent();
             this.DataContext = this;
         }
@@ -70,6 +72,12 @@ namespace ARSnovaPPIntegration.Presentation.Window
         {
             this.CommandBindings.AddRange(commandBindings);
             this.OnPropertyChanged("CommandBindings");
+
+            // This is affecting the button visibilities, too
+            this.OnPropertyChanged("BackButtonVisibility");
+            this.OnPropertyChanged("ForwardButtonVisibility");
+            this.OnPropertyChanged("CancelButtonVisibility");
+            this.OnPropertyChanged("FinishButtonVisibility");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -86,6 +94,8 @@ namespace ARSnovaPPIntegration.Presentation.Window
             if (!close) {
                 e.Cancel = true;
             }
+
+            this.viewPresenter.ExternalWindowClose();
         }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="HttpMethod.cs" />
     <Compile Include="LoginMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionTypeEnum.cs" />
     <Compile Include="SessionType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

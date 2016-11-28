@@ -37,7 +37,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                         if (close)
                         {
-                            this.ViewPresenter.Close<SelectArsnovaTypeViewModel>();
+                            this.ViewPresenter.ContentCleanUp(true);
                         }
                     },
                     (e, o) => o.CanExecute = true)

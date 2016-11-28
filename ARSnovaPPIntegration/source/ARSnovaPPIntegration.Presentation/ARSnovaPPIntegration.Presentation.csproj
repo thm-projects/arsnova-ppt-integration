@@ -230,12 +230,18 @@
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\QuestionViewModel.cs" />
+    <Compile Include="Resources\WatermarkAdorner.cs" />
+    <Compile Include="Resources\WatermarkService.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
     <Compile Include="ViewPresenter\ViewPresenter.cs" />
     <Compile Include="Models\SelectArsnovaTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\QuestionView.xaml.cs">
+      <DependentUpon>QuestionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectArsnovaTypeView.xaml.cs">
       <DependentUpon>SelectArsnovaTypeView.xaml</DependentUpon>
@@ -249,7 +255,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ARSnovaPPIntegration.Presentation_TemporaryKey.pfx" />
+    <None Include="ARSnovaPPIntegration_DevKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -313,6 +319,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Views\QuestionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\SelectArsnovaTypeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -333,7 +343,7 @@
     <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3B3304167628565BC69A8801262BAB1C01E2DE44</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>6F8AF49B6D9E4B5396F5B8123302676B7AFDE456</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

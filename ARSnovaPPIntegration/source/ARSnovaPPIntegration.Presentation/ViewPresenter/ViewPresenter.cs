@@ -50,9 +50,11 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                      .Invoke(new object[0]);
             view.DataContext = viewModel;
 
+            var isNewWindow = false;
+
             if (this.window == null)
             {
-                this.window = new WindowContainer() {ShowInTaskbar = true};
+                this.window = new WindowContainer(this) {ShowInTaskbar = true};
                 var logoBitmap = Images.ARSnova_Logo;
                 var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                                                  logoBitmap.GetHbitmap(),
@@ -60,11 +62,12 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                                  Int32Rect.Empty,
                                                  BitmapSizeOptions.FromWidthAndHeight(16, 16));
                 this.window.Icon = iconBitmapSource;
+
+                isNewWindow = true;
             }
             else
             {
-                // Clean up
-                this.RemoveWindowCommandBindings(this.runningViewModel);
+                this.ContentCleanUp();
             }
 
             this.SetWindowCommandBindings(viewModel);
@@ -77,13 +80,15 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 
             // show -> calling prog doesn't wait (and freezes), showDialog() -> caller waits.... do we want to freeze pp? -> we want to freeze! 
             // side effect: we don't have to handle multiple windows -> the freshly openend one needs to be closed before opening another one (popups doesn't matter)
-            this.window.ShowDialog();
+
+            if (isNewWindow)
+            {
+                this.window.ShowDialog();
+            }
         }
 
-        public void Close()
-        { 
-            this.window.Close();
-
+        public void ContentCleanUp(bool closeWindow = false)
+        {
             // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
             this.RemoveWindowCommandBindings(this.runningViewModel);
 
@@ -91,6 +96,17 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             (this.runningView as IDisposable)?.Dispose();
             this.runningViewModel = null;
             this.runningView = null;
+
+            if (closeWindow)
+            {
+                this.window.Close();
+            }
+        }
+
+        public void ExternalWindowClose()
+        {
+            this.ContentCleanUp();
+            this.window = null;
         }
 
         private void SetWindowCommandBindings(object viewModel)
@@ -106,14 +122,12 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 
             this.window.SetWindowCommandBindings(windowCommandBindings);
 
-            // Display warning before closing the window
-
-            var baseViewModel = viewModel as BaseModel;
+            /*var baseViewModel = viewModel as BaseModel;
 
             if (baseViewModel == null)
             {
                 throw new ArgumentException($"ViewModel isn't implementing the BaseModel: '{viewModel.GetType().FullName}'");
-            }
+            }*/
         }
         
         private void RemoveWindowCommandBindings(object viewModel)

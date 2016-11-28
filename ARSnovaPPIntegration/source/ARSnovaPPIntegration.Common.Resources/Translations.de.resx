@@ -141,14 +141,32 @@
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="Choose_a_question_type_and_enter_the_question_text:" xml:space="preserve">
+    <value>Wähle einen Fragetyp und gib den Fragentext ein</value>
+  </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Kommunikations-Fehler</value>
+  </data>
+  <data name="Enter_the_question_text_here." xml:space="preserve">
+    <value>Gib hier den Text der Frage ein.</value>
+  </data>
+  <data name="Estimation" xml:space="preserve">
+    <value>Schätzfrage</value>
+  </data>
+  <data name="Evaluation" xml:space="preserve">
+    <value>Evaluation</value>
   </data>
   <data name="Finish" xml:space="preserve">
     <value>Fertig</value>
   </data>
   <data name="Forward" xml:space="preserve">
     <value>Weiter</value>
+  </data>
+  <data name="Freetext" xml:space="preserve">
+    <value>Freitext</value>
+  </data>
+  <data name="Grading" xml:space="preserve">
+    <value>Benotung</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Hilfe</value>
@@ -162,16 +180,34 @@
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Quizverwaltung</value>
   </data>
+  <data name="Multiple_Choice" xml:space="preserve">
+    <value>Multiple Choice</value>
+  </data>
   <data name="New_question" xml:space="preserve">
     <value>Neue Frage</value>
   </data>
   <data name="Please_select_a_slide" xml:space="preserve">
     <value>Bitte wählen Sie eine Folie</value>
   </data>
+  <data name="Set_question" xml:space="preserve">
+    <value>Fragetext eingeben</value>
+  </data>
+  <data name="Single_Choice" xml:space="preserve">
+    <value>Single Choice</value>
+  </data>
+  <data name="Survey" xml:space="preserve">
+    <value>Umfrage</value>
+  </data>
+  <data name="True|False" xml:space="preserve">
+    <value>Wahr|Falsch</value>
+  </data>
   <data name="Unable_to_add_new_slide" xml:space="preserve">
     <value>Hinzufügen einer neuen Folie nicht möglich</value>
   </data>
   <data name="Which_type_of_question_do_you_want_to_ask?_Arsnova.voting_is_the_serious,_grown_up_one_while_arsnova.click_is_faster,_more_colorful_and_crammed_up_with_gamification." xml:space="preserve">
     <value>Welche von Art von Frage willst du stellen? Arsnova.voting ist die seriöse, erwachsene Version während arsnova.click schneller, bunter und voller Gamifizierung steckt.</value>
+  </data>
+  <data name="Yes|No" xml:space="preserve">
+    <value>Ja|Nein</value>
   </data>
 </root>

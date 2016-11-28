@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionInformationProvider.cs" />
     <Compile Include="SlideManipulator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,9 +69,17 @@
       <Project>{8130FB8D-5FDA-4784-819E-A8D6E7D4A36D}</Project>
       <Name>ARSnovaPPIntegration.Business.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
+      <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
+      <Name>ARSnovaPPIntegration.Business.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+      <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
       <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>

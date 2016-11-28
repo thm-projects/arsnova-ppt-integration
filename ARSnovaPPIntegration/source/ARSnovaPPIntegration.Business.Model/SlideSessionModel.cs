@@ -11,9 +11,14 @@ namespace ARSnovaPPIntegration.Business.Model
             this.Slide = slide;
         }
 
+        // TODO: Concept: which default values should be taken?
+
         public Slide Slide { get; set; }
 
-        // TODO: Concept: which default values should be taken?
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
+
+        public QuestionTypeEnum QuestionType { get; set; }
+
+        public string QuestionText { get; set; }
     }
 }

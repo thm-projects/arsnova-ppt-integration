@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
+
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Commands;
@@ -64,7 +61,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Forward,
                             (e, o) =>
                             {
-                                // TODO ViewPresenter: Forward to next view
+                                this.ViewPresenter.Show(
+                                    new QuestionViewModel(
+                                        this.ViewPresenter,
+                                        this.LocalizationService,
+                                        this.SlideSessionModel));
                             },
                             (e, o) => o.CanExecute = true)
                     });

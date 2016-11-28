@@ -141,14 +141,32 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Choose_a_question_type_and_enter_the_question_text:" xml:space="preserve">
+    <value>Choose a question type and enter the question text:</value>
+  </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Communication Error</value>
+  </data>
+  <data name="Enter_the_question_text_here." xml:space="preserve">
+    <value>Enter the question text here.</value>
+  </data>
+  <data name="Estimation" xml:space="preserve">
+    <value>Estimation</value>
+  </data>
+  <data name="Evaluation" xml:space="preserve">
+    <value>Evaluation</value>
   </data>
   <data name="Finish" xml:space="preserve">
     <value>Finish</value>
   </data>
   <data name="Forward" xml:space="preserve">
     <value>Forward</value>
+  </data>
+  <data name="Freetext" xml:space="preserve">
+    <value>Freetext</value>
+  </data>
+  <data name="Grading" xml:space="preserve">
+    <value>Grading</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -162,6 +180,9 @@
   <data name="Manage_Quiz" xml:space="preserve">
     <value>Manage Quiz</value>
   </data>
+  <data name="Multiple_Choice" xml:space="preserve">
+    <value>Multiple Choice</value>
+  </data>
   <data name="New_question" xml:space="preserve">
     <value>New question</value>
   </data>
@@ -169,10 +190,25 @@
     <value>Please select a slide</value>
     <comment>Bitte wählen Sie eine Folie</comment>
   </data>
+  <data name="Set_question" xml:space="preserve">
+    <value>Set questiontext</value>
+  </data>
+  <data name="Single_Choice" xml:space="preserve">
+    <value>Single Choice</value>
+  </data>
+  <data name="Survey" xml:space="preserve">
+    <value>Survey</value>
+  </data>
+  <data name="True|False" xml:space="preserve">
+    <value>True|False</value>
+  </data>
   <data name="Unable_to_add_new_slide" xml:space="preserve">
     <value>Unable to add a new slide</value>
   </data>
   <data name="Which_type_of_question_do_you_want_to_ask?_Arsnova.voting_is_the_serious,_grown_up_one_while_arsnova.click_is_faster,_more_colorful_and_crammed_up_with_gamification." xml:space="preserve">
     <value>Which type of question do you want to ask? Arsnova.voting is the serious, grown up one while arsnova.click is faster, more colorful and crammed up with gamification.</value>
+  </data>
+  <data name="Yes|No" xml:space="preserve">
+    <value>Yes|No</value>
   </data>
 </root>

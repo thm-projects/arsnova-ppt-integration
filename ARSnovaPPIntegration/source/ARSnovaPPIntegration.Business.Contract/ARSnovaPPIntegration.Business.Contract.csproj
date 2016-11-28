@@ -52,8 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISessionInformationProvider.cs" />
     <Compile Include="ISlideManipulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
+      <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
+      <Name>ARSnovaPPIntegration.Business.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
