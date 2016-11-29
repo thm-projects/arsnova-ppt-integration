@@ -231,6 +231,7 @@
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\QuestionViewModel.cs" />
+    <Compile Include="Models\AnswerOptionViewModel.cs" />
     <Compile Include="Resources\WatermarkAdorner.cs" />
     <Compile Include="Resources\WatermarkService.cs" />
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
@@ -340,10 +341,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>6F8AF49B6D9E4B5396F5B8123302676B7AFDE456</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CEAB4A18B3E1BF204D684CCE8432F49051E3B957</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

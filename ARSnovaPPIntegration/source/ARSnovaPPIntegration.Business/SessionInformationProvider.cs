@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Practices.ServiceLocation;
@@ -56,6 +57,34 @@ namespace ARSnovaPPIntegration.Business
                 QuestionTypeEnum = qte,
                 Name = this.questionTypeTranslator.TranslateQuestionType(qte)
             }).ToList();
+        }
+
+        public AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType)
+        {
+            switch (questionType)
+            {
+                case QuestionTypeEnum.SingleChoiceVoting:
+                case QuestionTypeEnum.MultipleChoiceVoting:
+                case QuestionTypeEnum.SingleChoiceClick:
+                case QuestionTypeEnum.MultipleChoiceClick:
+                case QuestionTypeEnum.SurveyClick:
+                    return AnswerOptionType.ShowGeneralAnswerOptions;
+                case QuestionTypeEnum.FreeTextVoting:
+                case QuestionTypeEnum.FreeTextClick:
+                    return AnswerOptionType.ShowFreeTextAnswerOptions;
+                case QuestionTypeEnum.EvaluationVoting:
+                    return AnswerOptionType.ShowEvaluationAnswerOptions;
+                case QuestionTypeEnum.GradsVoting:
+                    return AnswerOptionType.ShowGradeAnswerOptions;
+                case QuestionTypeEnum.RangedQuestionClick:
+                    return AnswerOptionType.ShowRangedAnswerOption;
+                case QuestionTypeEnum.YesNoVoting:
+                case QuestionTypeEnum.YesNoClick:
+                case QuestionTypeEnum.TrueFalseClick:
+                    return AnswerOptionType.ShowTwoAnswerOptions;
+                default:
+                    throw new ArgumentException($"QuestionType not handled in GetAnswerOptionType: '{questionType}'");
+            }
         }
     }
 }

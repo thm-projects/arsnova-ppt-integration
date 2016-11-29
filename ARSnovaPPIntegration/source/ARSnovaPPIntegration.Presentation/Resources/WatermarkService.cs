@@ -5,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using ARSnovaPPIntegration.Common.Contract;
+
 using Microsoft.Practices.ServiceLocation;
+
+using ARSnovaPPIntegration.Common.Contract;
 
 namespace ARSnovaPPIntegration.Presentation.Resources
 {

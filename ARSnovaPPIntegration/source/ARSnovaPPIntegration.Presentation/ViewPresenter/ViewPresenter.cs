@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 using ARSnovaPPIntegration.Presentation.Content;
-using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter

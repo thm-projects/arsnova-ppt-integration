@@ -61,6 +61,10 @@
       <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
       <Name>ARSnovaPPIntegration.Business.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+      <Name>ARSnovaPPIntegration.Common.Enum</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

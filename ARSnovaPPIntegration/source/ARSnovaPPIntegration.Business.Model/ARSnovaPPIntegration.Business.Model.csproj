@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneralAnswerOption.cs" />
     <Compile Include="QuestionType.cs" />
+    <Compile Include="RangedAnswerOption.cs" />
     <Compile Include="SlideSessionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

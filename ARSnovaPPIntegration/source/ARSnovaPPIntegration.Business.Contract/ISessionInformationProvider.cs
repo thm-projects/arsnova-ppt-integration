@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Contract
 {
@@ -9,5 +10,7 @@ namespace ARSnovaPPIntegration.Business.Contract
         List<QuestionType> GetAvailableQuestionsClick();
 
         List<QuestionType> GetAvailableQuestionsVoting();
+
+        AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType);
     }
 }

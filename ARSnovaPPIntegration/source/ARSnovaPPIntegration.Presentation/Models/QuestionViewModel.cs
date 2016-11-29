@@ -32,8 +32,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public string Text => this.LocalizationService.Translate("Choose a question type and enter the question text:");
 
-        public string QuestionTextPlaceholder => this.LocalizationService.Translate("Enter the question text here.");
-
         public List<QuestionType> QuestionTypes { get; set; }
 
         public QuestionTypeEnum QuestionType
@@ -80,7 +78,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Forward,
                             (e, o) =>
                             {
-                                // TODO ViewPresenter: Forward to next view
+                                this.ViewPresenter.Show(
+                                    new AnswerOptionViewModel(
+                                        this.ViewPresenter,
+                                        this.LocalizationService,
+                                        this.SlideSessionModel));
                             },
                             (e, o) => o.CanExecute = true)
                     });

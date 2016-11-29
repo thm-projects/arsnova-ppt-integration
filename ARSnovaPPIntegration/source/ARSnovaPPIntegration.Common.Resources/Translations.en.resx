@@ -193,6 +193,9 @@
   <data name="Set_question" xml:space="preserve">
     <value>Set questiontext</value>
   </data>
+  <data name="Set_the_answer_option(s)" xml:space="preserve">
+    <value>Set answers</value>
+  </data>
   <data name="Single_Choice" xml:space="preserve">
     <value>Single Choice</value>
   </data>

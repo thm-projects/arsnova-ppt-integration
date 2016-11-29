@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Collections.Generic;
+using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Common.Enum;
 
@@ -20,5 +21,9 @@ namespace ARSnovaPPIntegration.Business.Model
         public QuestionTypeEnum QuestionType { get; set; }
 
         public string QuestionText { get; set; }
+
+        public List<object> AnswerOptions { get; set; }
+
+        public AnswerOptionType AnswerOptionType { get; set; }
     }
 }

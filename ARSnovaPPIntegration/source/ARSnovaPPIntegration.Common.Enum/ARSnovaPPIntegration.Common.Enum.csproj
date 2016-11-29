@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnswerOptionType.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="LoginMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
