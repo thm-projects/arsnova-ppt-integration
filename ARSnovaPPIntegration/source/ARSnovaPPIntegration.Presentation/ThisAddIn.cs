@@ -58,6 +58,7 @@ namespace ARSnovaPPIntegration.Presentation
             this.viewPresenter = new ViewPresenter.ViewPresenter();
             this.viewPresenter.Add<SelectArsnovaTypeViewModel, SelectArsnovaTypeView>();
             this.viewPresenter.Add<QuestionViewModel, QuestionView>();
+            this.viewPresenter.Add<AnswerOptionViewModel, AnswerOptionView>();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()

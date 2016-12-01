@@ -241,6 +241,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\AnswerOptionView.xaml.cs">
+      <DependentUpon>AnswerOptionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\QuestionView.xaml.cs">
       <DependentUpon>QuestionView.xaml</DependentUpon>
     </Compile>
@@ -320,6 +323,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Views\AnswerOptionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\QuestionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -132,6 +132,9 @@
   <data name="Add_question_to_this_slide" xml:space="preserve">
     <value>Frage zu dieser Folie hinzufügen</value>
   </data>
+  <data name="Answer_option_amount:" xml:space="preserve">
+    <value>Anzahl Antwortmöglichkeiten:</value>
+  </data>
   <data name="An_error_occured:" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten:</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Kommunikations-Fehler</value>
+  </data>
+  <data name="Enter_answer_option_text_here." xml:space="preserve">
+    <value>Gib den Text der Antwortmöglichkeit hier ein.</value>
   </data>
   <data name="Enter_the_question_text_here." xml:space="preserve">
     <value>Gib hier den Text der Frage ein.</value>
@@ -212,5 +218,14 @@
   </data>
   <data name="Yes|No" xml:space="preserve">
     <value>Ja|Nein</value>
+  </data>
+  <data name="Is_true" xml:space="preserve">
+    <value>Ist richtig</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Text</value>
   </data>
 </root>

@@ -18,12 +18,14 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
 
-        public QuestionTypeEnum QuestionType { get; set; }
+        public QuestionTypeEnum QuestionType { get; set; } = QuestionTypeEnum.SingleChoiceClick;
 
         public string QuestionText { get; set; }
 
         public List<object> AnswerOptions { get; set; }
 
         public AnswerOptionType AnswerOptionType { get; set; }
+
+        public int AnswerOptionAmount { get; set; } = 4;
     }
 }

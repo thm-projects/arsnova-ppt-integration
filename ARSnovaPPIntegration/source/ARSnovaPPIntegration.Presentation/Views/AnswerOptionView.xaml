@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="ARSnovaPPIntegration.Presentation.Views.AnswerOptionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel>
+            <StackPanel>
+                <Label Content="{Binding Header}" HorizontalAlignment="Center">
+                    <Label.Style>
+                        <Style>
+                            <Setter Property="Label.FontSize" Value="36" />
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </StackPanel>
+            <StackPanel x:Name="GeneralAnswerOptions" Visibility="{Binding ShowGeneralAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding SelectAnswerOptionAmountText}"/>
+                    <ComboBox ItemsSource="{Binding Path=PossibleAnswerOptionsAmount, Mode=OneWay}"
+                              SelectedValue="{Binding Path=AnswerOptionAmount, Mode=TwoWay}" 
+                              Width="150" 
+                              HorizontalAlignment="Left"
+                              IsEditable="False"/>
+                </StackPanel>
+
+                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0 10 0 0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{Binding GridHeaderPosition}" Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="{Binding GridHeaderText}" Binding="{Binding Text}" />
+                        <DataGridCheckBoxColumn Header="{Binding GridHeaderIsTrue}" Binding="{Binding IsTrue}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel x:Name="FreeTextAnswerOptions" Visibility="{Binding ShowFreeTextAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            </StackPanel>
+            <StackPanel x:Name="EvaluationAnswerOptions" Visibility="{Binding ShowEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            </StackPanel>
+            <StackPanel x:Name="GradeAnswerOptions" Visibility="{Binding ShowGradeAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            </StackPanel>
+            <StackPanel x:Name="RangedAnswerOptions" Visibility="{Binding ShowRangedAnswerOption, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            </StackPanel>
+            <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            </StackPanel>
+            
+            
+            
+            <!-- StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox ItemsSource="{Binding Path=QuestionTypes, Mode=OneWay}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="QuestionTypeEnum"
+                              SelectedValue="{Binding Path=QuestionType}" 
+                              Width="250" 
+                              HorizontalAlignment="Left"
+                              IsEditable="False"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                    <TextBox Text="{Binding QuestionText, Mode=TwoWay}" Width="250" MinLines="3" MaxLines="10" TextWrapping="WrapWithOverflow">
+                        <resources:WatermarkService.Watermark>
+                            <TextBlock>{Binding QuestionTextPlaceholder}</TextBlock>
+                        </resources:WatermarkService.Watermark>
+                    </TextBox>
+                </StackPanel>
+            </-->
+        </StackPanel>
+    </Grid>
+</UserControl>

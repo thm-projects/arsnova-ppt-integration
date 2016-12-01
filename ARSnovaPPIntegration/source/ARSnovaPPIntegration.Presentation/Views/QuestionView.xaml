@@ -32,7 +32,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
                     <TextBox Text="{Binding QuestionText, Mode=TwoWay}" Width="250" MinLines="3" MaxLines="10" TextWrapping="WrapWithOverflow">
                         <resources:WatermarkService.Watermark>
-                            <TextBlock>{Binding QuestionTextPlaceholder}</TextBlock>
+                            <TextBlock>questionText</TextBlock>
                         </resources:WatermarkService.Watermark>
                     </TextBox>
                 </StackPanel>
