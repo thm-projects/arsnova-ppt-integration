@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Common.Enum;
@@ -22,7 +23,7 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public string QuestionText { get; set; }
 
-        public List<object> AnswerOptions { get; set; }
+        public ObservableCollection<object> AnswerOptions { get; set; }
 
         public AnswerOptionType AnswerOptionType { get; set; }
 

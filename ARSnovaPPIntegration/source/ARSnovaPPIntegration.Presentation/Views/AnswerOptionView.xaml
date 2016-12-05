@@ -3,13 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
+             xmlns:views="clr-namespace:ARSnovaPPIntegration.Presentation.Views"
+             xmlns:models="clr-namespace:ARSnovaPPIntegration.Presentation.Models"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <!--Style x:Key="AnswerOptionsGridHeaderStyle" TargetType="{x:Type DataGrid}">
+                <Setter Property="ColumnHeaderStyle" Value="{DynamicResource AnswerOptionsGridHeaderColumnStyle}" />
+            </>
+            <Style x:Key="AnswerOptionsGridHeaderColumnStyle" TargetType="DataGridColumnHeader">
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Background" Value="LightGreen" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="Calibri" />
+            </Style-->
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -32,12 +43,30 @@
                               HorizontalAlignment="Left"
                               IsEditable="False"/>
                 </StackPanel>
-
-                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0 10 0 0">
+                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="False"
+                          HeadersVisibility="Column"
+                          VerticalAlignment="Top"
+                          AlternatingRowBackground="Gainsboro" 
+                          CanUserAddRows="false"
+                          Margin="15 20 15 0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="{Binding GridHeaderPosition}" Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending"/>
-                        <DataGridTextColumn Header="{Binding GridHeaderText}" Binding="{Binding Text}" />
-                        <DataGridCheckBoxColumn Header="{Binding GridHeaderIsTrue}" Binding="{Binding IsTrue}" />
+                        <DataGridTextColumn Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending" Width="0.2*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderPosition, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Text, Mode=TwoWay}" Width="0.6*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridCheckBoxColumn Binding="{Binding IsTrue, Mode=TwoWay}" Width="0.2*">
+                            <DataGridCheckBoxColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderIsTrue, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

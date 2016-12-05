@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -106,7 +107,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public List<object> AnswerOptions
+        public ObservableCollection<object> AnswerOptions
         {
             get { return this.SlideSessionModel.AnswerOptions; }
             set { this.SlideSessionModel.AnswerOptions = value; }
@@ -152,7 +153,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (this.ShowGeneralAnswerOptions)
                 {
-                    this.SlideSessionModel.AnswerOptions = new List<object>();
+                    this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
 
                     for (int i = 1; i <= this.AnswerOptionAmount; i++)
                     {
