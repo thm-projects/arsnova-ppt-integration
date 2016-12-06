@@ -113,6 +113,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
             set { this.SlideSessionModel.AnswerOptions = value; }
         }
 
+        public string FreeTextAnswerOption
+        {
+            get { return ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text; }
+            set { ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text = value; }
+        }
+
         public string SelectAnswerOptionAmountText => this.LocalizationService.Translate("Answer option amount:");
 
         public string GridHeaderPosition => this.LocalizationService.Translate("Position");
@@ -166,9 +172,50 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                 });
                     }
                 }
+
+                if (this.ShowFreeTextAnswerOptions)
+                {
+                    this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
+
+                    this.SlideSessionModel.AnswerOptions.Add(
+                            new GeneralAnswerOption
+                            {
+                                Position = 0,
+                                Text = string.Empty,
+                                IsTrue = false
+                            });
+                }
+
                 // TODO list init for other answer option types
-            }
-            
+                // TODO auto-generate this, no answer options needed here!
+                if (this.ShowEvaluationAnswerOptions)
+                {
+                    this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
+
+                    this.SlideSessionModel.AnswerOptions.Add(
+                            new GeneralAnswerOption
+                            {
+                                Position = 0,
+                                Text = string.Empty,
+                                IsTrue = false
+                            });
+                }
+
+                if (this.ShowGradeAnswerOptions)
+                {
+
+                }
+
+                if (this.ShowRangedAnswerOption)
+                {
+
+                }
+
+                if (this.ShowTwoAnswerOptions)
+                {
+
+                }
+            } 
         }
     }
 }

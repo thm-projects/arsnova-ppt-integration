@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:ARSnovaPPIntegration.Presentation.Views"
              xmlns:models="clr-namespace:ARSnovaPPIntegration.Presentation.Models"
+             xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="White">
@@ -71,7 +72,11 @@
                 </DataGrid>
             </StackPanel>
             <StackPanel x:Name="FreeTextAnswerOptions" Visibility="{Binding ShowFreeTextAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-
+                <TextBox Text="{Binding FreeTextAnswerOption, Mode=TwoWay}" Margin="15 20 15 0" Width="250" MinLines="2" MaxLines="5" TextWrapping="WrapWithOverflow">
+                    <resources:WatermarkService.Watermark>
+                        <TextBlock>FreeTextAnswerOptionPlaceHolder</TextBlock>
+                    </resources:WatermarkService.Watermark>
+                </TextBox>
             </StackPanel>
             <StackPanel x:Name="EvaluationAnswerOptions" Visibility="{Binding ShowEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
 

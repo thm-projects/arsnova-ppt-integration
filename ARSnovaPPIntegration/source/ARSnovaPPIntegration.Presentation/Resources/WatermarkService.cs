@@ -213,16 +213,18 @@ namespace ARSnovaPPIntegration.Presentation.Resources
 
                 if (textBlock != null)
                 {
-                    if (textBlock.Text == "questionText")
+                    if (textBlock.Text == "QuestionTextPlaceHolder")
                     {
                         layer.Add(
                             new WatermarkAdorner(
                                 control, localizationService.Translate("Enter the question text here.")));
+                        return;
                     }
 
-                    if (textBlock.Text == "answerOptionText")
+                    if (textBlock.Text == "FreeTextAnswerOptionPlaceHolder")
                     {
                         layer.Add(new WatermarkAdorner(control, localizationService.Translate("Enter answer option text here.")));
+                        return;
                     }
                 }
                 else
