@@ -73,7 +73,7 @@ namespace ARSnovaPPIntegration.Business
                 case QuestionTypeEnum.FreeTextClick:
                     return AnswerOptionType.ShowFreeTextAnswerOptions;
                 case QuestionTypeEnum.EvaluationVoting:
-                    return AnswerOptionType.ShowEvaluationAnswerOptions;
+                    return AnswerOptionType.ShowGradeOrEvaluationAnswerOptions;
                 case QuestionTypeEnum.GradsVoting:
                     return AnswerOptionType.ShowGradeAnswerOptions;
                 case QuestionTypeEnum.RangedQuestionClick:

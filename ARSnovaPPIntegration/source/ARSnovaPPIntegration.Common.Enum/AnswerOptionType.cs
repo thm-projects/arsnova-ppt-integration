@@ -19,24 +19,20 @@
 
         /*
          * QuestionTypeEnum.EvaluationVoting
-         */
-        ShowEvaluationAnswerOptions = 3,
-
-        /*
          * QuestionTypeEnum.GradsVoting
          */
-        ShowGradeAnswerOptions = 4,
+        ShowGradeOrEvaluationAnswerOptions = 3,
 
         /*
          * QuestionTypeEnum.RangedQuestionClick
          */
-        ShowRangedAnswerOption = 5,
+        ShowRangedAnswerOption = 4,
 
         /*
          * QuestionTypeEnum.YesNoVoting
          * QuestionTypeEnum.YesNoClick
          * QuestionTypeEnum.TrueFalseClick
          */
-        ShowTwoAnswerOptions = 6
+        ShowTwoAnswerOptions = 5
     }
 }

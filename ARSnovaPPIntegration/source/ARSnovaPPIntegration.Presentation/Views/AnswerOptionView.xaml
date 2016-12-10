@@ -78,12 +78,6 @@
                     </resources:WatermarkService.Watermark>
                 </TextBox>
             </StackPanel>
-            <StackPanel x:Name="EvaluationAnswerOptions" Visibility="{Binding ShowEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-            </StackPanel>
-            <StackPanel x:Name="GradeAnswerOptions" Visibility="{Binding ShowGradeAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-            </StackPanel>
             <StackPanel x:Name="RangedAnswerOptions" Visibility="{Binding ShowRangedAnswerOption, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             </StackPanel>

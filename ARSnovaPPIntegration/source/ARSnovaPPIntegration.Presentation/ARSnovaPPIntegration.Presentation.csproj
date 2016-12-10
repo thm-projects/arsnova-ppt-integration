@@ -348,10 +348,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ARSnovaPPIntegration.Presentation_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CEAB4A18B3E1BF204D684CCE8432F49051E3B957</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B18A4913D979D12C28663D6FA7F548C9069D3E3D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

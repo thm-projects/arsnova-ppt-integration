@@ -39,11 +39,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public bool ShowFreeTextAnswerOptions =>
             this.sessionInformationProvider.GetAnswerOptionType(this.SlideSessionModel.QuestionType) == AnswerOptionType.ShowFreeTextAnswerOptions;
 
-        public bool ShowEvaluationAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideSessionModel.QuestionType) == AnswerOptionType.ShowEvaluationAnswerOptions;
-
-        public bool ShowGradeAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideSessionModel.QuestionType) == AnswerOptionType.ShowGradeAnswerOptions;
+        public bool ShowGradeOrEvaluationAnswerOptions =>
+            this.sessionInformationProvider.GetAnswerOptionType(this.SlideSessionModel.QuestionType) == AnswerOptionType.ShowGradeOrEvaluationAnswerOptions;
 
         public bool ShowRangedAnswerOption =>
             this.sessionInformationProvider.GetAnswerOptionType(this.SlideSessionModel.QuestionType) == AnswerOptionType.ShowRangedAnswerOption;
@@ -161,15 +158,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 {
                     this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
 
-                    for (int i = 1; i <= this.AnswerOptionAmount; i++)
+                    for (var i = 1; i <= this.AnswerOptionAmount; i++)
                     {
-                        this.SlideSessionModel.AnswerOptions.Add(
-                            new GeneralAnswerOption
-                                {
-                                    Position = i,
-                                    Text = string.Empty,
-                                    IsTrue = false
-                                });
+                        this.SlideSessionModel.AnswerOptions.Add(this.CreateGeneralAnswerOption(i));
                     }
                 }
 
@@ -177,33 +168,44 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 {
                     this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
 
-                    this.SlideSessionModel.AnswerOptions.Add(
-                            new GeneralAnswerOption
-                            {
-                                Position = 0,
-                                Text = string.Empty,
-                                IsTrue = false
-                            });
+                    this.SlideSessionModel.AnswerOptions.Add(this.CreateGeneralAnswerOption());
                 }
 
-                // TODO list init for other answer option types
-                // TODO auto-generate this, no answer options needed here!
-                if (this.ShowEvaluationAnswerOptions)
+                if (this.ShowGradeOrEvaluationAnswerOptions)
                 {
                     this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
 
-                    this.SlideSessionModel.AnswerOptions.Add(
-                            new GeneralAnswerOption
-                            {
-                                Position = 0,
-                                Text = string.Empty,
-                                IsTrue = false
-                            });
-                }
+                    if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.EvaluationVoting)
+                    {
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(0, this.LocalizationService.Translate("totally agree")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("rather applies")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("neither")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("does not apply")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("strongly disagree")));
+                    }
 
-                if (this.ShowGradeAnswerOptions)
-                {
+                    if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.GradsVoting)
+                    {
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(0, this.LocalizationService.Translate("very good")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("good")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("satisfying")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("sufficient")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("inadequate")));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                            this.CreateGeneralAnswerOption(5, this.LocalizationService.Translate("insufficient")));
+                    } 
 
+                    //TODO nothing to do for the user. auto redirect to the next view.
                 }
 
                 if (this.ShowRangedAnswerOption)
@@ -216,6 +218,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 }
             } 
+        }
+
+        private GeneralAnswerOption CreateGeneralAnswerOption(int position = 0, string text = "", bool isTrue = false)
+        {
+            return new GeneralAnswerOption
+            {
+                Position = position,
+                Text = text,
+                IsTrue = isTrue
+            };
         }
     }
 }

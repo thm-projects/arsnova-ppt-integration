@@ -228,4 +228,37 @@
   <data name="Text" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="does_not_apply" xml:space="preserve">
+    <value>trifft eher nicht zu</value>
+  </data>
+  <data name="good" xml:space="preserve">
+    <value>gut</value>
+  </data>
+  <data name="inadequate" xml:space="preserve">
+    <value>mangelhaft</value>
+  </data>
+  <data name="insufficient" xml:space="preserve">
+    <value>ungenügend</value>
+  </data>
+  <data name="neither" xml:space="preserve">
+    <value>weder noch</value>
+  </data>
+  <data name="rather_applies" xml:space="preserve">
+    <value>trifft eher zu</value>
+  </data>
+  <data name="satisfying" xml:space="preserve">
+    <value>befriedigend</value>
+  </data>
+  <data name="strongly_disagree" xml:space="preserve">
+    <value>trifft gar nicht zu</value>
+  </data>
+  <data name="sufficient" xml:space="preserve">
+    <value>ausreichend</value>
+  </data>
+  <data name="totally_agree" xml:space="preserve">
+    <value>trifft voll zu</value>
+  </data>
+  <data name="very_good" xml:space="preserve">
+    <value>sehr gut</value>
+  </data>
 </root>
