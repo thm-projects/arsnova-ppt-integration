@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
-
+using System.Windows.Threading;
 using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
@@ -52,7 +53,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
             set
             {
-                if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                var oldQuestionType = this.SlideSessionModel.QuestionType;
+
+                if (oldQuestionType == value)
+                    return;
+
+                if (this.SlideSessionModel.AnswerOptionsSet)
                 {
                     var reset = PopUpWindow.ConfirmationWindow(
                         this.LocalizationService.Translate("Reset"),
@@ -62,8 +68,22 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     if (reset)
                     {
                         this.SlideSessionModel.QuestionType = value;
+                        this.SlideSessionModel.QuestionTypeSet = true;
                         this.SlideSessionModel.AnswerOptions = null;
                         this.SlideSessionModel.AnswerOptionsSet = false;
+                    }
+                    else
+                    {
+                        // change the value back right after the current context operation is done (the change event of the selectlist needs to finish first)
+                        Dispatcher.CurrentDispatcher.BeginInvoke(
+                                new Action(() =>
+                                {
+                                    this.SlideSessionModel.QuestionType = oldQuestionType;
+                                    this.OnPropertyChanged("QuestionType");
+                                }),
+                                DispatcherPriority.ContextIdle,
+                                null
+                            );
                     }
                 }
                 else

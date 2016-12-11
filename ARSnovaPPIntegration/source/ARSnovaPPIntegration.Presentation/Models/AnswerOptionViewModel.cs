@@ -88,18 +88,21 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 {
                     for (int i = this.SlideSessionModel.AnswerOptionAmount + 1; i <= value; i++)
                     {
-                        this.SlideSessionModel.AnswerOptions.Add(
-                            new GeneralAnswerOption
-                            {
-                                Position = i,
-                                Text = string.Empty,
-                                IsTrue = false
-                            });
+                        var generalAnswerOption = new GeneralAnswerOption
+                                                  {
+                                                      Position = i,
+                                                      Text = string.Empty,
+                                                      IsTrue = false
+                                                  };
+                        generalAnswerOption.ObjectChangedEventHandler += delegate (object sender, EventArgs e) {
+                            this.SlideSessionModel.AnswerOptionsSet = true;
+                        };
+
+                        this.SlideSessionModel.AnswerOptions.Add(generalAnswerOption);
                     }
                 }
 
                 this.SlideSessionModel.AnswerOptionAmount = value;
-                this.SlideSessionModel.AnswerOptionsSet = true;
                 this.OnPropertyChanged(nameof(this.AnswerOptions));
             }
         }
@@ -107,7 +110,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public ObservableCollection<object> AnswerOptions
         {
             get { return this.SlideSessionModel.AnswerOptions; }
-            set { this.SlideSessionModel.AnswerOptions = value; }
+            set
+            {
+                this.SlideSessionModel.AnswerOptions = value;
+            }
         }
 
         public string FreeTextAnswerOption
@@ -124,7 +130,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     return string.Empty;
                 }
             }
-            set { ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text = value; }
+            set
+            {
+                ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text = value;
+            }
         }
 
         public string SelectAnswerOptionAmountText => this.LocalizationService.Translate("Answer option amount:");
@@ -141,25 +150,25 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             get
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                return rangedAnswerOption.LowerLimit;
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                return rangedAnswerOption?.LowerLimit ?? 0;
             }
             set
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                if (rangedAnswerOption.HigherLimit >= value)
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                if (rangedAnswerOption != null)
                 {
-                    rangedAnswerOption.LowerLimit = value;
-                    if (rangedAnswerOption.Correct < value)
+                    if (rangedAnswerOption.HigherLimit >= value)
                     {
-                        rangedAnswerOption.Correct = value;
-                        this.OnPropertyChanged(nameof(this.RangedCorrectValue));
-                        this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                        rangedAnswerOption.LowerLimit = value;
+                        if (rangedAnswerOption.Correct < value)
+                        {
+                            rangedAnswerOption.Correct = value;
+                            this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                            this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                        }
                     }
-                }
-
-                this.OnPropertyChanged(nameof(this.RangedMinValue));
-                this.OnPropertyChanged(nameof(this.RangedMinValueString));
+                }  
             }
         }
 
@@ -179,19 +188,22 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public int RangedCorrectValue {
             get
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                return rangedAnswerOption.Correct;
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                return rangedAnswerOption?.Correct ?? 50;
             }
             set
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                if (rangedAnswerOption.LowerLimit <= value && rangedAnswerOption.HigherLimit >= value)
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                if (rangedAnswerOption != null)
                 {
-                    rangedAnswerOption.Correct = value;
-                }
-                
-                this.OnPropertyChanged(nameof(this.RangedCorrectValue));
-                this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                    if (rangedAnswerOption.LowerLimit <= value && rangedAnswerOption.HigherLimit >= value)
+                    {
+                        rangedAnswerOption.Correct = value;
+
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                    }
+                }  
             }
         }
 
@@ -210,26 +222,26 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public int RangedMaxValue {
             get
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                return rangedAnswerOption.HigherLimit;
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                return rangedAnswerOption?.HigherLimit ?? 100;
             }
             set
             {
-                var rangedAnswerOption = this.TryGetRangedAnswerOption();
-                if (rangedAnswerOption.LowerLimit <= value)
+                var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+                if (rangedAnswerOption != null)
                 {
-                    rangedAnswerOption.HigherLimit = value;
-
-                    if (rangedAnswerOption.Correct > value)
+                    if (rangedAnswerOption.LowerLimit <= value)
                     {
-                        rangedAnswerOption.Correct = value;
-                        this.OnPropertyChanged(nameof(this.RangedCorrectValue));
-                        this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                        rangedAnswerOption.HigherLimit = value;
+
+                        if (rangedAnswerOption.Correct > value)
+                        {
+                            rangedAnswerOption.Correct = value;
+                            this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                            this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                        }
                     }
                 }
-                
-                this.OnPropertyChanged(nameof(this.RangedMaxValue));
-                this.OnPropertyChanged(nameof(this.RangedMaxValueString));
             }
         }
 
@@ -326,7 +338,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             this.CreateGeneralAnswerOption(5, this.LocalizationService.Translate("inadequate")));
                         this.SlideSessionModel.AnswerOptions.Add(
                             this.CreateGeneralAnswerOption(6, this.LocalizationService.Translate("insufficient")));
-                    } 
+                    }
                 }
 
                 if (this.ShowRangedAnswerOption)
@@ -344,32 +356,47 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 if (this.ShowTwoAnswerOptions)
                 {
+                    this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>();
 
+                    if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.YesNoClick
+                        || this.SlideSessionModel.QuestionType == QuestionTypeEnum.YesNoVoting)
+                    {
+                        this.SlideSessionModel.AnswerOptions.Add(
+                                this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("Yes"), true));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                                this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("No")));
+                    }
+
+                    if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.TrueFalseClick)
+                    {
+                        this.SlideSessionModel.AnswerOptions.Add(
+                                this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("True"), true));
+                        this.SlideSessionModel.AnswerOptions.Add(
+                                this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("False")));
+                    }
                 }
 
                 this.SlideSessionModel.AnswerOptionInitType = this.SlideSessionModel.AnswerOptionType;
+
+                // default init doesn't count as manipulated
+                this.SlideSessionModel.AnswerOptionsSet = false;
             } 
         }
 
         private GeneralAnswerOption CreateGeneralAnswerOption(int position = 0, string text = "", bool isTrue = false)
         {
-            return new GeneralAnswerOption
+            var generalAnswerOption =  new GeneralAnswerOption
             {
                 Position = position,
                 Text = text,
                 IsTrue = isTrue
             };
-        }
 
-        private RangedAnswerOption TryGetRangedAnswerOption()
-        {
-            var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
-            if (rangedAnswerOption == null)
-            {
-                throw new ArgumentException("Unexpected answer option type. Watch stack trace for further informations.");
-            }
+            generalAnswerOption.ObjectChangedEventHandler += delegate (object sender, EventArgs e) {
+                                                                 this.SlideSessionModel.AnswerOptionsSet = true;
+                                                             };
 
-            return rangedAnswerOption;
+            return generalAnswerOption;
         }
     }
 }

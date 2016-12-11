@@ -279,4 +279,16 @@
   <data name="Minimum_range" xml:space="preserve">
     <value>Niedrigster Wert</value>
   </data>
+  <data name="False" xml:space="preserve">
+    <value>Falsch</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Wahr</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
 </root>

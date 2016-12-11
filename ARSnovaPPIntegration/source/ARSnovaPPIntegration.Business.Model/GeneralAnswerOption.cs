@@ -1,17 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ARSnovaPPIntegration.Business.Model
 {
     public class GeneralAnswerOption
     {
-        public int Position { get; set; }
+        private int position;
 
-        public string Text { get; set; }
+        private string text;
 
-        public bool IsTrue { get; set; }
+        private bool isTrue;
+
+        public event EventHandler ObjectChangedEventHandler;
+
+        public int Position
+        {
+            get { return this.position; }
+            set
+            {
+                this.position = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public string Text
+        {
+            get { return this.text; }
+            set
+            {
+                this.text = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public bool IsTrue
+        {
+            get { return this.isTrue; }
+            set
+            {
+                this.isTrue = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 }

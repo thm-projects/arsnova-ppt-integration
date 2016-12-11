@@ -4,8 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-
+using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Content;
+using ARSnovaPPIntegration.Presentation.Views;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewPresenter

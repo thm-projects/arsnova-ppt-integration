@@ -114,7 +114,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="{Binding GradeOrEvaluationAnswerOptionsInfoText}"/>
                 </StackPanel>
-                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <DataGrid ItemsSource="{Binding AnswerOptions}" 
                           AutoGenerateColumns="False"
                           CanUserSortColumns="False"
                           HeadersVisibility="Column"
@@ -173,7 +173,30 @@
                 </-->
             </StackPanel>
             <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding GradeOrEvaluationAnswerOptionsInfoText}"/>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding AnswerOptions}" 
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="False"
+                          HeadersVisibility="Column"
+                          VerticalAlignment="Top"
+                          AlternatingRowBackground="Gainsboro" 
+                          CanUserAddRows="false"
+                          Margin="15 20 15 0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Text, Mode=TwoWay}" IsReadOnly="True" Width="0.8*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridCheckBoxColumn Binding="{Binding IsTrue, Mode=TwoWay}" IsReadOnly="True" Width="0.2*">
+                            <DataGridCheckBoxColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderIsTrue, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </StackPanel>
     </Grid>

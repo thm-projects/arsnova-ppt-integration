@@ -8,6 +8,10 @@ namespace ARSnovaPPIntegration.Business.Model
 {
     public class SlideSessionModel
     {
+        private ObservableCollection<object> answerOptions;
+
+        private string questionText;
+
         public SlideSessionModel(Slide slide)
         {
             this.Slide = slide;
@@ -23,13 +27,32 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public bool SessionTypeSet { get; set; } = false;
 
-        public QuestionTypeEnum QuestionType { get; set; }
+        public QuestionTypeEnum QuestionType { get; set; } = QuestionTypeEnum.SingleChoiceClick;
 
         public bool QuestionTypeSet { get; set; } = false;
 
-        public string QuestionText { get; set; }
+        public string QuestionText
+        {
+            get
+            {
+                return this.questionText;
+            }
+            set
+            {
+                this.questionText = value;
+                this.QuestionTypeSet = true;
+            }
+        }
 
-        public ObservableCollection<object> AnswerOptions { get; set; }
+        public ObservableCollection<object> AnswerOptions
+        {
+            get { return this.answerOptions; }
+            set
+            {
+                this.answerOptions = value;
+                this.AnswerOptionsSet = true;
+            }
+        }
 
         public bool AnswerOptionsSet { get; set; } = false;
 
