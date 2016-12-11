@@ -5,6 +5,7 @@ using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -26,9 +27,30 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
-                    this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
-                }
+                    if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                    {
+                        var reset = PopUpWindow.ConfirmationWindow(
+                            this.LocalizationService.Translate("Reset"),
+                            this.LocalizationService.Translate(
+                                    "If this value is changed, other Session-Properties like the answer options or the question type will be reseted. Do you want to continue?"));
+
+                        if (reset)
+                        {
+                            this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
+                            this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
+                            this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
+                            this.SlideSessionModel.QuestionTypeSet = false;
+                            this.SlideSessionModel.AnswerOptions = null;
+                            this.SlideSessionModel.AnswerOptionsSet = false;
+                        }
+                    }
+                    else
+                    {
+                        this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
+                        this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
+                        this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
+                    }
+                } 
             }
         }
 
@@ -39,8 +61,29 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
-                    this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+                    if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                    {
+                        var reset = PopUpWindow.ConfirmationWindow(
+                            this.LocalizationService.Translate("Reset"),
+                            this.LocalizationService.Translate(
+                                    "If this value is changed, other Session-Properties like the answer options or the question type will be reseted. Do you want to continue?"));
+
+                        if (reset)
+                        {
+                            this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
+                            this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+                            this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
+                            this.SlideSessionModel.QuestionTypeSet = false;
+                            this.SlideSessionModel.AnswerOptions = null;
+                            this.SlideSessionModel.AnswerOptionsSet = false;
+                        }
+                    }
+                    else
+                    {
+                        this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
+                        this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
+                        this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+                    }
                 }
             }
         }

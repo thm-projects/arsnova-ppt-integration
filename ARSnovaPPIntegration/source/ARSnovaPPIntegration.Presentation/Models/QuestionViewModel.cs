@@ -8,6 +8,7 @@ using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -49,7 +50,28 @@ namespace ARSnovaPPIntegration.Presentation.Models
                      : QuestionTypeEnum.SingleChoiceVoting;
                 }
             }
-            set { this.SlideSessionModel.QuestionType = value; }
+            set
+            {
+                if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                {
+                    var reset = PopUpWindow.ConfirmationWindow(
+                        this.LocalizationService.Translate("Reset"),
+                        this.LocalizationService.Translate(
+                                "If this value is changed, other Session-Properties like the answer options or the question type will be reseted. Do you want to continue?"));
+
+                    if (reset)
+                    {
+                        this.SlideSessionModel.QuestionType = value;
+                        this.SlideSessionModel.AnswerOptions = null;
+                        this.SlideSessionModel.AnswerOptionsSet = false;
+                    }
+                }
+                else
+                {
+                    this.SlideSessionModel.QuestionType = value;
+                    this.SlideSessionModel.QuestionTypeSet = true;
+                }
+            }
         }
 
         public string QuestionText

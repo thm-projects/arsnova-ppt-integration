@@ -17,16 +17,26 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public Slide Slide { get; set; }
 
+        public bool NewSession { get; set; } = true;
+
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
 
-        public QuestionTypeEnum QuestionType { get; set; } = QuestionTypeEnum.SingleChoiceClick;
+        public bool SessionTypeSet { get; set; } = false;
+
+        public QuestionTypeEnum QuestionType { get; set; }
+
+        public bool QuestionTypeSet { get; set; } = false;
 
         public string QuestionText { get; set; }
 
         public ObservableCollection<object> AnswerOptions { get; set; }
 
+        public bool AnswerOptionsSet { get; set; } = false;
+
         public AnswerOptionType AnswerOptionType { get; set; }
 
         public int AnswerOptionAmount { get; set; } = 4;
+
+        public AnswerOptionType AnswerOptionInitType { get; set; }
     }
 }

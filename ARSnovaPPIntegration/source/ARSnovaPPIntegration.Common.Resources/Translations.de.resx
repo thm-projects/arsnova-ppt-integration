@@ -261,4 +261,22 @@
   <data name="very_good" xml:space="preserve">
     <value>sehr gut</value>
   </data>
+  <data name="If_this_value_is_changed,_other_Session-Properties_like_the_answer_options_or_the_question_type_will_be_reseted._Do_you_want_to_continue?" xml:space="preserve">
+    <value>Wenn dieser Wert geändert wird, werden andere Session-Eigenschaften wie die Antwortoptionen zurückgesetzt. Möchtest du trotzdem fortfahren?</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="Correct_value" xml:space="preserve">
+    <value>Richtiger Wert</value>
+  </data>
+  <data name="Grade-_and_evaluation_questions_own_predefined_answer_options._No_manipulation_possible." xml:space="preserve">
+    <value>Noten- und Evaluations-Fragen haben vordefinierte Antwortmöglichkeiten. Das bearbeiten von diesen ist nicht möglich.</value>
+  </data>
+  <data name="Maximum_range" xml:space="preserve">
+    <value>Höchster Wert</value>
+  </data>
+  <data name="Minimum_range" xml:space="preserve">
+    <value>Niedrigster Wert</value>
+  </data>
 </root>

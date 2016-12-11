@@ -22,6 +22,38 @@
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontFamily" Value="Calibri" />
             </Style-->
+            <ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 x:Key="SimpleSlider" TargetType="{x:Type Slider}">
+                <Border SnapsToDevicePixels="true" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Rectangle x:Name="PART_SelectionRange"/>
+
+                        <Track x:Name="PART_Track" Grid.Row="1">
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Rectangle Fill="DarkSlateGray" 
+                                    Stroke="Black"
+                                    StrokeThickness="1" 
+                                    Width="10"
+                                    Height="18"
+                                    SnapsToDevicePixels="True"/>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -78,33 +110,71 @@
                     </resources:WatermarkService.Watermark>
                 </TextBox>
             </StackPanel>
-            <StackPanel x:Name="RangedAnswerOptions" Visibility="{Binding ShowRangedAnswerOption, Converter={StaticResource BooleanToVisibilityConverter}}">
-
+            <StackPanel x:Name="GradeOrEvaluationAnswerOptions" Visibility="{Binding ShowGradeOrEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding GradeOrEvaluationAnswerOptionsInfoText}"/>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="False"
+                          HeadersVisibility="Column"
+                          VerticalAlignment="Top"
+                          AlternatingRowBackground="Gainsboro" 
+                          CanUserAddRows="false"
+                          Margin="15 20 15 0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending" Width="0.2*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderPosition, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Text, Mode=TwoWay}" IsReadOnly="True" Width="0.8*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel x:Name="RangedAnswerOptions" Visibility="{Binding ShowRangedAnswerOption, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" >
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="{Binding MinValLabelText}" />
+                        <resources:NumericTextBox Text="{Binding RangedMinValueString, Mode=TwoWay}"></resources:NumericTextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="{Binding CorrectValLabelText}" />
+                        <resources:NumericTextBox Text="{Binding RangedCorrectValueString, Mode=TwoWay}"></resources:NumericTextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="{Binding MaxValLabelText}" />
+                        <resources:NumericTextBox Text="{Binding RangedMaxValueString, Mode=TwoWay}"></resources:NumericTextBox>
+                    </StackPanel>
+                </StackPanel>
+                <!-- Range-Slider is still experimental (not working as expected)-->
+                <!--Grid VerticalAlignment="Top">
+                    <Border BorderThickness="0,1,0,0" 
+                        BorderBrush="Black" 
+                        VerticalAlignment="Center" 
+                        Height="1" 
+                        Margin="5,0,5,0"/>
+                    <Slider x:Name="LowerSlider"
+                        Minimum="{Binding RangedMinValue}"
+                        Maximum="{Binding RangedMaxValue}"
+                        Value="{Binding RangedMinValue, Mode=TwoWay}"
+                        Template="{StaticResource SimpleSlider}"
+                        Margin="0,0,10,0"/>
+                    <Slider x:Name="UpperSlider"
+                        Minimum="{Binding RangedMinValue}"
+                        Maximum="{Binding RangedMaxValue}"
+                        Value="{Binding RangedMaxValue, Mode=TwoWay}"
+                        Template="{StaticResource SimpleSlider}"
+                        Margin="10,0,0,0"/>
+                </-->
             </StackPanel>
             <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             </StackPanel>
-            
-            
-            
-            <!-- StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox ItemsSource="{Binding Path=QuestionTypes, Mode=OneWay}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="QuestionTypeEnum"
-                              SelectedValue="{Binding Path=QuestionType}" 
-                              Width="250" 
-                              HorizontalAlignment="Left"
-                              IsEditable="False"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                    <TextBox Text="{Binding QuestionText, Mode=TwoWay}" Width="250" MinLines="3" MaxLines="10" TextWrapping="WrapWithOverflow">
-                        <resources:WatermarkService.Watermark>
-                            <TextBlock>{Binding QuestionTextPlaceholder}</TextBlock>
-                        </resources:WatermarkService.Watermark>
-                    </TextBox>
-                </StackPanel>
-            </-->
         </StackPanel>
     </Grid>
 </UserControl>

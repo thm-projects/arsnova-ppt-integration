@@ -99,7 +99,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 }
 
                 this.SlideSessionModel.AnswerOptionAmount = value;
-
+                this.SlideSessionModel.AnswerOptionsSet = true;
                 this.OnPropertyChanged(nameof(this.AnswerOptions));
             }
         }
@@ -112,7 +112,18 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public string FreeTextAnswerOption
         {
-            get { return ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text; }
+            get
+            {
+                var generalAnswerOption = this.SlideSessionModel.AnswerOptions.First() as GeneralAnswerOption;
+                if (generalAnswerOption != null)
+                {
+                    return generalAnswerOption.Text;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
             set { ((GeneralAnswerOption)this.SlideSessionModel.AnswerOptions.First()).Text = value; }
         }
 
@@ -123,6 +134,116 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public string GridHeaderText => this.LocalizationService.Translate("Text");
 
         public string GridHeaderIsTrue => this.LocalizationService.Translate("Is true");
+
+        public string GradeOrEvaluationAnswerOptionsInfoText => this.LocalizationService.Translate("Grade- and evaluation questions own predefined answer options. No manipulation possible.");
+
+        public int RangedMinValue
+        {
+            get
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                return rangedAnswerOption.LowerLimit;
+            }
+            set
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                if (rangedAnswerOption.HigherLimit >= value)
+                {
+                    rangedAnswerOption.LowerLimit = value;
+                    if (rangedAnswerOption.Correct < value)
+                    {
+                        rangedAnswerOption.Correct = value;
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                    }
+                }
+
+                this.OnPropertyChanged(nameof(this.RangedMinValue));
+                this.OnPropertyChanged(nameof(this.RangedMinValueString));
+            }
+        }
+
+        public string RangedMinValueString
+        {
+            get { return this.RangedMinValue.ToString(); } 
+            set
+            {
+                var numericVal = int.Parse(value);
+                this.RangedMinValue = numericVal;
+                this.OnPropertyChanged(nameof(this.RangedMinValueString));
+            }
+        }
+
+        public string MinValLabelText => this.LocalizationService.Translate("Minimum range");
+
+        public int RangedCorrectValue {
+            get
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                return rangedAnswerOption.Correct;
+            }
+            set
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                if (rangedAnswerOption.LowerLimit <= value && rangedAnswerOption.HigherLimit >= value)
+                {
+                    rangedAnswerOption.Correct = value;
+                }
+                
+                this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+            }
+        }
+
+        public string RangedCorrectValueString {
+            get { return this.RangedCorrectValue.ToString(); }
+            set
+            {
+                var numericVal = int.Parse(value);
+                this.RangedCorrectValue = numericVal;
+                this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+            }
+        }
+
+        public string CorrectValLabelText => this.LocalizationService.Translate("Correct value");
+
+        public int RangedMaxValue {
+            get
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                return rangedAnswerOption.HigherLimit;
+            }
+            set
+            {
+                var rangedAnswerOption = this.TryGetRangedAnswerOption();
+                if (rangedAnswerOption.LowerLimit <= value)
+                {
+                    rangedAnswerOption.HigherLimit = value;
+
+                    if (rangedAnswerOption.Correct > value)
+                    {
+                        rangedAnswerOption.Correct = value;
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValue));
+                        this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
+                    }
+                }
+                
+                this.OnPropertyChanged(nameof(this.RangedMaxValue));
+                this.OnPropertyChanged(nameof(this.RangedMaxValueString));
+            }
+        }
+
+        public string RangedMaxValueString {
+            get { return this.RangedMaxValue.ToString(); }
+            set
+            {
+                var numericVal = int.Parse(value);
+                this.RangedMaxValue = numericVal;
+                this.OnPropertyChanged(nameof(this.RangedMaxValueString));
+            }
+        }
+
+        public string MaxValLabelText => this.LocalizationService.Translate("Maximum range");
 
         private void InitializeWindowCommandBindings()
         {
@@ -141,10 +262,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             },
                             (e, o) => o.CanExecute = true),
                         new CommandBinding(
-                            NavigationButtonCommands.Forward,
+                            NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                // TODO ViewPresenter: Forward to next view
+                                // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
                             },
                             (e, o) => o.CanExecute = true)
                     });
@@ -152,7 +273,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         private void InitAnswerOptionList()
         {
-            if (this.AnswerOptions == null || this.AnswerOptions.Count != this.AnswerOptionAmount)
+            if (this.AnswerOptions == null 
+                || this.SlideSessionModel.AnswerOptionInitType != this.SlideSessionModel.AnswerOptionType 
+                || this.AnswerOptions.Count != this.AnswerOptionAmount)
             {
                 if (this.ShowGeneralAnswerOptions)
                 {
@@ -178,45 +301,53 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.EvaluationVoting)
                     {
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(0, this.LocalizationService.Translate("totally agree")));
+                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("totally agree")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("rather applies")));
+                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("rather applies")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("neither")));
+                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("neither")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("does not apply")));
+                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("does not apply")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("strongly disagree")));
+                            this.CreateGeneralAnswerOption(5, this.LocalizationService.Translate("strongly disagree")));
                     }
 
                     if (this.SlideSessionModel.QuestionType == QuestionTypeEnum.GradsVoting)
                     {
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(0, this.LocalizationService.Translate("very good")));
+                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("very good")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("good")));
+                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("good")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("satisfying")));
+                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("satisfying")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(3, this.LocalizationService.Translate("sufficient")));
+                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("sufficient")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(4, this.LocalizationService.Translate("inadequate")));
+                            this.CreateGeneralAnswerOption(5, this.LocalizationService.Translate("inadequate")));
                         this.SlideSessionModel.AnswerOptions.Add(
-                            this.CreateGeneralAnswerOption(5, this.LocalizationService.Translate("insufficient")));
+                            this.CreateGeneralAnswerOption(6, this.LocalizationService.Translate("insufficient")));
                     } 
-
-                    //TODO nothing to do for the user. auto redirect to the next view.
                 }
 
                 if (this.ShowRangedAnswerOption)
                 {
-
+                    this.SlideSessionModel.AnswerOptions = new ObservableCollection<object>
+                                                           {
+                                                               new RangedAnswerOption
+                                                               {
+                                                                   LowerLimit = 0,
+                                                                   Correct = 50,
+                                                                   HigherLimit = 100
+                                                               }
+                                                           };
                 }
 
                 if (this.ShowTwoAnswerOptions)
                 {
 
                 }
+
+                this.SlideSessionModel.AnswerOptionInitType = this.SlideSessionModel.AnswerOptionType;
             } 
         }
 
@@ -228,6 +359,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 Text = text,
                 IsTrue = isTrue
             };
+        }
+
+        private RangedAnswerOption TryGetRangedAnswerOption()
+        {
+            var rangedAnswerOption = this.SlideSessionModel.AnswerOptions.First() as RangedAnswerOption;
+            if (rangedAnswerOption == null)
+            {
+                throw new ArgumentException("Unexpected answer option type. Watch stack trace for further informations.");
+            }
+
+            return rangedAnswerOption;
         }
     }
 }
