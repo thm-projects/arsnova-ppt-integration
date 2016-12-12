@@ -111,9 +111,7 @@
                 </TextBox>
             </StackPanel>
             <StackPanel x:Name="GradeOrEvaluationAnswerOptions" Visibility="{Binding ShowGradeOrEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding GradeOrEvaluationAnswerOptionsInfoText}"/>
-                </StackPanel>
+                <TextBlock Text="{Binding GradeOrEvaluationAnswerOptionsInfoText}" TextWrapping="Wrap" Margin="15 20 15 0" />
                 <DataGrid ItemsSource="{Binding AnswerOptions}" 
                           AutoGenerateColumns="False"
                           CanUserSortColumns="False"
@@ -173,9 +171,7 @@
                 </-->
             </StackPanel>
             <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding GradeOrEvaluationAnswerOptionsInfoText}"/>
-                </StackPanel>
+                <TextBlock Text="{Binding GradeOrEvaluationAnswerOptionsInfoText}" TextWrapping="Wrap" Margin="15 20 15 0" />
                 <DataGrid ItemsSource="{Binding AnswerOptions}" 
                           AutoGenerateColumns="False"
                           CanUserSortColumns="False"

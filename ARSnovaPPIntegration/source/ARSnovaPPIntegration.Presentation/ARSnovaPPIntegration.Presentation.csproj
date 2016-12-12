@@ -352,7 +352,7 @@
     <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>EFAE4FDB97451247C3E0018ED46B9A9774D2ABBC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3D451997E61708A19B3E260A7D3F3829EAF1EE53</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
