@@ -232,6 +232,8 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\QuestionViewModel.cs" />
     <Compile Include="Models\AnswerOptionViewModel.cs" />
+    <Compile Include="Resources\BindingProxy.cs" />
+    <Compile Include="Resources\ClickHashtagValidation.cs" />
     <Compile Include="Resources\NumericTextBox.cs" />
     <Compile Include="Resources\WatermarkAdorner.cs" />
     <Compile Include="Resources\WatermarkService.cs" />
@@ -352,7 +354,7 @@
     <ManifestKeyFile>ARSnovaPPIntegration.Presentation_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3D451997E61708A19B3E260A7D3F3829EAF1EE53</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CFBE0B77A87CAE1AB088A3BB467534232ECD4F77</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

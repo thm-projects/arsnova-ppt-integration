@@ -8,11 +8,14 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Communication.Contract;
 
 namespace ARSnovaPPIntegration.Business
 {
     public class SessionInformationProvider : ISessionInformationProvider
     {
+        private readonly IArsnovaClickService arsnovaClickService;
+
         private readonly IQuestionTypeTranslator questionTypeTranslator;
 
         private readonly List<QuestionTypeEnum> votingQuestionTypes = new List<QuestionTypeEnum>
@@ -38,6 +41,7 @@ namespace ARSnovaPPIntegration.Business
 
         public SessionInformationProvider()
         {
+            this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
             this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
         }
 
@@ -84,6 +88,13 @@ namespace ARSnovaPPIntegration.Business
                 default:
                     throw new ArgumentException($"QuestionType not handled in GetAnswerOptionType: '{questionType}'");
             }
+        }
+
+        public List<string> GetHashtagList()
+        {
+            var allHashtagInfos = this.arsnovaClickService.GetAllHashtagInfos();
+
+            return allHashtagInfos.Select(hashtagInfo => hashtagInfo.hashtag).ToList();
         }
     }
 }

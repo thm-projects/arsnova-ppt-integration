@@ -67,7 +67,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
             else
             {
-                this.ContentCleanUp();
+                this.ContentCleanUp(false);
             }
 
             this.SetWindowCommandBindings(viewModel);
@@ -87,26 +87,32 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
         }
 
-        public void ContentCleanUp(bool closeWindow = false)
+        public void CloseWithoutPrompt()
+        {
+            this.window.ShowCloseWindowPrompt = false;
+            this.window.Close();
+        }
+
+        public void CloseWithPrompt()
+        {
+            this.window.Close();
+        }
+
+        public void ContentCleanUp(bool removeWindow = true)
         {
             // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
             this.RemoveWindowCommandBindings(this.runningViewModel);
 
             (this.runningViewModel as IDisposable)?.Dispose();
             (this.runningView as IDisposable)?.Dispose();
+            
             this.runningViewModel = null;
             this.runningView = null;
-
-            if (closeWindow)
+            if (removeWindow)
             {
-                this.window.Close();
+                (this.window as IDisposable)?.Dispose();
+                this.window = null;
             }
-        }
-
-        public void ExternalWindowClose()
-        {
-            this.ContentCleanUp();
-            this.window = null;
         }
 
         private void SetWindowCommandBindings(object viewModel)

@@ -14,6 +14,11 @@ namespace ARSnovaPPIntegration.Presentation.Window
             return messageBoxResult == MessageBoxResult.Yes;
         }
 
+        public static void ErrorWindow(string title, string text)
+        {
+            MessageBox.Show(text, title, MessageBoxButton.OK);
+        }
+
         /// <summary>
         /// Prompts a confirmation window whether the user wants to close this window or not. Returns answer as bool (true for yes, false for no or cancel)
         /// </summary>

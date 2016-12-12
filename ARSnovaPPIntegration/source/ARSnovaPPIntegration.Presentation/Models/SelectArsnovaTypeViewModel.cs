@@ -13,6 +13,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
             : base(requirements)
         {
             this.InitializeWindowCommandBindings();
+
+            if (string.IsNullOrEmpty(this.SlideSessionModel.Hashtag))
+            {
+                this.SlideSessionModel.Hashtag = Globals.ThisAddIn.Application.ActivePresentation.Name;
+            }
         }
 
         public bool IsArsnovaClickSession
@@ -32,7 +37,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         if (reset)
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
-                            this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
+                            this.OnSessionTypeSelectionChanged();
                             this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
                             this.SlideSessionModel.QuestionTypeSet = false;
                             this.SlideSessionModel.AnswerOptions = null;
@@ -43,10 +48,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     {
                         this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
                         this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
-                        this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
+                        this.OnSessionTypeSelectionChanged();
                     }
                 } 
             }
+        }
+
+        public string Hashtag
+        {
+            get { return this.SlideSessionModel.Hashtag; }
+            set { this.SlideSessionModel.Hashtag = value; }
         }
 
         public bool IsArsnovaVotingSession
@@ -66,7 +77,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         if (reset)
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
-                            this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+                            this.OnSessionTypeSelectionChanged();
                             this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
                             this.SlideSessionModel.QuestionTypeSet = false;
                             this.SlideSessionModel.AnswerOptions = null;
@@ -77,7 +88,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     {
                         this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
                         this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
-                        this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+                        this.OnSessionTypeSelectionChanged();
                     }
                 }
             }
@@ -89,6 +100,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
             =>
             this.LocalizationService.Translate(
                     "Which type of question do you want to ask? Arsnova.voting is the serious, grown up one while arsnova.click is faster, more colorful and crammed up with gamification.");
+
+        private void OnSessionTypeSelectionChanged()
+        {
+            this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
+            this.OnPropertyChanged(nameof(this.IsArsnovaVotingSession));
+        }
 
         private void InitializeWindowCommandBindings()
         {

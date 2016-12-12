@@ -28,7 +28,7 @@ namespace ARSnovaPPIntegration.Test.Communication
         [TestMethod]
         public void GetHashtagsTest()
         {
-            var allHashtags = this.arsnovaClickService.FindAllHashtags();
+            var allHashtags = this.arsnovaClickService.GetAllHashtagInfos();
             Assert.IsFalse(string.IsNullOrWhiteSpace(allHashtags));
         }
 

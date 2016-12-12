@@ -21,6 +21,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public Slide Slide { get; set; }
 
+        public string Hashtag { get; set; }
+
         public bool NewSession { get; set; } = true;
 
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;

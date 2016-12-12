@@ -90,7 +90,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                       Text = string.Empty,
                                                       IsTrue = false
                                                   };
-                        generalAnswerOption.ObjectChangedEventHandler += delegate (object sender, EventArgs e) {
+                        generalAnswerOption.ObjectChangedEventHandler += delegate {
                             this.SlideSessionModel.AnswerOptionsSet = true;
                         };
 
@@ -385,7 +385,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 IsTrue = isTrue
             };
 
-            generalAnswerOption.ObjectChangedEventHandler += delegate (object sender, EventArgs e) {
+            generalAnswerOption.ObjectChangedEventHandler += delegate {
                                                                  this.SlideSessionModel.AnswerOptionsSet = true;
                                                              };
 

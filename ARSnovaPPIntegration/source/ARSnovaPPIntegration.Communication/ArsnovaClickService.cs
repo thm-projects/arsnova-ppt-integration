@@ -37,13 +37,13 @@ namespace ARSnovaPPIntegration.Communication
             #endif
         }
 
-        public string FindAllHashtags()
+        public List<HashtagInfo> GetAllHashtagInfos()
         {
             var request = this.CreateWebRequest("hashtags", HttpMethod.Get);
 
             var responseString = this.GetResponseString(request, HttpStatusCode.OK);
 
-            return responseString;
+            return JsonConvert.DeserializeObject<HashtagInfos>(responseString).hashtags;
         }
 
         public List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag)

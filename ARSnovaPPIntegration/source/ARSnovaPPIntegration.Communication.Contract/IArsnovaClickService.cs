@@ -5,7 +5,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
 {
     public interface IArsnovaClickService
     {
-        string FindAllHashtags();
+        List<HashtagInfo> GetAllHashtagInfos();
 
         List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag);
 

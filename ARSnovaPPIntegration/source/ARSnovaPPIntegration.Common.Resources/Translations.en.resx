@@ -292,4 +292,16 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Can't_create_session,_hashtag_is_already_taken" xml:space="preserve">
+    <value>Can't create session, hashtag is already taken.</value>
+  </data>
+  <data name="Error_during_session_setup" xml:space="preserve">
+    <value>Error during session setup</value>
+  </data>
+  <data name="Hashtag_already_taken." xml:space="preserve">
+    <value>Hashtag already taken.</value>
+  </data>
+  <data name="Hashtag_is_needed." xml:space="preserve">
+    <value>Hashtag is needed.</value>
+  </data>
 </root>

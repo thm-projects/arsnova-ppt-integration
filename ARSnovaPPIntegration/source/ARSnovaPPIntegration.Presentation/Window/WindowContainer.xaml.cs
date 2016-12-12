@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using ARSnovaPPIntegration.Presentation.Commands;
-using ARSnovaPPIntegration.Presentation.Models;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
@@ -25,7 +12,9 @@ namespace ARSnovaPPIntegration.Presentation.Window
     /// </summary>
     public partial class WindowContainer : INotifyPropertyChanged
     {
-        private ViewPresenter.ViewPresenter viewPresenter;
+        private readonly ViewPresenter.ViewPresenter viewPresenter;
+
+        public bool ShowCloseWindowPrompt { get; set; } = true;
 
         public NavigationButtonsToolTips NavigationButtonsToolTips { get; } = new NavigationButtonsToolTips();
 
@@ -89,13 +78,29 @@ namespace ARSnovaPPIntegration.Presentation.Window
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            var close = PopUpWindow.CloseWindowPrompt();
+            var windowContainer = sender as WindowContainer;
 
-            if (!close) {
-                e.Cancel = true;
+            if (windowContainer == null)
+                return;
+
+            if (windowContainer.ShowCloseWindowPrompt)
+            {
+                var close = PopUpWindow.CloseWindowPrompt();
+
+                if (!close)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    this.viewPresenter.ContentCleanUp();
+                }
             }
-
-            this.viewPresenter.ExternalWindowClose();
+            else
+            {
+                windowContainer.ShowCloseWindowPrompt = true;
+                this.viewPresenter.ContentCleanUp();
+            }
         }
     }
 }
