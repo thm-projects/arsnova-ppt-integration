@@ -12,7 +12,7 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private string questionText;
 
-        public SlideSessionModel(Slide slide)
+        public SlideSessionModel(Slide slide, bool edit = false)
         {
             this.Slide = slide;
         }

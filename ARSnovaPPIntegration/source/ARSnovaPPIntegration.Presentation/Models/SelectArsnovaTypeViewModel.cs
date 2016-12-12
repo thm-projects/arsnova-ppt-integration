@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 
-using ARSnovaPPIntegration.Business.Model;
-using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Window;
@@ -11,11 +9,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class SelectArsnovaTypeViewModel : BaseModel
     {
-        public SelectArsnovaTypeViewModel(
-            ViewPresenter.ViewPresenter viewPresenter,
-            ILocalizationService localizationService,
-            SlideSessionModel slideSessionModel) 
-            : base(viewPresenter, localizationService, slideSessionModel)
+        public SelectArsnovaTypeViewModel(ViewModelRequirements requirements)
+            : base(requirements)
         {
             this.InitializeWindowCommandBindings();
         }
@@ -105,10 +100,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new QuestionViewModel(
-                                        this.ViewPresenter,
-                                        this.LocalizationService,
-                                        this.SlideSessionModel));
+                                    new QuestionViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true)
                     });

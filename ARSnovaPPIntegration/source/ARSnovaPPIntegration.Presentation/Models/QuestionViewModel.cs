@@ -6,7 +6,6 @@ using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
-using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.Window;
@@ -15,17 +14,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class QuestionViewModel : BaseModel
     {
-        public QuestionViewModel(
-            ViewPresenter.ViewPresenter viewPresenter,
-            ILocalizationService localizationService,
-            SlideSessionModel slideSessionModel) 
-            : base(viewPresenter, localizationService, slideSessionModel)
+        public QuestionViewModel(ViewModelRequirements requirements)
+            : base(requirements)
         {
             this.InitializeWindowCommandBindings();
 
             var sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
 
-            this.QuestionTypes = slideSessionModel.SessionType == SessionType.ArsnovaClick
+            this.QuestionTypes = this.SlideSessionModel.SessionType == SessionType.ArsnovaClick
                 ? sessionInformationProvider.GetAvailableQuestionsClick()
                 : sessionInformationProvider.GetAvailableQuestionsVoting();
         }
@@ -110,10 +106,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new SelectArsnovaTypeViewModel(
-                                        this.ViewPresenter,
-                                        this.LocalizationService,
-                                        this.SlideSessionModel));
+                                    new SelectArsnovaTypeViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true),
                         new CommandBinding(
@@ -121,10 +114,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new AnswerOptionViewModel(
-                                        this.ViewPresenter,
-                                        this.LocalizationService,
-                                        this.SlideSessionModel));
+                                    new AnswerOptionViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true)
                     });

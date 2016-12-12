@@ -1,9 +1,11 @@
 ﻿using System;
 
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Models;
+using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
@@ -14,12 +16,16 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private readonly ILocalizationService localizationService;
 
+        private readonly ISessionManager sessionManager;
+
         public RibbonHelper(
             ViewPresenter.ViewPresenter viewPresenter,
             ILocalizationService localizationService)
         {
             this.viewPresenter = viewPresenter;
             this.localizationService = localizationService;
+
+            this.sessionManager = ServiceLocator.Current.GetInstance<ISessionManager>();
         }
 
         public void StartQuizSetup(Slide slide)
@@ -28,15 +34,28 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             this.viewPresenter.Show(
                 new SelectArsnovaTypeViewModel(
-                    this.viewPresenter,
-                    this.localizationService,
-                    slideSessionModel));
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.localizationService,
+                        this.sessionManager,
+                        slideSessionModel)));
         }
 
         public void EditQuizSetup(Slide slide)
         {
-            // TODO Implement edit mode -> retrieve / build model from data in slide and start viewpresenter
             throw new NotImplementedException();
+
+            var slideSessionModel = new SlideSessionModel(slide, true);
+
+            // TODO Implement edit mode -> retrieve / build model from data in slide and start viewpresenter
+
+            this.viewPresenter.Show(
+                new SelectArsnovaTypeViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.localizationService,
+                        this.sessionManager,
+                        slideSessionModel)));
         }
 
         public Slide CreateNewSlide()

@@ -8,7 +8,6 @@ using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
-using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
 
@@ -18,11 +17,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
     {
         private readonly ISessionInformationProvider sessionInformationProvider;
 
-        public AnswerOptionViewModel(
-            ViewPresenter.ViewPresenter viewPresenter,
-            ILocalizationService localizationService,
-            SlideSessionModel slideSessionModel) 
-            : base(viewPresenter, localizationService, slideSessionModel)
+        public AnswerOptionViewModel(ViewModelRequirements requirements) 
+            : base(requirements)
         {
             this.InitializeWindowCommandBindings();
 
@@ -267,17 +263,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new QuestionViewModel(
-                                        this.ViewPresenter,
-                                        this.LocalizationService,
-                                        this.SlideSessionModel));
+                                    new QuestionViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true),
                         new CommandBinding(
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
+                                this.AddSessionToSlides();
                             },
                             (e, o) => o.CanExecute = true)
                     });

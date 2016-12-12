@@ -30,8 +30,8 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             // Type registration
             unityContainer
                 .RegisterType<ILocalizationService, LocalizationService>()
-                    //new PerResolveLifetimeManager(),
-                    //new InjectionConstructor())
+                //new PerResolveLifetimeManager(),
+                //new InjectionConstructor())
                 /*.RegisterType<IExceptionHandler, UiExceptionHandler>(
                 new PerResolveLifetimeManager(),
                 new InjectionConstructor(new ResolvedParameter<ILocalizationService>()))*/
@@ -39,7 +39,8 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
                 .RegisterType<ISlideManipulator, SlideManipulator>()
                 .RegisterType<IArsnovaClickService, ArsnovaClickService>()
                 .RegisterType<IQuestionTypeTranslator, QuestionTypeTranslator>()
-                .RegisterType<ISessionInformationProvider, SessionInformationProvider>();
+                .RegisterType<ISessionInformationProvider, SessionInformationProvider>()
+                .RegisterType<ISessionManager, SessionManager>();
 
             // Factory registration
             unityContainer.RegisterType<Func<ILocalizationService>>();
@@ -47,6 +48,7 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             unityContainer.RegisterType<Func<IArsnovaClickService>>();
             unityContainer.RegisterType<Func<ISlideManipulator>>();
             unityContainer.RegisterType<Func<IQuestionTypeTranslator>>();
+            unityContainer.RegisterType<Func<ISessionManager>>();
 
             return unityContainer;
         }
