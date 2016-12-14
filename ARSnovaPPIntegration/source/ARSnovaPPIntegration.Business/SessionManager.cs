@@ -33,7 +33,7 @@ namespace ARSnovaPPIntegration.Business
             var validationResult = new ValidationResult();
             if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
             {
-                validationResult = this.SetupArsnovaClickOnlineSession(slideSessionModel);
+                validationResult = this.NewArsnovaClickOnlineSession(slideSessionModel);
 
                 if (!validationResult.Success)
                 {
@@ -54,7 +54,7 @@ namespace ARSnovaPPIntegration.Business
             throw new NotImplementedException();
         }
 
-        private ValidationResult SetupArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
+        private ValidationResult NewArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
         {
             var validationResult = new ValidationResult();
 
@@ -77,6 +77,11 @@ namespace ARSnovaPPIntegration.Business
             }
 
             // TODO setup
+            // send session to click
+
+            validationResult = this.arsnovaClickService.PostSession(slideSessionModel);
+
+            // setup slides
 
             return validationResult;
         }
