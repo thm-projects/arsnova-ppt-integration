@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ARSnovaPPIntegration.Model.ArsnovaClick
+namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
 {
     public class HashtagInfo
     {

@@ -76,12 +76,9 @@ namespace ARSnovaPPIntegration.Business
                 return validationResult;
             }
 
-            // TODO setup
-            // send session to click
-
             validationResult = this.arsnovaClickService.PostSession(slideSessionModel);
 
-            // setup slides
+            // TODO setup slides
 
             return validationResult;
         }

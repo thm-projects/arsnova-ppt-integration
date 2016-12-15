@@ -1,4 +1,4 @@
-﻿namespace ARSnovaPPIntegration.Model.ArsnovaClick
+﻿namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
 {
     public class AnswerOptionModel
     {
@@ -11,5 +11,7 @@
         public int answerOptionNumber { get; set; }
 
         public bool isCorrect { get; set; }
+
+        public string type { get; set; }
     }
 }

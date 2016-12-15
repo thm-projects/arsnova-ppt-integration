@@ -50,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Presen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Communication.Contract", "ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj", "{954ED932-5036-4C37-A58D-3C87753AFD57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Model", "ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj", "{3863C834-B716-4844-947B-BBF358A8FB08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Communication.Model", "ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj", "{3863C834-B716-4844-947B-BBF358A8FB08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARSnovaPPIntegration.Common.Enum", "ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj", "{92871CB4-6B22-484A-9B19-EBD08608E547}"
 EndProject

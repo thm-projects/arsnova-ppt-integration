@@ -23,6 +23,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public string Hashtag { get; set; }
 
+        public string PrivateKey { get; set; }
+
         public bool NewSession { get; set; } = true;
 
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;

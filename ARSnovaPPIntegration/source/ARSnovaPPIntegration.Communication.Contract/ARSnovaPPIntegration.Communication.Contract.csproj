@@ -63,9 +63,9 @@
       <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
       <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj">
+    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
       <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
-      <Name>ARSnovaPPIntegration.Model</Name>
+      <Name>ARSnovaPPIntegration.Communication.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

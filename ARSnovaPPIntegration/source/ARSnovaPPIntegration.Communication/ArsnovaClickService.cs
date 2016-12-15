@@ -4,8 +4,8 @@ using System.Linq;
 using ARSnovaPPIntegration.Communication.CastHelpers.Converters;
 using ARSnovaPPIntegration.Communication.CastHelpers.Models;
 using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Model.ArsnovaClick;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication
 {
@@ -69,14 +69,18 @@ namespace ARSnovaPPIntegration.Communication
 
         public ValidationResult PostSession(SlideSessionModel slideSessionModel)
         {
-            var validationResult = this.arsnovaClickApi.AddHashtag(slideSessionModel.Hashtag);
+            // Temporary: One private key per question
+            slideSessionModel.PrivateKey = this.arsnovaClickApi.NewPrivateKey();
+
+            var validationResult = this.arsnovaClickApi.AddHashtag(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
                 return validationResult;
             }
 
-            return this.UpdateSession(slideSessionModel);
+            return validationResult;
+            // TODO addQuestionGroup
         }
 
         public ValidationResult UpdateSession(SlideSessionModel slideSessionModel)
@@ -85,14 +89,15 @@ namespace ARSnovaPPIntegration.Communication
             // get all questions
 
             // add all given
-            var validationResult = this.arsnovaClickApi.DeleteQuestionGroup(slideSessionModel.Hashtag);
+            var validationResult = this.arsnovaClickApi.DeleteQuestionGroup(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
                 return validationResult;
             }
-
-            return this.arsnovaClickApi.AddQuestionGroup();
+            // TODO
+            return validationResult;
+            //return this.arsnovaClickApi.AddQuestionGroup();
         }
     }
 }

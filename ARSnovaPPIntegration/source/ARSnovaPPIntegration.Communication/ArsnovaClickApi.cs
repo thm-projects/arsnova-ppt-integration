@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -10,7 +9,8 @@ using Newtonsoft.Json;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Communication.CastHelpers.Models;
-using ARSnovaPPIntegration.Model.ArsnovaClick;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
+
 using HttpMethod = ARSnovaPPIntegration.Common.Enum.HttpMethod;
 
 namespace ARSnovaPPIntegration.Communication
@@ -38,7 +38,7 @@ namespace ARSnovaPPIntegration.Communication
         {
             var jsonBody = JsonConvert.SerializeObject(new
             {
-                hashtag
+                hashtag = Uri.EscapeDataString(hashtag)
             });
 
             try
@@ -58,20 +58,37 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        public ValidationResult AddHashtag(string hashtag)
+        public ValidationResult AddHashtag(string hashtag, string privateKey)
         {
+            // test only start
+            var jsonBody2 = JsonConvert.SerializeObject(new
+            {
+                hashtag = Uri.EscapeDataString("Demo Quiz 87")
+            });
+
+
+            var request2 = this.CreateWebRequest("getQuestionGroup", HttpMethod.Post);
+
+            request2 = this.AddContentToRequest(request2, jsonBody2);
+
+            var response = this.GetResponseString(request2);
+            
+
+            // test only end
+
+
+
             var validationResult = new ValidationResult();
 
             var createHashtagConfig = new 
                                       {
-                // TODO escape all params
                                           hashtag = Uri.EscapeDataString(hashtag),
-                                          privateKey = this.NewPrivateKey()
+                                          privateKey
             };
 
             var jsonBody = JsonConvert.SerializeObject(new
             {
-                addHashtagConfiguration = createHashtagConfig
+                sessionConfiguration = createHashtagConfig
             });
 
             try
@@ -90,24 +107,49 @@ namespace ARSnovaPPIntegration.Communication
             return validationResult;
         }
 
-        public ValidationResult DeleteQuestionGroup(string hashtag)
+        public ValidationResult DeleteQuestionGroup(string hashtag, string privateKey)
         {
-            // TODO
-            return new ValidationResult();
+            var validationResult = new ValidationResult();
+
+            var deleteQuestionGroupConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = deleteQuestionGroupConfig
+            });
+
+            try
+            {
+                var request = this.CreateWebRequest("removeQuestionGroup", HttpMethod.Post);
+
+                request = this.AddContentToRequest(request, jsonBody);
+
+                this.SendRequest(request);
+            }
+            catch (CommunicationException comException)
+            {
+                validationResult = this.CommunicationExceptionToValidationResult(comException);
+            }
+
+            return validationResult;
         }
         
-        public ValidationResult AddQuestionGroup()
+        /*public ValidationResult AddQuestionGroup(string hashtag, string privateKey, QuestionGroupReturn questionGroup)
         {
             // TODO
             return new ValidationResult();
-        }
+        }*/
 
 
         public SessionConfigurationReturn GetSessionConfiguration(string hashtag)
         {
             var jsonBody = JsonConvert.SerializeObject(new
             {
-                hashtag
+                hashtag = Uri.EscapeDataString(hashtag)
             });
 
             try
@@ -127,7 +169,6 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        // TODO check for private key much more earlier (does the presentation already contains one? authentification with ms-account?)!!!
         public string NewPrivateKey()
         {
             var request = this.CreateWebRequest("createPrivateKey", HttpMethod.Get);

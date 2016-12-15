@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using ARSnovaPPIntegration.Model.ArsnovaClick;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication.CastHelpers.Models
 {

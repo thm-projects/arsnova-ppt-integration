@@ -11,6 +11,7 @@ namespace ARSnovaPPIntegration.Test.Communication
     {
         private readonly IArsnovaClickService arsnovaClickService;
 
+        // TODO Add encoding: hashtag = Uri.EscapeDataString(hashtag)
         public ClickCommunicationTests()
         {
             this.arsnovaClickService = new ArsnovaClickService();
@@ -43,12 +44,18 @@ namespace ARSnovaPPIntegration.Test.Communication
         }
 
         [TestMethod]
+        public void GetQuestionGroup()
+        {
+            // TODO
+        }
+
+        [TestMethod]
         public void GetHashtagsTest()
         {
-            var allHashtags = this.arsnovaClickService.GetAllHashtagInfos();
-            foreach (var hashtag in allHashtags)
+            var allHashtagInfos = this.arsnovaClickService.GetAllHashtagInfos();
+            foreach (var allHashtagInfo in allHashtagInfos)
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(hashtag));
+                Assert.IsFalse(string.IsNullOrWhiteSpace(allHashtagInfo.hashtag));
             }
         }
 
