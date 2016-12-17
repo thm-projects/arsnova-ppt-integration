@@ -5,11 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+
 using System.Web.Script.Serialization;
 using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Model;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Model;
 
 namespace ARSnovaPPIntegration.Communication
 {

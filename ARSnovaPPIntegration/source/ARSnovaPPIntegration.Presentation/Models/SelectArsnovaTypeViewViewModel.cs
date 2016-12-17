@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
-
+using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
-    public class SelectArsnovaTypeViewModel : BaseModel
+    public class SelectArsnovaTypeViewViewModel : BaseViewModel
     {
-        public SelectArsnovaTypeViewModel(ViewModelRequirements requirements)
+        public SelectArsnovaTypeViewViewModel(ViewModelRequirements requirements)
             : base(requirements)
         {
             this.InitializeWindowCommandBindings();
@@ -27,7 +28,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                    if (this.SlideSessionModel.Questions.Any())
                     {
                         var reset = PopUpWindow.ConfirmationWindow(
                             this.LocalizationService.Translate("Reset"),
@@ -38,16 +39,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
                             this.OnSessionTypeSelectionChanged();
-                            this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
-                            this.SlideSessionModel.QuestionTypeSet = false;
-                            this.SlideSessionModel.AnswerOptions = null;
-                            this.SlideSessionModel.AnswerOptionsSet = false;
+                            this.SlideSessionModel.Questions = new List<SlideQuestionModel>();
                         }
                     }
                     else
                     {
                         this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
-                        this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceClick;
                         this.OnSessionTypeSelectionChanged();
                     }
                 } 
@@ -67,7 +64,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (value)
                 {
-                    if (this.SlideSessionModel.QuestionTypeSet || this.SlideSessionModel.AnswerOptionsSet)
+                    if (this.SlideSessionModel.Questions.Any())
                     {
                         var reset = PopUpWindow.ConfirmationWindow(
                             this.LocalizationService.Translate("Reset"),
@@ -78,16 +75,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
                             this.OnSessionTypeSelectionChanged();
-                            this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
-                            this.SlideSessionModel.QuestionTypeSet = false;
-                            this.SlideSessionModel.AnswerOptions = null;
-                            this.SlideSessionModel.AnswerOptionsSet = false;
+                            this.SlideSessionModel.Questions = new List<SlideQuestionModel>();
                         }
                     }
                     else
                     {
                         this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
-                        this.SlideSessionModel.QuestionType = QuestionTypeEnum.SingleChoiceVoting;
                         this.OnSessionTypeSelectionChanged();
                     }
                 }
@@ -117,7 +110,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new QuestionViewModel(this.GetViewModelRequirements()));
+                                    new SessionOverviewViewViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true)
                     });

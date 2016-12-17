@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
+
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
-    public abstract class BaseModel : INotifyPropertyChanged, IWindowCommandBindings
+    public abstract class BaseViewModel : INotifyPropertyChanged, IWindowCommandBindings
     {
         protected readonly ViewPresenter.ViewPresenter ViewPresenter;
+
+        protected readonly IQuestionTypeTranslator QuestionTypeTranslator;
 
         protected readonly ILocalizationService LocalizationService;
 
@@ -22,25 +25,15 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         protected SlideSessionModel SlideSessionModel;
 
-        protected BaseModel(ViewModelRequirements requirements)
+        protected BaseViewModel(ViewModelRequirements requirements)
         {
             this.ViewPresenter = requirements.ViewPresenter;
+            this.QuestionTypeTranslator = requirements.QuestionTypeTranslator;
             this.LocalizationService = requirements.LocalizationService;
             this.SessionManager = requirements.SessionManager;
             this.SessionInformationProvider = requirements.SessionInformationProvider;
 
             this.SlideSessionModel = requirements.SlideSessionModel;
-
-            this.WindowCommandBindings.AddRange(new List<CommandBinding>
-            {
-                new CommandBinding(
-                    NavigationButtonCommands.Cancel,
-                    (e, o) =>
-                    {
-                        this.ViewPresenter.CloseWithPrompt();
-                    },
-                    (e, o) => o.CanExecute = true)
-              });
         }
         public List<CommandBinding> WindowCommandBindings { get; set; } = new List<CommandBinding>();
 
@@ -49,16 +42,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
         protected void AddSessionToSlides()
         {
             // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
-            ValidationResult validationResult;
-
-            if (this.SlideSessionModel.NewSession)
-            {
-                validationResult = this.SessionManager.CreateSession(this.SlideSessionModel);
-            }
-            else
-            {
-                validationResult = this.SessionManager.EditSession(this.SlideSessionModel);
-            }
+            var validationResult = this.SlideSessionModel.NewSession ? 
+                this.SessionManager.CreateSession(this.SlideSessionModel) : 
+                this.SessionManager.EditSession(this.SlideSessionModel);
 
             if (validationResult.Success)
             {
@@ -74,6 +60,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             return new ViewModelRequirements(
                 this.ViewPresenter,
+                this.QuestionTypeTranslator,
                 this.LocalizationService,
                 this.SessionManager,
                 this.SessionInformationProvider,
@@ -96,26 +83,30 @@ namespace ARSnovaPPIntegration.Presentation.Models
     {
         public ViewModelRequirements(
             ViewPresenter.ViewPresenter viewPresenter,
+            IQuestionTypeTranslator questionTypeTranslator,
             ILocalizationService localizationService,
             ISessionManager sessionManager,
             ISessionInformationProvider sessionInformationProvider,
             SlideSessionModel slideSessionModel)
         {
             this.ViewPresenter = viewPresenter;
+            this.QuestionTypeTranslator = questionTypeTranslator;
             this.LocalizationService = localizationService;
             this.SessionManager = sessionManager;
             this.SessionInformationProvider = sessionInformationProvider;
             this.SlideSessionModel = slideSessionModel;
         }
 
-        public ViewPresenter.ViewPresenter ViewPresenter { get; set; }
+        public ViewPresenter.ViewPresenter ViewPresenter { get; }
 
-        public ILocalizationService LocalizationService { get; set; }
+        public IQuestionTypeTranslator QuestionTypeTranslator { get; }
 
-        public ISessionManager SessionManager { get; set; }
+        public ILocalizationService LocalizationService { get; }
 
-        public ISessionInformationProvider SessionInformationProvider { get; set; }
+        public ISessionManager SessionManager { get; }
 
-        public SlideSessionModel SlideSessionModel { get; set; }
+        public ISessionInformationProvider SessionInformationProvider { get; }
+
+        public SlideSessionModel SlideSessionModel { get; }
 }
 }

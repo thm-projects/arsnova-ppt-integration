@@ -304,4 +304,31 @@
   <data name="Hashtag_is_needed." xml:space="preserve">
     <value>Hashtag is needed.</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Do_you_really_want_to_cancel_and_rewind_all_current_changes?" xml:space="preserve">
+    <value>Do you really want to cancel and rewind all current changes?</value>
+  </data>
+  <data name="Do_you_really_want_to_delete_this_question?" xml:space="preserve">
+    <value>Do you really want to delete this question?</value>
+  </data>
+  <data name="Question_overview" xml:space="preserve">
+    <value>Question overview</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="Slide" xml:space="preserve">
+    <value>Slide</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Contract.Translators;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -20,6 +21,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private readonly ISessionInformationProvider sessionInformationProvider;
 
+        private readonly IQuestionTypeTranslator questionTypeTranslator;
+
         public RibbonHelper(
             ViewPresenter.ViewPresenter viewPresenter,
             ILocalizationService localizationService)
@@ -29,16 +32,18 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             this.sessionManager = ServiceLocator.Current.GetInstance<ISessionManager>();
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
+            this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
         }
 
         public void StartQuizSetup(Slide slide)
         {
-            var slideSessionModel = new SlideSessionModel(slide);
+            var slideSessionModel = new SlideSessionModel();
 
-            this.viewPresenter.Show(
-                new SelectArsnovaTypeViewModel(
+            this.viewPresenter.ShowInNewWindow(
+                new SelectArsnovaTypeViewViewModel(
                     new ViewModelRequirements(
                         this.viewPresenter,
+                        this.questionTypeTranslator,
                         this.localizationService,
                         this.sessionManager,
                         this.sessionInformationProvider,
@@ -49,14 +54,15 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             throw new NotImplementedException();
 
-            var slideSessionModel = new SlideSessionModel(slide, true);
+            var slideSessionModel = new SlideSessionModel(true);
 
             // TODO Implement edit mode -> retrieve / build model from data in slide and start viewpresenter
 
-            this.viewPresenter.Show(
-                new SelectArsnovaTypeViewModel(
+            this.viewPresenter.ShowInNewWindow(
+                new SelectArsnovaTypeViewViewModel(
                     new ViewModelRequirements(
                         this.viewPresenter,
+                        this.questionTypeTranslator,
                         this.localizationService,
                         this.sessionManager,
                         this.sessionInformationProvider,

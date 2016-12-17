@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:content="clr-namespace:ARSnovaPPIntegration.Presentation.Content"
              xmlns:navigationButtonsCommands="clr-namespace:ARSnovaPPIntegration.Presentation.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
@@ -23,19 +22,46 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" x:Name="TopRibbonBar" >
+            <ToolBar>
+                <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.New}"
+                    Icon="{DynamicResource New}"
+                    Height="50" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.New}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.New}"
+                    Visibility="{Binding Path=NewButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.Edit}"
+                    Icon="{DynamicResource Edit}"
+                    Height="50" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Edit}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.Edit}"
+                    Visibility="{Binding Path=EditButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.Delete}"
+                    Icon="{DynamicResource Delete}"
+                    Height="50" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Delete}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.Delete}"
+                    Visibility="{Binding Path=DeleteButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </ToolBar>
+        </Grid>
         
-         <Grid Grid.Row="1" x:Name="Content" x:FieldModifier="public" Height="Auto">
+         <Grid Grid.Row="2" x:Name="Content" x:FieldModifier="public" Height="Auto">
              
          </Grid>  
         
         <!-- Window Controls, bind needed ones in ViewModel! -->
-        <Border Grid.Row="2" BorderThickness="0 1 0 0" Margin="0"/>
+        <Border Grid.Row="3" BorderThickness="0 1 0 0" Margin="0"/>
         
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <StackPanel x:Name="CancelButtonBar" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6">
                 <Button Content="{DynamicResource Cancel}" ToolTip="{Binding Path=NavigationButtonsToolTips.Cancel}" HorizontalAlignment="Left" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Cancel}" Visibility="{Binding Path=CancelButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="6 0 0 0"/>
             </StackPanel>

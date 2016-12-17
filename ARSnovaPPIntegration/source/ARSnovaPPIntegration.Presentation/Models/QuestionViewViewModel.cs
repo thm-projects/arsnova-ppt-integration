@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
+
 using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
@@ -12,11 +14,32 @@ using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
-    public class QuestionViewModel : BaseModel
+    public class QuestionViewViewModel : BaseViewModel
     {
-        public QuestionViewModel(ViewModelRequirements requirements)
+        private readonly Guid questionId;
+
+        private bool isNew;
+
+        private SlideQuestionModel questionBeforeEdit;
+
+        private SlideQuestionModel SlideQuestionModel
+        {
+            get { return this.SlideSessionModel.Questions.FirstOrDefault(q => q.Id == this.questionId); }
+            set
+            {
+                this.SlideSessionModel.Questions.Remove(this.SlideSessionModel.Questions.FirstOrDefault(q => q.Id == this.questionId));
+                this.SlideSessionModel.Questions.Add(value);
+            }
+        }
+
+        public QuestionViewViewModel(ViewModelRequirements requirements, Guid questionId, bool isNew, SlideQuestionModel questionBeforeEdit = null)
             : base(requirements)
         {
+            this.questionId = questionId;
+            this.isNew = isNew;
+
+            this.questionBeforeEdit = questionBeforeEdit ?? this.SlideQuestionModel;
+
             this.InitializeWindowCommandBindings();
 
             var sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
@@ -36,9 +59,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             get
             {
-                if (this.SlideSessionModel.QuestionType != 0)
+                if (this.SlideQuestionModel.QuestionType != 0)
                 {
-                    return this.SlideSessionModel.QuestionType;
+                    return this.SlideQuestionModel.QuestionType;
                 }
                 else
                 {
@@ -49,12 +72,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
             set
             {
-                var oldQuestionType = this.SlideSessionModel.QuestionType;
+                var oldQuestionType = this.SlideQuestionModel.QuestionType;
 
                 if (oldQuestionType == value)
                     return;
 
-                if (this.SlideSessionModel.AnswerOptionsSet)
+                if (this.SlideQuestionModel.AnswerOptionsSet)
                 {
                     var reset = PopUpWindow.ConfirmationWindow(
                         this.LocalizationService.Translate("Reset"),
@@ -63,10 +86,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                     if (reset)
                     {
-                        this.SlideSessionModel.QuestionType = value;
-                        this.SlideSessionModel.QuestionTypeSet = true;
-                        this.SlideSessionModel.AnswerOptions = null;
-                        this.SlideSessionModel.AnswerOptionsSet = false;
+                        this.SlideQuestionModel.QuestionType = value;
+                        this.SlideQuestionModel.QuestionTypeSet = true;
+                        this.SlideQuestionModel.AnswerOptions = null;
+                        this.SlideQuestionModel.AnswerOptionsSet = false;
                     }
                     else
                     {
@@ -74,7 +97,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         Dispatcher.CurrentDispatcher.BeginInvoke(
                                 new Action(() =>
                                 {
-                                    this.SlideSessionModel.QuestionType = oldQuestionType;
+                                    this.SlideQuestionModel.QuestionType = oldQuestionType;
                                     this.OnPropertyChanged("QuestionType");
                                 }),
                                 DispatcherPriority.ContextIdle,
@@ -84,16 +107,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 }
                 else
                 {
-                    this.SlideSessionModel.QuestionType = value;
-                    this.SlideSessionModel.QuestionTypeSet = true;
+                    this.SlideQuestionModel.QuestionType = value;
+                    this.SlideQuestionModel.QuestionTypeSet = true;
                 }
             }
         }
 
         public string QuestionText
         {
-            get { return this.SlideSessionModel.QuestionText; }
-            set { this.SlideSessionModel.QuestionText = value; }
+            get { return this.SlideQuestionModel.QuestionText; }
+            set { this.SlideQuestionModel.QuestionText = value; }
         }
 
         private void InitializeWindowCommandBindings()
@@ -102,11 +125,26 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     new List<CommandBinding>
                     {
                         new CommandBinding(
-                            NavigationButtonCommands.Back,
+                            NavigationButtonCommands.Cancel,
                             (e, o) =>
                             {
-                                this.ViewPresenter.Show(
-                                    new SelectArsnovaTypeViewModel(this.GetViewModelRequirements()));
+                                var delete = PopUpWindow.ConfirmationWindow(
+                                    this.LocalizationService.Translate("Cancel"),
+                                    this.LocalizationService.Translate("Do you really want to cancel and rewind all current changes?"));
+
+                                if (delete)
+                                {
+                                    if (this.isNew)
+                                    {
+                                        this.SlideSessionModel.Questions.Remove(this.SlideQuestionModel);
+                                    }
+                                    else
+                                    {
+                                        this.SlideQuestionModel = this.questionBeforeEdit;
+                                    }
+
+                                    this.ViewPresenter.CloseWithoutPrompt();
+                                }
                             },
                             (e, o) => o.CanExecute = true),
                         new CommandBinding(
@@ -114,7 +152,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.ViewPresenter.Show(
-                                    new AnswerOptionViewModel(this.GetViewModelRequirements()));
+                                    new AnswerOptionViewViewModel(this.GetViewModelRequirements(), this.questionId, this.isNew, this.questionBeforeEdit));
                             },
                             (e, o) => o.CanExecute = true)
                     });

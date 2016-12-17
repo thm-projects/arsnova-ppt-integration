@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
@@ -23,7 +24,11 @@ namespace ARSnovaPPIntegration.Presentation.Window
             this.viewPresenter = viewPresenter;
             this.InitializeComponent();
             this.DataContext = this;
+
+            this.WindowId = new Guid();
         }
+
+        public Guid WindowId { get; }
 
         public bool BackButtonVisibility
         {
@@ -57,6 +62,30 @@ namespace ARSnovaPPIntegration.Presentation.Window
             }
         }
 
+        public bool NewButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.New);
+            }
+        }
+
+        public bool EditButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Edit);
+            }
+        }
+
+        public bool DeleteButtonVisibility
+        {
+            get
+            {
+                return this.CommandBindings.OfType<CommandBinding>().Any(c => c.Command == NavigationButtonCommands.Delete);
+            }
+        }
+
         public void SetWindowCommandBindings(List<CommandBinding> commandBindings)
         {
             this.CommandBindings.AddRange(commandBindings);
@@ -67,6 +96,9 @@ namespace ARSnovaPPIntegration.Presentation.Window
             this.OnPropertyChanged("ForwardButtonVisibility");
             this.OnPropertyChanged("CancelButtonVisibility");
             this.OnPropertyChanged("FinishButtonVisibility");
+            this.OnPropertyChanged("NewButtonVisibility");
+            this.OnPropertyChanged("EditButtonVisibility");
+            this.OnPropertyChanged("DeleteButtonVisibility");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -93,13 +125,13 @@ namespace ARSnovaPPIntegration.Presentation.Window
                 }
                 else
                 {
-                    this.viewPresenter.ContentCleanUp();
+                    this.viewPresenter.ContentCleanUp(this.WindowId);
                 }
             }
             else
             {
                 windowContainer.ShowCloseWindowPrompt = true;
-                this.viewPresenter.ContentCleanUp();
+                this.viewPresenter.ContentCleanUp(this.WindowId);
             }
         }
     }

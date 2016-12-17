@@ -229,9 +229,10 @@
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\QuestionViewModel.cs" />
-    <Compile Include="Models\AnswerOptionViewModel.cs" />
+    <Compile Include="Models\BaseViewModel.cs" />
+    <Compile Include="Models\QuestionViewViewModel.cs" />
+    <Compile Include="Models\AnswerOptionViewViewModel.cs" />
+    <Compile Include="Models\SessionOverviewViewViewModel.cs" />
     <Compile Include="Resources\BindingProxy.cs" />
     <Compile Include="Resources\ClickHashtagValidation.cs" />
     <Compile Include="Resources\NumericTextBox.cs" />
@@ -240,12 +241,15 @@
     <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
     <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
     <Compile Include="ViewPresenter\ViewPresenter.cs" />
-    <Compile Include="Models\SelectArsnovaTypeViewModel.cs" />
+    <Compile Include="Models\SelectArsnovaTypeViewViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\AnswerOptionView.xaml.cs">
       <DependentUpon>AnswerOptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SessionOverviewView.xaml.cs">
+      <DependentUpon>SessionOverviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuestionView.xaml.cs">
       <DependentUpon>QuestionView.xaml</DependentUpon>
@@ -255,6 +259,7 @@
     </Compile>
     <Compile Include="Window\PopUpWindow.cs" />
     <Compile Include="Window\NavigationButtonsToolTips.cs" />
+    <Compile Include="Window\PresentationGroup.cs" />
     <Compile Include="Window\WindowContainer.xaml.cs">
       <DependentUpon>WindowContainer.xaml</DependentUpon>
     </Compile>
@@ -327,6 +332,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Views\AnswerOptionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SessionOverviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -49,11 +49,16 @@
     <Compile Include="GeneralAnswerOption.cs" />
     <Compile Include="QuestionType.cs" />
     <Compile Include="RangedAnswerOption.cs" />
+    <Compile Include="SlideQuestionModel.cs" />
     <Compile Include="SlideSessionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
+      <Project>{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}</Project>
+      <Name>ARSnovaPPIntegration.Common.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
       <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
       <Name>ARSnovaPPIntegration.Common.Enum</Name>
