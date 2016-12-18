@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
 using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Model
@@ -11,7 +11,7 @@ namespace ARSnovaPPIntegration.Business.Model
             this.NewSession = !edit;
         }
 
-        public List<SlideQuestionModel> Questions { get; set; } = new List<SlideQuestionModel>();
+        public ObservableCollection<SlideQuestionModel> Questions { get; set; } = new ObservableCollection<SlideQuestionModel>();
 
         public string Hashtag { get; set; }
 

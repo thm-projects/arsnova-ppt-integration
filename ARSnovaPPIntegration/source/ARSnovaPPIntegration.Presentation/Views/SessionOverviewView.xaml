@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="White">
@@ -23,6 +22,7 @@
                           AutoGenerateColumns="False"
                           CanUserSortColumns="False"
                           HeadersVisibility="Column"
+                          SelectedItem="{Binding SelectedSlideQuestionModel}"
                           VerticalAlignment="Top"
                           AlternatingRowBackground="Gainsboro" 
                           CanUserAddRows="false"
@@ -39,11 +39,11 @@
                                 <TextBlock Text="{Binding DataContext.GridHeaderQuestionTypeText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridCheckBoxColumn Binding="{Binding QuestionText}" Width="0.5*">
-                            <DataGridCheckBoxColumn.Header>
+                        <DataGridTextColumn Binding="{Binding QuestionText}" Width="0.5*">
+                            <DataGridTextColumn.Header>
                                 <TextBlock Text="{Binding DataContext.GridHeaderQuestionText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

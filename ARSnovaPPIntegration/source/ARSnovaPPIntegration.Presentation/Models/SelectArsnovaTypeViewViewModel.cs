@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using ARSnovaPPIntegration.Business.Model;
@@ -39,7 +40,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaClick;
                             this.OnSessionTypeSelectionChanged();
-                            this.SlideSessionModel.Questions = new List<SlideQuestionModel>();
+                            this.SlideSessionModel.Questions = new ObservableCollection<SlideQuestionModel>();
                         }
                     }
                     else
@@ -75,7 +76,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
                             this.OnSessionTypeSelectionChanged();
-                            this.SlideSessionModel.Questions = new List<SlideQuestionModel>();
+                            this.SlideSessionModel.Questions = new ObservableCollection<SlideQuestionModel>();
                         }
                     }
                     else

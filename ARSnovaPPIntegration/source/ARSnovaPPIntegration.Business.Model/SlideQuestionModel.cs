@@ -8,8 +8,6 @@ namespace ARSnovaPPIntegration.Business.Model
     public class SlideQuestionModel
     {
         // TODO: Concept: which default values should be taken?
-        private readonly IQuestionTypeTranslator questionTypeTranslator;
-
         private ObservableCollection<object> answerOptions;
 
         private string questionText;
@@ -18,19 +16,21 @@ namespace ARSnovaPPIntegration.Business.Model
         {
             this.Id = new Guid();
 
-            this.questionTypeTranslator = questionTypeTranslator;
+            this.QuestionTypeTranslator = questionTypeTranslator;
         }
+
+        public readonly IQuestionTypeTranslator QuestionTypeTranslator;
 
         // TODO test data
         public int SlideNumber { get; set; } = 0;
 
         // TODO select on which slide this question should be
 
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         public QuestionTypeEnum QuestionType { get; set; } = QuestionTypeEnum.SingleChoiceClick;
 
-        public string QuestionTypeText => this.questionTypeTranslator.TranslateQuestionType(this.QuestionType);
+        public string QuestionTypeText => this.QuestionTypeTranslator.TranslateQuestionType(this.QuestionType);
 
         public bool QuestionTypeSet { get; set; } = false;
 

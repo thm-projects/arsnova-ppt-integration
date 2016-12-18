@@ -226,6 +226,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />

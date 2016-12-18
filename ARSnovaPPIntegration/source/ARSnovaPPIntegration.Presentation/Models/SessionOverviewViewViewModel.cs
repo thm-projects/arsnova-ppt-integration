@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 using ARSnovaPPIntegration.Business.Model;
@@ -18,7 +19,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public SlideQuestionModel SelectedSlideQuestionModel { get; set; }
 
-        public List<SlideQuestionModel> Questions => this.SlideSessionModel.Questions;
+        public ObservableCollection<SlideQuestionModel> Questions => this.SlideSessionModel.Questions;
 
         public string Header => this.LocalizationService.Translate("Question overview");
 
@@ -44,7 +45,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Back,
                             (e, o) =>
                             {
-                                this.AddSessionToSlides();
                                 this.ViewPresenter.Show(
                                     new SelectArsnovaTypeViewViewModel(this.GetViewModelRequirements()));
                             },
@@ -73,7 +73,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             {
                                 this.OpenQuestionEditDialog(this.SelectedSlideQuestionModel.Id, false);
                             },
-                            (e, o) => o.CanExecute = true),
+                            (e, o) => o.CanExecute = this.SelectedSlideQuestionModel != null),
                         new CommandBinding(
                             NavigationButtonCommands.Delete,
                             (e, o) =>
@@ -93,7 +93,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                     this.SlideSessionModel.Questions.Remove(questionModel);
                                 }
                             },
-                            (e, o) => o.CanExecute = true),
+                            (e, o) => o.CanExecute = this.SelectedSlideQuestionModel != null)
                     });
         }
 

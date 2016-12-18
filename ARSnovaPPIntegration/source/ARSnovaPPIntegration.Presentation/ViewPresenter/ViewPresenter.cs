@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -51,7 +52,23 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 
         public void Show<TViewModel>(TViewModel viewModel) where TViewModel : class
         {
-            this.ContentCleanUp(this.activePresentationGroup.Window.WindowId, false);
+            var presentationGroup = this.presentationGroups.FirstOrDefault(vm => vm.ViewModel.GetType() == typeof(TViewModel));
+
+            if (presentationGroup != null)
+            {
+                presentationGroup.Window = this.activePresentationGroup.Window;
+            }
+            else
+            {
+                presentationGroup = new PresentationGroup
+                                    {
+                                        ViewModel = viewModel,
+                                        Window = this.activePresentationGroup.Window
+                                    };
+            }
+            
+            // reset window events and bindings (because we want to use the same window again)
+            this.Close(this.activePresentationGroup.Window.WindowId, false);
 
             this.Show(viewModel, this.activePresentationGroup);
         }
@@ -67,28 +84,33 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             this.activePresentationGroup.Window.Close();
         }
 
-        public void ContentCleanUp(Guid windowId, bool removeWindow = true)
+        public void Close(Guid windowId, bool removeWindow = true)
         {
-            var presentationGroup = this.presentationGroups.First(pg => pg.Window.WindowId == windowId);
+            var presentationGroupsToClose = this.presentationGroups.FindAll(pg => pg.Window.WindowId == windowId);
 
-            if (presentationGroup == null)
+            if (presentationGroupsToClose == null)
             {
                 throw new ArgumentException($"Window with Id {windowId} not found.");
             }
 
-            // TODO do I need to clean up event handlers / bindings (-> yes, done)? I think there should be any, check later!
-            this.RemoveWindowCommandBindings(presentationGroup.ViewModel, presentationGroup.Window);
-
-            (presentationGroup.ViewModel as IDisposable)?.Dispose();
-
-            if (removeWindow)
+            foreach (var presentationGroup in presentationGroupsToClose)
             {
-                if (this.activePresentationGroup.Window.WindowId == presentationGroup.Window.WindowId)
-                {
-                    this.activePresentationGroup = null;
-                }
+                
+                this.RemoveWindowCommandBindings(presentationGroup.ViewModel, presentationGroup.Window);
+                this.RemoveEventHandlers(presentationGroup.ViewModel);
+
+                (presentationGroup.ViewModel as IDisposable)?.Dispose();
+                (presentationGroup.View as IDisposable)?.Dispose();
 
                 this.presentationGroups.Remove(presentationGroup);
+
+                if (removeWindow)
+                {
+                    if (this.activePresentationGroup.Window.WindowId == presentationGroup.Window.WindowId)
+                    {
+                        this.activePresentationGroup = null;
+                    }
+                }
             }
         }
 
@@ -161,6 +183,34 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 foreach (var windowCommandBinding in windowCommandBindings)
                 {
                     window.CommandBindings.Remove(windowCommandBinding);
+                }
+            }
+        }
+
+        private void RemoveEventHandlers(object viewModel)
+        {
+            var type = viewModel.GetType();
+
+            // taken from http://stackoverflow.com/questions/3783267/how-to-get-a-delegate-object-from-an-eventinfo
+            Func<EventInfo, FieldInfo> ei2Fi =
+            ei => this.GetType().GetField(ei.Name,
+                BindingFlags.NonPublic |
+                BindingFlags.Instance |
+                BindingFlags.GetField);
+
+            foreach (var ei in type.GetEvents())
+            {
+                var fi = ei2Fi(ei);
+                var @delegate = fi?.GetValue(viewModel) as Delegate;
+
+                if (@delegate == null)
+                {
+                    continue;
+                }
+
+                foreach (var subscriber in @delegate.GetInvocationList())
+                {
+                    ei.RemoveEventHandler(viewModel, subscriber);
                 }
             }
         }

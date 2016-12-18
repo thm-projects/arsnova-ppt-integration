@@ -125,13 +125,13 @@ namespace ARSnovaPPIntegration.Presentation.Window
                 }
                 else
                 {
-                    this.viewPresenter.ContentCleanUp(this.WindowId);
+                    this.viewPresenter.Close(this.WindowId);
                 }
             }
             else
             {
                 windowContainer.ShowCloseWindowPrompt = true;
-                this.viewPresenter.ContentCleanUp(this.WindowId);
+                this.viewPresenter.Close(this.WindowId);
             }
         }
     }

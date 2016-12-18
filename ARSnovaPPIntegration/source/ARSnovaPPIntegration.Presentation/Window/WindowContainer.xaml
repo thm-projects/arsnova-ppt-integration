@@ -46,6 +46,11 @@
                                     <Setter Property="Background" TargetName="templateRoot" Value="Gainsboro"/>
                                     <Setter Property="BorderBrush" TargetName="templateRoot" Value="Gainsboro"/>
                                 </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="DimGray"/>
+                                    <Setter Property="Fill" TargetName="GlyphPanel" Value="DimGray"/>
+                                    <Setter Property="Opacity" Value=".5"/>
+                                </Trigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsHighlighted" Value="True"/>
@@ -72,7 +77,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1" x:Name="TopRibbonBar" >
-            <ToolBar>
+            <ToolBar ToolBarTray.IsLocked="True" OverflowMode="Never">
                 <MenuItem 
                     Header="{Binding Path=NavigationButtonsToolTips.New}"
                     Icon="{DynamicResource New}"

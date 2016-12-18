@@ -10,6 +10,7 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
@@ -38,7 +39,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.questionId = questionId;
             this.isNew = isNew;
 
-            this.questionBeforeEdit = questionBeforeEdit ?? this.SlideQuestionModel;
+            this.questionBeforeEdit = questionBeforeEdit ?? CopyHelper.CopySlideQuestionModel(this.SlideQuestionModel);
 
             this.InitializeWindowCommandBindings();
 
