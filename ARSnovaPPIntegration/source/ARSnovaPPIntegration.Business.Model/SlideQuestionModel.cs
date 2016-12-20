@@ -24,6 +24,8 @@ namespace ARSnovaPPIntegration.Business.Model
         // TODO test data
         public int SlideNumber { get; set; } = 0;
 
+        public int Index { get; set; }
+
         // TODO select on which slide this question should be
 
         public Guid Id { get; set; }

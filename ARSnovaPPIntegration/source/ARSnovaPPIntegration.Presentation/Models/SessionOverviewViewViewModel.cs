@@ -58,7 +58,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                       QuestionType = this.SlideSessionModel.SessionType
                                                                      == SessionType.ArsnovaClick
                                                                          ? QuestionTypeEnum.SingleChoiceClick
-                                                                         : QuestionTypeEnum.SingleChoiceVoting
+                                                                         : QuestionTypeEnum.SingleChoiceVoting,
+                                                      Index = this.SlideSessionModel.Questions.Count
                                                   };
 
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
@@ -12,8 +14,8 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         SessionConfiguration GetSessionConfiguration(string hashtag);
 
-        ValidationResult PostSession(SlideSessionModel slideSessionModel);
+        Tuple<ValidationResult, string> CreateHashtag(string hashtag);
 
-        ValidationResult UpdateSession(SlideSessionModel slideSessionModel);
+        ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel);
     }
 }

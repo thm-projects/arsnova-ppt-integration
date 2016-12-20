@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using ARSnovaPPIntegration.Communication.CastHelpers.Converters;
 using ARSnovaPPIntegration.Communication.CastHelpers.Models;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication
@@ -67,37 +70,202 @@ namespace ARSnovaPPIntegration.Communication
             return sessionConfiguration;
         }
 
-        public ValidationResult PostSession(SlideSessionModel slideSessionModel)
+        public Tuple<ValidationResult, string> CreateHashtag(string hashtag)
         {
             // Temporary: One private key per question
-            slideSessionModel.PrivateKey = this.arsnovaClickApi.NewPrivateKey();
+            var privateKey = string.Empty;
 
-            var validationResult = this.arsnovaClickApi.AddHashtag(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
-
-            if (!validationResult.Success)
+            try
             {
-                return validationResult;
+                privateKey = this.arsnovaClickApi.NewPrivateKey();
+            }
+            catch (CommunicationException comException)
+            {
+                return new Tuple<ValidationResult, string>(
+                    new ValidationResult
+                    {
+                        FailureTitel = "Error - create hashtag",
+                        FailureMessage = comException.Message
+                    },
+                    privateKey);
             }
 
-            return validationResult;
-            // TODO addQuestionGroup
+            var validationResult = this.arsnovaClickApi.AddHashtag(hashtag, privateKey);
+
+            return new Tuple<ValidationResult, string>(validationResult, privateKey);
         }
 
-        public ValidationResult UpdateSession(SlideSessionModel slideSessionModel)
+        public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)
         {
-            // delete existing questiongroupcollection
-            // get all questions
+            var validationResult = new ValidationResult();
 
-            // add all given
-            var validationResult = this.arsnovaClickApi.DeleteQuestionGroup(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+            if (string.IsNullOrEmpty(slideSessionModel.Hashtag))
+            {
+                validationResult.FailureTitel = "Error -  hashtag";
+                validationResult.FailureMessage = "No hashtag provided";
+                return validationResult;
+            }
+
+            if (string.IsNullOrEmpty(slideSessionModel.PrivateKey))
+            {
+                validationResult.FailureTitel = "Error -  private key";
+                validationResult.FailureMessage = "No private key provided";
+                return validationResult;
+            }
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+
+            }
+
+            validationResult = this.ValidateValidQuestionGroup(slideSessionModel);
 
             if (!validationResult.Success)
             {
                 return validationResult;
             }
+
+            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel));
+        }
+
+        private ValidationResult ValidateValidQuestionGroup(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = new ValidationResult();
+
             // TODO
+
             return validationResult;
-            //return this.arsnovaClickApi.AddQuestionGroup();
+        }
+
+        private QuestionGroupModel SlideSessionModelToQuestionGroupModel(SlideSessionModel slideSessionModel)
+        {
+            // TODO  many default values
+
+            var questionModelList =
+                slideSessionModel.Questions.Select(q => this.SlideQuestionModelToQuestionModel(q, slideSessionModel.Hashtag)).ToList();
+
+            return new QuestionGroupModel
+                   {
+                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                       questionList = questionModelList,
+                       configuration = new ConfigurationModel
+                                       {
+                                           hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                           music = new MusicModel
+                                                   {
+                                                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                                       isEnabled = true,
+                                                       volume = 90,
+                                                       title = "Song3",
+                                                       isLobbyEnabled = true,
+                                                       lobbyTitle = "LobbySong1",
+                                                       finishSoundTitle = "LobbySong1"
+                                                   },
+                                           nicks = new NicksModel
+                                                   {
+                                                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                                       selectedValues = new List<string>(),
+                                                       blockIllegal = true,
+                                                       restrictToCASLogin = false
+                                                   },
+                                           theme = "theme-arsnova-dot-click-contrast",
+                                           readingConfirmationEnabled = false
+                       },
+                       type = "DefaultQuestionGroup"
+
+            };
+        }
+
+        private QuestionModel SlideQuestionModelToQuestionModel(SlideQuestionModel slideQuestionModel, string hashtag)
+        {
+            
+
+            var questionModel =  new QuestionModel
+                   {
+                       hashtag = Uri.EscapeDataString(hashtag),
+                       questionText = Uri.EscapeDataString(slideQuestionModel.QuestionText),
+                       timer = 60,
+                       startTime = 0,
+                       questionIndex = slideQuestionModel.Index,
+                       displayAnswerText = false,
+                       type = this.QuestionTypeToClickQuestionType(slideQuestionModel.QuestionType)
+            };
+
+            if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
+            {
+                var rangedAnswerOption = slideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+
+                if (rangedAnswerOption == null)
+                {
+                    throw new ArgumentException("no answer options provided");
+                }
+
+                questionModel.rangeMin = rangedAnswerOption.LowerLimit;
+                questionModel.rangeMax = rangedAnswerOption.HigherLimit;
+                questionModel.correctValue = rangedAnswerOption.Correct;
+            }
+            else
+            {
+                var isFreetextAnswerOption = slideQuestionModel.QuestionType == QuestionTypeEnum.FreeTextClick;
+
+                var answerOptionModelList =
+                    slideQuestionModel.AnswerOptions.Select(a => this.SlideAnswerOptionModelToAnswerOptionModel(a, hashtag, slideQuestionModel.Index, isFreetextAnswerOption))
+                                      .ToList();
+
+                questionModel.answerOptionList = answerOptionModelList;
+            }
+
+            return questionModel;
+        }
+
+        private AnswerOptionModel SlideAnswerOptionModelToAnswerOptionModel(object answerOption, string hashtag, int questionIndex, bool isFreetextAnswerOption)
+        {
+            if (answerOption.GetType() == typeof(GeneralAnswerOption))
+            {
+                var castedAnswerOption = answerOption as GeneralAnswerOption;
+
+                return new AnswerOptionModel
+
+                {
+                    hashtag = Uri.EscapeDataString(hashtag),
+                    questionIndex = questionIndex,
+                    answerText = Uri.EscapeDataString(castedAnswerOption.Text),
+                    answerOptionNumber = castedAnswerOption.Position,
+                    isCorrect = castedAnswerOption.IsTrue,
+                    type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
+
+                };
+            }
+
+            if (answerOption.GetType() == typeof(RangedAnswerOption))
+            {
+                return null;
+            }
+
+            throw new ArgumentException($"Unknow answer option type {answerOption.GetType()}");
+        }
+
+        private string QuestionTypeToClickQuestionType(QuestionTypeEnum questionType)
+        {
+            switch (questionType)
+            {
+                case QuestionTypeEnum.SingleChoiceClick:
+                    return "SingleChoiceQuestion";
+                case QuestionTypeEnum.MultipleChoiceClick:
+                    return "MultipleChoiceQuestion";
+                case QuestionTypeEnum.YesNoClick:
+                    return "YesNoSingleChoiceQuestion";
+                case QuestionTypeEnum.TrueFalseClick:
+                    return "TrueFalseSingleChoiceQuestion";
+                case QuestionTypeEnum.RangedQuestionClick:
+                    return "RangedQuestion";
+                case QuestionTypeEnum.FreeTextClick:
+                    return "FreeTextQuestion";
+                case QuestionTypeEnum.SurveyClick:
+                    return "SurveyQuestion";
+                default: return String.Empty;
+            }
         }
     }
 }

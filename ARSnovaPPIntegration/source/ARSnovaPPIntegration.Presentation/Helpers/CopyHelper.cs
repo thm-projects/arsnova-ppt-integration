@@ -20,6 +20,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             newSlideQuestionModel.AnswerOptionType = currentSlideQuestionModel.AnswerOptionType;
             newSlideQuestionModel.AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount;
             newSlideQuestionModel.AnswerOptionInitType = currentSlideQuestionModel.AnswerOptionInitType;
+            newSlideQuestionModel.Index = currentSlideQuestionModel.Index;
 
             newSlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
             if (currentSlideQuestionModel.AnswerOptions != null)

@@ -61,7 +61,7 @@ namespace ARSnovaPPIntegration.Communication
         public ValidationResult AddHashtag(string hashtag, string privateKey)
         {
             // test only start
-            var jsonBody2 = JsonConvert.SerializeObject(new
+            /*var jsonBody2 = JsonConvert.SerializeObject(new
             {
                 hashtag = Uri.EscapeDataString("Demo Quiz 87")
             });
@@ -71,7 +71,7 @@ namespace ARSnovaPPIntegration.Communication
 
             request2 = this.AddContentToRequest(request2, jsonBody2);
 
-            var response = this.GetResponseString(request2);
+            var response = this.GetResponseString(request2);*/
             
 
             // test only end
@@ -107,24 +107,18 @@ namespace ARSnovaPPIntegration.Communication
             return validationResult;
         }
 
-        public ValidationResult DeleteQuestionGroup(string hashtag, string privateKey)
+        public ValidationResult UpdateQuestionGroup(QuestionGroupModel questionGroupModel)
         {
             var validationResult = new ValidationResult();
 
-            var deleteQuestionGroupConfig = new
-            {
-                hashtag = Uri.EscapeDataString(hashtag),
-                privateKey
-            };
-
             var jsonBody = JsonConvert.SerializeObject(new
             {
-                sessionConfiguration = deleteQuestionGroupConfig
+                questionGroupModel = questionGroupModel
             });
 
             try
             {
-                var request = this.CreateWebRequest("removeQuestionGroup", HttpMethod.Post);
+                var request = this.CreateWebRequest("updateQuestionGroup", HttpMethod.Post);
 
                 request = this.AddContentToRequest(request, jsonBody);
 
@@ -137,13 +131,6 @@ namespace ARSnovaPPIntegration.Communication
 
             return validationResult;
         }
-        
-        /*public ValidationResult AddQuestionGroup(string hashtag, string privateKey, QuestionGroupReturn questionGroup)
-        {
-            // TODO
-            return new ValidationResult();
-        }*/
-
 
         public SessionConfigurationReturn GetSessionConfiguration(string hashtag)
         {
@@ -231,6 +218,7 @@ namespace ARSnovaPPIntegration.Communication
                     webRequest.Method = "DELETE";
                     break;
                 case HttpMethod.Patch:
+
                     webRequest.Method = "PATCH";
                     break;
             }

@@ -110,7 +110,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                       Position = i,
                                                       Text = string.Empty,
                                                       IsTrue = false
-                                                  };
+                        };
                         generalAnswerOption.ObjectChangedEventHandler += delegate {
                             this.SlideQuestionModel.AnswerOptionsSet = true;
                         };
@@ -410,7 +410,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     if (this.SlideQuestionModel.QuestionType == QuestionTypeEnum.TrueFalseClick)
                     {
                         this.SlideQuestionModel.AnswerOptions.Add(
-                                this.CreateGeneralAnswerOption(1, this.LocalizationService.Translate("True"), true));
+                                this.CreateGeneralAnswerOption( 1, this.LocalizationService.Translate("True"), true));
                         this.SlideQuestionModel.AnswerOptions.Add(
                                 this.CreateGeneralAnswerOption(2, this.LocalizationService.Translate("False")));
                     }

@@ -76,9 +76,24 @@ namespace ARSnovaPPIntegration.Business
                 return validationResult;
             }
 
-            validationResult = this.arsnovaClickService.PostSession(slideSessionModel);
+            var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
 
-            // TODO setup slides
+            validationResult = tupleResult.Item1;
+            slideSessionModel.PrivateKey = tupleResult.Item2;
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            validationResult = this.arsnovaClickService.UpdateQuestionGroup(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            // TODO setup and style slides
 
             return validationResult;
         }

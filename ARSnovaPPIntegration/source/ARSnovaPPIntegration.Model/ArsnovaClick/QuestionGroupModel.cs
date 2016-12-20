@@ -19,15 +19,23 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
 
         public string questionText { get; set; }
 
-        public int time { get; set; }
+        public int timer { get; set; }
 
         public int startTime { get; set; }
 
         public int questionIndex { get; set; }
 
+        public bool displayAnswerText { get; set; }
+
         public List<AnswerOptionModel> answerOptionList { get; set; }
 
         public string type { get; set; }
+
+        public int rangeMin { get; set; }
+
+        public int rangeMax { get; set; }
+
+        public int correctValue { get; set; }
     }
 
     public class ConfigurationModel
@@ -53,7 +61,7 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
 
         public string title { get; set; }
 
-        public string isLobbyEnabled { get; set; }
+        public bool isLobbyEnabled { get; set; }
 
         public string lobbyTitle { get; set; }
 
