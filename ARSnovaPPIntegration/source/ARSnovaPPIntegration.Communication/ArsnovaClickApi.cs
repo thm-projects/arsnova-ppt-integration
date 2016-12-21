@@ -107,12 +107,13 @@ namespace ARSnovaPPIntegration.Communication
             return validationResult;
         }
 
-        public ValidationResult UpdateQuestionGroup(QuestionGroupModel questionGroupModel)
+        public ValidationResult UpdateQuestionGroup(QuestionGroupModel questionGroupModel, string privateKey)
         {
             var validationResult = new ValidationResult();
 
             var jsonBody = JsonConvert.SerializeObject(new
             {
+                privateKey = privateKey,
                 questionGroupModel = questionGroupModel
             });
 

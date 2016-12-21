@@ -126,7 +126,7 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel));
+            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel), slideSessionModel.PrivateKey);
         }
 
         private ValidationResult ValidateValidQuestionGroup(SlideSessionModel slideSessionModel)

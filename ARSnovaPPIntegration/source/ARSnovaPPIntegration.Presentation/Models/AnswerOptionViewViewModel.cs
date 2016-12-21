@@ -292,10 +292,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                     if (this.isNew)
                                     {
                                         this.SlideSessionModel.Questions.Remove(this.SlideQuestionModel);
+                                        this.OnPropertyChanged(nameof(this.SlideSessionModel.Questions));
                                     }
                                     else
                                     {
                                         this.SlideQuestionModel = this.questionBeforeEdit;
+                                        this.OnPropertyChanged(nameof(this.SlideSessionModel.Questions));
                                     }
 
                                     this.ViewPresenter.CloseWithoutPrompt();

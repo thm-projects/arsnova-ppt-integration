@@ -6,8 +6,11 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
+using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
 using ARSnovaPPIntegration.Presentation.Window;
+using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -23,6 +26,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         protected readonly ISessionInformationProvider SessionInformationProvider;
 
+        protected readonly ISlideManipulator SlideManipulator;
+
+        protected readonly RibbonHelper RibbonHelper;
+
         protected SlideSessionModel SlideSessionModel;
 
         protected BaseViewModel(ViewModelRequirements requirements)
@@ -32,6 +39,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.LocalizationService = requirements.LocalizationService;
             this.SessionManager = requirements.SessionManager;
             this.SessionInformationProvider = requirements.SessionInformationProvider;
+            this.SlideManipulator = requirements.SlideManipulator;
+            this.RibbonHelper = new RibbonHelper(this.ViewPresenter, this.LocalizationService);
 
             this.SlideSessionModel = requirements.SlideSessionModel;
         }
@@ -41,6 +50,23 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         protected void AddSessionToSlides()
         {
+            var hasIntroSlide = this.HasIntroSlide();
+            if (!hasIntroSlide)
+            {
+                var introSlide = this.RibbonHelper.CreateNewSlide(1);
+
+                if (this.SlideSessionModel.SessionType == SessionType.ArsnovaClick)
+                {
+                    this.SlideManipulator.AddClickIntroSlide(introSlide, this.SlideSessionModel.Hashtag);
+                }
+                else
+                {
+                    // TODO voting intro slide   
+                }
+
+                PresentationPropertiesAccessor.SetBoolDocumentProperty("arsnovaIntroSlideAdded", true);
+            }
+
             // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
             var validationResult = this.SlideSessionModel.NewSession ? 
                 this.SessionManager.CreateSession(this.SlideSessionModel) : 
@@ -64,6 +90,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 this.LocalizationService,
                 this.SessionManager,
                 this.SessionInformationProvider,
+                this.SlideManipulator,
                 this.SlideSessionModel);
         }
 
@@ -77,6 +104,22 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 handler(this, e);
             }
         }
+
+        private bool HasIntroSlide()
+        {
+            // todo set to false if the user deletes the slide
+            var propExists = PresentationPropertiesAccessor.HasDocumentProperty("arsnovaIntroSlideAdded");
+
+            if (propExists)
+            {
+                return (bool)PresentationPropertiesAccessor.GetDocumentProperty("arsnovaIntroSlideAdded",
+                    MsoDocProperties.msoPropertyTypeBoolean);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public class ViewModelRequirements
@@ -87,6 +130,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             ILocalizationService localizationService,
             ISessionManager sessionManager,
             ISessionInformationProvider sessionInformationProvider,
+            ISlideManipulator slideManipulator,
             SlideSessionModel slideSessionModel)
         {
             this.ViewPresenter = viewPresenter;
@@ -95,6 +139,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.SessionManager = sessionManager;
             this.SessionInformationProvider = sessionInformationProvider;
             this.SlideSessionModel = slideSessionModel;
+            this.SlideManipulator = slideManipulator;
         }
 
         public ViewPresenter.ViewPresenter ViewPresenter { get; }
@@ -107,6 +152,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public ISessionInformationProvider SessionInformationProvider { get; }
 
+        public ISlideManipulator SlideManipulator { get; }
+
         public SlideSessionModel SlideSessionModel { get; }
-}
+    }
 }

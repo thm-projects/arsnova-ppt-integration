@@ -21,6 +21,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private readonly ISessionInformationProvider sessionInformationProvider;
 
+        private readonly ISlideManipulator slideManipulator;
+
         private readonly IQuestionTypeTranslator questionTypeTranslator;
 
         public RibbonHelper(
@@ -33,6 +35,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.sessionManager = ServiceLocator.Current.GetInstance<ISessionManager>();
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
             this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
+            this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
         }
 
         public void StartQuizSetup(Slide slide)
@@ -47,6 +50,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         this.localizationService,
                         this.sessionManager,
                         this.sessionInformationProvider,
+                        this.slideManipulator,
                         slideSessionModel)));
         }
 
@@ -66,6 +70,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         this.localizationService,
                         this.sessionManager,
                         this.sessionInformationProvider,
+                        this.slideManipulator,
                         slideSessionModel)));
         }
 

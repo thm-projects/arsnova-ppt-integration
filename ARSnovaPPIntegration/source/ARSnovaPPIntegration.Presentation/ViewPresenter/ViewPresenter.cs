@@ -65,6 +65,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                                         ViewModel = viewModel,
                                         Window = this.activePresentationGroup.Window
                                     };
+                this.presentationGroups.Add(presentationGroup);
             }
             
             // reset window events and bindings (because we want to use the same window again)

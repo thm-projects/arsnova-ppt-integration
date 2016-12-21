@@ -228,6 +228,7 @@
     </Compile>
     <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
+    <Compile Include="Helpers\PresentationPropertiesAccessor.cs" />
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
