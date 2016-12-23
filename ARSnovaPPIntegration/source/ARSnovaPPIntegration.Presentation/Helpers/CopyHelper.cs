@@ -43,6 +43,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
                 newAnswerOption.ObjectChangedEventHandler += delegate {
                     slideQuestionModel.AnswerOptionsSet = true;
+                    slideQuestionModel.AnswerOptionModelChanged();
                 };
 
                 newAnswerOption.Position = castedAnswerOption.Position;

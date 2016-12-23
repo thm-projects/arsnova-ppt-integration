@@ -111,8 +111,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                       Text = string.Empty,
                                                       IsTrue = false
                         };
-                        generalAnswerOption.ObjectChangedEventHandler += delegate {
+                        generalAnswerOption.ObjectChangedEventHandler += delegate 
+                        {
                             this.SlideQuestionModel.AnswerOptionsSet = true;
+                            this.SlideQuestionModel.AnswerOptionModelChanged();
                         };
 
                         this.SlideQuestionModel.AnswerOptions.Add(generalAnswerOption);
@@ -434,9 +436,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 IsTrue = isTrue
             };
 
-            generalAnswerOption.ObjectChangedEventHandler += delegate {
-                                                                 this.SlideQuestionModel.AnswerOptionsSet = true;
-                                                             };
+            generalAnswerOption.ObjectChangedEventHandler += delegate 
+            {
+                this.SlideQuestionModel.AnswerOptionsSet = true;
+                this.SlideQuestionModel.AnswerOptionModelChanged();
+            };
 
             return generalAnswerOption;
         }

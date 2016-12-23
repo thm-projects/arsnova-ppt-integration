@@ -18,6 +18,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 
         private PresentationGroup activePresentationGroup;
 
+        private PresentationGroup oldActivePresentationGroup;
+
         private List<PresentationGroup> presentationGroups = new List<PresentationGroup>();
 
         public void Add<TViewModel, TView>()
@@ -36,6 +38,11 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
 
             // show just one window in the taskbar
             newPresentationGroup.Window = new WindowContainer(this) { ShowInTaskbar = !this.presentationGroups.Any() };
+
+            if (this.activePresentationGroup != null)
+            {
+                this.oldActivePresentationGroup = this.activePresentationGroup;
+            }
 
             var logoBitmap = Images.ARSnova_Logo;
             var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
@@ -94,22 +101,26 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
                 throw new ArgumentException($"Window with Id {windowId} not found.");
             }
 
+            var setActivePresentation = true;
+
             foreach (var presentationGroup in presentationGroupsToClose)
             {
-                
                 this.RemoveWindowCommandBindings(presentationGroup.ViewModel, presentationGroup.Window);
                 this.RemoveEventHandlers(presentationGroup.ViewModel);
 
                 (presentationGroup.ViewModel as IDisposable)?.Dispose();
                 (presentationGroup.View as IDisposable)?.Dispose();
 
-                this.presentationGroups.Remove(presentationGroup);
-
                 if (removeWindow)
                 {
-                    if (this.activePresentationGroup.Window.WindowId == presentationGroup.Window.WindowId)
+                    this.presentationGroups.Remove(presentationGroup);
+
+                    if (setActivePresentation)
                     {
-                        this.activePresentationGroup = null;
+                        this.activePresentationGroup = this.oldActivePresentationGroup;
+                        this.oldActivePresentationGroup = null;
+
+                        setActivePresentation = false;
                     }
                 }
             }

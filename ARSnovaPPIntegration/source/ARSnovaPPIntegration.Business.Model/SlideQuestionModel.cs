@@ -12,12 +12,16 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private string questionText;
 
+        private QuestionTypeEnum questionType = QuestionTypeEnum.SingleChoiceClick;
+
         public SlideQuestionModel(IQuestionTypeTranslator questionTypeTranslator)
         {
-            this.Id = new Guid();
+            this.Id = Guid.NewGuid();
 
             this.QuestionTypeTranslator = questionTypeTranslator;
         }
+
+        public event EventHandler ObjectChangedEventHandler;
 
         public readonly IQuestionTypeTranslator QuestionTypeTranslator;
 
@@ -30,7 +34,18 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public Guid Id { get; set; }
 
-        public QuestionTypeEnum QuestionType { get; set; } = QuestionTypeEnum.SingleChoiceClick;
+        public QuestionTypeEnum QuestionType
+        {
+            get
+            {
+                return this.questionType;
+            }
+            set
+            {
+                this.questionType = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public string QuestionTypeText => this.QuestionTypeTranslator.TranslateQuestionType(this.QuestionType);
 
@@ -46,10 +61,12 @@ namespace ARSnovaPPIntegration.Business.Model
             {
                 this.questionText = value;
                 this.QuestionTypeSet = true;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public ObservableCollection<object> AnswerOptions
+
         {
             get { return this.answerOptions; }
             set
@@ -66,5 +83,10 @@ namespace ARSnovaPPIntegration.Business.Model
         public int AnswerOptionAmount { get; set; } = 4;
 
         public AnswerOptionType AnswerOptionInitType { get; set; }
+
+        public void AnswerOptionModelChanged()
+        {
+            this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

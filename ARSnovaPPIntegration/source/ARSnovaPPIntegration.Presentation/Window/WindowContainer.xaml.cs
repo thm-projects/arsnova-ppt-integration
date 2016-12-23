@@ -25,10 +25,10 @@ namespace ARSnovaPPIntegration.Presentation.Window
             this.InitializeComponent();
             this.DataContext = this;
 
-            this.WindowId = new Guid();
+            this.WindowId = Guid.NewGuid();
         }
 
-        public Guid WindowId { get; }
+        public Guid WindowId { get; private set; }
 
         public bool BackButtonVisibility
         {

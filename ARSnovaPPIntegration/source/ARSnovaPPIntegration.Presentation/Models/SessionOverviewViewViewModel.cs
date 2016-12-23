@@ -15,6 +15,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public SessionOverviewViewViewModel(ViewModelRequirements requirements) : base(requirements)
         {
             this.InitializeWindowCommandBindings();
+
+            foreach (var questionModel in this.SlideSessionModel.Questions)
+            {
+                questionModel.ObjectChangedEventHandler += delegate
+                {
+                    this.OnPropertyChanged(nameof(this.Questions));
+                };
+            }
         }
 
         public SlideQuestionModel SelectedSlideQuestionModel { get; set; }

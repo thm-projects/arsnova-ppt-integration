@@ -32,7 +32,7 @@ namespace ARSnovaPPIntegration.Test.Communication
         {
             // TODO
             // test addHashtag
-            /*var newRandomHashtag = new Guid();
+            /*var newRandomHashtag = Guid.NewGuid();
             var allHashtagsCount = this.arsnovaClickService.GetAllHashtagInfos().Count;
             this.arsnovaClickService.*/
 
