@@ -16,6 +16,8 @@ namespace ARSnovaPPIntegration.Presentation
         private ExceptionHandler exceptionHandler;
 
         private ViewPresenter.ViewPresenter viewPresenter;
+
+        private Ribbon ribbon;
         
         private void ThisAddInStartup(object sender, System.EventArgs e)
         {
@@ -38,7 +40,7 @@ namespace ARSnovaPPIntegration.Presentation
             Application.SlideShowEnd += OnSlideShowEnd;*/
 
             // low priority: slide actions
-            Application.SlideSelectionChanged += OnSlideSelectionChanged;
+            this.Application.SlideSelectionChanged += this.OnSlideSelectionChanged;
         }
         
         /* private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -56,11 +58,24 @@ namespace ARSnovaPPIntegration.Presentation
 
         private void OnSlideSelectionChanged(SlideRange slideRange)
         {
+            this.ribbon.OneArsnovaSlideSelected = false;
+
             if (slideRange.Count == 1)
             {
                 // one slide is selected, delete / edit actions are possible in ribbon bar
+                // check if selected one is powerpoint slide
+                var selectedSlide = slideRange[1];
 
+                // TODO Contract: all slides must start with the prefix ArsnovaSlide
+                if (selectedSlide.Name.StartsWith("ArsnovaSlide"))
+                {
+                    this.ribbon.OneArsnovaSlideSelected = true;
+                }
             }
+
+            // update control ui's
+            this.ribbon.RefreshRibbonControl("EditButton");
+            this.ribbon.RefreshRibbonControl("DeleteButton");
         }
 
         private void Setup()
@@ -93,7 +108,9 @@ namespace ARSnovaPPIntegration.Presentation
             // is called on office load (create ribbon bar) -> init here instead of startup because some dependencies are already needed
             this.Setup();
 
-            return new Ribbon(this.viewPresenter, this.exceptionHandler);
+            this.ribbon = new Ribbon(this.viewPresenter, this.exceptionHandler);
+
+            return this.ribbon;
         }
 
         #region Von VSTO generierter Code

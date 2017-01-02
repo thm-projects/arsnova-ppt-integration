@@ -330,4 +330,16 @@
   <data name="Type" xml:space="preserve">
     <value>Typ</value>
   </data>
+  <data name="Decide_whether_you_want_your_listeners_to_use_the_grown_up_arsnova_voting_app_or_the_fancy_arsnova_click_one." xml:space="preserve">
+    <value>Entscheide ob du die erwachsene arsnova voting oder die verspielte arsnova click App einsetzen möchtest.</value>
+  </data>
+  <data name="Edit_a_already_existing_quiz." xml:space="preserve">
+    <value>Bearbeite ein bereits bestehendes Quiz.</value>
+  </data>
+  <data name="Set_session_type" xml:space="preserve">
+    <value>Sessionart festlegen</value>
+  </data>
+  <data name="Delete_a_already_existing_quiz." xml:space="preserve">
+    <value>Lösche ein bereits existierendes Quiz.</value>
+  </data>
 </root>

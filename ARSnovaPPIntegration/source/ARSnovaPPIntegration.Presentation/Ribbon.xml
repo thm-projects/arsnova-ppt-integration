@@ -20,6 +20,22 @@
               onAction="AddButtonClick"
               getImage="GetAddButtonImage"
               size="large" />
+              <button id="EditButton"
+               getLabel="GetEditButtonLabel"
+               keytip="CA"
+               getSupertip="GetEditButtonSupertip"
+               getEnabled="IsOneArsnovaSlideSelected"
+               onAction="EditButtonClick"
+               getImage="GetEditButtonImage"
+               size="large" />
+              <button id="DeleteButton"
+               getLabel="GetDeleteButtonLabel"
+               keytip="CA"
+               getSupertip="GetDeleteButtonSupertip"
+               getEnabled="IsOneArsnovaSlideSelected"
+               onAction="DeleteButtonClick"
+               getImage="GetDeleteButtonImage"
+               size="large" />
             </group>
               <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
                 <button id="HelpButton"

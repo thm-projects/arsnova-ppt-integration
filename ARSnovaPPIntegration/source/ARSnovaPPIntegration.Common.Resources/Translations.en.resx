@@ -331,4 +331,16 @@
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="Decide_whether_you_want_your_listeners_to_use_the_grown_up_arsnova_voting_app_or_the_fancy_arsnova_click_one." xml:space="preserve">
+    <value>Decide whether you want your listeners to use the grown up arsnova voting app or the fancy arsnova click one.</value>
+  </data>
+  <data name="Set_session_type" xml:space="preserve">
+    <value>Set Session type</value>
+  </data>
+  <data name="Delete_a_already_existing_quiz." xml:space="preserve">
+    <value>Delete a already existing quiz.</value>
+  </data>
+  <data name="Edit_a_already_existing_quiz." xml:space="preserve">
+    <value>Edit a already existing quiz.</value>
+  </data>
 </root>

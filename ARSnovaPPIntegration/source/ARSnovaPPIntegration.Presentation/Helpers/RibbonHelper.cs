@@ -38,6 +38,22 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
         }
 
+        public void ShowSetSessionTypeDialog()
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            this.viewPresenter.ShowInNewWindow(
+                new SelectArsnovaTypeViewViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.questionTypeTranslator,
+                        this.localizationService,
+                        this.sessionManager,
+                        this.sessionInformationProvider,
+                        this.slideManipulator,
+                        slideSessionModel)));
+        }
+
         public void StartQuizSetup(Slide slide)
         {
             var slideSessionModel = new SlideSessionModel();
@@ -54,9 +70,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
-        public void EditQuizSetup(Slide slide)
+        public void EditQuizSetup()
         {
             throw new NotImplementedException();
+
+            // TODO get current selected slide and find the quiz
 
             var slideSessionModel = new SlideSessionModel(true);
 
@@ -74,6 +92,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
+        public void DeleteQuizFromSelectedSlide()
+        {
+            // TODO
+        }
+
         public Slide CreateNewSlide()
         {
             var currentSlide = SlideTracker.CurrentSlide;
@@ -85,7 +108,15 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public Slide CreateNewSlide(int index)
         {
-            return Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(index, PpSlideLayout.ppLayoutTitle);
+            var newSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(index, PpSlideLayout.ppLayoutTitle);
+            return newSlide;
+        }
+
+        private SlideSessionModel GetSlideSessionModel()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            return slideSessionModel ?? new SlideSessionModel();
         }
     }
 }

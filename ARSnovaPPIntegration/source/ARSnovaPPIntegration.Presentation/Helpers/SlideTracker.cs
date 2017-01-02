@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -25,6 +20,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                     return null;
                 }
             }
+        }
+
+        public static bool IsArsnovaSlide(Slide slide)
+        {
+            return slide.Name.StartsWith("ArsnovaSlide");
         }
     }
 }

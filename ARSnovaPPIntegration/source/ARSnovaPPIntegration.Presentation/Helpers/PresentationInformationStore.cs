@@ -1,13 +1,51 @@
 ﻿using System;
 using System.Reflection;
 
+using Newtonsoft.Json;
+
 using Microsoft.Office.Core;
+
+using ARSnovaPPIntegration.Business.Model;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
-    public static class PresentationPropertiesAccessor
+    public static class PresentationInformationStore
     {
-        public static void SetStringDocumentProperty(string propertyName, string propertyValue)
+        /* currently used params to store informations:
+            - introSlideAdded (bool)
+            - stringified slideSessionModel (string)
+        */
+
+
+        public static void SetArsnovaIntroSlideAdded()
+        {
+            SetBoolDocumentProperty("introSlideAdded", true);
+        }
+
+        public static bool IsArsnovaIntroSlideAlreadyAdded()
+        {
+            return (bool)GetDocumentProperty("introSlideAdded", MsoDocProperties.msoPropertyTypeBoolean);
+        }
+
+        public static void StoreSlideSessionModel(SlideSessionModel slideSessionModel)
+        {
+            var slideSessionModelString = JsonConvert.SerializeObject(slideSessionModel);
+            SetStringDocumentProperty("slideSessionModel", slideSessionModelString);
+        }
+
+        public static SlideSessionModel GetStoredSlideSessionModel()
+        {
+            if (HasDocumentProperty("slideSessionModel"))
+            {
+                var slideSessionModelString = (string)GetDocumentProperty("slideSessionModel", MsoDocProperties.msoPropertyTypeString);
+
+                return JsonConvert.DeserializeObject<SlideSessionModel>(slideSessionModelString);
+            }
+
+            return null;
+        }
+
+        private static void SetStringDocumentProperty(string propertyName, string propertyValue)
         {
             object oDocCustomProps = GetCustomDocumentProperties();
             var typeDocCustomProps = oDocCustomProps.GetType();
@@ -22,7 +60,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         }
 
-        public static void SetBoolDocumentProperty(string propertyName, bool propertyValue)
+        private static void SetBoolDocumentProperty(string propertyName, bool propertyValue)
         {
             object oDocCustomProps = GetCustomDocumentProperties();
             var typeDocCustomProps = oDocCustomProps.GetType();
@@ -36,7 +74,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                        oDocCustomProps, oArgs);
         }
 
-        public static bool HasDocumentProperty(string propertyName)
+        private static bool HasDocumentProperty(string propertyName)
         {
             object oDocCustomProps = GetCustomDocumentProperties();
             var typeDocCustomProps = oDocCustomProps.GetType();
@@ -56,7 +94,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
         }
 
-        public static object GetDocumentProperty(string propertyName, MsoDocProperties type)
+        private static object GetDocumentProperty(string propertyName, MsoDocProperties type)
         {
             object returnVal;
 

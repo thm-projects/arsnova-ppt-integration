@@ -70,6 +70,18 @@ namespace ARSnovaPPIntegration.Presentation
             this.ribbonHelper = new RibbonHelper(this.viewPresenter, this.localizationService);
         }
 
+        public void RefreshRibbonControl(string id)
+        {
+            this.ribbon.InvalidateControl(id);
+        }
+
+        public bool OneArsnovaSlideSelected { get; set; } = false;
+
+        public bool IsOneArsnovaSlideSelected(Office.IRibbonControl control)
+        {
+            return this.OneArsnovaSlideSelected;
+        }
+
         #region manageQuiz
 
         public string GetQuizGroupLabel(Office.IRibbonControl control)
@@ -120,6 +132,73 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 this.exceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
             }*/
+        }
+
+        public string GetSessionTypeGroupLabel(Office.IRibbonControl control)
+        {
+            return "Session";
+        }
+
+        public string GetSetSessionTypeLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Set session type");
+        }
+
+        public string GetSetSessionTypeSupertip(Office.IRibbonControl control)
+        {
+            return
+                this.localizationService.Translate(
+                    "Decide whether you want your listeners to use the grown up arsnova voting app or the fancy arsnova click one.");
+        }
+
+        public void SetSessionTypeButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.ShowSetSessionTypeDialog();
+        }
+
+        public Bitmap GetSetSessionTypeButtonImage(Office.IRibbonControl control)
+        {
+            return Images.ARSnova_Logo;
+        }
+
+        public string GetEditButtonLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Edit");
+        }
+
+        public string GetEditButtonSupertip(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Edit a already existing quiz.");
+        }
+
+        public void EditButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.EditQuizSetup();
+        }
+
+        public Bitmap GetEditButtonImage(Office.IRibbonControl control)
+        {
+            return Images.pencil;
+        }
+
+        public string GetDeleteButtonLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Delete");
+        }
+
+        public string GetDeleteButtonSupertip(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Delete a already existing quiz.");
+        }
+
+        public void DeleteButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.DeleteQuizFromSelectedSlide();
+        }
+
+        public Bitmap GetDeleteButtonImage(Office.IRibbonControl control)
+        {
+            return Images.multiply;
         }
 
         public string GetArsnovaSlideContextMenuLabel(Office.IRibbonControl control)

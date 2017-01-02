@@ -64,7 +64,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     // TODO voting intro slide   
                 }
 
-                PresentationPropertiesAccessor.SetBoolDocumentProperty("arsnovaIntroSlideAdded", true);
+                PresentationInformationStore.SetArsnovaIntroSlideAdded();
             }
 
             // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
@@ -107,18 +107,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         private bool HasIntroSlide()
         {
-            // todo set to false if the user deletes the slide
-            var propExists = PresentationPropertiesAccessor.HasDocumentProperty("arsnovaIntroSlideAdded");
-
-            if (propExists)
-            {
-                return (bool)PresentationPropertiesAccessor.GetDocumentProperty("arsnovaIntroSlideAdded",
-                    MsoDocProperties.msoPropertyTypeBoolean);
-            }
-            else
-            {
-                return false;
-            }
+            // TODO set to false if the user deletes the slide
+            return PresentationInformationStore.IsArsnovaIntroSlideAlreadyAdded();
         }
     }
 
