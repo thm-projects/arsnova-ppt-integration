@@ -3,6 +3,15 @@
   <ribbon>
       <tabs>
           <tab idMso="TabAddIns" label="ARSnova">
+            <group id="sessionTypeGroup" getLabel="GetSessionTypeGroupLabel" visible="true">
+              <button id="SetSessionTypeButton"
+              getLabel="GetSetSessionTypeLabel"
+              keytip="CA"
+              getSupertip="GetSetSessionTypeSupertip"
+              onAction="SetSessionTypeButtonClick"
+              getImage="GetSetSessionTypeButtonImage"
+              size="large" />
+            </group>
             <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
               <button id="AddButton"
               getLabel="GetAddButtonLabel"

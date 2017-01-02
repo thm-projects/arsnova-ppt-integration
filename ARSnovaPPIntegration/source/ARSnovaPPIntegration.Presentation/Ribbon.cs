@@ -79,7 +79,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetAddButtonLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Add");
+            return this.localizationService.Translate("New question");
         }
 
         public string GetAddButtonSupertip(Office.IRibbonControl control)

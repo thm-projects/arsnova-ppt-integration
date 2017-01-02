@@ -24,9 +24,21 @@ namespace ARSnovaPPIntegration.Presentation
             this.Application.WindowBeforeRightClick +=
                 new EApplication_WindowBeforeRightClickEventHandler(this.application_windowBeforeRightClick);
 
-            //var commandBar = this.Application.CommandBars["Text"];
-           //ar slideCommandBar = this.Application.CommandBars["Shape"];
-            //  var button = commandBar.Context;
+            // Order of bindings are priorities!
+            // high priority: window actions
+            /* TODO
+            ((Microsoft.Office.Interop.PowerPoint.EApplication_Event)Application).NewPresentation += OnNewPresentation;
+            Application.AfterNewPresentation += OnAfterNewPresentation;
+            Application.PresentationOpen += OnPrensentationOpen;
+            Application.PresentationClose += OnPresentationClose;*/
+
+            // mid priority: window actions
+            /* TODO
+            Application.SlideShowBegin += OnSlideShowBegin;
+            Application.SlideShowEnd += OnSlideShowEnd;*/
+
+            // low priority: slide actions
+            Application.SlideSelectionChanged += OnSlideSelectionChanged;
         }
         
         /* private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -40,6 +52,15 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 
             }*/
+        }
+
+        private void OnSlideSelectionChanged(SlideRange slideRange)
+        {
+            if (slideRange.Count == 1)
+            {
+                // one slide is selected, delete / edit actions are possible in ribbon bar
+
+            }
         }
 
         private void Setup()
