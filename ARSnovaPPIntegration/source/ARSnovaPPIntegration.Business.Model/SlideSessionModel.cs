@@ -1,29 +1,28 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Office.Interop.PowerPoint;
-
+using System.Collections.ObjectModel;
 using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Model
 {
     public class SlideSessionModel
     {
-        public SlideSessionModel(Slide slide)
+        public SlideSessionModel(bool edit = false)
         {
-            this.Slide = slide;
+            this.NewSession = !edit;
         }
 
-        // TODO: Concept: which default values should be taken?
+        public ObservableCollection<SlideQuestionModel> Questions { get; set; } = new ObservableCollection<SlideQuestionModel>();
 
-        public Slide Slide { get; set; }
+        public string Hashtag { get; set; }
+
+        public string PrivateKey { get; set; }
+
+        public bool NewSession { get; set; }
 
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
 
-        public QuestionTypeEnum QuestionType { get; set; }
+        public bool SessionTypeSet { get; set; } = false;
 
-        public string QuestionText { get; set; }
-
-        public List<object> AnswerOptions { get; set; }
-
-        public AnswerOptionType AnswerOptionType { get; set; }
+        
     }
 }

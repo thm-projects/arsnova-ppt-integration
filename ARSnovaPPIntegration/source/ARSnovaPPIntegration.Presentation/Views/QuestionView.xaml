@@ -21,10 +21,11 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <ComboBox ItemsSource="{Binding Path=QuestionTypes, Mode=OneWay}"
+                    <ComboBox x:Name="QuestionTypeComboBox"
+                              ItemsSource="{Binding Path=QuestionTypes, Mode=OneWay}"
                               DisplayMemberPath="Name"
                               SelectedValuePath="QuestionTypeEnum"
-                              SelectedValue="{Binding Path=QuestionType}" 
+                              SelectedValue="{Binding Path=QuestionType, Mode=TwoWay}" 
                               Width="250" 
                               HorizontalAlignment="Left"
                               IsEditable="False"/>
@@ -32,7 +33,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
                     <TextBox Text="{Binding QuestionText, Mode=TwoWay}" Width="250" MinLines="3" MaxLines="10" TextWrapping="WrapWithOverflow">
                         <resources:WatermarkService.Watermark>
-                            <TextBlock>{Binding QuestionTextPlaceholder}</TextBlock>
+                            <TextBlock>FreeTextAnswerOptionPlaceHolder</TextBlock>
                         </resources:WatermarkService.Watermark>
                     </TextBox>
                 </StackPanel>

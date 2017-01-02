@@ -7,6 +7,8 @@ namespace ARSnovaPPIntegration.Business.Contract
 {
     public interface ISessionInformationProvider
     {
+        List<string> GetHashtagList();
+
         List<QuestionType> GetAvailableQuestionsClick();
 
         List<QuestionType> GetAvailableQuestionsVoting();

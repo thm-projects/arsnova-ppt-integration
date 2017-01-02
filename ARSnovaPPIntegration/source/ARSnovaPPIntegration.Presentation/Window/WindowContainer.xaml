@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:content="clr-namespace:ARSnovaPPIntegration.Presentation.Content"
              xmlns:navigationButtonsCommands="clr-namespace:ARSnovaPPIntegration.Presentation.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
@@ -17,25 +16,100 @@
                 <ResourceDictionary Source="../Content/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground" Value="#FF505050"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Height" Value="42"/>
+                <Setter Property="Padding" Value="10 0"/>
+                <Setter Property="Margin" Value="0 -1 0 0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                            <Border x:Name="templateRoot" Padding="0 0 10 0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter x:Name="Icon" Content="{TemplateBinding Icon}" ContentSource="Icon" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                                    <Path x:Name="GlyphPanel" Data="F1M10,1.2L4.7,9.1 4.5,9.1 0,5.2 1.3,3.5 4.3,6.1 8.3,0 10,1.2z" Fill="#FF212121" FlowDirection="LeftToRight" Margin="{TemplateBinding Padding}" Visibility="Collapsed" VerticalAlignment="Center"/>
+                                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Icon" Value="{x:Null}">
+                                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                                    <Setter Property="Padding" TargetName="templateRoot" Value="8 0"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="templateRoot" Value="Gainsboro"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="Gainsboro"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="DimGray"/>
+                                    <Setter Property="Fill" TargetName="GlyphPanel" Value="DimGray"/>
+                                    <Setter Property="Opacity" Value=".5"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="True"/>
+                                        <Condition Property="IsEnabled" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="#0A000000"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#21000000"/>
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" x:Name="TopRibbonBar" >
+            <ToolBar ToolBarTray.IsLocked="True" OverflowMode="Never">
+                <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.New}"
+                    Icon="{DynamicResource New}"
+                    Height="35" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.New}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.New}"
+                    Visibility="{Binding Path=NewButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.Edit}"
+                    Icon="{DynamicResource Edit}"
+                    Height="35" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Edit}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.Edit}"
+                    Visibility="{Binding Path=EditButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <MenuItem 
+                    Header="{Binding Path=NavigationButtonsToolTips.Delete}"
+                    Icon="{DynamicResource Delete}"
+                    Height="35" Width="150"
+                    Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Delete}"
+                    ToolTip="{Binding Path=NavigationButtonsToolTips.Delete}"
+                    Visibility="{Binding Path=DeleteButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </ToolBar>
+        </Grid>
         
-         <Grid Grid.Row="1" x:Name="Content" x:FieldModifier="public" Height="Auto">
+         <Grid Grid.Row="2" x:Name="Content" x:FieldModifier="public" Height="Auto">
              
          </Grid>  
         
         <!-- Window Controls, bind needed ones in ViewModel! -->
-        <Border Grid.Row="2" BorderThickness="0 1 0 0" Margin="0"/>
+        <Border Grid.Row="3" BorderThickness="0 1 0 0" Margin="0"/>
         
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <StackPanel x:Name="CancelButtonBar" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6">
                 <Button Content="{DynamicResource Cancel}" ToolTip="{Binding Path=NavigationButtonsToolTips.Cancel}" HorizontalAlignment="Left" Command="{x:Static navigationButtonsCommands:NavigationButtonCommands.Cancel}" Visibility="{Binding Path=CancelButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="6 0 0 0"/>
             </StackPanel>

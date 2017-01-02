@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="ARSnovaPPIntegration.Presentation.Views.SessionOverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="White">
+    <Grid>
+        <StackPanel>
+            <StackPanel>
+                <Label Content="{Binding Header}" HorizontalAlignment="Center">
+                    <Label.Style>
+                        <Style>
+                            <Setter Property="Label.FontSize" Value="36" />
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
+                <DataGrid ItemsSource="{Binding Questions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="False"
+                          HeadersVisibility="Column"
+                          SelectedItem="{Binding SelectedSlideQuestionModel}"
+                          VerticalAlignment="Top"
+                          AlternatingRowBackground="Gainsboro" 
+                          CanUserAddRows="false"
+                          Margin="15 20 15 0"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding SlideNumber}" SortDirection="Ascending" Width="0.1*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderSlideNumber, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding QuestionTypeText}" Width="0.4*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderQuestionTypeText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding QuestionText}" Width="0.5*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderQuestionText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ISessionInformationProvider.cs" />
+    <Compile Include="ISessionManager.cs" />
     <Compile Include="ISlideManipulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

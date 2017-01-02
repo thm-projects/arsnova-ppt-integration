@@ -6,16 +6,25 @@
     
     <!-- Colors -->
     <SolidColorBrush x:Key="NavigationButtonColor" Color="#000000"/>
+    <SolidColorBrush x:Key="RibbonBarButtonColor" Color="#000000"/>
     
     <!-- Free Icons taken from http://modernuiicons.com/ (23.11.2016) -->
     <PathGeometry x:Key="ArrowLeftSvg">M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z</PathGeometry>
     <PathGeometry x:Key="ArrowRightSvg">M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z</PathGeometry>
     <PathGeometry x:Key="CheckSvg">M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z</PathGeometry>
     <PathGeometry x:Key="CancelSvg">M 38,19C 48.4934,19 57,27.5066 57,38C 57,48.4934 48.4934,57 38,57C 27.5066,57 19,48.4934 19,38C 19,27.5066 27.5066,19 38,19 Z M 38,23.75C 35.2116,23.75 32.6102,24.5509 30.4134,25.9352L 50.0648,45.5866C 51.4491,43.3898 52.25,40.7884 52.25,38C 52.25,30.13 45.87,23.75 38,23.75 Z M 23.75,38C 23.75,45.8701 30.1299,52.25 38,52.25C 40.7884,52.25 43.3897,51.4491 45.5865,50.0649L 25.9351,30.4136C 24.5509,32.6103 23.75,35.2117 23.75,38 Z</PathGeometry>
-
+    <PathGeometry x:Key="DeleteSvg">M 25.3333,23.75L 50.6667,23.75C 51.5411,23.75 51.8541,27.3125 51.8541,27.3125L 24.1458,27.3125C 24.1458,27.3125 24.4589,23.75 25.3333,23.75 Z M 35.625,19.7917L 40.375,19.7917C 40.8122,19.7917 41.9583,20.9378 41.9583,21.375C 41.9583,21.8122 40.8122,22.9584 40.375,22.9584L 35.625,22.9584C 35.1878,22.9584 34.0416,21.8122 34.0416,21.375C 34.0416,20.9378 35.1878,19.7917 35.625,19.7917 Z M 27.7083,28.5L 48.2916,28.5C 49.1661,28.5 49.875,29.2089 49.875,30.0834L 48.2916,53.8334C 48.2916,54.7078 47.5828,55.4167 46.7083,55.4167L 29.2917,55.4167C 28.4172,55.4167 27.7083,54.7078 27.7083,53.8334L 26.125,30.0834C 26.125,29.2089 26.8339,28.5 27.7083,28.5 Z M 30.0833,31.6667L 30.4792,52.25L 33.25,52.25L 32.8542,31.6667L 30.0833,31.6667 Z M 36.4167,31.6667L 36.4167,52.25L 39.5833,52.25L 39.5833,31.6667L 36.4167,31.6667 Z M 43.1458,31.6667L 42.75,52.25L 45.5208,52.25L 45.9167,31.6667L 43.1458,31.6667 Z</PathGeometry>
+    <PathGeometry x:Key="AddSvg">M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z</PathGeometry>
+    <PathGeometry x:Key="EditSvg">M 53.2929,21.2929L 54.7071,22.7071C 56.4645,24.4645 56.4645,27.3137 54.7071,29.0711L 52.2323,31.5459L 44.4541,23.7677L 46.9289,21.2929C 48.6863,19.5355 51.5355,19.5355 53.2929,21.2929 Z M 31.7262,52.052L 23.948,44.2738L 43.0399,25.182L 50.818,32.9601L 31.7262,52.052 Z M 23.2409,47.1023L 28.8977,52.7591L 21.0463,54.9537L 23.2409,47.1023 Z</PathGeometry>
+    
     <!-- Path: Navigation buttons -->
     <Path x:Key="Back" x:Shared="False" Data="{StaticResource ArrowLeftSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
     <Path x:Key="Forward" x:Shared="False" Data="{StaticResource ArrowRightSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
     <Path x:Key="Cancel" x:Shared="False" Data="{StaticResource CancelSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
     <Path x:Key="Finish" x:Shared="False" Data="{StaticResource CheckSvg}" Fill="{StaticResource NavigationButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+
+    <!-- Ribbon bar buttons -->
+    <Path x:Key="New" x:Shared="False" Data="{StaticResource AddSvg}" Fill="{StaticResource RibbonBarButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+    <Path x:Key="Edit" x:Shared="False" Data="{StaticResource EditSvg}" Fill="{StaticResource RibbonBarButtonColor}" Stretch="Uniform" Width="24" Height="24" />
+    <Path x:Key="Delete" x:Shared="False" Data="{StaticResource DeleteSvg}" Fill="{StaticResource RibbonBarButtonColor}" Stretch="Uniform" Width="24" Height="24" />
 </ResourceDictionary>

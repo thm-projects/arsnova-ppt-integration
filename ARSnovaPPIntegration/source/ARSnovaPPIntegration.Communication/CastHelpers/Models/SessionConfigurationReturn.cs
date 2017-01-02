@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ARSnovaPPIntegration.Model.ArsnovaClick;
+﻿using System.Collections.Generic;
+
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication.CastHelpers.Models
 {

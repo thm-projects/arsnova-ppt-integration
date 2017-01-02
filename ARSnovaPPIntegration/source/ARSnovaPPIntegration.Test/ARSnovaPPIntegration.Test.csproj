@@ -96,9 +96,9 @@
       <Project>{2E5C6DAB-C772-4EDD-B775-F40395A148A6}</Project>
       <Name>ARSnovaPPIntegration.Communication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj">
+    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
       <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
-      <Name>ARSnovaPPIntegration.Model</Name>
+      <Name>ARSnovaPPIntegration.Communication.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Presentation.Configuration\ARSnovaPPIntegration.Presentation.Configuration.csproj">
       <Project>{7186C2F8-5335-46B1-8BEB-9D620080A323}</Project>

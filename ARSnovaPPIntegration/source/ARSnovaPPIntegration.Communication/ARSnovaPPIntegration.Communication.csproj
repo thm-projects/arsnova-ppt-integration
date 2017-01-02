@@ -71,10 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArsnovaClickApi.cs" />
     <Compile Include="ArsnovaClickService.cs" />
     <Compile Include="ArsnovaEuService.cs" />
     <Compile Include="CastHelpers\Converters\ObjectMapper.cs" />
     <Compile Include="CastHelpers\Models\AnswerOptionsReturn.cs" />
+    <Compile Include="CastHelpers\Models\QuestionGroupReturn.cs" />
     <Compile Include="CastHelpers\Models\SessionConfigurationReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,6 +84,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
+      <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
+      <Name>ARSnovaPPIntegration.Business.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
       <Project>{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}</Project>
       <Name>ARSnovaPPIntegration.Common.Contract</Name>
@@ -94,9 +100,9 @@
       <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
       <Name>ARSnovaPPIntegration.Communication.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Model.csproj">
+    <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
       <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
-      <Name>ARSnovaPPIntegration.Model</Name>
+      <Name>ARSnovaPPIntegration.Communication.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

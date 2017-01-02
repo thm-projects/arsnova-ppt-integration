@@ -8,11 +8,14 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Communication.Contract;
 
 namespace ARSnovaPPIntegration.Business
 {
     public class SessionInformationProvider : ISessionInformationProvider
     {
+        private readonly IArsnovaClickService arsnovaClickService;
+
         private readonly IQuestionTypeTranslator questionTypeTranslator;
 
         private readonly List<QuestionTypeEnum> votingQuestionTypes = new List<QuestionTypeEnum>
@@ -38,6 +41,7 @@ namespace ARSnovaPPIntegration.Business
 
         public SessionInformationProvider()
         {
+            this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
             this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
         }
 
@@ -73,9 +77,8 @@ namespace ARSnovaPPIntegration.Business
                 case QuestionTypeEnum.FreeTextClick:
                     return AnswerOptionType.ShowFreeTextAnswerOptions;
                 case QuestionTypeEnum.EvaluationVoting:
-                    return AnswerOptionType.ShowEvaluationAnswerOptions;
                 case QuestionTypeEnum.GradsVoting:
-                    return AnswerOptionType.ShowGradeAnswerOptions;
+                    return AnswerOptionType.ShowGradeOrEvaluationAnswerOptions;
                 case QuestionTypeEnum.RangedQuestionClick:
                     return AnswerOptionType.ShowRangedAnswerOption;
                 case QuestionTypeEnum.YesNoVoting:
@@ -85,6 +88,13 @@ namespace ARSnovaPPIntegration.Business
                 default:
                     throw new ArgumentException($"QuestionType not handled in GetAnswerOptionType: '{questionType}'");
             }
+        }
+
+        public List<string> GetHashtagList()
+        {
+            var allHashtagInfos = this.arsnovaClickService.GetAllHashtagInfos();
+
+            return allHashtagInfos.Select(hashtagInfo => hashtagInfo.hashtag).ToList();
         }
     }
 }

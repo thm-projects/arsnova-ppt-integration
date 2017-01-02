@@ -20,7 +20,6 @@ namespace ARSnovaPPIntegration.Business
         public SlideManipulator(ILocalizationService localizationService)
         {
             this.localizationService = localizationService;
-            //this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
             this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
         }
 
@@ -76,6 +75,26 @@ namespace ARSnovaPPIntegration.Business
             // footer
             arsnovaSlide.HeadersFooters.Footer.Visible = MsoTriState.msoTrue;
             arsnovaSlide.HeadersFooters.Footer.Text = "Copyright arsnova team / Tjark Wilhelm Hoeck";
+        }
+
+        public void AddClickIntroSlide(Slide slide, string hashtag)
+        {
+            var titelObj = slide.Shapes[1].TextFrame.TextRange;
+            titelObj.Text = this.localizationService.Translate("ARSnova.click");
+            titelObj.Font.Name = "Arial";
+            titelObj.Font.Size = 32;
+
+            // Microsoft.Office.Interop.PowerPoint.Shape shape = slide.Shapes[2];
+            // slide.Shapes.AddPicture(pictureFileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, shape.Left, shape.Top, shape.Width, shape.Height);
+
+            var contentObj = slide.Shapes[2].TextFrame.TextRange;
+            contentObj.Text = this.localizationService.Translate("This presentation uses arsnova.click, join the hashtag:");
+            contentObj.Text += Environment.NewLine;
+            contentObj.Text += Environment.NewLine;
+            contentObj.Text += hashtag;
+            contentObj.Paragraphs(-1).Lines(3, 1).Font.Name = "Arial";
+            contentObj.Paragraphs(-1).Lines(3, 1).Font.Size = 26;
+            // TODO create QR-Code / get it from click server
         }
     }
 }

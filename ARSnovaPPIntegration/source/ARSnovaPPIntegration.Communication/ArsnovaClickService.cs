@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 
-using Newtonsoft.Json;
-
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
-using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.CastHelpers.Converters;
 using ARSnovaPPIntegration.Communication.CastHelpers.Models;
 using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Model.ArsnovaClick;
+using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Communication
 {
     public class ArsnovaClickService : IArsnovaClickService
     {
-        private readonly string apiUrl;
+        private ArsnovaClickApi arsnovaClickApi;
 
         private readonly ObjectMapper<AnswerOptionModelWithId, AnswerOptionModel> answerOptionMapper;
 
@@ -30,50 +26,30 @@ namespace ARSnovaPPIntegration.Communication
 
             this.sessionConfigurationMapper = new ObjectMapper<SessionConfigurationWithId, SessionConfiguration>();
 
+            string apiUrl;
+
             #if DEBUG
-                this.apiUrl = "http://localhost:3000/api/";
+                apiUrl = "http://localhost:3000/api/";
             #else
-                this.apiUrl = "https://arsnova.click/api/";
+                apiUrl = "https://arsnova.click/api/";
             #endif
+
+            this.arsnovaClickApi = new ArsnovaClickApi(
+                apiUrl);
         }
 
-        public string FindAllHashtags()
+        public List<HashtagInfo> GetAllHashtagInfos()
         {
-            var request = this.CreateWebRequest("hashtags", HttpMethod.Get);
-
-            var responseString = this.GetResponseString(request, HttpStatusCode.OK);
-
-            return responseString;
+            return this.arsnovaClickApi.GetAllHashtagInfos();
         }
 
         public List<AnswerOptionModel> GetAnswerOptionsForHashtag(string hashtag)
         {
-            var jsonBody = JsonConvert.SerializeObject(new
-                {
-                    hashtag
-                });
-
-            AnswerOptionsReturn jsonConvert;
-
-            try
-            {
-                var request = this.CreateWebRequest("answerOptions", HttpMethod.Post);
-
-                request = this.AddContentToRequest(request, jsonBody);
-
-                var responseString = this.GetResponseString(request, HttpStatusCode.OK);
-
-                jsonConvert = JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
-            }
-            catch (JsonReaderException exception)
-            {
-                // not convertable -> not the object we expected. Possible reasons: arsnova.click api changed or hashtag not active
-                throw new CommunicationException("Json-Object not mappable", exception);
-            }
+            var answerOptionsReturnModel = this.arsnovaClickApi.GetAnswerOptions(hashtag);
 
             var answerOptions = new List<AnswerOptionModel>();
 
-            foreach (var answerOptionModelWithId in jsonConvert.answeroptions)
+            foreach (var answerOptionModelWithId in answerOptionsReturnModel.answeroptions)
             {
                 var answerOptionModel = new AnswerOptionModel();
                 this.answerOptionMapper.Map(answerOptionModelWithId, answerOptionModel);
@@ -85,113 +61,210 @@ namespace ARSnovaPPIntegration.Communication
 
         public SessionConfiguration GetSessionConfiguration(string hashtag)
         {
-            var jsonBody = JsonConvert.SerializeObject(new
-                {
-                    hashtag
-                });
+            var sessionConfigurationReturnModel = this.arsnovaClickApi.GetSessionConfiguration(hashtag);
 
-            SessionConfigurationReturn jsonConvert;
-
-            try
-            {
-                var request = this.CreateWebRequest("sessionConfiguration", HttpMethod.Post);
-
-                request = this.AddContentToRequest(request, jsonBody);
-
-                var responseString = this.GetResponseString(request, HttpStatusCode.OK);
-
-                jsonConvert = JsonConvert.DeserializeObject<SessionConfigurationReturn>(responseString);
-            }
-            catch (JsonReaderException exception)
-            {
-                // not convertable -> not the object we expected. Possible reasons: arsnova.click api changed or hashtag not active
-                throw new CommunicationException("Json-Object not mappable", exception);
-            }
-            
             var sessionConfiguration = new SessionConfiguration();
 
-            this.sessionConfigurationMapper.Map(jsonConvert.sessionConfiguration.FirstOrDefault(), sessionConfiguration);
+            this.sessionConfigurationMapper.Map(sessionConfigurationReturnModel.sessionConfiguration.FirstOrDefault(), sessionConfiguration);
 
             return sessionConfiguration;
         }
 
-        private HttpWebRequest AddContentToRequest(HttpWebRequest request, string data)
+        public Tuple<ValidationResult, string> CreateHashtag(string hashtag)
         {
-            var encoding = new ASCIIEncoding();
-            var dataBytes = encoding.GetBytes(data);
+            // Temporary: One private key per question
+            var privateKey = string.Empty;
 
-            request.ContentType = "application/json";
-            request.ContentLength = dataBytes.Length;
             try
             {
-                var requestStream = request.GetRequestStream();
-
-                requestStream.Write(dataBytes, 0, dataBytes.Length);
+                privateKey = this.arsnovaClickApi.NewPrivateKey();
             }
-            catch (Exception exception)
+            catch (CommunicationException comException)
             {
-                throw new CommunicationException("The connection to the remote server could not be established.", exception);
+                return new Tuple<ValidationResult, string>(
+                    new ValidationResult
+                    {
+                        FailureTitel = "Error - create hashtag",
+                        FailureMessage = comException.Message
+                    },
+                    privateKey);
             }
 
-            return request;
+            var validationResult = this.arsnovaClickApi.AddHashtag(hashtag, privateKey);
+
+            return new Tuple<ValidationResult, string>(validationResult, privateKey);
         }
 
-        private HttpWebRequest CreateWebRequest(string apiMethod, HttpMethod httpMethod)
+        public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)
         {
-            var webRequest = (HttpWebRequest) WebRequest.Create(this.apiUrl + apiMethod);
-            webRequest.Accept = "*/*";
+            var validationResult = new ValidationResult();
 
-            switch (httpMethod)
+            if (string.IsNullOrEmpty(slideSessionModel.Hashtag))
             {
-                case HttpMethod.Get:
-                    webRequest.Method = "GET";
-                    break;
-                case HttpMethod.Post:
-                    webRequest.Method = "POST";
-                    break;
-                case HttpMethod.Put:
-                    webRequest.Method = "PUT";
-                    break;
-                case HttpMethod.Delete:
-                    webRequest.Method = "DELETE";
-                    break;
-                case HttpMethod.Patch:
-                    webRequest.Method = "PATCH";
-                    break;
+                validationResult.FailureTitel = "Error -  hashtag";
+                validationResult.FailureMessage = "No hashtag provided";
+                return validationResult;
             }
 
-            return webRequest;
+            if (string.IsNullOrEmpty(slideSessionModel.PrivateKey))
+            {
+                validationResult.FailureTitel = "Error -  private key";
+                validationResult.FailureMessage = "No private key provided";
+                return validationResult;
+            }
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+
+            }
+
+            validationResult = this.ValidateValidQuestionGroup(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel), slideSessionModel.PrivateKey);
         }
 
-        private string GetResponseString(HttpWebRequest httpWebRequest, HttpStatusCode expectedHttpStatusCode)
+        private ValidationResult ValidateValidQuestionGroup(SlideSessionModel slideSessionModel)
         {
-            try
+            var validationResult = new ValidationResult();
+
+            // TODO
+
+            return validationResult;
+        }
+
+        private QuestionGroupModel SlideSessionModelToQuestionGroupModel(SlideSessionModel slideSessionModel)
+        {
+            // TODO  many default values
+
+            var questionModelList =
+                slideSessionModel.Questions.Select(q => this.SlideQuestionModelToQuestionModel(q, slideSessionModel.Hashtag)).ToList();
+
+            return new QuestionGroupModel
+                   {
+                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                       questionList = questionModelList,
+                       configuration = new ConfigurationModel
+                                       {
+                                           hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                           music = new MusicModel
+                                                   {
+                                                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                                       isEnabled = true,
+                                                       volume = 90,
+                                                       title = "Song3",
+                                                       isLobbyEnabled = true,
+                                                       lobbyTitle = "LobbySong1",
+                                                       finishSoundTitle = "LobbySong1"
+                                                   },
+                                           nicks = new NicksModel
+                                                   {
+                                                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                                       selectedValues = new List<string>(),
+                                                       blockIllegal = true,
+                                                       restrictToCASLogin = false
+                                                   },
+                                           theme = "theme-arsnova-dot-click-contrast",
+                                           readingConfirmationEnabled = false
+                       },
+                       type = "DefaultQuestionGroup"
+
+            };
+        }
+
+        private QuestionModel SlideQuestionModelToQuestionModel(SlideQuestionModel slideQuestionModel, string hashtag)
+        {
+            
+
+            var questionModel =  new QuestionModel
+                   {
+                       hashtag = Uri.EscapeDataString(hashtag),
+                       questionText = Uri.EscapeDataString(slideQuestionModel.QuestionText),
+                       timer = 60,
+                       startTime = 0,
+                       questionIndex = slideQuestionModel.Index,
+                       displayAnswerText = false,
+                       type = this.QuestionTypeToClickQuestionType(slideQuestionModel.QuestionType)
+            };
+
+            if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
             {
-                var response = (HttpWebResponse)httpWebRequest.GetResponse();
+                var rangedAnswerOption = slideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
 
-                var responseStream = response.GetResponseStream();
-
-                if (responseStream == null)
+                if (rangedAnswerOption == null)
                 {
-                    throw new CommunicationException("Expected response stream is null", response.StatusCode);
+                    throw new ArgumentException("no answer options provided");
                 }
 
-                var responseString = new StreamReader(responseStream).ReadToEnd();
+                questionModel.rangeMin = rangedAnswerOption.LowerLimit;
+                questionModel.rangeMax = rangedAnswerOption.HigherLimit;
+                questionModel.correctValue = rangedAnswerOption.Correct;
+            }
+            else
+            {
+                var isFreetextAnswerOption = slideQuestionModel.QuestionType == QuestionTypeEnum.FreeTextClick;
 
-                if (response.StatusCode != expectedHttpStatusCode)
+                var answerOptionModelList =
+                    slideQuestionModel.AnswerOptions.Select(a => this.SlideAnswerOptionModelToAnswerOptionModel(a, hashtag, slideQuestionModel.Index, isFreetextAnswerOption))
+                                      .ToList();
+
+                questionModel.answerOptionList = answerOptionModelList;
+            }
+
+            return questionModel;
+        }
+
+        private AnswerOptionModel SlideAnswerOptionModelToAnswerOptionModel(object answerOption, string hashtag, int questionIndex, bool isFreetextAnswerOption)
+        {
+            if (answerOption.GetType() == typeof(GeneralAnswerOption))
+            {
+                var castedAnswerOption = answerOption as GeneralAnswerOption;
+
+                return new AnswerOptionModel
+
                 {
-                    throw new CommunicationException("Unexpected response from server", response.StatusCode, responseString);
-                }
+                    hashtag = Uri.EscapeDataString(hashtag),
+                    questionIndex = questionIndex,
+                    answerText = Uri.EscapeDataString(castedAnswerOption.Text),
+                    answerOptionNumber = castedAnswerOption.Position,
+                    isCorrect = castedAnswerOption.IsTrue,
+                    type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
 
-                return responseString;
+                };
             }
-            catch (WebException webException)
+
+            if (answerOption.GetType() == typeof(RangedAnswerOption))
             {
-                throw new CommunicationException("Web Exception while requesting response", webException);
+                return null;
             }
-            catch (Exception exception)
+
+            throw new ArgumentException($"Unknow answer option type {answerOption.GetType()}");
+        }
+
+        private string QuestionTypeToClickQuestionType(QuestionTypeEnum questionType)
+        {
+            switch (questionType)
             {
-                throw new CommunicationException("General Exception while requesting response", exception);
+                case QuestionTypeEnum.SingleChoiceClick:
+                    return "SingleChoiceQuestion";
+                case QuestionTypeEnum.MultipleChoiceClick:
+                    return "MultipleChoiceQuestion";
+                case QuestionTypeEnum.YesNoClick:
+                    return "YesNoSingleChoiceQuestion";
+                case QuestionTypeEnum.TrueFalseClick:
+                    return "TrueFalseSingleChoiceQuestion";
+                case QuestionTypeEnum.RangedQuestionClick:
+                    return "RangedQuestion";
+                case QuestionTypeEnum.FreeTextClick:
+                    return "FreeTextQuestion";
+                case QuestionTypeEnum.SurveyClick:
+                    return "SurveyQuestion";
+                default: return String.Empty;
             }
         }
     }

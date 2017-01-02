@@ -7,8 +7,8 @@
     <ProjectGuid>{3863C834-B716-4844-947B-BBF358A8FB08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ARSnovaPPIntegration.Model</RootNamespace>
-    <AssemblyName>ARSnovaPPIntegration.Model</AssemblyName>
+    <RootNamespace>ARSnovaPPIntegration.Communication.Model</RootNamespace>
+    <AssemblyName>ARSnovaPPIntegration.Communication.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArsnovaClick\AnswerOptionModel.cs" />
+    <Compile Include="ArsnovaClick\HashtagInfo.cs" />
+    <Compile Include="ArsnovaClick\QuestionGroupModel.cs" />
     <Compile Include="ArsnovaClick\SessionConfigurationWithId.cs" />
     <Compile Include="ArsnovaEu\SessionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

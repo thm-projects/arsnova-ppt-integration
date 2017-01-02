@@ -132,6 +132,9 @@
   <data name="Add_question_to_this_slide" xml:space="preserve">
     <value>Frage zu dieser Folie hinzufügen</value>
   </data>
+  <data name="Answer_option_amount:" xml:space="preserve">
+    <value>Anzahl Antwortmöglichkeiten:</value>
+  </data>
   <data name="An_error_occured:" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten:</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="Communication_Error" xml:space="preserve">
     <value>Kommunikations-Fehler</value>
+  </data>
+  <data name="Enter_answer_option_text_here." xml:space="preserve">
+    <value>Gib den Text der Antwortmöglichkeit hier ein.</value>
   </data>
   <data name="Enter_the_question_text_here." xml:space="preserve">
     <value>Gib hier den Text der Frage ein.</value>
@@ -212,5 +218,116 @@
   </data>
   <data name="Yes|No" xml:space="preserve">
     <value>Ja|Nein</value>
+  </data>
+  <data name="Is_true" xml:space="preserve">
+    <value>Ist richtig</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="does_not_apply" xml:space="preserve">
+    <value>trifft eher nicht zu</value>
+  </data>
+  <data name="good" xml:space="preserve">
+    <value>gut</value>
+  </data>
+  <data name="inadequate" xml:space="preserve">
+    <value>mangelhaft</value>
+  </data>
+  <data name="insufficient" xml:space="preserve">
+    <value>ungenügend</value>
+  </data>
+  <data name="neither" xml:space="preserve">
+    <value>weder noch</value>
+  </data>
+  <data name="rather_applies" xml:space="preserve">
+    <value>trifft eher zu</value>
+  </data>
+  <data name="satisfying" xml:space="preserve">
+    <value>befriedigend</value>
+  </data>
+  <data name="strongly_disagree" xml:space="preserve">
+    <value>trifft gar nicht zu</value>
+  </data>
+  <data name="sufficient" xml:space="preserve">
+    <value>ausreichend</value>
+  </data>
+  <data name="totally_agree" xml:space="preserve">
+    <value>trifft voll zu</value>
+  </data>
+  <data name="very_good" xml:space="preserve">
+    <value>sehr gut</value>
+  </data>
+  <data name="If_this_value_is_changed,_other_Session-Properties_like_the_answer_options_or_the_question_type_will_be_reseted._Do_you_want_to_continue?" xml:space="preserve">
+    <value>Wenn dieser Wert geändert wird, werden andere Session-Eigenschaften wie die Antwortoptionen zurückgesetzt. Möchtest du trotzdem fortfahren?</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="Correct_value" xml:space="preserve">
+    <value>Richtiger Wert</value>
+  </data>
+  <data name="Grade-_and_evaluation_questions_own_predefined_answer_options._No_manipulation_possible." xml:space="preserve">
+    <value>Noten- und Evaluations-Fragen haben vordefinierte Antwortmöglichkeiten. Das bearbeiten von diesen ist nicht möglich.</value>
+  </data>
+  <data name="Maximum_range" xml:space="preserve">
+    <value>Höchster Wert</value>
+  </data>
+  <data name="Minimum_range" xml:space="preserve">
+    <value>Niedrigster Wert</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Falsch</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Wahr</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Can't_create_session,_hashtag_is_already_taken" xml:space="preserve">
+    <value>Session konnte nicht erstellt werden, der Hashtag wird bereits verwendet.</value>
+  </data>
+  <data name="Error_during_session_setup" xml:space="preserve">
+    <value>Fehler bei der Session-Erstellung</value>
+  </data>
+  <data name="Hashtag_already_taken." xml:space="preserve">
+    <value>Der Hashtag ist bereits vergeben.</value>
+  </data>
+  <data name="Hashtag_is_needed." xml:space="preserve">
+    <value>Hashtag wird benötigt.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="Do_you_really_want_to_cancel_and_rewind_all_current_changes?" xml:space="preserve">
+    <value>Wollen Sie wirklich abbrechen und die aktuellen Änderungen rückgängig machen?</value>
+  </data>
+  <data name="Do_you_really_want_to_delete_this_question?" xml:space="preserve">
+    <value>Möchtest du diese Frage wirklich löschen?</value>
+  </data>
+  <data name="Question_overview" xml:space="preserve">
+    <value>Übersicht der Fragen</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="Slide" xml:space="preserve">
+    <value>Folie</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
   </data>
 </root>

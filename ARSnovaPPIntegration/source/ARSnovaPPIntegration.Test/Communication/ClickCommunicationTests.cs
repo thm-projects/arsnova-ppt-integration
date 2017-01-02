@@ -1,4 +1,5 @@
-﻿using ARSnovaPPIntegration.Communication;
+﻿using System;
+using ARSnovaPPIntegration.Communication;
 using ARSnovaPPIntegration.Communication.Contract;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,6 +11,7 @@ namespace ARSnovaPPIntegration.Test.Communication
     {
         private readonly IArsnovaClickService arsnovaClickService;
 
+        // TODO Add encoding: hashtag = Uri.EscapeDataString(hashtag)
         public ClickCommunicationTests()
         {
             this.arsnovaClickService = new ArsnovaClickService();
@@ -26,10 +28,35 @@ namespace ARSnovaPPIntegration.Test.Communication
         }
 
         [TestMethod]
+        public void TestAddSession()
+        {
+            // TODO
+            // test addHashtag
+            /*var newRandomHashtag = Guid.NewGuid();
+            var allHashtagsCount = this.arsnovaClickService.GetAllHashtagInfos().Count;
+            this.arsnovaClickService.*/
+
+            // test question
+
+            // test questions
+
+            //test if sessions is online (user can join)
+        }
+
+        [TestMethod]
+        public void GetQuestionGroup()
+        {
+            // TODO
+        }
+
+        [TestMethod]
         public void GetHashtagsTest()
         {
-            var allHashtags = this.arsnovaClickService.FindAllHashtags();
-            Assert.IsFalse(string.IsNullOrWhiteSpace(allHashtags));
+            var allHashtagInfos = this.arsnovaClickService.GetAllHashtagInfos();
+            foreach (var allHashtagInfo in allHashtagInfos)
+            {
+                Assert.IsFalse(string.IsNullOrWhiteSpace(allHashtagInfo.hashtag));
+            }
         }
 
         // Tests for existing sessions (which are currently not online)

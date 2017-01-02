@@ -208,7 +208,29 @@ namespace ARSnovaPPIntegration.Presentation.Resources
             // layer could be null if control is no longer in the visual tree
             if (layer != null)
             {
-                layer.Add(new WatermarkAdorner(control, localizationService.Translate("Enter the question text here.")));
+                // watermark control must be a textBlock
+                var textBlock = GetWatermark(control) as TextBlock;
+
+                if (textBlock != null)
+                {
+                    if (textBlock.Text == "QuestionTextPlaceHolder")
+                    {
+                        layer.Add(
+                            new WatermarkAdorner(
+                                control, localizationService.Translate("Enter the question text here.")));
+                        return;
+                    }
+
+                    if (textBlock.Text == "FreeTextAnswerOptionPlaceHolder")
+                    {
+                        layer.Add(new WatermarkAdorner(control, localizationService.Translate("Enter answer option text here.")));
+                        return;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid watermark definition. Watch the stacktrace for further informations.");
+                }
             }
         }
 
