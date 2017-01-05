@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
@@ -8,6 +9,8 @@ using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Translators;
+using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -54,47 +57,62 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
-        public void StartQuizSetup(Slide slide)
+        public void AddQuizToSlide(Slide slide)
         {
-            var slideSessionModel = new SlideSessionModel();
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            var newQuestion = new SlideQuestionModel(this.questionTypeTranslator)
+            {
+                QuestionType = slideSessionModel.SessionType == SessionType.ArsnovaClick
+                                                                ? QuestionTypeEnum.SingleChoiceClick
+                                                                : QuestionTypeEnum.SingleChoiceVoting,
+                Index = slideSessionModel.Questions.Count,
+                Slide = slide
+            };
+
+            slideSessionModel.Questions.Add(newQuestion);
 
             this.viewPresenter.ShowInNewWindow(
-                new SelectArsnovaTypeViewViewModel(
-                    new ViewModelRequirements(
-                        this.viewPresenter,
-                        this.questionTypeTranslator,
-                        this.localizationService,
-                        this.sessionManager,
-                        this.sessionInformationProvider,
-                        this.slideManipulator,
-                        slideSessionModel)));
+                new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), newQuestion.Id, true));
         }
 
-        public void EditQuizSetup()
+        public void EditQuizSetup(Slide slide)
         {
-            throw new NotImplementedException();
+            var slideSessionModel = this.GetSlideSessionModel();
 
-            // TODO get current selected slide and find the quiz
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.Slide == slide);
 
-            var slideSessionModel = new SlideSessionModel(true);
-
-            // TODO Implement edit mode -> retrieve / build model from data in slide and start viewpresenter
+            if (slideQuestionModel == null)
+            {
+                throw new Exception("No existing arsnova question on slide.");
+            }
 
             this.viewPresenter.ShowInNewWindow(
-                new SelectArsnovaTypeViewViewModel(
-                    new ViewModelRequirements(
-                        this.viewPresenter,
-                        this.questionTypeTranslator,
-                        this.localizationService,
-                        this.sessionManager,
-                        this.sessionInformationProvider,
-                        this.slideManipulator,
-                        slideSessionModel)));
+                new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), slideQuestionModel.Id, false));
         }
 
-        public void DeleteQuizFromSelectedSlide()
+        public void DeleteQuizFromSelectedSlide(Slide slide)
         {
-            // TODO
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.Slide == slide);
+
+            if (slideQuestionModel == null)
+            {
+                throw new Exception("No existing arsnova question on slide.");
+            }
+
+            var questionText = $"{this.localizationService.Translate("Do you really want to delete this question?")}{Environment.NewLine}{Environment.NewLine}";
+            questionText += slideQuestionModel.QuestionText;
+
+            var deleteQuestion = PopUpWindow.ConfirmationWindow(
+                this.localizationService.Translate("Delete"),
+                questionText);
+
+            if (deleteQuestion)
+            {
+                slideSessionModel.Questions.Remove(slideQuestionModel);
+            }
         }
 
         public Slide CreateNewSlide()
@@ -117,6 +135,18 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
             return slideSessionModel ?? new SlideSessionModel();
+        }
+
+        private ViewModelRequirements CreateViewModelRequirements(SlideSessionModel slideSessionModel)
+        {
+            return new ViewModelRequirements(
+                this.viewPresenter,
+                this.questionTypeTranslator,
+                this.localizationService,
+                this.sessionManager,
+                this.sessionInformationProvider,
+                this.slideManipulator,
+                slideSessionModel);
         }
     }
 }

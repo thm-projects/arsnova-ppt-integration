@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business.Model
 {
@@ -25,12 +26,11 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public readonly IQuestionTypeTranslator QuestionTypeTranslator;
 
-        // TODO test data
-        public int SlideNumber { get; set; } = 0;
+        public int SlideNumber => this.Slide.SlideNumber;
+
+        public Slide Slide { get; set; }
 
         public int Index { get; set; }
-
-        // TODO select on which slide this question should be
 
         public Guid Id { get; set; }
 

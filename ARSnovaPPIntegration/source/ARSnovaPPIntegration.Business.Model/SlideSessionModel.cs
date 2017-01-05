@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+
 using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Model
@@ -22,7 +22,5 @@ namespace ARSnovaPPIntegration.Business.Model
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
 
         public bool SessionTypeSet { get; set; } = false;
-
-        
     }
 }

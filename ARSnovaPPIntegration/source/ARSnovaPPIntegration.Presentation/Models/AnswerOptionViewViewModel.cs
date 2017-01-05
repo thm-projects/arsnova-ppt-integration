@@ -321,6 +321,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 // TODO validate this question
+
+                                if (!this.SlideQuestionModel.Slide.Name.StartsWith("ArsnovaSlide"))
+                                {
+                                    this.SlideQuestionModel.Slide.Name = "ArsnovaSlide" + this.SlideQuestionModel.Slide.SlideIndex;
+                                }
+                                
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)

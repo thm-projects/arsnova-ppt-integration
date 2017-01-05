@@ -1,42 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using Microsoft.Office.Interop.PowerPoint;
+
 using Microsoft.Practices.ServiceLocation;
+
 using Office = Microsoft.Office.Core;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
-using ARSnovaPPIntegration.Presentation.Models;
-using ARSnovaPPIntegration.Presentation.ViewPresenter;
-using ARSnovaPPIntegration.Presentation.Views;
-
-// TODO:  Führen Sie diese Schritte aus, um das Element auf dem Menüband (XML) zu aktivieren:
-
-// 1: Kopieren Sie folgenden Codeblock in die ThisAddin-, ThisWorkbook- oder ThisDocument-Klasse.
-
-//  protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
-//  {
-//      return new Ribbon();
-//  }
-
-// 2. Erstellen Sie Rückrufmethoden im Abschnitt "Menübandrückrufe" dieser Klasse, um Benutzeraktionen
-//    zu behandeln, z.B. das Klicken auf eine Schaltfläche. Hinweis: Wenn Sie dieses Menüband aus dem Menüband-Designer exportiert haben,
-//    verschieben Sie den Code aus den Ereignishandlern in die Rückrufmethoden, und ändern Sie den Code für die Verwendung mit dem
-//    Programmmodell für die Menübanderweiterung (RibbonX).
-
-// 3. Weisen Sie den Steuerelementtags in der Menüband-XML-Datei Attribute zu, um die entsprechenden Rückrufmethoden im Code anzugeben.  
-
-// Weitere Informationen erhalten Sie in der Menüband-XML-Dokumentation in der Hilfe zu Visual Studio-Tools für Office.
-
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -51,7 +26,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         private ISlideManipulator slideManipulator;
 
-        private RibbonHelper ribbonHelper;
+        private readonly RibbonHelper ribbonHelper;
 
         private Office.IRibbonUI ribbon;
 
@@ -80,6 +55,11 @@ namespace ARSnovaPPIntegration.Presentation
         public bool IsOneArsnovaSlideSelected(Office.IRibbonControl control)
         {
             return this.OneArsnovaSlideSelected;
+        }
+
+        public bool IsNoneArsnovaSlideSelected(Office.IRibbonControl control)
+        {
+            return !this.OneArsnovaSlideSelected;
         }
 
         #region manageQuiz
@@ -118,7 +98,7 @@ namespace ARSnovaPPIntegration.Presentation
                 arsnovaSlide = this.ribbonHelper.CreateNewSlide();
             }
 
-            this.ribbonHelper.StartQuizSetup(arsnovaSlide);
+            this.ribbonHelper.AddQuizToSlide(arsnovaSlide);
 
             /*
              * test only -> should be called be helper after successful setup
@@ -173,7 +153,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void EditButtonClick(Office.IRibbonControl control)
         {
-            this.ribbonHelper.EditQuizSetup();
+            this.ribbonHelper.EditQuizSetup(SlideTracker.CurrentSlide);
         }
 
         public Bitmap GetEditButtonImage(Office.IRibbonControl control)
@@ -193,7 +173,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void DeleteButtonClick(Office.IRibbonControl control)
         {
-            this.ribbonHelper.DeleteQuizFromSelectedSlide();
+            this.ribbonHelper.DeleteQuizFromSelectedSlide(SlideTracker.CurrentSlide);
         }
 
         public Bitmap GetDeleteButtonImage(Office.IRibbonControl control)
@@ -221,7 +201,7 @@ namespace ARSnovaPPIntegration.Presentation
             var currentSlide = SlideTracker.CurrentSlide;
 
             // There can't be no selected slide because this event is fired after clicking on a slide
-            this.ribbonHelper.StartQuizSetup(currentSlide);
+            this.ribbonHelper.AddQuizToSlide(currentSlide);
             
         }
 
@@ -233,7 +213,7 @@ namespace ARSnovaPPIntegration.Presentation
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
         {
             var newSlide = this.ribbonHelper.CreateNewSlide();
-            this.ribbonHelper.StartQuizSetup(newSlide);
+            this.ribbonHelper.AddQuizToSlide(newSlide);
         }
 
         public bool AnySlideSelected(Office.IRibbonControl control)
@@ -321,13 +301,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         private static string GetResourceText(string resourceName)
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            string[] resourceNames = asm.GetManifestResourceNames();
-            for (int i = 0; i < resourceNames.Length; ++i)
+            var asm = Assembly.GetExecutingAssembly();
+            var resourceNames = asm.GetManifestResourceNames();
+            foreach (string t in resourceNames)
             {
-                if (string.Compare(resourceName, resourceNames[i], StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(resourceName, t, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    using (StreamReader resourceReader = new StreamReader(asm.GetManifestResourceStream(resourceNames[i])))
+                    using (var resourceReader = new StreamReader(asm.GetManifestResourceStream(t)))
                     {
                         if (resourceReader != null)
                         {

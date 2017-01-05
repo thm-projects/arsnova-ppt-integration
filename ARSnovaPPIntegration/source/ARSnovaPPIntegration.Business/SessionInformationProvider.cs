@@ -9,6 +9,7 @@ using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business
 {

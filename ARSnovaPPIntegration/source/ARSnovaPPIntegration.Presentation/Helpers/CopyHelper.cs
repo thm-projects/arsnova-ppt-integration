@@ -9,20 +9,21 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
     {
         public static SlideQuestionModel CopySlideQuestionModel(SlideQuestionModel currentSlideQuestionModel)
         {
-            var newSlideQuestionModel = new SlideQuestionModel(currentSlideQuestionModel.QuestionTypeTranslator);
+            var newSlideQuestionModel = new SlideQuestionModel(currentSlideQuestionModel.QuestionTypeTranslator)
+            {
+                Id = currentSlideQuestionModel.Id,
+                QuestionType = currentSlideQuestionModel.QuestionType,
+                QuestionTypeSet = currentSlideQuestionModel.QuestionTypeSet,
+                QuestionText = currentSlideQuestionModel.QuestionText,
+                AnswerOptionsSet = currentSlideQuestionModel.AnswerOptionsSet,
+                AnswerOptionType = currentSlideQuestionModel.AnswerOptionType,
+                AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount,
+                AnswerOptionInitType = currentSlideQuestionModel.AnswerOptionInitType,
+                Index = currentSlideQuestionModel.Index,
+                AnswerOptions = new ObservableCollection<object>()
+            };
 
-            newSlideQuestionModel.Id = currentSlideQuestionModel.Id;
-            newSlideQuestionModel.SlideNumber = currentSlideQuestionModel.SlideNumber;
-            newSlideQuestionModel.QuestionType = currentSlideQuestionModel.QuestionType;
-            newSlideQuestionModel.QuestionTypeSet = currentSlideQuestionModel.QuestionTypeSet;
-            newSlideQuestionModel.QuestionText = currentSlideQuestionModel.QuestionText;
-            newSlideQuestionModel.AnswerOptionsSet = currentSlideQuestionModel.AnswerOptionsSet;
-            newSlideQuestionModel.AnswerOptionType = currentSlideQuestionModel.AnswerOptionType;
-            newSlideQuestionModel.AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount;
-            newSlideQuestionModel.AnswerOptionInitType = currentSlideQuestionModel.AnswerOptionInitType;
-            newSlideQuestionModel.Index = currentSlideQuestionModel.Index;
 
-            newSlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
             if (currentSlideQuestionModel.AnswerOptions != null)
             {
                 foreach (var answerOption in currentSlideQuestionModel.AnswerOptions)

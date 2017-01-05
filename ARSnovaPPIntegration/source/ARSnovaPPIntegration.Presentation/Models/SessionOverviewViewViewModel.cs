@@ -57,7 +57,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                     new SelectArsnovaTypeViewViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true),
-                        new CommandBinding(
+                        /*new CommandBinding(
                             NavigationButtonCommands.New,
                             (e, o) =>
                             {
@@ -68,6 +68,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                                          ? QuestionTypeEnum.SingleChoiceClick
                                                                          : QuestionTypeEnum.SingleChoiceVoting,
                                                       Index = this.SlideSessionModel.Questions.Count
+                                                      // no new question without selected slide!
                                                   };
 
 
@@ -75,7 +76,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                                 this.OpenQuestionEditDialog(newQuestion.Id, true);
                             },
-                            (e, o) => o.CanExecute = true),
+                            (e, o) => o.CanExecute = true),*/
                         new CommandBinding(
                             NavigationButtonCommands.Edit,
                             (e, o) =>

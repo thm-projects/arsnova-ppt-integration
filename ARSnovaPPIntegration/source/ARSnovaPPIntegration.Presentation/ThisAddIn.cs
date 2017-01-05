@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using System.Windows.Controls;
+
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 
@@ -74,6 +74,7 @@ namespace ARSnovaPPIntegration.Presentation
             }
 
             // update control ui's
+            this.ribbon.RefreshRibbonControl("AddButton");
             this.ribbon.RefreshRibbonControl("EditButton");
             this.ribbon.RefreshRibbonControl("DeleteButton");
         }

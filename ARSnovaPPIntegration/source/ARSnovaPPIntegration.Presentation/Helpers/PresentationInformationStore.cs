@@ -33,6 +33,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             SetStringDocumentProperty("slideSessionModel", slideSessionModelString);
         }
 
+        public static bool HasSlideSessionModel()
+        {
+            return HasDocumentProperty("slideSessionModel");
+        }
+
         public static SlideSessionModel GetStoredSlideSessionModel()
         {
             if (HasDocumentProperty("slideSessionModel"))

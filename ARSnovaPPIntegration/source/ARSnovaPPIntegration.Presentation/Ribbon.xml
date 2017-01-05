@@ -17,6 +17,7 @@
               getLabel="GetAddButtonLabel"
               keytip="CA"
               getSupertip="GetAddButtonSupertip"
+              getEnabled="IsNoneArsnovaSlideSelected"
               onAction="AddButtonClick"
               getImage="GetAddButtonImage"
               size="large" />
@@ -63,10 +64,12 @@
         <button id="addQuizContentToSlide"
           getLabel="GetAddQuizToSlideLabel"
           getImage="GetAddButtonImage"
+          getEnabled="IsNoneArsnovaSlideSelected"
           onAction="AddQuizToSlideButtonClick"/>
         <button id="addQuizContentToNewSlide"
           getLabel="GetAddQuizToNewSlideLabel"
           getImage="GetAddButtonImage"
+          getEnabled="IsNoneArsnovaSlideSelected"
           onAction="AddQuizToNewSlideButtonClick"/>
       </menu>
     </contextMenu>
