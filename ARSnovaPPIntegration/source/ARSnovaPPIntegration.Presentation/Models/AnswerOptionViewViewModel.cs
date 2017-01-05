@@ -10,6 +10,7 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
@@ -326,7 +327,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                 {
                                     this.SlideQuestionModel.Slide.Name = "ArsnovaSlide" + this.SlideQuestionModel.Slide.SlideIndex;
                                 }
-                                
+
+                                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)

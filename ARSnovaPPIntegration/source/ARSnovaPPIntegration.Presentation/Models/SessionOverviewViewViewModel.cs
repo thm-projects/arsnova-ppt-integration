@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 using ARSnovaPPIntegration.Business.Model;
-using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
@@ -46,6 +46,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
+                                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+
                                 this.AddSessionToSlides();
                             },
                             (e, o) => o.CanExecute = true),

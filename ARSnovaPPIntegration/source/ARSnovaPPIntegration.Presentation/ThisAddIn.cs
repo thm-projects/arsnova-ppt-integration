@@ -24,7 +24,7 @@ namespace ARSnovaPPIntegration.Presentation
             // Add new context menu entries
             // Supported from v2000 until v2016 (current): http://officeone.mvps.org/vba/events_version.html
             this.Application.WindowBeforeRightClick +=
-                new EApplication_WindowBeforeRightClickEventHandler(this.application_windowBeforeRightClick);
+                this.application_windowBeforeRightClick;
 
             // Order of bindings are priorities!
             // high priority: window actions

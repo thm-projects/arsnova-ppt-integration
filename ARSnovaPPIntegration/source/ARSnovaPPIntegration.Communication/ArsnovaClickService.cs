@@ -26,16 +26,7 @@ namespace ARSnovaPPIntegration.Communication
 
             this.sessionConfigurationMapper = new ObjectMapper<SessionConfigurationWithId, SessionConfiguration>();
 
-            string apiUrl;
-
-            #if DEBUG
-                apiUrl = "http://localhost:3000/api/";
-            #else
-                apiUrl = "https://arsnova.click/api/";
-            #endif
-
-            this.arsnovaClickApi = new ArsnovaClickApi(
-                apiUrl);
+            this.arsnovaClickApi = new ArsnovaClickApi();
         }
 
         public List<HashtagInfo> GetAllHashtagInfos()

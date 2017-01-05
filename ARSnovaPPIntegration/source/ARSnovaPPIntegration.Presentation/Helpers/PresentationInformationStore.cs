@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 using Newtonsoft.Json;
 
@@ -16,7 +15,6 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             - stringified slideSessionModel (string)
         */
 
-
         public static void SetArsnovaIntroSlideAdded()
         {
             SetBoolDocumentProperty("introSlideAdded", true);
@@ -24,7 +22,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static bool IsArsnovaIntroSlideAlreadyAdded()
         {
-            return (bool)GetDocumentProperty("introSlideAdded", MsoDocProperties.msoPropertyTypeBoolean);
+            return GetBoolDocumentProperty("introSlideAdded");
         }
 
         public static void StoreSlideSessionModel(SlideSessionModel slideSessionModel)
@@ -35,96 +33,86 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static bool HasSlideSessionModel()
         {
-            return HasDocumentProperty("slideSessionModel");
+            return GetStringDocumentProperty("slideSessionModel") != null;
         }
 
         public static SlideSessionModel GetStoredSlideSessionModel()
         {
-            if (HasDocumentProperty("slideSessionModel"))
-            {
-                var slideSessionModelString = (string)GetDocumentProperty("slideSessionModel", MsoDocProperties.msoPropertyTypeString);
+            if (GetStringDocumentProperty("slideSessionModel") == null)
+                return null;
 
-                return JsonConvert.DeserializeObject<SlideSessionModel>(slideSessionModelString);
+            var slideSessionModelString = GetStringDocumentProperty("slideSessionModel");
+
+            return JsonConvert.DeserializeObject<SlideSessionModel>(slideSessionModelString);
+        }
+
+        private static void SetStringDocumentProperty(string propertyName, string propertyValue)
+        {
+            var customProperties = GetCustomDocumentProperties();
+
+            if (GetStringDocumentProperty(propertyName) != null)
+            {
+                customProperties[propertyName].Delete();
+            }
+
+            customProperties.Add(propertyName, false, MsoDocProperties.msoPropertyTypeString, propertyValue);
+        }
+
+        private static void SetBoolDocumentProperty(string propertyName, bool propertyValue)
+        {
+            var customProperties = GetCustomDocumentProperties();
+
+            if (HasBoolDocumentProperty(propertyName))
+            {
+                customProperties[propertyName].Delete();
+            }
+
+            customProperties.Add(propertyName, false, MsoDocProperties.msoPropertyTypeBoolean, propertyValue);
+        }
+
+        private static string GetStringDocumentProperty(string propertyName)
+        {
+            var customProperties = GetCustomDocumentProperties();
+
+            foreach (var property in customProperties)
+            {
+                if (property.Name == propertyName)
+                {
+                    return property.Value.ToString();
+                }
             }
 
             return null;
         }
 
-        private static void SetStringDocumentProperty(string propertyName, string propertyValue)
+        private static bool GetBoolDocumentProperty(string propertyName)
         {
-            object oDocCustomProps = GetCustomDocumentProperties();
-            var typeDocCustomProps = oDocCustomProps.GetType();
+            var customProperties = GetCustomDocumentProperties();
 
-            object[] oArgs = {propertyName,false,
-                 MsoDocProperties.msoPropertyTypeString,
-                 propertyValue};
-
-            typeDocCustomProps.InvokeMember("Add", BindingFlags.Default |
-                                       BindingFlags.InvokeMethod, null,
-                                       oDocCustomProps, oArgs);
-
-        }
-
-        private static void SetBoolDocumentProperty(string propertyName, bool propertyValue)
-        {
-            object oDocCustomProps = GetCustomDocumentProperties();
-            var typeDocCustomProps = oDocCustomProps.GetType();
-
-            object[] oArgs = {propertyName,false,
-                 MsoDocProperties.msoPropertyTypeBoolean,
-                 propertyValue};
-
-            typeDocCustomProps.InvokeMember("Add", BindingFlags.Default |
-                                       BindingFlags.InvokeMethod, null,
-                                       oDocCustomProps, oArgs);
-        }
-
-        private static bool HasDocumentProperty(string propertyName)
-        {
-            object oDocCustomProps = GetCustomDocumentProperties();
-            var typeDocCustomProps = oDocCustomProps.GetType();
-
-            try
+            foreach (var property in customProperties)
             {
-                object returned = typeDocCustomProps.InvokeMember("Item",
-                                        BindingFlags.Default |
-                                       BindingFlags.GetProperty, null,
-                                       oDocCustomProps, new object[] { propertyName });
-
-                return returned != null;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        private static object GetDocumentProperty(string propertyName, MsoDocProperties type)
-        {
-            object returnVal;
-
-            object oDocCustomProps = GetCustomDocumentProperties();
-            var typeDocCustomProps = oDocCustomProps.GetType();
-
-
-            object returned = typeDocCustomProps.InvokeMember("Item",
-                                        BindingFlags.Default |
-                                       BindingFlags.GetProperty, null,
-                                       oDocCustomProps, new object[] { propertyName });
-
-            if (returned == null)
-            {
-                throw new NullReferenceException($"Property with name {propertyName} not provided by active presentation.");
+                if (property.Name == propertyName)
+                {
+                    return property.Value;
+                }
             }
 
-            var typeDocAuthorProp = returned.GetType();
-            returnVal = typeDocAuthorProp.InvokeMember("Value",
-                                       BindingFlags.Default |
-                                       BindingFlags.GetProperty,
-                                       null, returned,
-                                       new object[] { }).ToString();
+            throw new ArgumentException($"Boolean property {propertyName} does not exist in current presentation.");
+        }
 
-            return returnVal;
+        private static bool HasBoolDocumentProperty(string propertyName)
+        {
+            var customProperties = GetCustomDocumentProperties();
+
+            foreach (var property in customProperties)
+            {
+                if (property.Name == propertyName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static dynamic GetCustomDocumentProperties()

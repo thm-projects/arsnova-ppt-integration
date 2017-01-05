@@ -5,6 +5,7 @@ using System.Windows.Input;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
@@ -18,7 +19,15 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             if (string.IsNullOrEmpty(this.SlideSessionModel.Hashtag))
             {
-                this.SlideSessionModel.Hashtag = Globals.ThisAddIn.Application.ActivePresentation.Name;
+                var presentationName = Globals.ThisAddIn.Application.ActivePresentation.Name;
+                var hashtagList = requirements.SessionInformationProvider.GetHashtagList();
+
+                while (hashtagList.Any(h => h.ToLower() == presentationName.ToLower()))
+                {
+                    presentationName += "1";
+                }
+
+                this.SlideSessionModel.Hashtag = presentationName;
             }
         }
 
@@ -107,11 +116,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     new List<CommandBinding>
                     {
                         new CommandBinding(
-                            NavigationButtonCommands.Forward,
+                            NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                this.ViewPresenter.Show(
-                                    new SessionOverviewViewViewModel(this.GetViewModelRequirements()));
+                                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+
+                                this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)
                     });

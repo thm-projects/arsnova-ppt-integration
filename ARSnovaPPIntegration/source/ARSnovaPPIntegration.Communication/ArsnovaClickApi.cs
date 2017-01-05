@@ -19,10 +19,13 @@ namespace ARSnovaPPIntegration.Communication
     {
         private readonly string apiUrl;
 
-        public ArsnovaClickApi(
-            string apiUrl)
+        public ArsnovaClickApi()
         {
-            this.apiUrl = apiUrl;
+            #if DEBUG
+                this.apiUrl = "http://localhost:3000/api/";
+            #else
+                this.apiUrl = "https://arsnova.click/api/";
+            #endif
         }
 
         public List<HashtagInfo> GetAllHashtagInfos()
