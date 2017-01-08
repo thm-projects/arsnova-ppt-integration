@@ -17,5 +17,11 @@ namespace ARSnovaPPIntegration.Communication.Contract
         Tuple<ValidationResult, string> CreateHashtag(string hashtag);
 
         ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel);
+
+        ValidationResult ResetSession(SlideSessionModel slideSessionModel);
+
+        ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel);
+
+        ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel);
     }
 }

@@ -86,7 +86,62 @@ namespace ARSnovaPPIntegration.Communication
             return new Tuple<ValidationResult, string>(validationResult, privateKey);
         }
 
+        public ValidationResult ResetSession(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.ResetSession(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+        }
+
         public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            validationResult = this.ValidateValidQuestionGroup(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel), slideSessionModel.PrivateKey);
+        }
+
+        public ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.ShowNextReadingConfirmation(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+        }
+
+        public ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.StartNextQuestion(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+        }
+
+        private ValidationResult CheckForHashtagAndPrivateKey(SlideSessionModel slideSessionModel)
         {
             var validationResult = new ValidationResult();
 
@@ -104,20 +159,7 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            if (!validationResult.Success)
-            {
-                return validationResult;
-
-            }
-
-            validationResult = this.ValidateValidQuestionGroup(slideSessionModel);
-
-            if (!validationResult.Success)
-            {
-                return validationResult;
-            }
-
-            return this.arsnovaClickApi.UpdateQuestionGroup(this.SlideSessionModelToQuestionGroupModel(slideSessionModel), slideSessionModel.PrivateKey);
+            return validationResult;
         }
 
         private ValidationResult ValidateValidQuestionGroup(SlideSessionModel slideSessionModel)

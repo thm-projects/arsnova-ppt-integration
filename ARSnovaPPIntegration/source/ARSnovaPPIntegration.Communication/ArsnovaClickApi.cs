@@ -61,53 +61,24 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
+        public ValidationResult ResetSession(string hashtag, string privateKey)
+        {
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("resetSession", hashtag, privateKey);
+        }
+
         public ValidationResult AddHashtag(string hashtag, string privateKey)
         {
-            // test only start
-            /*var jsonBody2 = JsonConvert.SerializeObject(new
-            {
-                hashtag = Uri.EscapeDataString("Demo Quiz 87")
-            });
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("addHashtag", hashtag, privateKey);
+        }
 
+        public ValidationResult ShowNextReadingConfirmation(string hashtag, string privateKey)
+        {
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", hashtag, privateKey);
+        }
 
-            var request2 = this.CreateWebRequest("getQuestionGroup", HttpMethod.Post);
-
-            request2 = this.AddContentToRequest(request2, jsonBody2);
-
-            var response = this.GetResponseString(request2);*/
-            
-
-            // test only end
-
-
-
-            var validationResult = new ValidationResult();
-
-            var createHashtagConfig = new 
-                                      {
-                                          hashtag = Uri.EscapeDataString(hashtag),
-                                          privateKey
-            };
-
-            var jsonBody = JsonConvert.SerializeObject(new
-            {
-                sessionConfiguration = createHashtagConfig
-            });
-
-            try
-            {
-                var request = this.CreateWebRequest("addHashtag", HttpMethod.Post);
-
-                request = this.AddContentToRequest(request, jsonBody);
-
-                this.SendRequest(request);
-            }
-            catch (CommunicationException comException)
-            {
-                validationResult = this.CommunicationExceptionToValidationResult(comException);
-            }
-
-            return validationResult;
+        public ValidationResult StartNextQuestion(string hashtag, string privateKey)
+        {
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("startNextQuestion", hashtag, privateKey);
         }
 
         public ValidationResult UpdateQuestionGroup(QuestionGroupModel questionGroupModel, string privateKey)
@@ -177,6 +148,37 @@ namespace ARSnovaPPIntegration.Communication
                                                   ? comException.HttpStatusCode
                                                     + comException.ServerResponseString
                                                   : comException.ServerResponseString;
+            return validationResult;
+        }
+
+        private ValidationResult DefaultPostRequestWithHashtagAndPrivateKey(string methodName, string hashtag, string privateKey)
+        {
+            var validationResult = new ValidationResult();
+
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            try
+            {
+                var request = this.CreateWebRequest(methodName, HttpMethod.Post);
+
+                request = this.AddContentToRequest(request, jsonBody);
+
+                this.SendRequest(request);
+            }
+            catch (CommunicationException comException)
+            {
+                validationResult = this.CommunicationExceptionToValidationResult(comException);
+            }
+
             return validationResult;
         }
 
