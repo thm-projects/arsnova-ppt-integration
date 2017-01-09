@@ -129,7 +129,7 @@ namespace ARSnovaPPIntegration.Communication
             return this.arsnovaClickApi.ShowNextReadingConfirmation(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
         }
 
-        public ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel)
+        public ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex)
         {
             var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
 
@@ -138,7 +138,7 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            return this.arsnovaClickApi.StartNextQuestion(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+            return this.arsnovaClickApi.StartNextQuestion(slideSessionModel.Hashtag, slideSessionModel.PrivateKey, questionIndex);
         }
 
         private ValidationResult CheckForHashtagAndPrivateKey(SlideSessionModel slideSessionModel)

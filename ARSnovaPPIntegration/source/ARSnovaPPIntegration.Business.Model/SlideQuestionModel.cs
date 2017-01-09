@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using ARSnovaPPIntegration.Common.Contract.Translators;
+
 using ARSnovaPPIntegration.Common.Enum;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business.Model
 {
@@ -15,20 +14,14 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private QuestionTypeEnum questionType = QuestionTypeEnum.SingleChoiceClick;
 
-        public SlideQuestionModel(IQuestionTypeTranslator questionTypeTranslator)
+        public SlideQuestionModel()
         {
             this.Id = Guid.NewGuid();
-
-            this.QuestionTypeTranslator = questionTypeTranslator;
         }
 
         public event EventHandler ObjectChangedEventHandler;
 
-        public readonly IQuestionTypeTranslator QuestionTypeTranslator;
-
-        public int SlideNumber => this.Slide.SlideNumber;
-
-        public Slide Slide { get; set; }
+        public int SlideId { get; set; }
 
         public int Index { get; set; }
 
@@ -47,7 +40,7 @@ namespace ARSnovaPPIntegration.Business.Model
             }
         }
 
-        public string QuestionTypeText => this.QuestionTypeTranslator.TranslateQuestionType(this.QuestionType);
+        public string QuestionTypeText { get; set; }
 
         public bool QuestionTypeSet { get; set; } = false;
 

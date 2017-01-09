@@ -35,8 +35,9 @@ namespace ARSnovaPPIntegration.Presentation
             Application.PresentationClose += OnPresentationClose;*/
 
             // mid priority: window actions
+
             /* TODO
-            Application.SlideShowBegin += OnSlideShowBegin;
+             * this.Application.SlideShowBegin += OnSlideShowBegin;
             Application.SlideShowEnd += OnSlideShowEnd;*/
 
             // low priority: slide actions

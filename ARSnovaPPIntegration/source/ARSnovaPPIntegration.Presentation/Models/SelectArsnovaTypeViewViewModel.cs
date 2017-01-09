@@ -120,7 +120,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
-
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)

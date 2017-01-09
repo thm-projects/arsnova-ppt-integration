@@ -73,5 +73,15 @@
           onAction="AddQuizToNewSlideButtonClick"/>
       </menu>
     </contextMenu>
+    <contextMenu idMso="ContextMenuSlideShow">
+      <menuSeparator id="separatorSlideShow" />
+      <menu id="menuSlideShow" getLabel="GetArsnovaSlideContextMenuLabel" getImage="GetArsnovaFavIcon">
+        <button id="startQuizButton"
+          getLabel="GetStartQuizLabel"
+          getImage="GetStartButtonImage"
+          getEnabled="PresentationOnArsnovaSlide"
+          onAction="StartNextQuestion"/>
+      </menu>
+    </contextMenu>
   </contextMenus>
 </customUI>

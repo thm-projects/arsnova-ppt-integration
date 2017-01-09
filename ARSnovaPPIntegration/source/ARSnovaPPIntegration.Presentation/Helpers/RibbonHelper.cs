@@ -61,13 +61,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var newQuestion = new SlideQuestionModel(this.questionTypeTranslator)
+            var newQuestion = new SlideQuestionModel
             {
                 QuestionType = slideSessionModel.SessionType == SessionType.ArsnovaClick
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
-                Slide = slide
+                SlideId = slide.SlideID
             };
 
             slideSessionModel.Questions.Add(newQuestion);
@@ -80,7 +80,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.Slide == slide);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.SlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -91,11 +91,18 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), slideQuestionModel.Id, false));
         }
 
+        public void StartQuiz(SlideQuestionModel slideQuestionModel)
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index);
+        }
+
         public void DeleteQuizFromSelectedSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.Slide == slide);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.SlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {

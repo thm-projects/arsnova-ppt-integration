@@ -18,6 +18,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             foreach (var questionModel in this.SlideSessionModel.Questions)
             {
+                questionModel.QuestionTypeText = this.QuestionTypeTranslator.TranslateQuestionType(questionModel.QuestionType);
                 questionModel.ObjectChangedEventHandler += delegate
                 {
                     this.OnPropertyChanged(nameof(this.Questions));
@@ -48,10 +49,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             {
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
 
-                                this.AddSessionToSlides();
+                                this.UpdateSlideContent();
+
+                                this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true),
-                        new CommandBinding(
+                        /*new CommandBinding(
                             NavigationButtonCommands.Back,
                             (e, o) =>
                             {
@@ -59,7 +62,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                     new SelectArsnovaTypeViewViewModel(this.GetViewModelRequirements()));
                             },
                             (e, o) => o.CanExecute = true),
-                        /*new CommandBinding(
+                        new CommandBinding(
                             NavigationButtonCommands.New,
                             (e, o) =>
                             {

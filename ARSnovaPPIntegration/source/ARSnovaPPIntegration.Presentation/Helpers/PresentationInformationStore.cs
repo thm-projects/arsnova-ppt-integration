@@ -1,5 +1,8 @@
 ﻿using System;
-
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 using Microsoft.Office.Core;
@@ -22,12 +25,20 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static bool IsArsnovaIntroSlideAlreadyAdded()
         {
-            return GetBoolDocumentProperty("introSlideAdded");
+            try
+            {
+                return GetBoolDocumentProperty("introSlideAdded");
+            }
+            catch (ArgumentException argumentException)
+            {
+                return false;
+            }
         }
 
         public static void StoreSlideSessionModel(SlideSessionModel slideSessionModel)
         {
             var slideSessionModelString = JsonConvert.SerializeObject(slideSessionModel);
+
             SetStringDocumentProperty("slideSessionModel", slideSessionModelString);
         }
 
@@ -38,24 +49,12 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static SlideSessionModel GetStoredSlideSessionModel()
         {
-            if (GetStringDocumentProperty("slideSessionModel") == null)
-                return null;
-
             var slideSessionModelString = GetStringDocumentProperty("slideSessionModel");
 
+            if (slideSessionModelString == null)
+                return null;
+
             return JsonConvert.DeserializeObject<SlideSessionModel>(slideSessionModelString);
-        }
-
-        private static void SetStringDocumentProperty(string propertyName, string propertyValue)
-        {
-            var customProperties = GetCustomDocumentProperties();
-
-            if (GetStringDocumentProperty(propertyName) != null)
-            {
-                customProperties[propertyName].Delete();
-            }
-
-            customProperties.Add(propertyName, false, MsoDocProperties.msoPropertyTypeString, propertyValue);
         }
 
         private static void SetBoolDocumentProperty(string propertyName, bool propertyValue)
@@ -68,21 +67,6 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
 
             customProperties.Add(propertyName, false, MsoDocProperties.msoPropertyTypeBoolean, propertyValue);
-        }
-
-        private static string GetStringDocumentProperty(string propertyName)
-        {
-            var customProperties = GetCustomDocumentProperties();
-
-            foreach (var property in customProperties)
-            {
-                if (property.Name == propertyName)
-                {
-                    return property.Value.ToString();
-                }
-            }
-
-            return null;
         }
 
         private static bool GetBoolDocumentProperty(string propertyName)
@@ -113,6 +97,68 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
 
             return false;
+        }
+
+        private static string GetStringDocumentProperty(string propertyName)
+        {
+            /* limit by 255 chars - new solution!
+             * var customProperties = GetCustomDocumentProperties();
+
+            foreach (var property in customProperties)
+            {
+                if (property.Name == propertyName)
+                {
+                    return property.Value.ToString();
+                }
+            }
+
+            return null;*/
+
+            foreach(CustomXMLPart eachPart in Globals.ThisAddIn.Application.ActivePresentation.CustomXMLParts)
+            {
+                if (eachPart.DocumentElement.BaseName == propertyName)
+                {
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(eachPart.XML);
+                    return xmlDocument.InnerText;
+                }
+            }
+
+            return null;
+        }
+
+        private static void SetStringDocumentProperty(string propertyName, string propertyValue)
+        {
+            /* limit by 255 chars - new solution!
+             * var customProperties = GetCustomDocumentProperties();
+
+            if (GetStringDocumentProperty(propertyName) != null)
+            {
+                customProperties[propertyName].Delete();
+            }
+
+            customProperties.Add(propertyName, false, MsoDocProperties.msoPropertyTypeString, propertyValue);*/
+            var slideSessionModelXmlStringBuilder = new StringBuilder();
+
+            var xmlSerializer = new XmlSerializer(typeof(XmlElement));
+            var xmlElement = new XmlDocument().CreateElement(propertyName);
+            xmlElement.InnerText = propertyValue;
+            var writer = new StringWriter(slideSessionModelXmlStringBuilder);
+            xmlSerializer.Serialize(writer, xmlElement);
+            writer.Close();
+
+            foreach (CustomXMLPart eachPart in Globals.ThisAddIn.Application.ActivePresentation.CustomXMLParts)
+            {
+                if (eachPart.DocumentElement.BaseName == propertyName)
+                {
+                    eachPart.Delete();
+                    break;
+                }
+            }
+
+            Globals.ThisAddIn.Application.ActivePresentation.CustomXMLParts.Add(slideSessionModelXmlStringBuilder.ToString());
+
+            Globals.ThisAddIn.Application.ActivePresentation.Saved = MsoTriState.msoFalse; // do I really need this? 
         }
 
         private static dynamic GetCustomDocumentProperties()

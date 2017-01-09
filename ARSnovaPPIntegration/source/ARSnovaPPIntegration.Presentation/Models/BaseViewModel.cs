@@ -10,7 +10,6 @@ using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.ViewPresenter;
 using ARSnovaPPIntegration.Presentation.Window;
-using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -48,7 +47,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void AddSessionToSlides()
+        protected void UpdateSlideContent()
+        {
+            // TODO
+        }
+
+        protected void AddSessionToSlides(SlideQuestionModel slideQuestionModel)
         {
             var hasIntroSlide = this.HasIntroSlide();
             if (!hasIntroSlide)
@@ -72,8 +76,13 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 this.SessionManager.CreateSession(this.SlideSessionModel) : 
                 this.SessionManager.EditSession(this.SlideSessionModel);
 
+            var slide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
+
+            this.SlideManipulator.AddQuizToSlide(slideQuestionModel, slide);
+
             if (validationResult.Success)
             {
+                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
                 this.ViewPresenter.CloseWithoutPrompt();
             }
             else

@@ -12,6 +12,7 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -221,6 +222,47 @@ namespace ARSnovaPPIntegration.Presentation
             var currentSlide = SlideTracker.CurrentSlide;
             // if there is no slide selected, insert new slide at the end of the presentation?
             return currentSlide != null;
+        }
+
+        public string GetStartQuizLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Start quiz");
+        }
+
+        public Bitmap GetStartButtonImage(Office.IRibbonControl control)
+        {
+            return Images.right;
+        }
+
+        public bool PresentationOnArsnovaSlide(Office.IRibbonControl control)
+        {
+            var currentShowedSlidePosition = SlideTracker.CurrentShowedPresentationSlidePosition;
+
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            foreach (var slideQuestionModel in slideSessionModel.Questions)
+            {
+                if (SlideTracker.GetSlideById(slideQuestionModel.SlideId).SlideNumber == currentShowedSlidePosition)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void StartNextQuestion(Office.IRibbonControl control)
+        {
+            var currentShowedSlidePosition = SlideTracker.CurrentShowedPresentationSlidePosition;
+
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            foreach (var slideQuestionModel in slideSessionModel.Questions)
+            {
+                var slide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
+                if (slide.SlideNumber == currentShowedSlidePosition)
+                {
+                    this.ribbonHelper.StartQuiz(slideQuestionModel);
+                }
+            }
         }
 
         #endregion

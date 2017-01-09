@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using ARSnovaPPIntegration.Business.Model;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business.Contract
 {
@@ -11,5 +12,7 @@ namespace ARSnovaPPIntegration.Business.Contract
         void SetArsnovaClickStyle(Slide slide, string hashtag);
 
         void AddClickIntroSlide(Slide slide, string hashtag);
+
+        void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide slide);
     }
 }

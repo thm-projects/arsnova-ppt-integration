@@ -335,6 +335,7 @@
     <Content Include="Content\Images\information.png" />
     <Content Include="Content\Images\multiply.png" />
     <Content Include="Content\Images\pencil.png" />
+    <Content Include="Content\Images\right.png" />
     <None Include="Resources\favicon.bmp" />
   </ItemGroup>
   <ItemGroup />

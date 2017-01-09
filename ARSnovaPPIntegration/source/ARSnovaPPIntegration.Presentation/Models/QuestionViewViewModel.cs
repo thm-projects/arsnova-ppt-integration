@@ -144,6 +144,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                         this.SlideQuestionModel = this.questionBeforeEdit;
                                     }
 
+                                    // don't save presentation on cancel (no changes here)
                                     this.ViewPresenter.CloseWithoutPrompt();
                                 }
                             },

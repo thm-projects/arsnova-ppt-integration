@@ -9,7 +9,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
     {
         public static SlideQuestionModel CopySlideQuestionModel(SlideQuestionModel currentSlideQuestionModel)
         {
-            var newSlideQuestionModel = new SlideQuestionModel(currentSlideQuestionModel.QuestionTypeTranslator)
+            var newSlideQuestionModel = new SlideQuestionModel
             {
                 Id = currentSlideQuestionModel.Id,
                 QuestionType = currentSlideQuestionModel.QuestionType,

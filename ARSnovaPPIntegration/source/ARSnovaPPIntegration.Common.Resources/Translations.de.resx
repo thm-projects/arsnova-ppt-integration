@@ -342,4 +342,7 @@
   <data name="Delete_a_already_existing_quiz." xml:space="preserve">
     <value>Lösche ein bereits existierendes Quiz.</value>
   </data>
+  <data name="Start_quiz" xml:space="preserve">
+    <value>Quiz starten</value>
+  </data>
 </root>

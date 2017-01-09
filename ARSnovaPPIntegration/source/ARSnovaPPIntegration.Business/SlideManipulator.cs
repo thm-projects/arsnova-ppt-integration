@@ -1,12 +1,15 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
+using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 
 namespace ARSnovaPPIntegration.Business
@@ -95,6 +98,44 @@ namespace ARSnovaPPIntegration.Business
             contentObj.Paragraphs(-1).Lines(3, 1).Font.Name = "Arial";
             contentObj.Paragraphs(-1).Lines(3, 1).Font.Size = 26;
             // TODO create QR-Code / get it from click server
+        }
+
+        public void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide slide)
+        {
+            slide.Layout = PpSlideLayout.ppLayoutText;
+
+            // question
+            var questionObj = slide.Shapes[1].TextFrame.TextRange;
+            questionObj.Text = slideQuestionModel.QuestionText;
+            questionObj.Font.Name = "Arial";
+            questionObj.Font.Size = 26;
+
+            // answer options
+            // no answer options on ranged questions
+            if (slideQuestionModel.AnswerOptionType != AnswerOptionType.ShowRangedAnswerOption)
+            {
+                var answerOptionsString = slideQuestionModel.AnswerOptions.Cast<GeneralAnswerOption>()
+                    .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position, true)}: {castedAnswerOption.Text}{Environment.NewLine}");
+
+                var answerOptionsObj = slide.Shapes[2].TextFrame.TextRange;
+                answerOptionsObj.Text = answerOptionsString;
+                answerOptionsObj.Font.Name = "Arial";
+                answerOptionsObj.Font.Size = 20;
+            }
+
+            // action button: start quiz
+            // TODO -> start quiz with context menü!
+        }
+
+        public void AddResultsToSlide(Slide slide, SlideQuestionModel slideQuestionModel)
+        {
+            // TODO
+        }
+
+        private string PositionNumberToLetter(int number, bool isCaps)
+        {
+            var c = (isCaps ? 65 : 97) + (number - 1);
+            return c.ToString();
         }
     }
 }

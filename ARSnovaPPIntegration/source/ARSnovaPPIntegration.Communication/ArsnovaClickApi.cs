@@ -63,22 +63,67 @@ namespace ARSnovaPPIntegration.Communication
 
         public ValidationResult ResetSession(string hashtag, string privateKey)
         {
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("resetSession", hashtag, privateKey);
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("resetSession", jsonBody);
         }
 
         public ValidationResult AddHashtag(string hashtag, string privateKey)
         {
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("addHashtag", hashtag, privateKey);
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("addHashtag", jsonBody);
         }
 
         public ValidationResult ShowNextReadingConfirmation(string hashtag, string privateKey)
         {
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", hashtag, privateKey);
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", jsonBody);
         }
 
-        public ValidationResult StartNextQuestion(string hashtag, string privateKey)
+        public ValidationResult StartNextQuestion(string hashtag, string privateKey, int questionIndex)
         {
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("startNextQuestion", hashtag, privateKey);
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey),
+                questionIndex = questionIndex
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("startNextQuestion", jsonBody);
         }
 
         public ValidationResult UpdateQuestionGroup(QuestionGroupModel questionGroupModel, string privateKey)
@@ -151,20 +196,9 @@ namespace ARSnovaPPIntegration.Communication
             return validationResult;
         }
 
-        private ValidationResult DefaultPostRequestWithHashtagAndPrivateKey(string methodName, string hashtag, string privateKey)
+        private ValidationResult DefaultPostRequestWithHashtagAndPrivateKey(string methodName, string jsonBody)
         {
             var validationResult = new ValidationResult();
-
-            var createHashtagConfig = new
-            {
-                hashtag = Uri.EscapeDataString(hashtag),
-                privateKey = Uri.EscapeDataString(privateKey)
-            };
-
-            var jsonBody = JsonConvert.SerializeObject(new
-            {
-                sessionConfiguration = createHashtagConfig
-            });
 
             try
             {

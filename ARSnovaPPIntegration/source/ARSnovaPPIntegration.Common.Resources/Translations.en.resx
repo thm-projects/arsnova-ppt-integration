@@ -343,4 +343,7 @@
   <data name="Edit_a_already_existing_quiz." xml:space="preserve">
     <value>Edit a already existing quiz.</value>
   </data>
+  <data name="Start_quiz" xml:space="preserve">
+    <value>Start quiz</value>
+  </data>
 </root>

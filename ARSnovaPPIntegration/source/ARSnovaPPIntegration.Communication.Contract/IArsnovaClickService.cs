@@ -20,7 +20,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         ValidationResult ResetSession(SlideSessionModel slideSessionModel);
 
-        ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel);
+        ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
         ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel);
     }

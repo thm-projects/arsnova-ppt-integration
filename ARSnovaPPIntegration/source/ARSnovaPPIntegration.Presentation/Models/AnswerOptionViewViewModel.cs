@@ -303,6 +303,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                         this.OnPropertyChanged(nameof(this.SlideSessionModel.Questions));
                                     }
 
+                                    // don't save presentation on cancel (no changes here)
                                     this.ViewPresenter.CloseWithoutPrompt();
                                 }
                             },
@@ -323,13 +324,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             {
                                 // TODO validate this question
 
-                                if (!this.SlideQuestionModel.Slide.Name.StartsWith("ArsnovaSlide"))
-                                {
-                                    this.SlideQuestionModel.Slide.Name = "ArsnovaSlide" + this.SlideQuestionModel.Slide.SlideIndex;
-                                }
+                                this.AddSessionToSlides(this.SlideQuestionModel);
 
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
-
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)
