@@ -184,17 +184,21 @@ namespace ARSnovaPPIntegration.Communication
                        questionList = questionModelList,
                        configuration = new ConfigurationModel
                                        {
-                                           hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
-                                           music = new MusicModel
-                                                   {
-                                                       hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
-                                                       isEnabled = true,
-                                                       volume = 90,
-                                                       title = "Song3",
-                                                       isLobbyEnabled = true,
-                                                       lobbyTitle = "LobbySong1",
-                                                       finishSoundTitle = "LobbySong1"
-                                                   },
+                                            hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                            music = new MusicModel
+                                            {
+                                                hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
+                                                isUsingGlobalVolume = true,
+                                                lobbyEnabled = true,
+                                                lobbyTitle = "Song3",
+                                                lobbyVolume = 90,
+                                                countdownRunningEnabled = true,
+                                                countdownRunningTitle = "Song1",
+                                                countdownRunningVolume = 90,
+                                                countdownEndEnabled = true,
+                                                countdownEndTitle = "LobbySong1",
+                                                countdownEndVolume = 90
+                                           },
                                            nicks = new NicksModel
                                                    {
                                                        hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),

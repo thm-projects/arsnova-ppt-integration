@@ -98,8 +98,6 @@ namespace ARSnovaPPIntegration.Business
                 return validationResult;
             }
 
-            // TODO setup and style slides
-
             return validationResult;
         }
 

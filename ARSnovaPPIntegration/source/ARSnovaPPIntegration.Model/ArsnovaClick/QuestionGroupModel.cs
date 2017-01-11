@@ -55,17 +55,25 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
     {
         public string hashtag { get; set; }
 
-        public bool isEnabled { get; set; }
+        public bool isUsingGlobalVolume { get; set; }
 
-        public int volume { get; set; }
-
-        public string title { get; set; }
-
-        public bool isLobbyEnabled { get; set; }
+        public bool lobbyEnabled { get; set; }
 
         public string lobbyTitle { get; set; }
 
-        public string finishSoundTitle { get; set; }
+        public int lobbyVolume { get; set; }
+
+        public bool countdownRunningEnabled { get; set; }
+
+        public string countdownRunningTitle { get; set; }
+
+        public int countdownRunningVolume { get; set; }
+
+        public bool countdownEndEnabled { get; set; }
+
+        public string countdownEndTitle { get; set; }
+
+        public int countdownEndVolume { get; set; }
     }
 
     public class NicksModel
