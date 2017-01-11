@@ -4,9 +4,7 @@ namespace ARSnovaPPIntegration.Business.Contract
 {
     public interface ISessionManager
     {
-        ValidationResult CreateSession(SlideSessionModel slideSessionModel);
-
-        ValidationResult EditSession(SlideSessionModel slideSessionModel);
+        ValidationResult SetSession(SlideSessionModel slideSessionModel);
 
         void StartSession(SlideSessionModel slideSessionModel, int questionIndex);
 

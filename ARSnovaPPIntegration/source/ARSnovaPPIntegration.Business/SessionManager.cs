@@ -33,12 +33,12 @@ namespace ARSnovaPPIntegration.Business
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
         }
 
-        public ValidationResult CreateSession(SlideSessionModel slideSessionModel)
+        public ValidationResult SetSession(SlideSessionModel slideSessionModel)
         {
             var validationResult = new ValidationResult();
             if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
             {
-                validationResult = this.NewArsnovaClickOnlineSession(slideSessionModel);
+                validationResult = this.SetArsnovaClickOnlineSession(slideSessionModel);
 
                 if (!validationResult.Success)
                 {
@@ -54,17 +54,12 @@ namespace ARSnovaPPIntegration.Business
             return validationResult;
         }
 
-        public ValidationResult EditSession(SlideSessionModel slideSessionModel)
-        {
-            throw new NotImplementedException();
-        }
-
         public ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel)
         {
             return this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
         }
 
-        private ValidationResult NewArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
+        private ValidationResult SetArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
         {
             var validationResult = new ValidationResult();
 
@@ -78,30 +73,38 @@ namespace ARSnovaPPIntegration.Business
                 return validationResult;
             }
 
+            var alreadyCreatedHashtag = false;
+
             if (allHashtagInfos.Any(hi => hi.hashtag.ToLower() == slideSessionModel.Hashtag.ToLower()))
             {
-                validationResult.FailureTitel = this.localizationService.Translate("Error during session setup");
-                validationResult.FailureMessage = this.localizationService.Translate("Can't create session, hashtag is already taken.");
+                if (!this.arsnovaClickService.IsThisMineHashtag(slideSessionModel.Hashtag, slideSessionModel.PrivateKey))
+                {
+                    validationResult.FailureTitel = this.localizationService.Translate("Error during session setup");
+                    validationResult.FailureMessage =
+                        this.localizationService.Translate("Can't create session, hashtag is already taken.");
 
-                return validationResult;
+                    return validationResult;
+                }
+                else
+                {
+                    alreadyCreatedHashtag = true;
+                }
             }
 
-            var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
-
-            validationResult = tupleResult.Item1;
-            slideSessionModel.PrivateKey = tupleResult.Item2;
-
-            if (!validationResult.Success)
+            if (!alreadyCreatedHashtag)
             {
-                return validationResult;
+                var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
+
+                validationResult = tupleResult.Item1;
+                slideSessionModel.PrivateKey = tupleResult.Item2;
+
+                if (!validationResult.Success)
+                {
+                    return validationResult;
+                }
             }
 
             validationResult = this.arsnovaClickService.UpdateQuestionGroup(slideSessionModel);
-
-            if (!validationResult.Success)
-            {
-                return validationResult;
-            }
 
             return validationResult;
         }

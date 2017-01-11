@@ -138,7 +138,12 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            return this.arsnovaClickApi.SetSessionStatus(hashtag, privateKey, 2);
+            return this.arsnovaClickApi.SetSessionStatus(hashtag, privateKey);
+        }
+
+        public bool IsThisMineHashtag(string hashtag, string privateKey)
+        {
+            return this.arsnovaClickApi.IsThisMineHashtag(hashtag, privateKey);
         }
 
         public ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex)

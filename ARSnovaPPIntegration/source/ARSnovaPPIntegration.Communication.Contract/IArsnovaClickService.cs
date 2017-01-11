@@ -25,5 +25,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
         ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel);
 
         ValidationResult MakeSessionAvailable(string hashtag, string privateKey);
+
+        bool IsThisMineHashtag(string hashtag, string privateKey);
     }
 }

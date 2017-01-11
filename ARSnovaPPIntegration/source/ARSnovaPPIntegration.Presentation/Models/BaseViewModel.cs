@@ -72,9 +72,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
 
             // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
-            var validationResult = this.SlideSessionModel.NewSession ? 
-                this.SessionManager.CreateSession(this.SlideSessionModel) : 
-                this.SessionManager.EditSession(this.SlideSessionModel);
+            var validationResult = this.SessionManager.SetSession(this.SlideSessionModel);
 
             var slide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
 

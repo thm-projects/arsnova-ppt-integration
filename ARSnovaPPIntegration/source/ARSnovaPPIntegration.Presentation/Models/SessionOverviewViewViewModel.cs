@@ -47,7 +47,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                this.SessionManager.CreateSession(this.SlideSessionModel);
+                                this.SessionManager.SetSession(this.SlideSessionModel);
 
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
 

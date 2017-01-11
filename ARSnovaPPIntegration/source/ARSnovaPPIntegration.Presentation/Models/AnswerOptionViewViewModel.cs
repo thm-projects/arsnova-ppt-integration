@@ -327,7 +327,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                 this.AddSessionToSlides(this.SlideQuestionModel);
 
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
-                                this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)
                     });

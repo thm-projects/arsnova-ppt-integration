@@ -28,6 +28,28 @@ namespace ARSnovaPPIntegration.Communication
             #endif
         }
 
+        public bool IsThisMineHashtag(string hashtag, string privateKey)
+        {
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            var request = this.CreateWebRequest("isThisMineHashtag", HttpMethod.Post);
+
+            request = this.AddContentToRequest(request, jsonBody);
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
         public List<HashtagInfo> GetAllHashtagInfos()
         {
             var request = this.CreateWebRequest("hashtags", HttpMethod.Get);
@@ -109,13 +131,12 @@ namespace ARSnovaPPIntegration.Communication
             return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", jsonBody);
         }
 
-        public ValidationResult SetSessionStatus(string hashtag , string privateKey, int status)
+        public ValidationResult SetSessionStatus(string hashtag , string privateKey)
         {
             var updateSessionStatusConfig = new
             {
                 hashtag = Uri.EscapeDataString(hashtag),
-                privateKey = Uri.EscapeDataString(privateKey),
-                status
+                privateKey = Uri.EscapeDataString(privateKey)
             };
 
             var jsonBody = JsonConvert.SerializeObject(new
@@ -123,7 +144,7 @@ namespace ARSnovaPPIntegration.Communication
                 sessionConfiguration = updateSessionStatusConfig
             });
 
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("updateSessionStatus", jsonBody);
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("openSession", jsonBody);
         }
 
         public ValidationResult StartNextQuestion(string hashtag, string privateKey, int questionIndex)
@@ -149,8 +170,8 @@ namespace ARSnovaPPIntegration.Communication
 
             var jsonBody = JsonConvert.SerializeObject(new
             {
-                privateKey = privateKey,
-                questionGroupModel = questionGroupModel
+                privateKey,
+                questionGroupModel
             });
 
             try
