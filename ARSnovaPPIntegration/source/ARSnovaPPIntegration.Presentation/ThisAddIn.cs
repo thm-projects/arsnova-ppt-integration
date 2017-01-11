@@ -1,5 +1,7 @@
-﻿using System.Globalization;
-
+﻿using System;
+using System.Globalization;
+using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 
@@ -18,6 +20,8 @@ namespace ARSnovaPPIntegration.Presentation
         private ViewPresenter.ViewPresenter viewPresenter;
 
         private Ribbon ribbon;
+
+        private RibbonHelper ribbonHelper;
         
         private void ThisAddInStartup(object sender, System.EventArgs e)
         {
@@ -36,9 +40,9 @@ namespace ARSnovaPPIntegration.Presentation
 
             // mid priority: window actions
 
-            /* TODO
-             * this.Application.SlideShowBegin += OnSlideShowBegin;
-            Application.SlideShowEnd += OnSlideShowEnd;*/
+            
+            this.Application.SlideShowBegin += this.OnSlideShowBegin;
+            this.Application.SlideShowEnd += this.OnSlideShowEnd;
 
             // low priority: slide actions
             this.Application.SlideSelectionChanged += this.OnSlideSelectionChanged;
@@ -55,6 +59,28 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 
             }*/
+        }
+
+        private void OnSlideShowBegin(SlideShowWindow slideShowWindow)
+        {
+            try
+            {
+                this.ribbonHelper.ActivateSessionIfExists();
+            }
+            catch (CommunicationException arsnovaComException)
+            {
+                this.exceptionHandler.Handle(arsnovaComException.Message);
+            }
+            catch (Exception e)
+            {
+                this.exceptionHandler.Handle(e.Message);
+            }
+            
+        }
+
+        private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
+        {
+            // clean up server side informations
         }
 
         private void OnSlideSelectionChanged(SlideRange slideRange)
@@ -110,7 +136,9 @@ namespace ARSnovaPPIntegration.Presentation
             // is called on office load (create ribbon bar) -> init here instead of startup because some dependencies are already needed
             this.Setup();
 
-            this.ribbon = new Ribbon(this.viewPresenter, this.exceptionHandler);
+            this.ribbonHelper = new RibbonHelper(this.viewPresenter, ServiceLocator.Current.GetInstance<ILocalizationService>());
+
+            this.ribbon = new Ribbon(this.viewPresenter, this.exceptionHandler, this.ribbonHelper);
 
             return this.ribbon;
         }

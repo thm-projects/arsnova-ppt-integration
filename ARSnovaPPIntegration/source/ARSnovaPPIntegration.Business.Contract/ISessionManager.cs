@@ -9,5 +9,7 @@ namespace ARSnovaPPIntegration.Business.Contract
         ValidationResult EditSession(SlideSessionModel slideSessionModel);
 
         void StartSession(SlideSessionModel slideSessionModel, int questionIndex);
+
+        ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel);
     }
 }

@@ -8,6 +8,7 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Window;
@@ -39,6 +40,22 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
             this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
+        }
+
+        public void ActivateSessionIfExists()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            // arsnova voting don't need to be activated
+            if (slideSessionModel != null && slideSessionModel.SessionType == SessionType.ArsnovaClick)
+            {
+                var validationResult = this.sessionManager.ActivateClickSession(slideSessionModel);
+
+                if (!validationResult.Success)
+                {
+                    throw new CommunicationException(validationResult.FailureMessage);
+                }
+            }
         }
 
         public void ShowSetSessionTypeDialog()

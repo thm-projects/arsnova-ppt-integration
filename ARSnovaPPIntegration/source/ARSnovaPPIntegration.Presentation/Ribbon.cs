@@ -33,7 +33,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Ribbon(
             ViewPresenter.ViewPresenter viewPresenter,
-            ExceptionHandler exceptionHandler)
+            ExceptionHandler exceptionHandler,
+            RibbonHelper ribbonHelper)
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
 
@@ -43,7 +44,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             this.exceptionHandler = exceptionHandler;
 
-            this.ribbonHelper = new RibbonHelper(this.viewPresenter, this.localizationService);
+            this.ribbonHelper = ribbonHelper;
         }
 
         public void RefreshRibbonControl(string id)

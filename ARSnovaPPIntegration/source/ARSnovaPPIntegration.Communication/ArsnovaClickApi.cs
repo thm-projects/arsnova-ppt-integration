@@ -109,6 +109,23 @@ namespace ARSnovaPPIntegration.Communication
             return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", jsonBody);
         }
 
+        public ValidationResult SetSessionStatus(string hashtag , string privateKey, int status)
+        {
+            var updateSessionStatusConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey),
+                status
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = updateSessionStatusConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("updateSessionStatus", jsonBody);
+        }
+
         public ValidationResult StartNextQuestion(string hashtag, string privateKey, int questionIndex)
         {
             var createHashtagConfig = new

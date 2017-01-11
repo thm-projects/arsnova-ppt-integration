@@ -88,7 +88,7 @@ namespace ARSnovaPPIntegration.Communication
 
         public ValidationResult ResetSession(SlideSessionModel slideSessionModel)
         {
-            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
@@ -100,7 +100,7 @@ namespace ARSnovaPPIntegration.Communication
 
         public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)
         {
-            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
@@ -119,7 +119,7 @@ namespace ARSnovaPPIntegration.Communication
 
         public ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel)
         {
-            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
@@ -129,9 +129,21 @@ namespace ARSnovaPPIntegration.Communication
             return this.arsnovaClickApi.ShowNextReadingConfirmation(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
         }
 
+        public ValidationResult MakeSessionAvailable(string hashtag, string privateKey)
+        {
+            var validationResult = this.CheckForHashtagAndPrivateKey(hashtag, privateKey);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            return this.arsnovaClickApi.SetSessionStatus(hashtag, privateKey, 2);
+        }
+
         public ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex)
         {
-            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel);
+            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
 
             if (!validationResult.Success)
             {
@@ -141,18 +153,18 @@ namespace ARSnovaPPIntegration.Communication
             return this.arsnovaClickApi.StartNextQuestion(slideSessionModel.Hashtag, slideSessionModel.PrivateKey, questionIndex);
         }
 
-        private ValidationResult CheckForHashtagAndPrivateKey(SlideSessionModel slideSessionModel)
+        private ValidationResult CheckForHashtagAndPrivateKey(string hashtag, string privateKey)
         {
             var validationResult = new ValidationResult();
 
-            if (string.IsNullOrEmpty(slideSessionModel.Hashtag))
+            if (string.IsNullOrEmpty(hashtag))
             {
                 validationResult.FailureTitel = "Error -  hashtag";
                 validationResult.FailureMessage = "No hashtag provided";
                 return validationResult;
             }
 
-            if (string.IsNullOrEmpty(slideSessionModel.PrivateKey))
+            if (string.IsNullOrEmpty(privateKey))
             {
                 validationResult.FailureTitel = "Error -  private key";
                 validationResult.FailureMessage = "No private key provided";

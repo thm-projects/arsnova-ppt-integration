@@ -23,5 +23,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
         ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
         ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel);
+
+        ValidationResult MakeSessionAvailable(string hashtag, string privateKey);
     }
 }

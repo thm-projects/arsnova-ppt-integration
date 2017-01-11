@@ -59,6 +59,11 @@ namespace ARSnovaPPIntegration.Business
             throw new NotImplementedException();
         }
 
+        public ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel)
+        {
+            return this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+        }
+
         private ValidationResult NewArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
         {
             var validationResult = new ValidationResult();
