@@ -53,6 +53,7 @@
     <Compile Include="ArsnovaClick\AnswerOptionModel.cs" />
     <Compile Include="ArsnovaClick\HashtagInfo.cs" />
     <Compile Include="ArsnovaClick\QuestionGroupModel.cs" />
+    <Compile Include="ArsnovaClick\ResultModel.cs" />
     <Compile Include="ArsnovaClick\SessionConfigurationWithId.cs" />
     <Compile Include="ArsnovaEu\SessionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

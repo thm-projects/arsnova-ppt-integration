@@ -258,7 +258,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                if (SlideTracker.GetSlideById(slideQuestionModel.SlideId).SlideNumber == currentShowedSlidePosition)
+                if (SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId).SlideNumber == currentShowedSlidePosition)
                     return true;
             }
 
@@ -273,7 +273,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                var slide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
+                var slide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
                 if (slide.SlideNumber == currentShowedSlidePosition)
                 {
                     this.ribbonHelper.StartQuiz(slideQuestionModel);

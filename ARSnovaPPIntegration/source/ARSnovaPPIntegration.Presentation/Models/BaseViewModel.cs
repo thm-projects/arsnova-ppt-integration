@@ -75,9 +75,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
             // no need to push the data to server, we just need to reserve our hashtag
             //var validationResult = this.SessionManager.SetSession(this.SlideSessionModel);
 
-            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
+            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
 
             var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+
+            slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
 
             this.SlideManipulator.AddQuizToSlide(slideQuestionModel, questionInfoSlide, resultsSlide);
 

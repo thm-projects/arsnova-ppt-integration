@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Business.Model;
-using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -43,14 +42,14 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
-            return slideSessionModel.Questions.Any(questionModel => questionModel.SlideId == slide.SlideID);
+            return slideSessionModel.Questions.Any(questionModel => questionModel.QuestionSlideId == slide.SlideID);
         }
 
         public static SlideQuestionModel GetQuestionModelFromSlide(Slide slide)
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
-            return slideSessionModel.Questions.First(questionModel => questionModel.SlideId == slide.SlideID);
+            return slideSessionModel.Questions.First(questionModel => questionModel.QuestionSlideId == slide.SlideID);
         }
 
         public static Slide GetSlideById(int slideId)

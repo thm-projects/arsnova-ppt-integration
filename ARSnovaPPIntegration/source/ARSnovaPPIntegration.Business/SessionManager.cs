@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Timers;
 using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
@@ -9,6 +9,8 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
+
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -23,6 +25,20 @@ namespace ARSnovaPPIntegration.Business
         private readonly ILocalizationService localizationService;
 
         private readonly ISessionInformationProvider sessionInformationProvider;
+
+        private int countdown = 0;
+
+        private SlideQuestionModel currentQuestionModel;
+
+        private SlideSessionModel currentSlideSessionModel;
+
+        private Slide questionSlide;
+
+        private Slide resultsSlide;
+
+        private Timer timer;
+
+        public event EventHandler ShowNextSlideEventHandler;
 
         public SessionManager()
         {
@@ -123,11 +139,16 @@ namespace ARSnovaPPIntegration.Business
             return validationResult;
         }
 
-        public void StartSession(SlideSessionModel slideSessionModel, int questionIndex)
+        public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide)
         {
             var validationResult = new ValidationResult();
 
             var slideQuestionModel = slideSessionModel.Questions.First(q => q.Index == questionIndex);
+
+            this.questionSlide = questionSlide;
+            this.resultsSlide = resultsSlide;
+            this.currentSlideSessionModel = slideSessionModel;
+            this.currentQuestionModel = slideQuestionModel;
 
             var clickQuesitonTypes = this.sessionInformationProvider.GetAvailableQuestionsClick();
 
@@ -135,16 +156,53 @@ namespace ARSnovaPPIntegration.Business
             {
                 // start click question
                 validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, questionIndex);
+
+                // set current question model
+                this.currentQuestionModel = slideQuestionModel;
+
+                // add timer to slide
+                this.countdown = slideQuestionModel.Countdown;
+                this.slideManipulator.InitTimerOnSlide(this.resultsSlide, this.countdown);
+
+                timer = new Timer(1000);
+                timer.Elapsed += this.HandleTimerEvent;
+                timer.Start();
+
             }
             else
             {
                 // TODO start voting question
             }
 
-
             if (!validationResult.Success)
             {
                 throw new CommunicationException(validationResult.FailureMessage);
+            }
+        }
+
+        private void HandleTimerEvent(object source, ElapsedEventArgs e)
+        {
+            this.countdown--;
+            if (this.countdown <= 0)
+            {
+                var questionResults = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag);
+                // TODO
+                // add results to next slide (on end)
+
+                // move to next slide
+                this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
+
+                // clean up
+                this.timer.Stop();
+                this.timer = null;
+                this.currentQuestionModel = null;
+                this.currentSlideSessionModel = null;
+                this.questionSlide = null;
+                this.resultsSlide = null;
+            }
+            else
+            {
+                this.slideManipulator.SetTimerOnSlide(this.resultsSlide, this.countdown);
             }
         }
     }

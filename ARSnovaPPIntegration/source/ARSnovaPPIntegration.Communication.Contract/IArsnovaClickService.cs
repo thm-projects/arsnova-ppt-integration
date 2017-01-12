@@ -26,6 +26,8 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         ValidationResult MakeSessionAvailable(string hashtag, string privateKey);
 
+        List<ResultModel> GetResultsForHashtag(string hashtag);
+
         bool IsThisMineHashtag(string hashtag, string privateKey);
     }
 }

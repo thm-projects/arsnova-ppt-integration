@@ -50,6 +50,14 @@ namespace ARSnovaPPIntegration.Communication
             return answerOptions;
         }
 
+        public List<ResultModel> GetResultsForHashtag(string hashtag)
+        {
+            var resultsReturnModel = this.arsnovaClickApi.GetResultsForHashtag(hashtag);
+
+            return new List<ResultModel>();
+            // TODO
+        }
+
         public SessionConfiguration GetSessionConfiguration(string hashtag)
         {
             var sessionConfigurationReturnModel = this.arsnovaClickApi.GetSessionConfiguration(hashtag);
@@ -237,7 +245,7 @@ namespace ARSnovaPPIntegration.Communication
                    {
                        hashtag = Uri.EscapeDataString(hashtag),
                        questionText = Uri.EscapeDataString(slideQuestionModel.QuestionText),
-                       timer = 60,
+                       timer = slideQuestionModel.Countdown,
                        startTime = 0,
                        questionIndex = slideQuestionModel.Index,
                        displayAnswerText = false,

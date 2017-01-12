@@ -83,6 +83,30 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
+        public AnswerOptionsReturn GetResultsForHashtag(string hashtag)
+        {
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                hashtag = Uri.EscapeDataString(hashtag)
+            });
+
+            try
+            {
+                var request = this.CreateWebRequest("getResultsFromHashtag", HttpMethod.Post);
+
+                request = this.AddContentToRequest(request, jsonBody);
+
+                var responseString = this.GetResponseString(request);
+
+                return JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
+            }
+            catch (JsonReaderException exception)
+            {
+                // not convertable -> not the object we expected. Possible reasons: arsnova.click api changed or hashtag not active
+                throw new CommunicationException("Json-Object not mappable", exception);
+            }
+        }
+
         public ValidationResult ResetSession(string hashtag, string privateKey)
         {
             var createHashtagConfig = new

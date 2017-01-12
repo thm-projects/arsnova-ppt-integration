@@ -114,7 +114,7 @@ namespace ARSnovaPPIntegration.Business
             // no answer options on ranged questions
             if (slideQuestionModel.AnswerOptionType != AnswerOptionType.ShowRangedAnswerOption)
             {
-                var answerOptionsString = slideQuestionModel.AnswerOptions.Cast<GeneralAnswerOption>()
+                var answerOptionsString = slideQuestionModel.AnswerOptions
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position, true)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
                 var answerOptionsObj = questionInfoSlide.Shapes[2].TextFrame.TextRange;
@@ -139,6 +139,20 @@ namespace ARSnovaPPIntegration.Business
         {
             var c = (isCaps ? 65 : 97) + (number - 1);
             return c.ToString();
+        }
+
+        public void SetTimerOnSlide(Slide timerSlide, int countdown)
+        {
+            var resultsHeaderObj = timerSlide.Shapes[2].TextFrame.TextRange;
+            resultsHeaderObj.Text = $"\t\t{this.localizationService.Translate("Countdown")}: {countdown}";
+        }
+
+        public void InitTimerOnSlide(Slide timerSlide, int initCountdown)
+        {
+            var resultsHeaderObj = timerSlide.Shapes[2].TextFrame.TextRange;
+            resultsHeaderObj.Text = $"\t\t{this.localizationService.Translate("Countdown")}: {initCountdown}";
+            resultsHeaderObj.Font.Name = "Arial";
+            resultsHeaderObj.Font.Size = 26;
         }
     }
 }

@@ -21,11 +21,16 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public event EventHandler ObjectChangedEventHandler;
 
-        public int SlideId { get; set; }
+        public int QuestionSlideId { get; set; }
+
+        public int ResultsSlideId { get; set; }
 
         public int Index { get; set; }
 
         public Guid Id { get; set; }
+
+        // TODO currently not binded and set
+        public int Countdown { get; set; } = 20;
 
         public QuestionTypeEnum QuestionType
         {

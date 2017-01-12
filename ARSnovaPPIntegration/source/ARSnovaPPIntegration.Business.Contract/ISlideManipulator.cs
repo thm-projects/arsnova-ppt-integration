@@ -14,5 +14,9 @@ namespace ARSnovaPPIntegration.Business.Contract
         void AddClickIntroSlide(Slide slide, string hashtag);
 
         void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
+
+        void SetTimerOnSlide(Slide timerSlide, int countdown);
+
+        void InitTimerOnSlide(Slide timerSlide, int initCountdown);
     }
 }

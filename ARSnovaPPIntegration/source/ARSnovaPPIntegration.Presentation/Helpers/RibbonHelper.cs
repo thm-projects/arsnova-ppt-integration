@@ -37,6 +37,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.localizationService = localizationService;
 
             this.sessionManager = ServiceLocator.Current.GetInstance<ISessionManager>();
+
+            // register events to enable the possibility to manipulate the presentation from the business layer (async methods, no return values)
+            this.sessionManager.ShowNextSlideEventHandler += delegate
+            {
+                Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
+            };
+
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
             this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
@@ -100,7 +107,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
-                SlideId = slide.SlideID
+                QuestionSlideId = slide.SlideID
             };
 
             slideSessionModel.Questions.Add(newQuestion);
@@ -113,7 +120,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.SlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -128,14 +135,17 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index);
+            var questionSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
+            var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId);
+
+            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index, questionSlide, resultsSlide);
         }
 
         public void DeleteQuizFromSelectedSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.SlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
