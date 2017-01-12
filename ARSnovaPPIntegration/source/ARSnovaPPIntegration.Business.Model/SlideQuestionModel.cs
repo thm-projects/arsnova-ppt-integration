@@ -8,7 +8,7 @@ namespace ARSnovaPPIntegration.Business.Model
     public class SlideQuestionModel
     {
         // TODO: Concept: which default values should be taken?
-        private ObservableCollection<object> answerOptions;
+        private ObservableCollection<GeneralAnswerOption> answerOptions;
 
         private string questionText;
 
@@ -58,8 +58,7 @@ namespace ARSnovaPPIntegration.Business.Model
             }
         }
 
-        public ObservableCollection<object> AnswerOptions
-
+        public ObservableCollection<GeneralAnswerOption> AnswerOptions
         {
             get { return this.answerOptions; }
             set

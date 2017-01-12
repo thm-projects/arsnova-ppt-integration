@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -20,7 +21,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount,
                 AnswerOptionInitType = currentSlideQuestionModel.AnswerOptionInitType,
                 Index = currentSlideQuestionModel.Index,
-                AnswerOptions = new ObservableCollection<object>()
+                AnswerOptions = new ObservableCollection<GeneralAnswerOption>()
             };
 
 
@@ -35,11 +36,10 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             return newSlideQuestionModel;
         }
 
-        private static object CopyAnswerOptionModel(SlideQuestionModel slideQuestionModel, object answerOption)
+        private static GeneralAnswerOption CopyAnswerOptionModel(SlideQuestionModel slideQuestionModel, GeneralAnswerOption answerOption)
         {
-            if (answerOption.GetType() == typeof(GeneralAnswerOption))
+            if (answerOption.AnswerOptionType == AnswerOptionType.ShowGeneralAnswerOptions)
             {
-                var castedAnswerOption = answerOption as GeneralAnswerOption;
                 var newAnswerOption = new GeneralAnswerOption();
 
                 newAnswerOption.ObjectChangedEventHandler += delegate {
@@ -47,21 +47,21 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                     slideQuestionModel.AnswerOptionModelChanged();
                 };
 
-                newAnswerOption.Position = castedAnswerOption.Position;
-                newAnswerOption.Text = castedAnswerOption.Text;
-                newAnswerOption.IsTrue = castedAnswerOption.IsTrue;
+                newAnswerOption.Position = answerOption.Position;
+                newAnswerOption.Text = answerOption.Text;
+                newAnswerOption.IsTrue = answerOption.IsTrue;
 
                 return newAnswerOption;
             }
 
-            if (answerOption.GetType() == typeof(RangedAnswerOption))
+            if (answerOption.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption)
             {
-                var castedAnswerOption = answerOption as RangedAnswerOption;
-                var newAnswerOption = new RangedAnswerOption();
-
-                newAnswerOption.LowerLimit = castedAnswerOption.LowerLimit;
-                newAnswerOption.Correct = castedAnswerOption.Correct;
-                newAnswerOption.HigherLimit = castedAnswerOption.HigherLimit;
+                var newAnswerOption = new GeneralAnswerOption
+                {
+                    LowerLimit = answerOption.LowerLimit,
+                    Correct = answerOption.Correct,
+                    HigherLimit = answerOption.HigherLimit
+                };
 
                 return newAnswerOption;
             }

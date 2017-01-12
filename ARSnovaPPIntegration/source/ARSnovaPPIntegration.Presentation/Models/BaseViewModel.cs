@@ -72,21 +72,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
 
             // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
-            var validationResult = this.SessionManager.SetSession(this.SlideSessionModel);
+            // no need to push the data to server, we just need to reserve our hashtag
+            //var validationResult = this.SessionManager.SetSession(this.SlideSessionModel);
 
-            var slide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
+            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.SlideId);
 
-            this.SlideManipulator.AddQuizToSlide(slideQuestionModel, slide);
+            var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
 
-            if (validationResult.Success)
-            {
-                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
-                this.ViewPresenter.CloseWithoutPrompt();
-            }
-            else
-            {
-                PopUpWindow.ErrorWindow(validationResult.FailureTitel, validationResult.FailureMessage);
-            }
+            this.SlideManipulator.AddQuizToSlide(slideQuestionModel, questionInfoSlide, resultsSlide);
+
+            PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+            this.ViewPresenter.CloseWithoutPrompt();
         }
 
         protected ViewModelRequirements GetViewModelRequirements()

@@ -345,4 +345,10 @@
   <data name="Start_quiz" xml:space="preserve">
     <value>Quiz starten</value>
   </data>
+  <data name="Results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="Manage_session" xml:space="preserve">
+    <value>Session verwalten</value>
+  </data>
 </root>

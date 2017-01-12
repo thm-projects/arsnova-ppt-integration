@@ -56,7 +56,24 @@ namespace ARSnovaPPIntegration.Business
 
         public ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel)
         {
+            // push data to server
+            var validationResult = this.SetSession(slideSessionModel);
+
+            if (!validationResult.Success)
+            {
+                return validationResult;
+            }
+
+            // set question as active
             return this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+        }
+
+        public ValidationResult SetHashtag(SlideSessionModel slideSessionModel)
+        {
+            var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
+            slideSessionModel.PrivateKey = tupleResult.Item2;
+
+            return tupleResult.Item1;
         }
 
         private ValidationResult SetArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
@@ -93,10 +110,7 @@ namespace ARSnovaPPIntegration.Business
 
             if (!alreadyCreatedHashtag)
             {
-                var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
-
-                validationResult = tupleResult.Item1;
-                slideSessionModel.PrivateKey = tupleResult.Item2;
+                validationResult = this.SetHashtag(slideSessionModel);
 
                 if (!validationResult.Success)
                 {

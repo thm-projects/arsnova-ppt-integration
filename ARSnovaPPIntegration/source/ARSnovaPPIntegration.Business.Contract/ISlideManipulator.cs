@@ -13,6 +13,6 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void AddClickIntroSlide(Slide slide, string hashtag);
 
-        void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide slide);
+        void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
     }
 }

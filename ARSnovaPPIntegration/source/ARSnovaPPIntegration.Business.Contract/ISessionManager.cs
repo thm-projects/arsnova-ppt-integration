@@ -6,6 +6,8 @@ namespace ARSnovaPPIntegration.Business.Contract
     {
         ValidationResult SetSession(SlideSessionModel slideSessionModel);
 
+        ValidationResult SetHashtag(SlideSessionModel slideSessionModel);
+
         void StartSession(SlideSessionModel slideSessionModel, int questionIndex);
 
         ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel);

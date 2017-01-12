@@ -74,6 +74,22 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
+        public void ShowManageSession()
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            this.viewPresenter.ShowInNewWindow(
+                new SessionOverviewViewViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.questionTypeTranslator,
+                        this.localizationService,
+                        this.sessionManager,
+                        this.sessionInformationProvider,
+                        this.slideManipulator,
+                        slideSessionModel)));
+        }
+
         public void AddQuizToSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();

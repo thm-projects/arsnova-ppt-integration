@@ -138,7 +138,7 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            return this.arsnovaClickApi.SetSessionStatus(hashtag, privateKey);
+            return this.arsnovaClickApi.OpenSession(hashtag, privateKey);
         }
 
         public bool IsThisMineHashtag(string hashtag, string privateKey)
@@ -233,8 +233,6 @@ namespace ARSnovaPPIntegration.Communication
 
         private QuestionModel SlideQuestionModelToQuestionModel(SlideQuestionModel slideQuestionModel, string hashtag)
         {
-            
-
             var questionModel =  new QuestionModel
                    {
                        hashtag = Uri.EscapeDataString(hashtag),
@@ -248,7 +246,7 @@ namespace ARSnovaPPIntegration.Communication
 
             if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
             {
-                var rangedAnswerOption = slideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = slideQuestionModel.AnswerOptions.First();
 
                 if (rangedAnswerOption == null)
                 {
@@ -273,26 +271,24 @@ namespace ARSnovaPPIntegration.Communication
             return questionModel;
         }
 
-        private AnswerOptionModel SlideAnswerOptionModelToAnswerOptionModel(object answerOption, string hashtag, int questionIndex, bool isFreetextAnswerOption)
+        private AnswerOptionModel SlideAnswerOptionModelToAnswerOptionModel(GeneralAnswerOption answerOption, string hashtag, int questionIndex, bool isFreetextAnswerOption)
         {
-            if (answerOption.GetType() == typeof(GeneralAnswerOption))
+            if (answerOption.AnswerOptionType == AnswerOptionType.ShowGeneralAnswerOptions)
             {
-                var castedAnswerOption = answerOption as GeneralAnswerOption;
-
                 return new AnswerOptionModel
 
                 {
                     hashtag = Uri.EscapeDataString(hashtag),
                     questionIndex = questionIndex,
-                    answerText = Uri.EscapeDataString(castedAnswerOption.Text),
-                    answerOptionNumber = castedAnswerOption.Position,
-                    isCorrect = castedAnswerOption.IsTrue,
+                    answerText = Uri.EscapeDataString(answerOption.Text),
+                    answerOptionNumber = answerOption.Position,
+                    isCorrect = answerOption.IsTrue,
                     type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
 
                 };
             }
 
-            if (answerOption.GetType() == typeof(RangedAnswerOption))
+            if (answerOption.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption)
             {
                 return null;
             }

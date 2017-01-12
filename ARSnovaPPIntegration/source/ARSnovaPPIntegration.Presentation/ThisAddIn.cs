@@ -42,6 +42,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             
             this.Application.SlideShowBegin += this.OnSlideShowBegin;
+            this.Application.SlideShowNextSlide += this.OnNextSlide;
             this.Application.SlideShowEnd += this.OnSlideShowEnd;
 
             // low priority: slide actions
@@ -76,6 +77,11 @@ namespace ARSnovaPPIntegration.Presentation
                 this.exceptionHandler.Handle(e.Message);
             }
             
+        }
+
+        private void OnNextSlide(SlideShowWindow slideShowWindow)
+        {
+            // decision: start question with this event or context menu
         }
 
         private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)

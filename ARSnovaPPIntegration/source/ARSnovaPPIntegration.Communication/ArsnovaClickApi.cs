@@ -131,7 +131,7 @@ namespace ARSnovaPPIntegration.Communication
             return this.DefaultPostRequestWithHashtagAndPrivateKey("showReadingConfirmation", jsonBody);
         }
 
-        public ValidationResult SetSessionStatus(string hashtag , string privateKey)
+        public ValidationResult OpenSession(string hashtag , string privateKey)
         {
             var updateSessionStatusConfig = new
             {

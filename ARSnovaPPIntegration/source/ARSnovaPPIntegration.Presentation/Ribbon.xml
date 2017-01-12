@@ -11,6 +11,13 @@
               onAction="SetSessionTypeButtonClick"
               getImage="GetSetSessionTypeButtonImage"
               size="large" />
+              <button id="ManageSession"
+              getLabel="GetManageSessionLabel"
+              keytip="CA"
+              getSupertip="GetManageSessionSupertip"
+              onAction="ManageSessionButtonClick"
+              getImage="GetSetSessionTypeButtonImage"
+              size="large" />
             </group>
             <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
               <button id="AddButton"

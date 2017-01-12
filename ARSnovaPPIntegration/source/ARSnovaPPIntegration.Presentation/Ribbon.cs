@@ -143,6 +143,21 @@ namespace ARSnovaPPIntegration.Presentation
             return Images.ARSnova_Logo;
         }
 
+        public string GetManageSessionLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Manage session");
+        }
+
+        public string GetManageSessionSupertip(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("TODO");
+        }
+
+        public void ManageSessionButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.ShowManageSession();
+        }
+
         public string GetEditButtonLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Edit");

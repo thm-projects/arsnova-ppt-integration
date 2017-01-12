@@ -346,4 +346,10 @@
   <data name="Start_quiz" xml:space="preserve">
     <value>Start quiz</value>
   </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="Manage_session" xml:space="preserve">
+    <value>Manage session</value>
+  </data>
 </root>

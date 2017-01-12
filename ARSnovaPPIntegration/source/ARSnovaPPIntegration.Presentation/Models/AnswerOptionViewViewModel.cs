@@ -127,7 +127,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public ObservableCollection<object> AnswerOptions
+        public ObservableCollection<GeneralAnswerOption> AnswerOptions
         {
             get { return this.SlideQuestionModel.AnswerOptions; }
             set
@@ -170,12 +170,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             get
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 return rangedAnswerOption?.LowerLimit ?? 0;
             }
             set
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
                     if (rangedAnswerOption.HigherLimit >= value)
@@ -208,12 +208,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public int RangedCorrectValue {
             get
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 return rangedAnswerOption?.Correct ?? 50;
             }
             set
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
                     if (rangedAnswerOption.LowerLimit <= value && rangedAnswerOption.HigherLimit >= value)
@@ -242,12 +242,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public int RangedMaxValue {
             get
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 return rangedAnswerOption?.HigherLimit ?? 100;
             }
             set
             {
-                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as RangedAnswerOption;
+                var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
                     if (rangedAnswerOption.LowerLimit <= value)
@@ -340,7 +340,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 if (this.ShowGeneralAnswerOptions)
                 {
-                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
+                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>();
 
                     for (var i = 1; i <= this.AnswerOptionAmount; i++)
                     {
@@ -350,14 +350,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 if (this.ShowFreeTextAnswerOptions)
                 {
-                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
+                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>();
 
                     this.SlideQuestionModel.AnswerOptions.Add(this.CreateGeneralAnswerOption());
                 }
 
                 if (this.ShowGradeOrEvaluationAnswerOptions)
                 {
-                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
+                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>();
 
                     if (this.SlideQuestionModel.QuestionType == QuestionTypeEnum.EvaluationVoting)
                     {
@@ -392,9 +392,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 if (this.ShowRangedAnswerOption)
                 {
-                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<object>
+                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>
                                                            {
-                                                               new RangedAnswerOption
+                                                               new GeneralAnswerOption
                                                                {
                                                                    LowerLimit = 0,
                                                                    Correct = 50,
@@ -405,7 +405,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 if (this.ShowTwoAnswerOptions)
                 {
-                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<object>();
+                    this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>();
 
                     if (this.SlideQuestionModel.QuestionType == QuestionTypeEnum.YesNoClick
                         || this.SlideQuestionModel.QuestionType == QuestionTypeEnum.YesNoVoting)

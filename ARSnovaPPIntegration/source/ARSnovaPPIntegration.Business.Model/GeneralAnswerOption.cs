@@ -1,4 +1,5 @@
 ﻿using System;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Model
 {
@@ -9,6 +10,12 @@ namespace ARSnovaPPIntegration.Business.Model
         private string text;
 
         private bool isTrue;
+
+        private int lowerLimit;
+
+        private int correct;
+
+        private int higherLimit;
 
         public event EventHandler ObjectChangedEventHandler;
 
@@ -40,5 +47,37 @@ namespace ARSnovaPPIntegration.Business.Model
                 this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        public int LowerLimit
+        {
+            get { return this.lowerLimit; }
+            set
+            {
+                this.lowerLimit = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public int Correct
+        {
+            get { return this.correct; }
+            set
+            {
+                this.correct = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public int HigherLimit
+        {
+            get { return this.higherLimit; }
+            set
+            {
+                this.higherLimit = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public AnswerOptionType AnswerOptionType { get; set; } = AnswerOptionType.ShowGeneralAnswerOptions;
     }
 }

@@ -119,6 +119,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
+                                this.SessionManager.SetHashtag(this.SlideSessionModel);
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },

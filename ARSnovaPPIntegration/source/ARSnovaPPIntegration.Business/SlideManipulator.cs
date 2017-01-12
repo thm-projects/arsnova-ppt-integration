@@ -100,12 +100,12 @@ namespace ARSnovaPPIntegration.Business
             // TODO create QR-Code / get it from click server
         }
 
-        public void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide slide)
+        public void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide)
         {
-            slide.Layout = PpSlideLayout.ppLayoutText;
+            questionInfoSlide.Layout = PpSlideLayout.ppLayoutText;
 
             // question
-            var questionObj = slide.Shapes[1].TextFrame.TextRange;
+            var questionObj = questionInfoSlide.Shapes[1].TextFrame.TextRange;
             questionObj.Text = slideQuestionModel.QuestionText;
             questionObj.Font.Name = "Arial";
             questionObj.Font.Size = 26;
@@ -117,14 +117,17 @@ namespace ARSnovaPPIntegration.Business
                 var answerOptionsString = slideQuestionModel.AnswerOptions.Cast<GeneralAnswerOption>()
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position, true)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
-                var answerOptionsObj = slide.Shapes[2].TextFrame.TextRange;
+                var answerOptionsObj = questionInfoSlide.Shapes[2].TextFrame.TextRange;
                 answerOptionsObj.Text = answerOptionsString;
                 answerOptionsObj.Font.Name = "Arial";
                 answerOptionsObj.Font.Size = 20;
             }
 
-            // action button: start quiz
-            // TODO -> start quiz with context menü!
+            // results
+            var resultsHeaderObj = resultsSlide.Shapes[1].TextFrame.TextRange;
+            resultsHeaderObj.Text = this.localizationService.Translate("Results");
+            resultsHeaderObj.Font.Name = "Arial";
+            resultsHeaderObj.Font.Size = 26;
         }
 
         public void AddResultsToSlide(Slide slide, SlideQuestionModel slideQuestionModel)
