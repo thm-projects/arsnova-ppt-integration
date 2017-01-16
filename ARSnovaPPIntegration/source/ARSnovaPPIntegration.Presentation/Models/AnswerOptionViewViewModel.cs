@@ -171,19 +171,19 @@ namespace ARSnovaPPIntegration.Presentation.Models
             get
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
-                return rangedAnswerOption?.LowerLimit ?? 0;
+                return rangedAnswerOption?.RangedLowerLimit ?? 0;
             }
             set
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
-                    if (rangedAnswerOption.HigherLimit >= value)
+                    if (rangedAnswerOption.RangedHigherLimit >= value)
                     {
-                        rangedAnswerOption.LowerLimit = value;
-                        if (rangedAnswerOption.Correct < value)
+                        rangedAnswerOption.RangedLowerLimit = value;
+                        if (rangedAnswerOption.RangedCorrectValue < value)
                         {
-                            rangedAnswerOption.Correct = value;
+                            rangedAnswerOption.RangedCorrectValue = value;
                             this.OnPropertyChanged(nameof(this.RangedCorrectValue));
                             this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
                         }
@@ -209,16 +209,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
             get
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
-                return rangedAnswerOption?.Correct ?? 50;
+                return rangedAnswerOption?.RangedCorrectValue ?? 50;
             }
             set
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
-                    if (rangedAnswerOption.LowerLimit <= value && rangedAnswerOption.HigherLimit >= value)
+                    if (rangedAnswerOption.RangedLowerLimit <= value && rangedAnswerOption.RangedHigherLimit >= value)
                     {
-                        rangedAnswerOption.Correct = value;
+                        rangedAnswerOption.RangedCorrectValue = value;
 
                         this.OnPropertyChanged(nameof(this.RangedCorrectValue));
                         this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
@@ -237,26 +237,26 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public string CorrectValLabelText => this.LocalizationService.Translate("Correct value");
+        public string CorrectValLabelText => this.LocalizationService.Translate("RangedCorrectValue value");
 
         public int RangedMaxValue {
             get
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
-                return rangedAnswerOption?.HigherLimit ?? 100;
+                return rangedAnswerOption?.RangedHigherLimit ?? 100;
             }
             set
             {
                 var rangedAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (rangedAnswerOption != null)
                 {
-                    if (rangedAnswerOption.LowerLimit <= value)
+                    if (rangedAnswerOption.RangedLowerLimit <= value)
                     {
-                        rangedAnswerOption.HigherLimit = value;
+                        rangedAnswerOption.RangedHigherLimit = value;
 
-                        if (rangedAnswerOption.Correct > value)
+                        if (rangedAnswerOption.RangedCorrectValue > value)
                         {
-                            rangedAnswerOption.Correct = value;
+                            rangedAnswerOption.RangedCorrectValue = value;
                             this.OnPropertyChanged(nameof(this.RangedCorrectValue));
                             this.OnPropertyChanged(nameof(this.RangedCorrectValueString));
                         }
@@ -396,9 +396,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                            {
                                                                new GeneralAnswerOption
                                                                {
-                                                                   LowerLimit = 0,
-                                                                   Correct = 50,
-                                                                   HigherLimit = 100
+                                                                   RangedLowerLimit = 0,
+                                                                   RangedCorrectValue = 50,
+                                                                   RangedHigherLimit = 100
                                                                }
                                                            };
                 }

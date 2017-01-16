@@ -11,6 +11,7 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -62,7 +63,7 @@ namespace ARSnovaPPIntegration.Business
                     break;
                 case "theme-action":
                     break;
-                case "theme-Psychology-Correct-Colours":
+                case "theme-Psychology-RangedCorrectValue-Colours":
                     break;
                 case "theme-arsnova-dot-click-contrast":
                     break;
@@ -124,15 +125,22 @@ namespace ARSnovaPPIntegration.Business
             }
 
             // results
-            var resultsHeaderObj = resultsSlide.Shapes[1].TextFrame.TextRange;
-            resultsHeaderObj.Text = this.localizationService.Translate("Results");
-            resultsHeaderObj.Font.Name = "Arial";
-            resultsHeaderObj.Font.Size = 26;
-        }
+            resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
+            var resultsHeaderObj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 10, 10, 400, 50);
+            var resultsHeaderTextRange = resultsHeaderObj.TextFrame.TextRange;
+            resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
+            resultsHeaderTextRange.Font.Name = "Arial";
+            resultsHeaderTextRange.Font.Size = 26;
 
-        public void AddResultsToSlide(Slide slide, SlideQuestionModel slideQuestionModel)
-        {
-            // TODO
+            var row1Obj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 10, 60, 200, 600);
+            var row1ObjTextRange = row1Obj.TextFrame.TextRange;
+            row1ObjTextRange.Font.Name = "Arial";
+            row1ObjTextRange.Font.Size = 20;
+
+            var row2Obj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 210, 60, 200, 600);
+            var row2ObjTextRange = row2Obj.TextFrame.TextRange;
+            row2ObjTextRange.Font.Name = "Arial";
+            row2ObjTextRange.Font.Size = 20;
         }
 
         private string PositionNumberToLetter(int number, bool isCaps)
@@ -151,8 +159,41 @@ namespace ARSnovaPPIntegration.Business
         {
             var resultsHeaderObj = timerSlide.Shapes[2].TextFrame.TextRange;
             resultsHeaderObj.Text = $"\t\t{this.localizationService.Translate("Countdown")}: {initCountdown}";
-            resultsHeaderObj.Font.Name = "Arial";
-            resultsHeaderObj.Font.Size = 26;
+        }
+
+        public void SetResultsOnSlide(Slide resultsSlide, List<ResultModel> best10Responses)
+        {
+            best10Responses = best10Responses.OrderBy(r => r.responseTime).ToList();
+
+            var resultsColumn1Text = string.Empty;
+            var resultsColumn2Text = string.Empty;
+            var i = 1;
+
+            foreach (var response in best10Responses)
+            {
+                if (i%2 == 0)
+                {
+                    resultsColumn2Text += $"{i}. {response.userNick}{Environment.NewLine}";
+                }
+                else
+                {
+                    resultsColumn1Text += $"{i}. {response.userNick}{Environment.NewLine}";
+                }
+
+                i++;
+            }
+
+            var resultsColumn1 = resultsSlide.Shapes[2].TextFrame.TextRange;
+            resultsColumn1.Font.Name = "Arial";
+            resultsColumn1.Font.Size = 20;
+            resultsColumn1.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
+            resultsColumn1.Text = resultsColumn1Text;
+
+            var resultsColumn2 = resultsSlide.Shapes[3].TextFrame.TextRange;
+            resultsColumn2.Font.Name = "Arial";
+            resultsColumn2.Font.Size = 20;
+            resultsColumn2.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
+            resultsColumn2.Text = resultsColumn2Text;
         }
     }
 }

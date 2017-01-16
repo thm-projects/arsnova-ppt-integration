@@ -58,9 +58,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             {
                 var newAnswerOption = new GeneralAnswerOption
                 {
-                    LowerLimit = answerOption.LowerLimit,
-                    Correct = answerOption.Correct,
-                    HigherLimit = answerOption.HigherLimit
+                    RangedLowerLimit = answerOption.RangedLowerLimit,
+                    RangedCorrectValue = answerOption.RangedCorrectValue,
+                    RangedHigherLimit = answerOption.RangedHigherLimit
                 };
 
                 return newAnswerOption;

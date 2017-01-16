@@ -11,11 +11,11 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private bool isTrue;
 
-        private int lowerLimit;
+        private int rangedLowerLimit;
 
-        private int correct;
+        private int rangedCorrectValue;
 
-        private int higherLimit;
+        private int rangedHigherLimit;
 
         public event EventHandler ObjectChangedEventHandler;
 
@@ -48,32 +48,32 @@ namespace ARSnovaPPIntegration.Business.Model
             }
         }
 
-        public int LowerLimit
+        public int RangedLowerLimit
         {
-            get { return this.lowerLimit; }
+            get { return this.rangedLowerLimit; }
             set
             {
-                this.lowerLimit = value;
+                this.rangedLowerLimit = value;
                 this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public int Correct
+        public int RangedCorrectValue
         {
-            get { return this.correct; }
+            get { return this.rangedCorrectValue; }
             set
             {
-                this.correct = value;
+                this.rangedCorrectValue = value;
                 this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public int HigherLimit
+        public int RangedHigherLimit
         {
-            get { return this.higherLimit; }
+            get { return this.rangedHigherLimit; }
             set
             {
-                this.higherLimit = value;
+                this.rangedHigherLimit = value;
                 this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }

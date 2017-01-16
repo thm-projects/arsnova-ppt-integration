@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Microsoft.Practices.ServiceLocation;
@@ -9,7 +10,7 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
-
+using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business
@@ -162,12 +163,11 @@ namespace ARSnovaPPIntegration.Business
 
                 // add timer to slide
                 this.countdown = slideQuestionModel.Countdown;
-                this.slideManipulator.InitTimerOnSlide(this.resultsSlide, this.countdown);
+                this.slideManipulator.InitTimerOnSlide(this.questionSlide, this.countdown);
 
-                timer = new Timer(1000);
-                timer.Elapsed += this.HandleTimerEvent;
-                timer.Start();
-
+                this.timer = new Timer(1000);
+                this.timer.Elapsed += this.HandleTimerEvent;
+                this.timer.Start();
             }
             else
             {
@@ -183,27 +183,101 @@ namespace ARSnovaPPIntegration.Business
         private void HandleTimerEvent(object source, ElapsedEventArgs e)
         {
             this.countdown--;
-            if (this.countdown <= 0)
+            if(this.countdown >= 0)
+                this.slideManipulator.SetTimerOnSlide(this.questionSlide, this.countdown);
+
+            if (this.countdown == 0)
             {
-                var questionResults = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag);
-                // TODO
-                // add results to next slide (on end)
+                this.timer.Stop();
+
+                var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag);
+                this.PublishCurrentResultsClick(responses);
 
                 // move to next slide
                 this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
 
                 // clean up
-                this.timer.Stop();
                 this.timer = null;
                 this.currentQuestionModel = null;
                 this.currentSlideSessionModel = null;
                 this.questionSlide = null;
                 this.resultsSlide = null;
             }
-            else
+        }
+
+        private void PublishCurrentResultsClick(List<ResultModel> responses)
+        {
+            responses = this.FilterForCorrectResponsesClick(responses);
+
+            var best10Responses = new List<ResultModel>();
+
+            for(var i = 0; i < 10; i++)
             {
-                this.slideManipulator.SetTimerOnSlide(this.resultsSlide, this.countdown);
+                if (responses.Count == 0)
+                    break;
+
+                var minResponse = responses.First(r => r.responseTime == responses.Min(r2 => r2.responseTime));
+                best10Responses.Add(minResponse);
+                responses.Remove(minResponse);
             }
+
+            this.slideManipulator.SetResultsOnSlide(this.resultsSlide, best10Responses);
+        }
+
+        private List<ResultModel> FilterForCorrectResponsesClick(List<ResultModel> responses)
+        {
+            var correctResponses = new List<ResultModel>();
+
+            var correctAnswerOptionPositions = this.currentQuestionModel.AnswerOptions.Where(ao => ao.IsTrue).Select(ao => ao.Position).Select(correctAnswerOptionPosition => correctAnswerOptionPosition - 1).ToList();
+            var correctAnswerOptionPositionsCount = correctAnswerOptionPositions.Count();
+
+            switch (this.currentQuestionModel.QuestionType)
+            {
+                case QuestionTypeEnum.SingleChoiceClick:
+                case QuestionTypeEnum.YesNoClick:
+                case QuestionTypeEnum.TrueFalseClick:
+                    var correctAnswerOptionPosition = correctAnswerOptionPositions.First();
+                    foreach (var response in responses)
+                    {
+                        if (response.answerOptionNumber.First() == correctAnswerOptionPosition)
+                            correctResponses.Add(response);
+                    }
+                    break;
+                case QuestionTypeEnum.MultipleChoiceClick:
+                    foreach (var response in responses)
+                    {
+                        if (correctAnswerOptionPositionsCount == response.answerOptionNumber.Count)
+                        {
+                            var allCorrect = true;
+
+                            foreach (var answerOption in response.answerOptionNumber)
+                            {
+                                if (correctAnswerOptionPositions.All(ca => ca != answerOption))
+                                {
+                                    allCorrect = false;
+                                }
+                            }
+
+                            if (allCorrect)
+                                correctResponses.Add(response);
+                        }
+                    }
+                    break;
+                case QuestionTypeEnum.RangedQuestionClick:
+                    foreach (var response in responses)
+                    {
+                        // TODO
+                    }
+                    break;
+                case QuestionTypeEnum.FreeTextClick:
+                    // TODO
+                    break;
+                case QuestionTypeEnum.SurveyClick:
+                    correctResponses = responses;
+                    break;
+            }
+
+            return correctResponses;
         }
     }
 }

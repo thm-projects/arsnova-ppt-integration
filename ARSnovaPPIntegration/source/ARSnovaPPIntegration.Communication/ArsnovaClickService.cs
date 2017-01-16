@@ -14,15 +14,19 @@ namespace ARSnovaPPIntegration.Communication
 {
     public class ArsnovaClickService : IArsnovaClickService
     {
-        private ArsnovaClickApi arsnovaClickApi;
+        private readonly ArsnovaClickApi arsnovaClickApi;
 
         private readonly ObjectMapper<AnswerOptionModelWithId, AnswerOptionModel> answerOptionMapper;
+
+        private readonly ObjectMapper<ResultModelWithId, ResultModel> responseMapper;
 
         private readonly ObjectMapper<SessionConfigurationWithId, SessionConfiguration> sessionConfigurationMapper;
 
         public ArsnovaClickService()
         {
             this.answerOptionMapper = new ObjectMapper<AnswerOptionModelWithId, AnswerOptionModel>();
+
+            this.responseMapper = new ObjectMapper<ResultModelWithId, ResultModel>();
 
             this.sessionConfigurationMapper = new ObjectMapper<SessionConfigurationWithId, SessionConfiguration>();
 
@@ -54,8 +58,15 @@ namespace ARSnovaPPIntegration.Communication
         {
             var resultsReturnModel = this.arsnovaClickApi.GetResultsForHashtag(hashtag);
 
-            return new List<ResultModel>();
-            // TODO
+            var responses = new List<ResultModel>();
+
+            foreach (var resultModelWithId in resultsReturnModel.responses)
+            {
+                var resultModel = new ResultModel();
+                this.responseMapper.Map(resultModelWithId, resultModel);
+                responses.Add(resultModel);
+            }
+            return responses;
         }
 
         public SessionConfiguration GetSessionConfiguration(string hashtag)
@@ -261,9 +272,9 @@ namespace ARSnovaPPIntegration.Communication
                     throw new ArgumentException("no answer options provided");
                 }
 
-                questionModel.rangeMin = rangedAnswerOption.LowerLimit;
-                questionModel.rangeMax = rangedAnswerOption.HigherLimit;
-                questionModel.correctValue = rangedAnswerOption.Correct;
+                questionModel.rangeMin = rangedAnswerOption.RangedLowerLimit;
+                questionModel.rangeMax = rangedAnswerOption.RangedHigherLimit;
+                questionModel.correctValue = rangedAnswerOption.RangedCorrectValue;
             }
             else
             {
@@ -289,7 +300,7 @@ namespace ARSnovaPPIntegration.Communication
                     hashtag = Uri.EscapeDataString(hashtag),
                     questionIndex = questionIndex,
                     answerText = Uri.EscapeDataString(answerOption.Text),
-                    answerOptionNumber = answerOption.Position,
+                    answerOptionNumber = answerOption.Position - 1,
                     isCorrect = answerOption.IsTrue,
                     type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
 

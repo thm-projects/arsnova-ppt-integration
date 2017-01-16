@@ -21,11 +21,12 @@ namespace ARSnovaPPIntegration.Communication
 
         public ArsnovaClickApi()
         {
-            #if DEBUG
-                this.apiUrl = "http://localhost:3000/api/";
+            this.apiUrl = "http://localhost:3000/api/";
+            /*#if DEBUG
+                
             #else
                 this.apiUrl = "https://arsnova.click/api/";
-            #endif
+            #endif*/
         }
 
         public bool IsThisMineHashtag(string hashtag, string privateKey)
@@ -83,7 +84,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        public AnswerOptionsReturn GetResultsForHashtag(string hashtag)
+        public ResultModelsReturn GetResultsForHashtag(string hashtag)
         {
             var jsonBody = JsonConvert.SerializeObject(new
             {
@@ -98,7 +99,7 @@ namespace ARSnovaPPIntegration.Communication
 
                 var responseString = this.GetResponseString(request);
 
-                return JsonConvert.DeserializeObject<AnswerOptionsReturn>(responseString);
+                return JsonConvert.DeserializeObject<ResultModelsReturn>(responseString);
             }
             catch (JsonReaderException exception)
             {
