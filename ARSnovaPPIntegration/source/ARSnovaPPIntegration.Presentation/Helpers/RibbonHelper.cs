@@ -85,6 +85,25 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
+            if (!slideSessionModel.SessionTypeSet)
+            {
+                this.viewPresenter.ShowInNewWindow(
+                 new SelectArsnovaTypeViewViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.questionTypeTranslator,
+                        this.localizationService,
+                        this.sessionManager,
+                        this.sessionInformationProvider,
+                        this.slideManipulator,
+                        slideSessionModel)),
+                    vm =>
+                    {
+                        vm.OnSelectArsnovaTypeViewClose += this.ShowManageSession;
+                    });
+                return;
+            }
+
             this.viewPresenter.ShowInNewWindow(
                 new SessionOverviewViewViewModel(
                     new ViewModelRequirements(
@@ -101,6 +120,25 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
+            if (!slideSessionModel.SessionTypeSet)
+            {
+                this.viewPresenter.ShowInNewWindow(
+                 new SelectArsnovaTypeViewViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.questionTypeTranslator,
+                        this.localizationService,
+                        this.sessionManager,
+                        this.sessionInformationProvider,
+                        this.slideManipulator,
+                        slideSessionModel)),
+                    vm =>
+                    {
+                        vm.OnSelectArsnovaTypeViewClose += () => this.AddQuizToSlide(slide);
+                    });
+                return;
+            }
+
             var newQuestion = new SlideQuestionModel
             {
                 QuestionType = slideSessionModel.SessionType == SessionType.ArsnovaClick
@@ -114,6 +152,16 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             this.viewPresenter.ShowInNewWindow(
                 new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), newQuestion.Id, true));
+        }
+
+        public void AddCompleteQuizToNewSlides()
+        {
+            // TODO
+        }
+
+        public void AddQuizContentToShape()
+        {
+            // TODO
         }
 
         public void EditQuizSetup(Slide slide)

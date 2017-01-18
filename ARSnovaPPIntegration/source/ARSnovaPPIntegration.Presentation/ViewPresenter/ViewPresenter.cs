@@ -32,7 +32,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             }
         }
 
-        public void ShowInNewWindow<TViewModel>(TViewModel viewModel) where TViewModel : class
+        public void ShowInNewWindow<TViewModel>(TViewModel viewModel, Action<TViewModel> viewModelAction = null) where TViewModel : class
         {
             var newPresentationGroup = new PresentationGroup();
 
@@ -53,6 +53,8 @@ namespace ARSnovaPPIntegration.Presentation.ViewPresenter
             newPresentationGroup.Window.Icon = iconBitmapSource;
 
             this.presentationGroups.Add(newPresentationGroup);
+
+            viewModelAction?.Invoke(viewModel);
 
             this.Show(viewModel, newPresentationGroup, true);
         }

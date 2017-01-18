@@ -31,6 +31,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
+        public delegate void OnSelectArsnovaTypeViewCloseEventHandler();
+
+        public event OnSelectArsnovaTypeViewCloseEventHandler OnSelectArsnovaTypeViewClose;
+
         public bool IsArsnovaClickSession
         {
             get { return this.SlideSessionModel.SessionType == SessionType.ArsnovaClick; }
@@ -120,7 +124,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             (e, o) =>
                             {
                                 this.SessionManager.SetHashtag(this.SlideSessionModel);
+                                this.SlideSessionModel.SessionTypeSet = true;
                                 PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+                                this.OnSelectArsnovaTypeViewClose?.Invoke();
                                 this.ViewPresenter.CloseWithoutPrompt();
                             },
                             (e, o) => o.CanExecute = true)
