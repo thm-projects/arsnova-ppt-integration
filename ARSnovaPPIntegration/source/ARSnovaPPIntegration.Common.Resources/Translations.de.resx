@@ -351,4 +351,22 @@
   <data name="Manage_session" xml:space="preserve">
     <value>Session verwalten</value>
   </data>
+  <data name="Adds_a_question_an_multiple_new_slides._They_are_fully_styled_and_ready-to-use." xml:space="preserve">
+    <value>Lege ein Quiz mit mehreren, fertig gestylten und vordefinierten Folien an.</value>
+  </data>
+  <data name="Adds_a_question_to_the_current_slide,_you_have_to_style_it_by_your_own." xml:space="preserve">
+    <value>Füge zu der gerade angewählten Folie eine Frage hinzu, die einzelnen Element müssen danach per händisch an das Folienlayout angepasst werden.</value>
+  </data>
+  <data name="Add_multiple_slides_with_a_complete_quiz." xml:space="preserve">
+    <value>Füge ein Quiz auf neuen Folien ein.</value>
+  </data>
+  <data name="Add_new_question_to_this_slide" xml:space="preserve">
+    <value>Neue Frage zu dieser Folie hinzufügen</value>
+  </data>
+  <data name="An_overview_above_all_questions_and_the_possibility_to_edit_or_delete_them." xml:space="preserve">
+    <value>Eine Übersicht über alle Fragen mit der Möglichkeit, diese zu editieren oder zu löschen.</value>
+  </data>
+  <data name="Manage_questions" xml:space="preserve">
+    <value>Fragen verwalten</value>
+  </data>
 </root>

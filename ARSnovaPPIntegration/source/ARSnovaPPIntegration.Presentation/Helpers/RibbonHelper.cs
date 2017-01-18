@@ -156,6 +156,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public void AddCompleteQuizToNewSlides()
         {
+            // if there is no slide selected, insert new slide at the end of the presentation?
+            var arsnovaSlide = SlideTracker.CurrentSlide ?? this.CreateNewSlide();
             // TODO
         }
 

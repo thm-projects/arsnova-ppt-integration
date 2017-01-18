@@ -81,7 +81,13 @@ namespace ARSnovaPPIntegration.Presentation
 
         private void OnNextSlide(SlideShowWindow slideShowWindow)
         {
-            // decision: start question with this event or context menu
+            // start arsnova click question when getting on results slide
+            var isSlideStartArsnovaClickQuestion = SlideTracker.IsPresentationOnStartArsnovaClickSlide();
+
+            if (isSlideStartArsnovaClickQuestion.Item1)
+            {
+                this.ribbonHelper.StartQuiz(isSlideStartArsnovaClickQuestion.Item2);
+            }
         }
 
         private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
@@ -95,12 +101,9 @@ namespace ARSnovaPPIntegration.Presentation
 
             if (slideRange.Count == 1)
             {
-                // one slide is selected, delete / edit actions are possible in ribbon bar
-                // check if selected one is powerpoint slide
                 var selectedSlide = slideRange[1];
 
-                // TODO Contract: all slides must start with the prefix ArsnovaSlide
-                if (selectedSlide.Name.StartsWith("ArsnovaSlide"))
+                if (SlideTracker.IsArsnovaSlide(selectedSlide))
                 {
                     this.ribbon.OneArsnovaSlideSelected = true;
                 }

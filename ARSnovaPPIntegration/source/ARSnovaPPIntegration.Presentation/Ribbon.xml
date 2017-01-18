@@ -5,29 +5,37 @@
           <tab idMso="TabAddIns" label="ARSnova">
             <group id="sessionTypeGroup" getLabel="GetSessionTypeGroupLabel" visible="true">
               <button id="SetSessionTypeButton"
-              getLabel="GetSetSessionTypeLabel"
-              keytip="CA"
-              getSupertip="GetSetSessionTypeSupertip"
-              onAction="SetSessionTypeButtonClick"
-              getImage="GetSetSessionTypeButtonImage"
-              size="large" />
+                getLabel="GetSetSessionTypeLabel"
+                keytip="CA"
+                getSupertip="GetSetSessionTypeSupertip"
+                onAction="SetSessionTypeButtonClick"
+                getImage="GetSetSessionTypeButtonImage"
+                size="large" />
               <button id="ManageSession"
-              getLabel="GetManageSessionLabel"
-              keytip="CA"
-              getSupertip="GetManageSessionSupertip"
-              onAction="ManageSessionButtonClick"
-              getImage="GetSetSessionTypeButtonImage"
-              size="large" />
+                getLabel="GetManageSessionLabel"
+                keytip="CA"
+                getSupertip="GetManageSessionSupertip"
+                onAction="ManageSessionButtonClick"
+                getImage="GetManageSessionButtonImage"
+                size="large" />
             </group>
             <group id="quizGroup" getLabel="GetQuizGroupLabel" visible="true">
+              <button id="AddNewSlidesButton"
+                getLabel="GetAddNewSlidesLabel"
+                keytip="CA"
+                getSupertip="GetAddNewSlidesSupertip"
+                onAction="AddNewSlidesButtonClick"
+                getImage="GetAddNewSlidesButtonImage"
+                size="large" />
+              <separator id="quizGroupSeparator"/>
               <button id="AddButton"
-              getLabel="GetAddButtonLabel"
-              keytip="CA"
-              getSupertip="GetAddButtonSupertip"
-              getEnabled="IsNoneArsnovaSlideSelected"
-              onAction="AddButtonClick"
-              getImage="GetAddButtonImage"
-              size="large" />
+                getLabel="GetAddButtonLabel"
+                keytip="CA"
+                getSupertip="GetAddButtonSupertip"
+                getEnabled="IsNoneArsnovaSlideSelected"
+                onAction="AddButtonClick"
+                getImage="GetAddButtonImage"
+                size="large" />
               <button id="EditButton"
                getLabel="GetEditButtonLabel"
                keytip="CA"
@@ -68,19 +76,20 @@
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>
       <menu id="menuThumbnail" getLabel="GetArsnovaSlideContextMenuLabel" getImage="GetArsnovaFavIcon">
+        <button id="addQuizContentToNewSlide"
+          getLabel="GetAddNewSlidesLabel"
+          getImage="GetAddNewSlidesButtonImage"
+          getSupertip="GetAddNewSlidesSupertip"
+          onAction="AddQuizToNewSlideButtonClick"/>
         <button id="addQuizContentToSlide"
-          getLabel="GetAddQuizToSlideLabel"
+          getLabel="GetAddButtonLabel"
           getImage="GetAddButtonImage"
+          getSupertip="GetAddButtonSupertip"
           getEnabled="IsNoneArsnovaSlideSelected"
           onAction="AddQuizToSlideButtonClick"/>
-        <button id="addQuizContentToNewSlide"
-          getLabel="GetAddQuizToNewSlideLabel"
-          getImage="GetAddButtonImage"
-          getEnabled="IsNoneArsnovaSlideSelected"
-          onAction="AddQuizToNewSlideButtonClick"/>
       </menu>
     </contextMenu>
-    <contextMenu idMso="ContextMenuSlideShow">
+    <!--contextMenu idMso="ContextMenuSlideShow">
       <menuSeparator id="separatorSlideShow" />
       <menu id="menuSlideShow" getLabel="GetArsnovaSlideContextMenuLabel" getImage="GetArsnovaFavIcon">
         <button id="startQuizButton"
@@ -89,6 +98,6 @@
           getEnabled="PresentationOnArsnovaSlide"
           onAction="StartNextQuestion"/>
       </menu>
-    </contextMenu>
+    </contextMenu-->
   </contextMenus>
 </customUI>

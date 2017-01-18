@@ -73,12 +73,12 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetAddButtonLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("New question");
+            return this.localizationService.Translate("Add new question to this slide");
         }
 
         public string GetAddButtonSupertip(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Add");
+            return this.localizationService.Translate("Adds a question to the current slide, you have to style it by your own.");
         }
 
         public Bitmap GetAddButtonImage(Office.IRibbonControl control)
@@ -88,32 +88,36 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddButtonClick(Office.IRibbonControl control)
         {
-            // Just a test: add header to current slide
-            /*var currentSlide = SlideTracker.CurrentSlide;
-            var slideManipulator = new SlideManipulator(currentSlide);
-            slideManipulator.AddFooter();*/
-
             var arsnovaSlide = SlideTracker.CurrentSlide;
             // if there is no slide selected, insert new slide at the end of the presentation?
             if (arsnovaSlide == null)
             {
-                arsnovaSlide = this.ribbonHelper.CreateNewSlide();
+                throw new Exception("No slide selected");
             }
 
             this.ribbonHelper.AddQuizToSlide(arsnovaSlide);
+            // TODO use
+            //this.ribbonHelper.AddQuizContentToShape(shape);
+        }
 
-            /*
-             * test only -> should be called be helper after successful setup
-            // TODO create hashtag first
-            try
-            {
-                
-                this.slideManipulator.SetArsnovaClickStyle(arsnovaSlide, "testhashtag");
-            }
-            catch (CommunicationException exception)
-            {
-                this.exceptionHandler.Handle(exception.Message, this.localizationService.Translate("Communication Error"));
-            }*/
+        public string GetAddNewSlidesLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Add multiple slides with a complete quiz.");
+        }
+
+        public string GetAddNewSlidesSupertip(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Adds a question an multiple new slides. They are fully styled and ready-to-use.");
+        }
+
+        public Bitmap GetAddNewSlidesButtonImage(Office.IRibbonControl control)
+        {
+            return Images.document;
+        }
+
+        public void AddNewSlidesButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.AddCompleteQuizToNewSlides();
         }
 
         public string GetSessionTypeGroupLabel(Office.IRibbonControl control)
@@ -140,22 +144,27 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetSetSessionTypeButtonImage(Office.IRibbonControl control)
         {
-            return Images.ARSnova_Logo;
+            return Images.home;
         }
 
         public string GetManageSessionLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Manage session");
+            return this.localizationService.Translate("Manage questions");
         }
 
         public string GetManageSessionSupertip(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("TODO");
+            return this.localizationService.Translate("An overview above all questions and the possibility to edit or delete them.");
         }
 
         public void ManageSessionButtonClick(Office.IRibbonControl control)
         {
             this.ribbonHelper.ShowManageSession();
+        }
+
+        public Bitmap GetManageSessionButtonImage(Office.IRibbonControl control)
+        {
+            return Images.settings;
         }
 
         public string GetEditButtonLabel(Office.IRibbonControl control)
@@ -195,7 +204,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetDeleteButtonImage(Office.IRibbonControl control)
         {
-            return Images.multiply;
+            return Images.trash;
         }
 
         public string GetArsnovaSlideContextMenuLabel(Office.IRibbonControl control)
@@ -208,10 +217,10 @@ namespace ARSnovaPPIntegration.Presentation
             return Images.ARSnova_Logo;
         }
 
-        public string GetAddQuizToSlideLabel(Office.IRibbonControl control)
+        /*public string GetAddQuizToSlideLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Add question to this slide");
-        }
+        }*/
 
         public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
         {
@@ -222,10 +231,10 @@ namespace ARSnovaPPIntegration.Presentation
             
         }
 
-        public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
+        /*public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Add question to new slide");
-        }
+        }*/
 
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
         {
@@ -240,7 +249,7 @@ namespace ARSnovaPPIntegration.Presentation
             return currentSlide != null;
         }
 
-        public string GetStartQuizLabel(Office.IRibbonControl control)
+        /*public string GetStartQuizLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Start quiz");
         }
@@ -279,7 +288,7 @@ namespace ARSnovaPPIntegration.Presentation
                     this.ribbonHelper.StartQuiz(slideQuestionModel);
                 }
             }
-        }
+        }*/
 
         #endregion
 
@@ -326,7 +335,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetAboutButtonImage(Office.IRibbonControl control)
         {
-            return Images.ARSnova_Logo;
+            return Images.world;
         }
 
         public void AboutButtonClick(Office.IRibbonControl control)

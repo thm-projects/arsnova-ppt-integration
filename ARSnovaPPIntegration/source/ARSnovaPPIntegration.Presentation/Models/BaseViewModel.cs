@@ -68,6 +68,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     // TODO voting intro slide   
                 }
 
+                this.SlideSessionModel.IntroSlideId = introSlide.SlideID;
+
                 PresentationInformationStore.SetArsnovaIntroSlideAdded();
             }
 

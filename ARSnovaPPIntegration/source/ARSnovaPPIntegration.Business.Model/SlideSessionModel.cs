@@ -12,6 +12,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public string PrivateKey { get; set; }
 
+        public int IntroSlideId { get; set; }
+
         public SessionType SessionType { get; set; } = SessionType.ArsnovaClick;
 
         public bool SessionTypeSet { get; set; } = false;

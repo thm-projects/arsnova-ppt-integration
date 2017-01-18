@@ -352,4 +352,22 @@
   <data name="Manage_session" xml:space="preserve">
     <value>Manage session</value>
   </data>
+  <data name="Adds_a_question_an_multiple_new_slides._They_are_fully_styled_and_ready-to-use." xml:space="preserve">
+    <value>Adds a question an multiple new slides. They are fully styled and ready-to-use.</value>
+  </data>
+  <data name="Adds_a_question_to_the_current_slide,_you_have_to_style_it_by_your_own." xml:space="preserve">
+    <value>Adds a question to the current slide, you have to style it by your own.</value>
+  </data>
+  <data name="Add_multiple_slides_with_a_complete_quiz." xml:space="preserve">
+    <value>Add a quiz on new slides.</value>
+  </data>
+  <data name="Add_new_question_to_this_slide" xml:space="preserve">
+    <value>Add new question to this slide</value>
+  </data>
+  <data name="An_overview_above_all_questions_and_the_possibility_to_edit_or_delete_them." xml:space="preserve">
+    <value>An overview above all questions and the possibility to edit or delete them.</value>
+  </data>
+  <data name="Manage_questions" xml:space="preserve">
+    <value>Manage questions</value>
+  </data>
 </root>
