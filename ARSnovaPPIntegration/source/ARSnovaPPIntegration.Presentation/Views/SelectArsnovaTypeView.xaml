@@ -48,10 +48,12 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton IsChecked="{Binding IsArsnovaClickSession}" Margin="5 6 0 0"/>
+                    <Image Width="25" Height="25" Margin="5 0 0 0" Source="{Binding Path=ArsnovaClickLogo}" />
                     <Label Content="Arsnova.click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton IsChecked="{Binding IsArsnovaVotingSession}" Margin="5 6 0 0"/>
+                    <Image Width="25" Height="25" Margin="5 0 0 0" Source="{Binding ArsnovaVotingLogo}"/>
                     <Label Content="Arsnova.voting" />
                 </StackPanel>
             </StackPanel>

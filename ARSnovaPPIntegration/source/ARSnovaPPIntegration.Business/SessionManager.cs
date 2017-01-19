@@ -140,6 +140,16 @@ namespace ARSnovaPPIntegration.Business
             return validationResult;
         }
 
+        public void RemoveClickQuizDataFromServer(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.arsnovaClickService.RemoveQuizData(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+
+            if (!validationResult.Success)
+            {
+                throw new CommunicationException(validationResult.FailureMessage);
+            }
+        }
+
         public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide)
         {
             var validationResult = new ValidationResult();
@@ -184,17 +194,17 @@ namespace ARSnovaPPIntegration.Business
         {
             this.countdown--;
             if(this.countdown >= 0)
-                this.slideManipulator.SetTimerOnSlide(this.questionSlide, this.countdown);
+                this.slideManipulator.SetTimerOnSlide(this.resultsSlide, this.countdown);
 
             if (this.countdown == 0)
             {
                 this.timer.Stop();
 
-                var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag);
+                var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.Index);
                 this.PublishCurrentResultsClick(responses);
 
                 // move to next slide
-                this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
+                // this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
 
                 // clean up
                 this.timer = null;

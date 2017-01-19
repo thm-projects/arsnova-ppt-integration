@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Globalization;
-using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
+
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 
+using ARSnovaPPIntegration.Common.Contract;
+using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Presentation.Configuration;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Presentation.Views;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation
 {
@@ -92,7 +93,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
-            // clean up server side informations
+            this.ribbonHelper.RemoveClickQuizDataOnServer();
         }
 
         private void OnSlideSelectionChanged(SlideRange slideRange)

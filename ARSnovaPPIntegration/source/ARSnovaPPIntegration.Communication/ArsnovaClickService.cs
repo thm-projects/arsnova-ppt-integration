@@ -54,7 +54,7 @@ namespace ARSnovaPPIntegration.Communication
             return answerOptions;
         }
 
-        public List<ResultModel> GetResultsForHashtag(string hashtag)
+        public List<ResultModel> GetResultsForHashtag(string hashtag, int questionIndex)
         {
             var resultsReturnModel = this.arsnovaClickApi.GetResultsForHashtag(hashtag);
 
@@ -66,7 +66,8 @@ namespace ARSnovaPPIntegration.Communication
                 this.responseMapper.Map(resultModelWithId, resultModel);
                 responses.Add(resultModel);
             }
-            return responses;
+
+            return responses.Where(r => r.questionIndex == questionIndex).ToList();
         }
 
         public SessionConfiguration GetSessionConfiguration(string hashtag)
@@ -158,6 +159,11 @@ namespace ARSnovaPPIntegration.Communication
             }
 
             return this.arsnovaClickApi.OpenSession(hashtag, privateKey);
+        }
+
+        public ValidationResult RemoveQuizData(string hashtag, string privateKey)
+        {
+            return this.arsnovaClickApi.RemoveQuizData(hashtag, privateKey);
         }
 
         public bool IsThisMineHashtag(string hashtag, string privateKey)

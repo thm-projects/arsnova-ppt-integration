@@ -230,6 +230,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\PresentationInformationStore.cs" />
@@ -332,6 +333,7 @@
   <ItemGroup>
     <Content Include="Content\Images\add.png" />
     <Content Include="Content\Images\ARSnova-Logo.png" />
+    <Content Include="Content\Images\ARSnovaClick_Logo.png" />
     <Content Include="Content\Images\document.png" />
     <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\information.png" />

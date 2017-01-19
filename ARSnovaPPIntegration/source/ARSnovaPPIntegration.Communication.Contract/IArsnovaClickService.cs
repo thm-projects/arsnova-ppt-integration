@@ -26,7 +26,9 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         ValidationResult MakeSessionAvailable(string hashtag, string privateKey);
 
-        List<ResultModel> GetResultsForHashtag(string hashtag);
+        ValidationResult RemoveQuizData(string hashtag, string privateKey);
+
+        List<ResultModel> GetResultsForHashtag(string hashtag, int questionIndex);
 
         bool IsThisMineHashtag(string hashtag, string privateKey);
     }

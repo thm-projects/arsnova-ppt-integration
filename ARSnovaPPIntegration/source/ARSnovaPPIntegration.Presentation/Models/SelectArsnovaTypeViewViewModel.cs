@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
@@ -71,6 +74,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
             set { this.SlideSessionModel.Hashtag = value; }
         }
 
+        public BitmapImage ArsnovaClickLogo => BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.ARSnovaClick_Logo);
+
+        public BitmapImage ArsnovaVotingLogo => BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.ARSnova_Logo);
+
         public bool IsArsnovaVotingSession
         {
             get { return this.SlideSessionModel.SessionType == SessionType.ArsnovaVoting; }
@@ -89,7 +96,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
                         {
                             this.SlideSessionModel.SessionType = SessionType.ArsnovaVoting;
                             this.OnSessionTypeSelectionChanged();
-                            this.SlideSessionModel.Questions = new ObservableCollection<SlideQuestionModel>();
+
+                            SlideTracker.RemoveSlide(this.SlideSessionModel.IntroSlideId);
+
+                            foreach (var slideQuestionModel in this.SlideSessionModel.Questions)
+                            {
+                                SlideTracker.RemoveSlide(slideQuestionModel.QuestionSlideId);
+                                SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId);
+                            }
+
+                            this.SlideSessionModel.Questions = new ObservableCollection<SlideQuestionModel>(); 
                         }
                     }
                     else

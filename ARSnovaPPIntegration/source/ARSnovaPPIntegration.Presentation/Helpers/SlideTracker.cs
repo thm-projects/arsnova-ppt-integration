@@ -39,6 +39,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
         }
 
+        public static void RemoveSlide(int slideId)
+        {
+            GetSlideById(slideId).Delete();
+        }
+
         public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaClickSlide()
         {
             var currentShowedSlidePosition = SlideTracker.CurrentShowedPresentationSlidePosition;

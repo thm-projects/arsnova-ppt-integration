@@ -116,6 +116,16 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
+        public void RemoveClickQuizDataOnServer()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            if (slideSessionModel != null)
+            {
+                this.sessionManager.RemoveClickQuizDataFromServer(slideSessionModel);
+            }
+        }
+
         public void AddQuizToSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();

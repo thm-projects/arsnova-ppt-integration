@@ -14,6 +14,8 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide);
 
+        void RemoveClickQuizDataFromServer(SlideSessionModel slideSessionModel);
+
         ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel);
 
         event EventHandler ShowNextSlideEventHandler;
