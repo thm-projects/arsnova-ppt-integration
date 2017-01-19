@@ -1,12 +1,18 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using ARSnovaPPIntegration.Common.Contract;
+
 using Microsoft.Practices.ServiceLocation;
+
+using ARSnovaPPIntegration.Common.Contract;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
     public static class PopUpWindow
     {
+        public static void InformationWindow(string title, string text)
+        {
+            MessageBox.Show(text, title, MessageBoxButton.OK);
+        }
+
         public static bool ConfirmationWindow(string title, string text)
         {
             var messageBoxResult = MessageBox.Show(text, title, MessageBoxButton.YesNoCancel);

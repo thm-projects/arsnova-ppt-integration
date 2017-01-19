@@ -12,6 +12,7 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.Window;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation
@@ -318,7 +319,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void HelpButtonClick(Office.IRibbonControl control)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Process.Start("https://arsnova.thm.de/blog/");
         }
 
         // AboutButton
@@ -340,7 +341,9 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            throw new NotImplementedException();
+            PopUpWindow.InformationWindow(
+                this.localizationService.Translate("Information"),
+                $"Version: 0.1 (beta){Environment.NewLine}");
         }
 
         #endregion
