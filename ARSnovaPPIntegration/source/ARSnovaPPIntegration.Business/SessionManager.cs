@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
@@ -11,7 +13,6 @@ using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -41,13 +42,18 @@ namespace ARSnovaPPIntegration.Business
 
         public event EventHandler ShowNextSlideEventHandler;
 
-        public SessionManager()
+        public SessionManager(
+            ISlideManipulator slideManipulator,
+            IArsnovaClickService arsnovaClickService,
+            IArsnovaEuService arsnovaEuService,
+            ILocalizationService localizationService,
+            ISessionInformationProvider sessionInformationProvider)
         {
-            this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
-            this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
-            this.arsnovaVotingService = ServiceLocator.Current.GetInstance<IArsnovaEuService>();
-            this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
-            this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
+            this.slideManipulator = slideManipulator;
+            this.arsnovaClickService = arsnovaClickService;
+            this.arsnovaVotingService = arsnovaEuService;
+            this.localizationService = localizationService;
+            this.sessionInformationProvider = sessionInformationProvider;
         }
 
         public ValidationResult SetSession(SlideSessionModel slideSessionModel)

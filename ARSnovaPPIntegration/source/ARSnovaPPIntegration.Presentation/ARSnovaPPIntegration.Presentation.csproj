@@ -245,9 +245,10 @@
     <Compile Include="Resources\NumericTextBox.cs" />
     <Compile Include="Resources\WatermarkAdorner.cs" />
     <Compile Include="Resources\WatermarkService.cs" />
-    <Compile Include="ViewPresenter\IWindowCommandBindings.cs" />
-    <Compile Include="ViewPresenter\ViewTypeConfiguration.cs" />
-    <Compile Include="ViewPresenter\ViewPresenter.cs" />
+    <Compile Include="ViewManagement\IViewPresenter.cs" />
+    <Compile Include="ViewManagement\IWindowCommandBindings.cs" />
+    <Compile Include="ViewManagement\ViewTypeConfiguration.cs" />
+    <Compile Include="ViewManagement\ViewPresenter.cs" />
     <Compile Include="Models\SelectArsnovaTypeViewViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

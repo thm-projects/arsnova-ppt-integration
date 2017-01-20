@@ -12,17 +12,15 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
+using ARSnovaPPIntegration.Presentation.ViewManagement;
 using ARSnovaPPIntegration.Presentation.Window;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Presentation
 {
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
-        private readonly ViewPresenter.ViewPresenter viewPresenter;
-
-        private readonly ExceptionHandler exceptionHandler;
+        private readonly IViewPresenter viewPresenter;
 
         private readonly ILocalizationService localizationService;
 
@@ -33,8 +31,7 @@ namespace ARSnovaPPIntegration.Presentation
         private Office.IRibbonUI ribbon;
 
         public Ribbon(
-            ViewPresenter.ViewPresenter viewPresenter,
-            ExceptionHandler exceptionHandler,
+            IViewPresenter viewPresenter,
             RibbonHelper ribbonHelper)
         {
             this.localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
@@ -42,8 +39,6 @@ namespace ARSnovaPPIntegration.Presentation
             this.slideManipulator = ServiceLocator.Current.GetInstance<ISlideManipulator>();
 
             this.viewPresenter = viewPresenter;
-
-            this.exceptionHandler = exceptionHandler;
 
             this.ribbonHelper = ribbonHelper;
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 
 using ARSnovaPPIntegration.Presentation.Commands;
+using ARSnovaPPIntegration.Presentation.ViewManagement;
 
 namespace ARSnovaPPIntegration.Presentation.Window
 {
@@ -13,13 +14,13 @@ namespace ARSnovaPPIntegration.Presentation.Window
     /// </summary>
     public partial class WindowContainer : INotifyPropertyChanged
     {
-        private readonly ViewPresenter.ViewPresenter viewPresenter;
+        private readonly ViewPresenter viewPresenter;
 
         public bool ShowCloseWindowPrompt { get; set; } = true;
 
         public NavigationButtonsToolTips NavigationButtonsToolTips { get; } = new NavigationButtonsToolTips();
 
-        public WindowContainer(ViewPresenter.ViewPresenter viewPresenter)
+        public WindowContainer(ViewPresenter viewPresenter)
         {
             this.viewPresenter = viewPresenter;
             this.InitializeComponent();

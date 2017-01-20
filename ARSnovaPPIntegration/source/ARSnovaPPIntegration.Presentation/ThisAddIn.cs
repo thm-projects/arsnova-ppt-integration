@@ -4,26 +4,30 @@ using System.Globalization;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Practices.Unity;
 
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Presentation.Configuration;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Models;
+using ARSnovaPPIntegration.Presentation.ViewManagement;
 using ARSnovaPPIntegration.Presentation.Views;
 
 namespace ARSnovaPPIntegration.Presentation
 {
     public partial class ThisAddIn
     {
+        private Bootstrapper bootstrapper;
+
         private ExceptionHandler exceptionHandler;
 
-        private ViewPresenter.ViewPresenter viewPresenter;
+        private ViewPresenter viewPresenter;
 
         private Ribbon ribbon;
 
         private RibbonHelper ribbonHelper;
-        
+
         private void ThisAddInStartup(object sender, System.EventArgs e)
         {
             // Add new context menu entries
@@ -77,7 +81,6 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 this.exceptionHandler.Handle(e.Message);
             }
-            
         }
 
         private void OnNextSlide(SlideShowWindow slideShowWindow)
@@ -119,21 +122,27 @@ namespace ARSnovaPPIntegration.Presentation
         private void Setup()
         {
             // Setup Unity
-            var serviceLocator = Bootstrapper.GetUnityServiceLocator();
-            ServiceLocator.SetLocatorProvider(() => serviceLocator);
+            this.bootstrapper = new Bootstrapper();
+            this.bootstrapper.SetupUnityServiceLocator();
 
             // Setup ExceptionHandler
+            // TODO setup not complete (doesn't catch everythink)
             this.exceptionHandler = new ExceptionHandler();
 
-            // Setup Bootstrapper
-            //this.ootstrapper.SetCultureInfo();
-
             // Setup ViewPresenter
-            this.viewPresenter = new ViewPresenter.ViewPresenter();
+            this.ConfigureViewPresenter();
+        }
+
+        private void ConfigureViewPresenter()
+        {
+            this.viewPresenter = new ViewPresenter();
             this.viewPresenter.Add<SelectArsnovaTypeViewViewModel, SelectArsnovaTypeView>();
             this.viewPresenter.Add<QuestionViewViewModel, QuestionView>();
             this.viewPresenter.Add<AnswerOptionViewViewModel, AnswerOptionView>();
             this.viewPresenter.Add<SessionOverviewViewViewModel, SessionOverviewView>();
+
+            this.bootstrapper.UnityContainer.RegisterInstance<IViewPresenter>(this.viewPresenter);
+            this.bootstrapper.UnityContainer.RegisterInstance<ViewPresenter>(this.viewPresenter);
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
@@ -148,7 +157,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             this.ribbonHelper = new RibbonHelper(this.viewPresenter, ServiceLocator.Current.GetInstance<ILocalizationService>());
 
-            this.ribbon = new Ribbon(this.viewPresenter, this.exceptionHandler, this.ribbonHelper);
+            this.ribbon = new Ribbon(this.viewPresenter, this.ribbonHelper);
 
             return this.ribbon;
         }

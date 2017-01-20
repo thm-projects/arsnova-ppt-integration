@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Practices.ServiceLocation;
-
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -40,10 +37,12 @@ namespace ARSnovaPPIntegration.Business
             QuestionTypeEnum.SurveyClick
         };
 
-        public SessionInformationProvider()
+        public SessionInformationProvider(
+            IArsnovaClickService arsnovaClickService,
+            IQuestionTypeTranslator questionTypeTranslator)
         {
-            this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
-            this.questionTypeTranslator = ServiceLocator.Current.GetInstance<IQuestionTypeTranslator>();
+            this.arsnovaClickService = arsnovaClickService;
+            this.questionTypeTranslator = questionTypeTranslator;
         }
 
         public List<QuestionType> GetAvailableQuestionsClick()

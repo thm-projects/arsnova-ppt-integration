@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ARSnovaPPIntegration.Presentation.ViewPresenter
+namespace ARSnovaPPIntegration.Presentation.ViewManagement
 {
     public class ViewTypeConfiguration
     {

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Practices.ServiceLocation;
-
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
@@ -14,10 +12,9 @@ namespace ARSnovaPPIntegration.Common.Translators
     {
         private readonly List<Tuple<QuestionTypeEnum, string>> questionTypeTranslations;
 
-        public QuestionTypeTranslator()
+        public QuestionTypeTranslator(
+            ILocalizationService localizationService)
         {
-            var localizationService = ServiceLocator.Current.GetInstance<ILocalizationService>();
-
             this.questionTypeTranslations = new List<Tuple<QuestionTypeEnum, string>>
             {
                 // arsnova voting

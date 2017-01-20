@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using Microsoft.Practices.ServiceLocation;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
@@ -21,10 +21,12 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly IArsnovaClickService arsnovaClickService;
 
-        public SlideManipulator(ILocalizationService localizationService)
+        public SlideManipulator(
+            ILocalizationService localizationService,
+            IArsnovaClickService arsnovaClickService)
         {
             this.localizationService = localizationService;
-            this.arsnovaClickService = ServiceLocator.Current.GetInstance<IArsnovaClickService>();
+            this.arsnovaClickService = arsnovaClickService;
         }
 
         public void AddFooter(Slide slide, string header = "ARSnova Quiz")

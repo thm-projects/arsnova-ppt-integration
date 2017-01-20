@@ -8,14 +8,13 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Helpers;
-using ARSnovaPPIntegration.Presentation.ViewPresenter;
-using ARSnovaPPIntegration.Presentation.Window;
+using ARSnovaPPIntegration.Presentation.ViewManagement;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
     public abstract class BaseViewModel : INotifyPropertyChanged, IWindowCommandBindings
     {
-        protected readonly ViewPresenter.ViewPresenter ViewPresenter;
+        protected readonly ViewPresenter ViewPresenter;
 
         protected readonly IQuestionTypeTranslator QuestionTypeTranslator;
 
@@ -122,7 +121,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
     public class ViewModelRequirements
     {
         public ViewModelRequirements(
-            ViewPresenter.ViewPresenter viewPresenter,
+            ViewPresenter viewPresenter,
             IQuestionTypeTranslator questionTypeTranslator,
             ILocalizationService localizationService,
             ISessionManager sessionManager,
@@ -139,7 +138,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.SlideManipulator = slideManipulator;
         }
 
-        public ViewPresenter.ViewPresenter ViewPresenter { get; }
+        public ViewPresenter ViewPresenter { get; }
 
         public IQuestionTypeTranslator QuestionTypeTranslator { get; }
 

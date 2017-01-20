@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace ARSnovaPPIntegration.Presentation.ViewPresenter
+namespace ARSnovaPPIntegration.Presentation.ViewManagement
 {
     public interface IWindowCommandBindings
     {

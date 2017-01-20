@@ -11,13 +11,14 @@ using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.ViewManagement;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
     public class RibbonHelper
     {
-        private readonly ViewPresenter.ViewPresenter viewPresenter;
+        private readonly ViewPresenter viewPresenter;
 
         private readonly ILocalizationService localizationService;
 
@@ -30,7 +31,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         private readonly IQuestionTypeTranslator questionTypeTranslator;
 
         public RibbonHelper(
-            ViewPresenter.ViewPresenter viewPresenter,
+            ViewPresenter viewPresenter,
             ILocalizationService localizationService)
         {
             this.viewPresenter = viewPresenter;

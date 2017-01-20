@@ -9,9 +9,9 @@ using System.Windows.Media.Imaging;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Window;
 
-namespace ARSnovaPPIntegration.Presentation.ViewPresenter
+namespace ARSnovaPPIntegration.Presentation.ViewManagement
 {
-    public class ViewPresenter
+    public class ViewPresenter : IViewPresenter
     {
         private readonly Dictionary<Type, ViewTypeConfiguration> viewTypeConfigurations =
             new Dictionary<Type, ViewTypeConfiguration>();
