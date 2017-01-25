@@ -38,45 +38,42 @@ namespace ARSnovaPPIntegration.Business
 
         public void AddIntroSlide(SlideSessionModel slideSessionModel, Slide introSlide)
         {
+            var isClickSession = slideSessionModel.SessionType == SessionType.ArsnovaClick;
+
+            // Note: Interops reads RGB colors in the order: BGR!
+            var backgroundRgbColor = isClickSession ? Color.FromArgb(136, 150, 0).ToArgb() : Color.FromArgb(219, 219, 219).ToArgb();
+            var filePath = isClickSession ? this.GetFilePath(Images.click_header, "click_header.png") : this.GetFilePath(Images.arsnova_header, "arsnova_header.png");
+            var sessionTypeName = isClickSession ? "arsnova.click" : "ARSnova.voting";
+
             introSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            //var titleShape = introSlide.Shapes[1];
-            //var subTitleShape = introSlide.Shapes[2];
 
-            if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
-            {
-                introSlide.Background.Fill.ForeColor.RGB = Color.FromArgb(219, 219, 219).ToArgb();
+            introSlide.FollowMasterBackground = MsoTriState.msoFalse;
+            introSlide.Background.Fill.ForeColor.RGB = backgroundRgbColor;
 
-                var filePath = this.GetFilePath(Images.arsnova_header, "arsnova_header.png");
-                introSlide.Shapes.AddPicture(filePath, MsoTriState.msoTrue, MsoTriState.msoTrue, 100, 100, 800, 200);
+            introSlide.Shapes.AddPicture(
+                filePath,
+                MsoTriState.msoTrue,
+                MsoTriState.msoTrue,
+                100,
+                isClickSession ? 175 : 125,
+                750,
+                isClickSession ? 75 : 150);
 
-                var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 375, 800, 100);
-                var subTitleTextRange = subTitleTextBox.TextFrame.TextRange;
-                subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} arsnova.click, {this.localizationService.Translate("join the hashtag:")}{Environment.NewLine}{slideSessionModel.Hashtag}";
-                subTitleTextRange.Font.Name = "Arial";
-                subTitleTextRange.Font.Size = 22;
-                // TODO center text?
-            }
-            else
-            {
-                // TODO
-                // arsnova logo
-            }
+            var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 350, 750, 50);
+            var subTitleTextRange = subTitleTextBox.TextFrame.TextRange;
+            subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} {sessionTypeName}, {this.localizationService.Translate("join the hashtag:")}";
+            subTitleTextRange.Font.Name = "Arial";
+            subTitleTextRange.Font.Size = 22;
+            subTitleTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            /*.TextFrame.TextRange;
-            titelObj.Text = isClickSession ? "ARSnova.click" : "ARSnova.voting";
-            titelObj.Font.Name = "Arial";
-            titelObj.Font.Size = 32;*/
+            var subTitleTextBox2 = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 400, 750, 75);
+            var subTitleTextRange2 = subTitleTextBox2.TextFrame.TextRange;
+            subTitleTextRange2.Text = $"{slideSessionModel.Hashtag}";
+            subTitleTextRange2.Font.Name = "Arial";
+            subTitleTextRange2.Font.Size = 24;
+            subTitleTextBox2.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            subTitleTextBox2.TextEffect.FontBold = MsoTriState.msoCTrue;
 
-            // Microsoft.Office.Interop.PowerPoint.Shape shape = slide.Shapes[2];
-            // slide.Shapes.AddPicture(pictureFileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, shape.Left, shape.Top, shape.Width, shape.Height);
-
-            /*var contentObj = slide.Shapes[2].TextFrame.TextRange;
-            contentObj.Text = this.localizationService.Translate("This presentation uses arsnova.click, join the hashtag:");
-            contentObj.Text += Environment.NewLine;
-            contentObj.Text += Environment.NewLine;
-            contentObj.Text += hashtag;
-            contentObj.Paragraphs(-1).Lines(3, 1).Font.Name = "Arial";
-            contentObj.Paragraphs(-1).Lines(3, 1).Font.Size = 26;*/
             // TODO create QR-Code / get it from click server
         }
 
@@ -95,7 +92,7 @@ namespace ARSnovaPPIntegration.Business
             if (slideQuestionModel.AnswerOptionType != AnswerOptionType.ShowRangedAnswerOption)
             {
                 var answerOptionsString = slideQuestionModel.AnswerOptions
-                    .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position)}: {castedAnswerOption.Text}{Environment.NewLine}");
+                    .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position - 1)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
                 var answerOptionsObj = questionInfoSlide.Shapes[2].TextFrame.TextRange;
                 answerOptionsObj.Text = answerOptionsString;

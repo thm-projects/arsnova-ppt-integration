@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\arsnova_header.png" />
+    <Content Include="Images\click_header.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Images.resx">
