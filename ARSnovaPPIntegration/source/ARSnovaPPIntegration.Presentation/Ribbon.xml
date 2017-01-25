@@ -24,7 +24,7 @@
                 getLabel="GetAddNewSlidesLabel"
                 keytip="CA"
                 getSupertip="GetAddNewSlidesSupertip"
-                onAction="AddNewSlidesButtonClick"
+                onAction="AddQuizToNewSlideButtonClick"
                 getImage="GetAddNewSlidesButtonImage"
                 size="large" />
               <separator id="quizGroupSeparator"/>
@@ -33,7 +33,7 @@
                 keytip="CA"
                 getSupertip="GetAddButtonSupertip"
                 getEnabled="IsNoneArsnovaSlideSelected"
-                onAction="AddButtonClick"
+                onAction="AddQuizToSlideButtonClick"
                 getImage="GetAddButtonImage"
                 size="large" />
               <button id="EditButton"

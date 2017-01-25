@@ -369,4 +369,10 @@
   <data name="Manage_questions" xml:space="preserve">
     <value>Fragen verwalten</value>
   </data>
+  <data name="join the hashtag:" xml:space="preserve">
+    <value>betrete die Umfrage:</value>
+  </data>
+  <data name="This presentation uses" xml:space="preserve">
+    <value>Diese Präsentation verwendet</value>
+  </data>
 </root>

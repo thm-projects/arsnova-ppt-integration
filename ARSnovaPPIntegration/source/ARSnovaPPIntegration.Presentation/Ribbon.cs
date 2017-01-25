@@ -82,20 +82,6 @@ namespace ARSnovaPPIntegration.Presentation
             return Images.add;
         }
 
-        public void AddButtonClick(Office.IRibbonControl control)
-        {
-            var arsnovaSlide = SlideTracker.CurrentSlide;
-            // if there is no slide selected, insert new slide at the end of the presentation?
-            if (arsnovaSlide == null)
-            {
-                throw new Exception("No slide selected");
-            }
-
-            this.ribbonHelper.AddQuizToSlide(arsnovaSlide);
-            // TODO use
-            //this.ribbonHelper.AddQuizContentToShape(shape);
-        }
-
         public string GetAddNewSlidesLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Add multiple slides with a complete quiz.");
@@ -109,11 +95,6 @@ namespace ARSnovaPPIntegration.Presentation
         public Bitmap GetAddNewSlidesButtonImage(Office.IRibbonControl control)
         {
             return Images.document;
-        }
-
-        public void AddNewSlidesButtonClick(Office.IRibbonControl control)
-        {
-            this.ribbonHelper.AddCompleteQuizToNewSlides();
         }
 
         public string GetSessionTypeGroupLabel(Office.IRibbonControl control)
@@ -220,11 +201,16 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
         {
-            var currentSlide = SlideTracker.CurrentSlide;
+            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count != 1)
+            {
+                PopUpWindow.ErrorWindow(
+                    this.localizationService.Translate("Check selection range"),
+                    this.localizationService.Translate("Make sure you select one form before adding a new quiz to it."));
 
-            // There can't be no selected slide because this event is fired after clicking on a slide
-            this.ribbonHelper.AddQuizToSlide(currentSlide);
-            
+                return;
+            }
+
+            this.ribbonHelper.AddQuizContentToShape();         
         }
 
         /*public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
@@ -234,8 +220,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
         {
-            var newSlide = this.ribbonHelper.CreateNewSlide();
-            this.ribbonHelper.AddQuizToSlide(newSlide);
+            this.ribbonHelper.AddCompleteQuizToNewSlides();
         }
 
         public bool AnySlideSelected(Office.IRibbonControl control)

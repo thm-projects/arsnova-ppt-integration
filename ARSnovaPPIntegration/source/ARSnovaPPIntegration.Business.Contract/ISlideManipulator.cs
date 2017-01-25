@@ -9,20 +9,14 @@ namespace ARSnovaPPIntegration.Business.Contract
 {
     public interface ISlideManipulator
     {
-        void AddFooter(Slide slide, string header);
+        void AddIntroSlide(SlideSessionModel slideSessionModel, Slide introSlide);
 
-        void SetArsnovaStyle(Slide slide);
+        void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
 
-        void SetArsnovaClickStyle(Slide slide, string hashtag);
+        void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide);
 
-        void AddClickIntroSlide(Slide slide, string hashtag);
+        void SetTimerOnSlide(Slide resultsSlide, int countdown);
 
-        void AddQuizToSlide(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
-
-        void SetTimerOnSlide(Slide timerSlide, int countdown);
-
-        void InitTimerOnSlide(Slide timerSlide, int initCountdown);
-
-        void SetResultsOnSlide(Slide resultsSlide, List<ResultModel> best10Responses);
+        void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results);
     }
 }

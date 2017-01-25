@@ -370,4 +370,10 @@
   <data name="Manage_questions" xml:space="preserve">
     <value>Manage questions</value>
   </data>
+  <data name="join the hashtag:" xml:space="preserve">
+    <value>join the hashtag:</value>
+  </data>
+  <data name="This presentation uses" xml:space="preserve">
+    <value>This presentation uses</value>
+  </data>
 </root>

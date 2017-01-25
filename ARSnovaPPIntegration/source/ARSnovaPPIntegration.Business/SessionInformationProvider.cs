@@ -63,6 +63,11 @@ namespace ARSnovaPPIntegration.Business
             }).ToList();
         }
 
+        public bool IsClickQuestion(QuestionTypeEnum questionType)
+        {
+            return this.clickQuestionTypes.Contains(questionType);
+        }
+
         public AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType)
         {
             switch (questionType)

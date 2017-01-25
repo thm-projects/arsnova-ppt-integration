@@ -29,6 +29,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public Guid Id { get; set; }
 
+        public bool QuizInOneShape { get; set; } = false;
+
         // TODO currently not binded and set
         public int Countdown { get; set; } = 20;
 

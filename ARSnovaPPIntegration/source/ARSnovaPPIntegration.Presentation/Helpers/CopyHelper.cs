@@ -60,7 +60,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 {
                     RangedLowerLimit = answerOption.RangedLowerLimit,
                     RangedCorrectValue = answerOption.RangedCorrectValue,
-                    RangedHigherLimit = answerOption.RangedHigherLimit
+                    RangedHigherLimit = answerOption.RangedHigherLimit,
+                    AnswerOptionType = AnswerOptionType.ShowRangedAnswerOption
                 };
 
                 return newAnswerOption;

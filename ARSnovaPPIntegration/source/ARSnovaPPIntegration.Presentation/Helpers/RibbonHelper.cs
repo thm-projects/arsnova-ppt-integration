@@ -117,64 +117,16 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                         slideSessionModel)));
         }
 
-        public void RemoveClickQuizDataOnServer()
-        {
-            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
-
-            if (slideSessionModel != null)
-            {
-                this.sessionManager.RemoveClickQuizDataFromServer(slideSessionModel);
-            }
-        }
-
-        public void AddQuizToSlide(Slide slide)
-        {
-            var slideSessionModel = this.GetSlideSessionModel();
-
-            if (!slideSessionModel.SessionTypeSet)
-            {
-                this.viewPresenter.ShowInNewWindow(
-                 new SelectArsnovaTypeViewViewModel(
-                    new ViewModelRequirements(
-                        this.viewPresenter,
-                        this.questionTypeTranslator,
-                        this.localizationService,
-                        this.sessionManager,
-                        this.sessionInformationProvider,
-                        this.slideManipulator,
-                        slideSessionModel)),
-                    vm =>
-                    {
-                        vm.OnSelectArsnovaTypeViewClose += () => this.AddQuizToSlide(slide);
-                    });
-                return;
-            }
-
-            var newQuestion = new SlideQuestionModel
-            {
-                QuestionType = slideSessionModel.SessionType == SessionType.ArsnovaClick
-                                                                ? QuestionTypeEnum.SingleChoiceClick
-                                                                : QuestionTypeEnum.SingleChoiceVoting,
-                Index = slideSessionModel.Questions.Count,
-                QuestionSlideId = slide.SlideID
-            };
-
-            slideSessionModel.Questions.Add(newQuestion);
-
-            this.viewPresenter.ShowInNewWindow(
-                new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), newQuestion.Id, true));
-        }
-
         public void AddCompleteQuizToNewSlides()
         {
-            // if there is no slide selected, insert new slide at the end of the presentation?
-            var arsnovaSlide = SlideTracker.CurrentSlide ?? this.CreateNewSlide();
-            // TODO
+            var newSlide = this.CreateNewSlide();
+            this.AddQuizToSlide(newSlide);
         }
 
         public void AddQuizContentToShape()
         {
-            // TODO
+            var currentSlide = SlideTracker.CurrentSlide;
+            this.AddQuizToSlide(currentSlide, true);
         }
 
         public void EditQuizSetup(Slide slide)
@@ -239,6 +191,55 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var newSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(index, PpSlideLayout.ppLayoutTitle);
             return newSlide;
+        }
+
+        public void RemoveClickQuizDataOnServer()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            if (slideSessionModel != null)
+            {
+                this.sessionManager.RemoveClickQuizDataFromServer(slideSessionModel);
+            }
+        }
+
+        private void AddQuizToSlide(Slide slide, bool contentOnOneShape = false)
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            if (!slideSessionModel.SessionTypeSet)
+            {
+                this.viewPresenter.ShowInNewWindow(
+                 new SelectArsnovaTypeViewViewModel(
+                    new ViewModelRequirements(
+                        this.viewPresenter,
+                        this.questionTypeTranslator,
+                        this.localizationService,
+                        this.sessionManager,
+                        this.sessionInformationProvider,
+                        this.slideManipulator,
+                        slideSessionModel)),
+                    vm =>
+                    {
+                        vm.OnSelectArsnovaTypeViewClose += () => this.AddQuizToSlide(slide);
+                    });
+                return;
+            }
+
+            var newQuestion = new SlideQuestionModel
+            {
+                QuestionType = slideSessionModel.SessionType == SessionType.ArsnovaClick
+                                                                ? QuestionTypeEnum.SingleChoiceClick
+                                                                : QuestionTypeEnum.SingleChoiceVoting,
+                Index = slideSessionModel.Questions.Count,
+                QuestionSlideId = slide.SlideID,
+                QuizInOneShape = contentOnOneShape
+            };
+
+            slideSessionModel.Questions.Add(newQuestion);
+
+            this.viewPresenter.ShowInNewWindow(
+                new QuestionViewViewModel(this.CreateViewModelRequirements(slideSessionModel), newQuestion.Id, true));
         }
 
         private SlideSessionModel GetSlideSessionModel()

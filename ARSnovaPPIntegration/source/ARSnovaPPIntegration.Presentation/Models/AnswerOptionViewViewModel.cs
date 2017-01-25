@@ -398,7 +398,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                                {
                                                                    RangedLowerLimit = 0,
                                                                    RangedCorrectValue = 50,
-                                                                   RangedHigherLimit = 100
+                                                                   RangedHigherLimit = 100,
+                                                                   AnswerOptionType = AnswerOptionType.ShowRangedAnswerOption
                                                                }
                                                            };
                 }

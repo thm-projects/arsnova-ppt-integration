@@ -39,6 +39,21 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
         }
 
+        public static ShapeRange CurrentSelectedShapeRange
+        {
+            get
+            {
+                try
+                {
+                    return Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                }
+                catch (COMException)
+                {
+                    return null;
+                }
+            }
+        }
+
         public static void RemoveSlide(int slideId)
         {
             GetSlideById(slideId).Delete();
@@ -46,13 +61,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaClickSlide()
         {
-            var currentShowedSlidePosition = SlideTracker.CurrentShowedPresentationSlidePosition;
+            var currentShowedSlidePosition = CurrentShowedPresentationSlidePosition;
 
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                if (SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId).SlideNumber == currentShowedSlidePosition)
+                if (GetSlideById(slideQuestionModel.ResultsSlideId).SlideNumber == currentShowedSlidePosition)
                     return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
             }
 

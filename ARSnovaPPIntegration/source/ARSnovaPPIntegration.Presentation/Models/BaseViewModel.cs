@@ -60,7 +60,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 if (this.SlideSessionModel.SessionType == SessionType.ArsnovaClick)
                 {
-                    this.SlideManipulator.AddClickIntroSlide(introSlide, this.SlideSessionModel.Hashtag);
+                    this.SlideManipulator.AddIntroSlide(this.SlideSessionModel, introSlide);
                 }
                 else
                 {
@@ -72,17 +72,24 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 PresentationInformationStore.SetArsnovaIntroSlideAdded();
             }
 
-            // TODO setup finished, call business logik -> create / change session online (api service) (NewSession in model), manipulate / edit / create slide and fill up with content
-            // no need to push the data to server, we just need to reserve our hashtag
-            //var validationResult = this.SessionManager.SetSession(this.SlideSessionModel);
+            if (slideQuestionModel.QuizInOneShape)
+            {
+                var selectedSlide = SlideTracker.CurrentSlide;
+                slideQuestionModel.ResultsSlideId = selectedSlide.SlideID;
+                slideQuestionModel.QuestionSlideId = selectedSlide.SlideID;
 
-            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
+                this.SlideManipulator.AddQuizToSlideWithoutStyling(slideQuestionModel, selectedSlide);
+            }
+            else
+            {
+                var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
 
-            var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+                var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
 
-            slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
+                slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
 
-            this.SlideManipulator.AddQuizToSlide(slideQuestionModel, questionInfoSlide, resultsSlide);
+                this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, resultsSlide);
+            }
 
             PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
             this.ViewPresenter.CloseWithoutPrompt();
