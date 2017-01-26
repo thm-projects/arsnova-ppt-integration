@@ -16,6 +16,9 @@ using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
+using MSForms = Microsoft.Vbe.Interop.Forms;
+using MSComp = Microsoft.VisualBasic.CompilerServices;
+
 namespace ARSnovaPPIntegration.Business
 {
     public class SlideManipulator : ISlideManipulator
@@ -26,6 +29,8 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly ISessionInformationProvider sessionInformationProvider;
 
+        private string font;
+
         public SlideManipulator(
             ILocalizationService localizationService,
             IArsnovaClickService arsnovaClickService,
@@ -34,6 +39,7 @@ namespace ARSnovaPPIntegration.Business
             this.localizationService = localizationService;
             this.arsnovaClickService = arsnovaClickService;
             this.sessionInformationProvider = sessionInformationProvider;
+            this.font = "Calibri";
         }
 
         public void AddIntroSlide(SlideSessionModel slideSessionModel, Slide introSlide)
@@ -46,8 +52,8 @@ namespace ARSnovaPPIntegration.Business
             var sessionTypeName = isClickSession ? "arsnova.click" : "ARSnova.voting";
 
             introSlide.Layout = PpSlideLayout.ppLayoutBlank;
-
             introSlide.FollowMasterBackground = MsoTriState.msoFalse;
+
             introSlide.Background.Fill.ForeColor.RGB = backgroundRgbColor;
 
             introSlide.Shapes.AddPicture(
@@ -62,14 +68,14 @@ namespace ARSnovaPPIntegration.Business
             var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 350, 750, 50);
             var subTitleTextRange = subTitleTextBox.TextFrame.TextRange;
             subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} {sessionTypeName}, {this.localizationService.Translate("join the hashtag:")}";
-            subTitleTextRange.Font.Name = "Arial";
+            subTitleTextRange.Font.Name = this.font;
             subTitleTextRange.Font.Size = 22;
             subTitleTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             var subTitleTextBox2 = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 400, 750, 75);
             var subTitleTextRange2 = subTitleTextBox2.TextFrame.TextRange;
             subTitleTextRange2.Text = $"{slideSessionModel.Hashtag}";
-            subTitleTextRange2.Font.Name = "Arial";
+            subTitleTextRange2.Font.Name = this.font;
             subTitleTextRange2.Font.Size = 24;
             subTitleTextBox2.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             subTitleTextBox2.TextEffect.FontBold = MsoTriState.msoCTrue;
@@ -79,13 +85,25 @@ namespace ARSnovaPPIntegration.Business
 
         public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide)
         {
-            questionInfoSlide.Layout = PpSlideLayout.ppLayoutText;
+            var isClickSession = this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType);
+
+            questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
+
+            // TODO get default fonts from slidemaster?
 
             // question
-            var questionObj = questionInfoSlide.Shapes[1].TextFrame.TextRange;
-            questionObj.Text = slideQuestionModel.QuestionText;
-            questionObj.Font.Name = "Arial";
-            questionObj.Font.Size = 26;
+            var isRangedQuestion = slideQuestionModel.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption;
+            var questionTextBox = questionInfoSlide.Shapes.AddTextbox(
+                MsoTextOrientation.msoTextOrientationHorizontal,
+                50,
+                isRangedQuestion ? 350 : 50,
+                850,
+                isRangedQuestion ? 200 : 75);
+            var questionTextRange = questionTextBox.TextFrame.TextRange;
+            questionTextRange.Text = slideQuestionModel.QuestionText;
+            questionTextRange.Font.Name = this.font;
+            questionTextRange.Font.Size = 22;
+            questionTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             // answer options
             // no answer options on ranged questions
@@ -94,28 +112,78 @@ namespace ARSnovaPPIntegration.Business
                 var answerOptionsString = slideQuestionModel.AnswerOptions
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position - 1)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
-                var answerOptionsObj = questionInfoSlide.Shapes[2].TextFrame.TextRange;
-                answerOptionsObj.Text = answerOptionsString;
-                answerOptionsObj.Font.Name = "Arial";
-                answerOptionsObj.Font.Size = 20;
+                var answerOptionsTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 150, 850, 150);
+                var answerOptionsTextRange = answerOptionsTextBox.TextFrame.TextRange;
+                answerOptionsTextRange.Text = answerOptionsString;
+                answerOptionsTextRange.Font.Name = this.font;
+                answerOptionsTextRange.Font.Size = 20;
             }
 
+            // start button under answer options
+            /*var startButton = questionInfoSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeActionButtonCustom, 50, 450, 850, 50);
+            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Action = PpActionType.ppActionRunMacro; // invoking my code from macro not possible
+            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Run = "StartVotingEvent";*/
+
+            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1", null, MsoTriState.msoFalse, null, 0, null, MsoTriState.msoCTrue);
+            startButton.Name = "startButton";
+            startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
+            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Hyperlink.Address = "";*/
+
+
+            var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1");
+            startButton.Name = "StartButton";
+            // TODO add to localization files
+            /*startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
+            startButton.TextEffect.FontBold = MsoTriState.msoTrue;
+            startButton.TextEffect.FontName = this.font;*/
+
+            var startCommandButton = (MSForms.CommandButton)MSComp.NewLateBinding.LateGet(
+                questionInfoSlide,
+                null,
+                "StartButton",
+                new object[0],
+                null,
+                null,
+                null);
+            
+            // TODO add to localization files
+            startCommandButton.Caption = this.localizationService.Translate("Start quiz");
+            startCommandButton.FontBold = true;
+
+            startCommandButton.Click += this.OnStartButtonClick;
+
+            //AddHandler CType(oshape.OLEFormat.Object, MSForms.CommandButton).Click, _
+            //AddressOf Button1_Click
+
+            //var startBtn = (Microsoft.Vbe.Interop.Forms.CommandButton)Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateGet((Excel.Worksheet)xlApp.ActiveSheet, null, "startButton", new object[0], null, null, null);
             // results
             resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            var resultsHeaderObj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 10, 10, 400, 50);
-            var resultsHeaderTextRange = resultsHeaderObj.TextFrame.TextRange;
+
+            var resultsHeaderTextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 50, 850, 50);
+            var resultsHeaderTextRange = resultsHeaderTextBox.TextFrame.TextRange;
             resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
-            resultsHeaderTextRange.Font.Name = "Arial";
+            resultsHeaderTextRange.Font.Name = this.font;
             resultsHeaderTextRange.Font.Size = 26;
 
-            var row1Obj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 10, 60, 200, 600);
-            var row1ObjTextRange = row1Obj.TextFrame.TextRange;
-            row1ObjTextRange.Font.Name = "Arial";
-            row1ObjTextRange.Font.Size = 20;
+            // results will be filled in later (after the quiz)
+            if (isClickSession)
+            {
+                // leaderboard
+                var resultsLeaderBoard1TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
+                var resultsLeaderBoard1TextRange = resultsLeaderBoard1TextBox.TextFrame.TextRange;
+                resultsLeaderBoard1TextRange.Font.Name = this.font;
+                resultsLeaderBoard1TextRange.Font.Size = 20;
 
+                var resultsLeaderBoard2TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
+                var resultsLeaderBoard2TextRange = resultsLeaderBoard2TextBox.TextFrame.TextRange;
+                resultsLeaderBoard2TextRange.Font.Name = this.font;
+                resultsLeaderBoard2TextRange.Font.Size = 20;
+            }
+            
+            // graph
             var row2Obj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 210, 60, 200, 600);
             var row2ObjTextRange = row2Obj.TextFrame.TextRange;
-            row2ObjTextRange.Font.Name = "Arial";
+            row2ObjTextRange.Font.Name = this.font;
             row2ObjTextRange.Font.Size = 20;
 
         }
@@ -185,6 +253,12 @@ namespace ARSnovaPPIntegration.Business
             resultsColumn2.Font.Size = 20;
             resultsColumn2.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
             resultsColumn2.Text = resultsColumn2Text;
+        }
+
+        private void OnStartButtonClick()
+        {
+            // TODO
+            Console.Write("click callback successful!");
         }
 
         private string GetFilePath(Bitmap image, string name)
