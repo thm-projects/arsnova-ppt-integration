@@ -28,7 +28,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         private RibbonHelper ribbonHelper;
 
-        private void ThisAddInStartup(object sender, System.EventArgs e)
+        private void ThisAddInStartup(object sender, EventArgs e)
         {
             // Add new context menu entries
             // Supported from v2000 until v2016 (current): http://officeone.mvps.org/vba/events_version.html

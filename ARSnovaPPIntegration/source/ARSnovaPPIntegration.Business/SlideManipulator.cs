@@ -16,8 +16,8 @@ using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
-using MSForms = Microsoft.Vbe.Interop.Forms;
-using MSComp = Microsoft.VisualBasic.CompilerServices;
+//using MSForms = Microsoft.Vbe.Interop.Forms;
+//using MSComp = Microsoft.VisualBasic.CompilerServices;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -29,7 +29,7 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly ISessionInformationProvider sessionInformationProvider;
 
-        private string font;
+        private readonly string font;
 
         public SlideManipulator(
             ILocalizationService localizationService,
@@ -119,25 +119,34 @@ namespace ARSnovaPPIntegration.Business
                 answerOptionsTextRange.Font.Size = 20;
             }
 
+            // Button not possible, just added a textbox to start quiz on next slide
+            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
+            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
+            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
+            startQuizTextRange.Font.Name = this.font;
+            startQuizTextRange.Font.Size = 20;
+            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
             // start button under answer options
             /*var startButton = questionInfoSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeActionButtonCustom, 50, 450, 850, 50);
             startButton.ActionSettings[PpMouseActivation.ppMouseClick].Action = PpActionType.ppActionRunMacro; // invoking my code from macro not possible
             startButton.ActionSettings[PpMouseActivation.ppMouseClick].Run = "StartVotingEvent";*/
 
-            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1", null, MsoTriState.msoFalse, null, 0, null, MsoTriState.msoCTrue);
+            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1", null, MsoTriState.msoFalse, null, 0, null);
             startButton.Name = "startButton";
-            startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
-            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Hyperlink.Address = "";*/
+            //startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
+            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Action = PpActionType.ppActionNextSlide;*/
 
 
-            var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1");
+            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1");
             startButton.Name = "StartButton";
             // TODO add to localization files
-            /*startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
+            startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
             startButton.TextEffect.FontBold = MsoTriState.msoTrue;
-            startButton.TextEffect.FontName = this.font;*/
+            startButton.TextEffect.FontName = this.font;
 
-            var startCommandButton = (MSForms.CommandButton)MSComp.NewLateBinding.LateGet(
+            /*var startCommandButton = (MSForms.CommandButton)MSComp.NewLateBinding.LateGet(
                 questionInfoSlide,
                 null,
                 "StartButton",
@@ -150,7 +159,7 @@ namespace ARSnovaPPIntegration.Business
             startCommandButton.Caption = this.localizationService.Translate("Start quiz");
             startCommandButton.FontBold = true;
 
-            startCommandButton.Click += this.OnStartButtonClick;
+            startCommandButton.Click += this.OnStartButtonClick;*/
 
             //AddHandler CType(oshape.OLEFormat.Object, MSForms.CommandButton).Click, _
             //AddressOf Button1_Click
@@ -255,11 +264,11 @@ namespace ARSnovaPPIntegration.Business
             resultsColumn2.Text = resultsColumn2Text;
         }
 
-        private void OnStartButtonClick()
+       /* private void OnStartButtonClick()
         {
             // TODO
             Console.Write("click callback successful!");
-        }
+        }*/
 
         private string GetFilePath(Bitmap image, string name)
         { 

@@ -375,4 +375,7 @@
   <data name="This presentation uses" xml:space="preserve">
     <value>Diese Präsentation verwendet</value>
   </data>
+  <data name="Move_to_the_next_slide_to_start_the_quiz." xml:space="preserve">
+    <value>Gehe zur nächsten Folie um das Quiz zu starten.</value>
+  </data>
 </root>
