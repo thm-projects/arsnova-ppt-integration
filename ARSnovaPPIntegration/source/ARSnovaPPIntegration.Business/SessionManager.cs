@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Business.Contract;
@@ -12,7 +10,6 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -34,9 +31,9 @@ namespace ARSnovaPPIntegration.Business
 
         private SlideSessionModel currentSlideSessionModel;
 
-        private Slide questionSlide;
-
         private Slide resultsSlide;
+
+        private Slide questionTimerSlide;
 
         private Timer timer;
 
@@ -156,31 +153,24 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
-        public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide)
+        public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionTimerSlideParam, Slide resultsSlideParam)
         {
             var validationResult = new ValidationResult();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.Index == questionIndex);
+            this.currentQuestionModel = slideSessionModel.Questions.First(q => q.Index == questionIndex);
 
-            this.questionSlide = questionSlide;
-            this.resultsSlide = resultsSlide;
+            this.questionTimerSlide = questionTimerSlideParam;
+            this.resultsSlide = resultsSlideParam;
             this.currentSlideSessionModel = slideSessionModel;
-            this.currentQuestionModel = slideQuestionModel;
 
             var clickQuesitonTypes = this.sessionInformationProvider.GetAvailableQuestionsClick();
 
-            if (clickQuesitonTypes.Any(qt => qt.QuestionTypeEnum == slideQuestionModel.QuestionType))
+            if (clickQuesitonTypes.Any(qt => qt.QuestionTypeEnum == this.currentQuestionModel.QuestionType))
             {
                 // start click question
                 validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, questionIndex);
 
-                // set current question model
-                this.currentQuestionModel = slideQuestionModel;
-
-                // add timer to slide
-                this.countdown = slideQuestionModel.Countdown;
-                this.slideManipulator.SetTimerOnSlide(this.questionSlide, this.countdown);
-
+                this.countdown = this.currentQuestionModel.Countdown;
                 this.timer = new Timer(1000);
                 this.timer.Elapsed += this.HandleTimerEvent;
                 this.timer.Start();
@@ -200,7 +190,7 @@ namespace ARSnovaPPIntegration.Business
         {
             this.countdown--;
             if(this.countdown >= 0)
-                this.slideManipulator.SetTimerOnSlide(this.resultsSlide, this.countdown);
+                this.slideManipulator.SetTimerOnSlide(this.questionTimerSlide, this.countdown);
 
             if (this.countdown == 0)
             {
@@ -209,14 +199,14 @@ namespace ARSnovaPPIntegration.Business
                 var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.Index);
                 this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);
 
-                // move to next slide
-                // this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
+                // move to next slide (results)
+                this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
 
                 // clean up
                 this.timer = null;
                 this.currentQuestionModel = null;
                 this.currentSlideSessionModel = null;
-                this.questionSlide = null;
+                this.questionTimerSlide = null;
                 this.resultsSlide = null;
             }
         }        

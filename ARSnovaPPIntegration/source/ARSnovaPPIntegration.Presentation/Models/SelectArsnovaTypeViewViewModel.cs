@@ -101,8 +101,13 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                             foreach (var slideQuestionModel in this.SlideSessionModel.Questions)
                             {
-                                SlideTracker.RemoveSlide(slideQuestionModel.QuestionSlideId);
-                                SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId);
+                                SlideTracker.RemoveSlide(slideQuestionModel.QuestionInfoSlideId);
+
+                                if (!slideQuestionModel.QuizInOneShape)
+                                {
+                                    SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId);
+                                    SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId);
+                                }
                             }
 
                             this.SlideSessionModel.Questions = new ObservableCollection<SlideQuestionModel>(); 

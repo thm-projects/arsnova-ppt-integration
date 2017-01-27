@@ -11,7 +11,7 @@ namespace ARSnovaPPIntegration.Business.Contract
     {
         void AddIntroSlide(SlideSessionModel slideSessionModel, Slide introSlide);
 
-        void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
+        void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide);
 
         void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide);
 

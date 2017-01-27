@@ -378,4 +378,10 @@
   <data name="Move_to_the_next_slide_to_start_the_quiz." xml:space="preserve">
     <value>Gehe zur nächsten Folie um das Quiz zu starten.</value>
   </data>
+  <data name="Right" xml:space="preserve">
+    <value>Richtig</value>
+  </data>
+  <data name="Wrong" xml:space="preserve">
+    <value>Falsch</value>
+  </data>
 </root>

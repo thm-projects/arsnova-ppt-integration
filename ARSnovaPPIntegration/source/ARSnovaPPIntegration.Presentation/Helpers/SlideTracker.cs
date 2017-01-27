@@ -67,7 +67,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                if (GetSlideById(slideQuestionModel.ResultsSlideId).SlideNumber == currentShowedSlidePosition)
+                if (GetSlideById(slideQuestionModel.QuestionTimerSlideId).SlideNumber == currentShowedSlidePosition)
                     return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
             }
 
@@ -80,14 +80,14 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             return slideSessionModel != null && 
                 (slideSessionModel.IntroSlideId == slide.SlideID ||
-                slideSessionModel.Questions.Any(questionModel => questionModel.QuestionSlideId == slide.SlideID || questionModel.ResultsSlideId == slide.SlideID));
+                slideSessionModel.Questions.Any(questionModel => questionModel.QuestionInfoSlideId == slide.SlideID || questionModel.ResultsSlideId == slide.SlideID));
         }
 
         public static SlideQuestionModel GetQuestionModelFromSlide(Slide slide)
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
-            return slideSessionModel.Questions.First(questionModel => questionModel.QuestionSlideId == slide.SlideID);
+            return slideSessionModel.Questions.First(questionModel => questionModel.QuestionInfoSlideId == slide.SlideID);
         }
 
         public static Slide GetSlideById(int slideId)

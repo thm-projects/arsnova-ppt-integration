@@ -83,17 +83,119 @@ namespace ARSnovaPPIntegration.Business
             // TODO create QR-Code / get it from click server
         }
 
-        public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide)
+        public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
         {
-            var isClickSession = this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType);
-
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
+            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide);
 
-            // TODO get default fonts from slidemaster?
+            // Button not possible, just added a textbox to start quiz on next slide
+            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
+            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
+            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
+            startQuizTextRange.Font.Name = this.font;
+            startQuizTextRange.Font.Size = 20;
+            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
+
+            questionTimerSlide.Layout = PpSlideLayout.ppLayoutBlank;
+            this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide);
+
+            // Timer
+            var timerLabelTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 300, 450, 150, 75);
+            var timerLabelTextRange = timerLabelTextBox.TextFrame.TextRange;
+            timerLabelTextRange.Text = this.localizationService.Translate("Countdown:");
+            timerLabelTextRange.Font.Name = this.font;
+            timerLabelTextRange.Font.Size = 22;
+            timerLabelTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            timerLabelTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+            var timerTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 450, 150, 75);
+            var timerTextRange = timerTextBox.TextFrame.TextRange;
+            timerTextRange.Text = slideQuestionModel.Countdown.ToString();
+            timerTextRange.Font.Name = this.font;
+            timerTextRange.Font.Size = 22;
+            timerTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            timerTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+            resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
+
+            var resultsHeaderTextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 50, 850, 50);
+            var resultsHeaderTextRange = resultsHeaderTextBox.TextFrame.TextRange;
+            resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
+            resultsHeaderTextRange.Font.Name = this.font;
+            resultsHeaderTextRange.Font.Size = 26;
+
+            // results will be filled in later (after the quiz)
+        }
+
+        public void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide)
+        {
+            // TODO
+            // question
+
+
+            // answer option
+
+
+            // results
+        }
+
+        public void SetTimerOnSlide(Slide questionTimerSlide, int countdown)
+        {
+            questionTimerSlide.Shapes[4].TextFrame.TextRange.Text = countdown.ToString();
+        }
+
+        public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
+        {
+            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
+            {
+                // arsnova.click
+                var best10Responses = this.GetBest10Responses(slideQuestionModel, results);
+
+                var resultsColumn1Text = string.Empty;
+                var resultsColumn2Text = string.Empty;
+                var i = 1;
+
+                foreach (var response in best10Responses)
+                {
+                    if (i % 2 == 0)
+                    {
+                        resultsColumn2Text += $"{i}. {response.userNick}{Environment.NewLine}";
+                    }
+                    else
+                    {
+                        resultsColumn1Text += $"{i}. {response.userNick}{Environment.NewLine}";
+                    }
+
+                    i++;
+                }
+                
+                var leaderBoardColumn1TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
+                var leaderBoardColumn1TextRange = leaderBoardColumn1TextBox.TextFrame.TextRange;
+                leaderBoardColumn1TextRange.Text = resultsColumn1Text;
+                leaderBoardColumn1TextRange.Font.Name = this.font;
+                leaderBoardColumn1TextRange.Font.Size = 20;
+                leaderBoardColumn1TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+                var leaderBoardColumn2TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
+                var leaderBoardColumn2TextRange = leaderBoardColumn2TextBox.TextFrame.TextRange;
+                leaderBoardColumn2TextRange.Text = resultsColumn2Text;
+                leaderBoardColumn2TextRange.Font.Name = this.font;
+                leaderBoardColumn2TextRange.Font.Size = 20;
+                leaderBoardColumn2TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 350, 850, 150);
+            }
+
+            this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 150, 850, 350);
+        }
+
+        private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide)
+        {
             // question
             var isRangedQuestion = slideQuestionModel.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption;
-            var questionTextBox = questionInfoSlide.Shapes.AddTextbox(
+            var questionTextBox = questionSlide.Shapes.AddTextbox(
                 MsoTextOrientation.msoTextOrientationHorizontal,
                 50,
                 isRangedQuestion ? 350 : 50,
@@ -112,163 +214,13 @@ namespace ARSnovaPPIntegration.Business
                 var answerOptionsString = slideQuestionModel.AnswerOptions
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position - 1)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
-                var answerOptionsTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 150, 850, 150);
+                var answerOptionsTextBox = questionSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 150, 850, 150);
                 var answerOptionsTextRange = answerOptionsTextBox.TextFrame.TextRange;
                 answerOptionsTextRange.Text = answerOptionsString;
                 answerOptionsTextRange.Font.Name = this.font;
                 answerOptionsTextRange.Font.Size = 20;
             }
-
-            // Button not possible, just added a textbox to start quiz on next slide
-            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
-            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
-            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
-            startQuizTextRange.Font.Name = this.font;
-            startQuizTextRange.Font.Size = 20;
-            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
-            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-
-            // start button under answer options
-            /*var startButton = questionInfoSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeActionButtonCustom, 50, 450, 850, 50);
-            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Action = PpActionType.ppActionRunMacro; // invoking my code from macro not possible
-            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Run = "StartVotingEvent";*/
-
-            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1", null, MsoTriState.msoFalse, null, 0, null);
-            startButton.Name = "startButton";
-            //startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
-            startButton.ActionSettings[PpMouseActivation.ppMouseClick].Action = PpActionType.ppActionNextSlide;*/
-
-
-            /*var startButton = questionInfoSlide.Shapes.AddOLEObject(50, 450, 850, 50, "Forms.CommandButton.1");
-            startButton.Name = "StartButton";
-            // TODO add to localization files
-            startButton.TextFrame.TextRange.Text = this.localizationService.Translate("Start Quiz");
-            startButton.TextEffect.FontBold = MsoTriState.msoTrue;
-            startButton.TextEffect.FontName = this.font;
-
-            /*var startCommandButton = (MSForms.CommandButton)MSComp.NewLateBinding.LateGet(
-                questionInfoSlide,
-                null,
-                "StartButton",
-                new object[0],
-                null,
-                null,
-                null);
-            
-            // TODO add to localization files
-            startCommandButton.Caption = this.localizationService.Translate("Start quiz");
-            startCommandButton.FontBold = true;
-
-            startCommandButton.Click += this.OnStartButtonClick;*/
-
-            //AddHandler CType(oshape.OLEFormat.Object, MSForms.CommandButton).Click, _
-            //AddressOf Button1_Click
-
-            //var startBtn = (Microsoft.Vbe.Interop.Forms.CommandButton)Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateGet((Excel.Worksheet)xlApp.ActiveSheet, null, "startButton", new object[0], null, null, null);
-            // results
-            resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
-
-            var resultsHeaderTextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 50, 850, 50);
-            var resultsHeaderTextRange = resultsHeaderTextBox.TextFrame.TextRange;
-            resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
-            resultsHeaderTextRange.Font.Name = this.font;
-            resultsHeaderTextRange.Font.Size = 26;
-
-            // results will be filled in later (after the quiz)
-            if (isClickSession)
-            {
-                // leaderboard
-                var resultsLeaderBoard1TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
-                var resultsLeaderBoard1TextRange = resultsLeaderBoard1TextBox.TextFrame.TextRange;
-                resultsLeaderBoard1TextRange.Font.Name = this.font;
-                resultsLeaderBoard1TextRange.Font.Size = 20;
-
-                var resultsLeaderBoard2TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
-                var resultsLeaderBoard2TextRange = resultsLeaderBoard2TextBox.TextFrame.TextRange;
-                resultsLeaderBoard2TextRange.Font.Name = this.font;
-                resultsLeaderBoard2TextRange.Font.Size = 20;
-            }
-            
-            // graph
-            var row2Obj = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 210, 60, 200, 600);
-            var row2ObjTextRange = row2Obj.TextFrame.TextRange;
-            row2ObjTextRange.Font.Name = this.font;
-            row2ObjTextRange.Font.Size = 20;
-
         }
-
-        public void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide)
-        {
-            // TODO
-            // question
-
-
-            // answer option
-
-
-            // results
-        }
-
-        public void SetTimerOnSlide(Slide resultsSlide, int countdown)
-        {
-            var resultsHeaderObj = resultsSlide.Shapes[2].TextFrame.TextRange;
-            resultsHeaderObj.Text = $"\t\t{this.localizationService.Translate("Countdown")}: {countdown}";
-        }
-
-        public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
-        {
-            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
-            {
-                // arsnova.click
-
-            }
-            else
-            {
-                // arsnova.voting
-                // TODO
-            }
-        }
-
-        public void SetLeaderboardOnSlide(Slide resultsSlide, List<ResultModel> best10Responses)
-        {
-            best10Responses = best10Responses.OrderBy(r => r.responseTime).ToList();
-
-            var resultsColumn1Text = string.Empty;
-            var resultsColumn2Text = string.Empty;
-            var i = 1;
-
-            foreach (var response in best10Responses)
-            {
-                if (i % 2 == 0)
-                {
-                    resultsColumn2Text += $"{i}. {response.userNick}{Environment.NewLine}";
-                }
-                else
-                {
-                    resultsColumn1Text += $"{i}. {response.userNick}{Environment.NewLine}";
-                }
-
-                i++;
-            }
-
-            var resultsColumn1 = resultsSlide.Shapes[2].TextFrame.TextRange;
-            resultsColumn1.Font.Name = "Arial";
-            resultsColumn1.Font.Size = 20;
-            resultsColumn1.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
-            resultsColumn1.Text = resultsColumn1Text;
-
-            var resultsColumn2 = resultsSlide.Shapes[3].TextFrame.TextRange;
-            resultsColumn2.Font.Name = "Arial";
-            resultsColumn2.Font.Size = 20;
-            resultsColumn2.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
-            resultsColumn2.Text = resultsColumn2Text;
-        }
-
-       /* private void OnStartButtonClick()
-        {
-            // TODO
-            Console.Write("click callback successful!");
-        }*/
 
         private string GetFilePath(Bitmap image, string name)
         { 
@@ -283,19 +235,26 @@ namespace ARSnovaPPIntegration.Business
             return filePath;
         }
 
-        private void AddChartToShape(SlideQuestionModel slideQuestionModel, Microsoft.Office.Interop.PowerPoint.Shape shape)
+        private void AddChartToShape(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results, int floatLeft, int floatTop, int width, int height)
         {
-            var chartWorksheet = shape.Chart.ChartData.Workbook.Worksheets(1);
+            // TODO COM Error!
+            var chartShape = resultsSlide.Shapes.AddChart(XlChartType.xlBarClustered, floatLeft, floatTop, width, height);
+            var chartWorksheet = chartShape.Chart.ChartData.Workbook.Worksheets(1);
 
             if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
             {
-                // TODO
+                // TODO -> there is only right or wrong
+                chartWorksheet.ListObjects("Table1").Resize(chartWorksheet.Range("A1:B3"));
+                chartWorksheet.Range("Table1[[#Headers],[Series 1]]").Value = "Items";
+                chartWorksheet.Cells.get_Range("A2").FormulaR1C1 = this.localizationService.Translate("Right");
+                //chartWorksheet.Cells.get_Range("B2").FormulaR1C1 = results.Count(r => r.);
+                chartWorksheet.Cells.get_Range("A3").FormulaR1C1 = this.localizationService.Translate("Wrong");
+                //chartWorksheet.Cells.get_Range("B3").FormulaR1C1 =;
             }
             else
             {
                 // Range: One Column for each answer option
                 // One row for the amount of students voted for that answer option
-
                 chartWorksheet.ListObjects("Table1").Resize(chartWorksheet.Range($"A1:B{slideQuestionModel.AnswerOptions.Count + 1}"));
                 chartWorksheet.Range("Table1[[#Headers],[Series 1]]").Value = "Items";
 
@@ -303,11 +262,19 @@ namespace ARSnovaPPIntegration.Business
                 {
                     var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position == i);
 
-                    chartWorksheet.Range($"a{i + 2}").Value = answerOption.Text;
-
-                    
+                    chartWorksheet.Range($"A{i + 2}").Value = answerOption.Text;
+                    chartWorksheet.Range($"B{i + 2}").Value = results.Count(r => r.answerOptionNumber.Contains(answerOption.Position));
                 }
             }
+
+            // Chart title
+            var chartTitle = chartShape.Chart.ChartTitle;
+            chartTitle.Font.Italic = true;
+            chartTitle.Text = slideQuestionModel.QuestionText;
+            chartTitle.Font.Size = 16;
+            chartTitle.Font.Color = Color.Black.ToArgb();
+            chartTitle.Format.Line.Visible = MsoTriState.msoTrue;
+            chartTitle.Format.Line.ForeColor.RGB = Color.Black.ToArgb();
         }
 
         private char PositionNumberToLetter(int number)
@@ -334,7 +301,7 @@ namespace ARSnovaPPIntegration.Business
                 responses.Remove(minResponse);
             }
 
-            return best10Responses;
+            return best10Responses.OrderBy(r => r.responseTime).ToList();
         }
 
         private List<ResultModel> FilterForCorrectResponsesClick(SlideQuestionModel slideQuestionModel, List<ResultModel> responses)

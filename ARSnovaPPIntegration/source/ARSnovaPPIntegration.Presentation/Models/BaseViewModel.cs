@@ -76,19 +76,22 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 var selectedSlide = SlideTracker.CurrentSlide;
                 slideQuestionModel.ResultsSlideId = selectedSlide.SlideID;
-                slideQuestionModel.QuestionSlideId = selectedSlide.SlideID;
+                slideQuestionModel.QuestionInfoSlideId = selectedSlide.SlideID;
+                slideQuestionModel.QuestionTimerSlideId = selectedSlide.SlideID;
 
                 this.SlideManipulator.AddQuizToSlideWithoutStyling(slideQuestionModel, selectedSlide);
             }
             else
             {
-                var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
+                var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionInfoSlideId);
 
-                var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+                var questionTimerSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+                slideQuestionModel.QuestionTimerSlideId = questionTimerSlide.SlideID;
 
+                var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 2);
                 slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
 
-                this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, resultsSlide);
+                this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, questionTimerSlide, resultsSlide);
             }
 
             PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);

@@ -133,7 +133,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionSlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -148,17 +148,17 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var questionSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionSlideId);
+            var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId);
             var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId);
 
-            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index, questionSlide, resultsSlide);
+            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index, questionTimerSlide, resultsSlide);
         }
 
         public void DeleteQuizFromSelectedSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionSlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -232,7 +232,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
-                QuestionSlideId = slide.SlideID,
+                QuestionInfoSlideId = slide.SlideID,
                 QuizInOneShape = contentOnOneShape
             };
 
