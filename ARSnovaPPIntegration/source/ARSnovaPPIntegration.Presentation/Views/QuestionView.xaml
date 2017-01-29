@@ -7,6 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <StackPanel>
@@ -36,6 +41,12 @@
                             <TextBlock>FreeTextAnswerOptionPlaceHolder</TextBlock>
                         </resources:WatermarkService.Watermark>
                     </TextBox>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Visibility="{Binding IsArsnovaClickQuestion, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding SetCountdownLabel}"/>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Width="150" Text="{Binding Countdown, Mode=TwoWay}"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

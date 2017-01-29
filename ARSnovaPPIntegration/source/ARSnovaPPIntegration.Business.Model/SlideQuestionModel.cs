@@ -33,7 +33,6 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public bool QuizInOneShape { get; set; } = false;
 
-        // TODO currently not binded and set
         public int Countdown { get; set; } = 20;
 
         public QuestionTypeEnum QuestionType

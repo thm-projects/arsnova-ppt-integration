@@ -23,6 +23,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         private SlideQuestionModel questionBeforeEdit;
 
+        private ISessionInformationProvider sessionInformationProvider;
+
         private SlideQuestionModel SlideQuestionModel
         {
             get { return this.SlideSessionModel.Questions.FirstOrDefault(q => q.Id == this.questionId); }
@@ -43,16 +45,27 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             this.InitializeWindowCommandBindings();
 
-            var sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
+            this.sessionInformationProvider = requirements.SessionInformationProvider;
 
             this.QuestionTypes = this.SlideSessionModel.SessionType == SessionType.ArsnovaClick
-                ? sessionInformationProvider.GetAvailableQuestionsClick()
-                : sessionInformationProvider.GetAvailableQuestionsVoting();
+                ? this.sessionInformationProvider.GetAvailableQuestionsClick()
+                : this.sessionInformationProvider.GetAvailableQuestionsVoting();
         }
 
         public string Header => this.LocalizationService.Translate("Set question");
 
         public string Text => this.LocalizationService.Translate("Choose a question type and enter the question text:");
+
+        public bool IsArsnovaClickQuestion
+            => this.SessionInformationProvider.IsClickQuestion(this.SlideQuestionModel.QuestionType);
+
+        public string Countdown
+        {
+            get { return this.SlideQuestionModel.Countdown.ToString(); }
+            set { this.SlideQuestionModel.Countdown = Convert.ToInt32(value); }
+        }
+
+        public string SetCountdownLabel => this.LocalizationService.Translate("Countdown: ");
 
         public List<QuestionType> QuestionTypes { get; set; }
 
