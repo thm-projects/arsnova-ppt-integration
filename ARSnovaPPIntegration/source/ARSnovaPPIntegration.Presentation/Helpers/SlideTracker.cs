@@ -65,6 +65,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
+            if (slideSessionModel == null)
+            {
+                return new Tuple<bool, SlideQuestionModel>(false, null);
+            }
+
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
                 if (GetSlideById(slideQuestionModel.QuestionTimerSlideId).SlideNumber == currentShowedSlidePosition)

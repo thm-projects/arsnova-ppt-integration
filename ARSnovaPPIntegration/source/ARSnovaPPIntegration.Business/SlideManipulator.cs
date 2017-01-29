@@ -16,8 +16,7 @@ using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 
-//using MSForms = Microsoft.Vbe.Interop.Forms;
-//using MSComp = Microsoft.VisualBasic.CompilerServices;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -67,7 +66,7 @@ namespace ARSnovaPPIntegration.Business
 
             var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 350, 750, 50);
             var subTitleTextRange = subTitleTextBox.TextFrame.TextRange;
-            subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} {sessionTypeName}, {this.localizationService.Translate("join the hashtag:")}";
+            subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} {sessionTypeName}, {this.localizationService.Translate("join the hashtag")}:";
             subTitleTextRange.Font.Name = this.font;
             subTitleTextRange.Font.Size = 22;
             subTitleTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
@@ -125,8 +124,63 @@ namespace ARSnovaPPIntegration.Business
             resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
             resultsHeaderTextRange.Font.Name = this.font;
             resultsHeaderTextRange.Font.Size = 26;
+            resultsHeaderTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            resultsHeaderTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             // results will be filled in later (after the quiz)
+            // TEST ONLY, REMOVE BEFORE PRODUCTIVE USEAGE!
+            /*var results = new List<ResultModel>()
+                          {
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {0},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserTH"
+                              },
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {0},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserTH2"
+                              },
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {0},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserT3"
+                              },
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {0},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserTH4"
+                              },
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {1},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserT5"
+                              },
+                              new ResultModel
+                              {
+                                  answerOptionNumber = new List<int> {1},
+                                  hashtag = "testxXx2",
+                                  questionIndex = 0,
+                                  responseTime = 18000,
+                                  userNick = "TestUserTH6"
+                              }
+                          };
+            this.SetResults(slideQuestionModel, resultsSlide, results);*/
         }
 
         public void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide)
@@ -170,15 +224,17 @@ namespace ARSnovaPPIntegration.Business
 
                     i++;
                 }
-                
-                var leaderBoardColumn1TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
+
+                var leaderBoardColumn1TextBox =
+                    resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
                 var leaderBoardColumn1TextRange = leaderBoardColumn1TextBox.TextFrame.TextRange;
                 leaderBoardColumn1TextRange.Text = resultsColumn1Text;
                 leaderBoardColumn1TextRange.Font.Name = this.font;
                 leaderBoardColumn1TextRange.Font.Size = 20;
                 leaderBoardColumn1TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-                var leaderBoardColumn2TextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
+                var leaderBoardColumn2TextBox =
+                    resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
                 var leaderBoardColumn2TextRange = leaderBoardColumn2TextBox.TextFrame.TextRange;
                 leaderBoardColumn2TextRange.Text = resultsColumn2Text;
                 leaderBoardColumn2TextRange.Font.Name = this.font;
@@ -187,8 +243,11 @@ namespace ARSnovaPPIntegration.Business
 
                 this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 350, 850, 150);
             }
-
-            this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 150, 850, 350);
+            else
+            {
+                // arsnova.voting
+                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 150, 850, 350);
+            } 
         }
 
         private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide)
@@ -235,46 +294,99 @@ namespace ARSnovaPPIntegration.Business
             return filePath;
         }
 
-        private void AddChartToShape(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results, int floatLeft, int floatTop, int width, int height)
+        private void AddChartToShape(
+            SlideQuestionModel slideQuestionModel,
+            Slide resultsSlide,
+            List<ResultModel> results,
+            int floatLeft,
+            int floatTop,
+            int width,
+            int height)
         {
-            // TODO COM Error!
-            var chartShape = resultsSlide.Shapes.AddChart(XlChartType.xlBarClustered, floatLeft, floatTop, width, height);
-            var chartWorksheet = chartShape.Chart.ChartData.Workbook.Worksheets(1);
+            // Create new chart in Excel
+            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
+            var chartName = "ARSnova Results Chart";
+
+            if (File.Exists(excelWorkBookPath))
+            {
+                File.Delete(excelWorkBookPath);
+            }
+
+            var excelApp = new Excel.Application();
+            var workBook = excelApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
+            var workSheet = (Excel.Worksheet)(workBook.Worksheets[1]);
+            workSheet.Name = "ARSnovaResults";
+            Excel.Range dataRange;
 
             if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
             {
                 // TODO -> there is only right or wrong
-                chartWorksheet.ListObjects("Table1").Resize(chartWorksheet.Range("A1:B3"));
-                chartWorksheet.Range("Table1[[#Headers],[Series 1]]").Value = "Items";
-                chartWorksheet.Cells.get_Range("A2").FormulaR1C1 = this.localizationService.Translate("Right");
-                //chartWorksheet.Cells.get_Range("B2").FormulaR1C1 = results.Count(r => r.);
-                chartWorksheet.Cells.get_Range("A3").FormulaR1C1 = this.localizationService.Translate("Wrong");
-                //chartWorksheet.Cells.get_Range("B3").FormulaR1C1 =;
+                this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
+                //this.SetExcelCellValue(workSheet, "B1", );
+                this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
+                //this.SetExcelCellValue(workSheet, "B2", );
+
+                dataRange = workSheet.get_Range("A1", "B2");
             }
             else
             {
                 // Range: One Column for each answer option
                 // One row for the amount of students voted for that answer option
-                chartWorksheet.ListObjects("Table1").Resize(chartWorksheet.Range($"A1:B{slideQuestionModel.AnswerOptions.Count + 1}"));
-                chartWorksheet.Range("Table1[[#Headers],[Series 1]]").Value = "Items";
-
                 for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
                 {
-                    var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position == i);
-
-                    chartWorksheet.Range($"A{i + 2}").Value = answerOption.Text;
-                    chartWorksheet.Range($"B{i + 2}").Value = results.Count(r => r.answerOptionNumber.Contains(answerOption.Position));
+                    var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
+                    this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
+                    this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
                 }
+
+                dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
             }
 
-            // Chart title
-            var chartTitle = chartShape.Chart.ChartTitle;
+            var chartObjects = (Excel.ChartObjects)workSheet.ChartObjects(Type.Missing);
+            var newChartObject = chartObjects.Add(floatLeft, floatTop, width, height);
+            newChartObject.Name = chartName;
+
+            newChartObject.Chart.ChartWizard(
+                dataRange,
+                Excel.XlChartType.xlColumnClustered,
+                1, // chart format
+                Excel.XlRowCol.xlColumns,
+                slideQuestionModel.AnswerOptions.Count - 1, // category labels
+                0, // series labels
+                false, // has legend
+                slideQuestionModel.QuestionText, // title
+                this.localizationService.Translate("Answers"), // category title
+                this.localizationService.Translate("Amount"), // value title
+                Type.Missing); // extra titel
+
+            /*var chartTitle = chartShape.Chart.ChartTitle;
             chartTitle.Font.Italic = true;
             chartTitle.Text = slideQuestionModel.QuestionText;
             chartTitle.Font.Size = 16;
             chartTitle.Font.Color = Color.Black.ToArgb();
             chartTitle.Format.Line.Visible = MsoTriState.msoTrue;
-            chartTitle.Format.Line.ForeColor.RGB = Color.Black.ToArgb();
+            chartTitle.Format.Line.ForeColor.RGB = Color.Black.ToArgb();*/
+
+            workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            // Copy chart to PowerPoint slide
+
+            newChartObject.Copy();
+            var shapeRange = resultsSlide.Shapes.Paste();
+
+            shapeRange.Left = floatLeft;
+            shapeRange.Top = floatTop;
+
+            excelApp.Quit();
+
+            // to update content: Chart.Application.Update();
+        }
+
+        private void SetExcelCellValue(Excel.Worksheet workSheet, string cell, object value)
+        {
+            workSheet.get_Range(cell, cell).set_Value(Excel.XlRangeValueDataType.xlRangeValueDefault, value);
         }
 
         private char PositionNumberToLetter(int number)
@@ -287,18 +399,18 @@ namespace ARSnovaPPIntegration.Business
 
         private List<ResultModel> GetBest10Responses(SlideQuestionModel slideQuestionModel, List<ResultModel> responses)
         {
-            responses = this.FilterForCorrectResponsesClick(slideQuestionModel, responses);
+            var correctResponsesresponses = this.FilterForCorrectResponsesClick(slideQuestionModel, responses);
 
             var best10Responses = new List<ResultModel>();
 
             for (var i = 0; i < 10; i++)
             {
-                if (responses.Count == 0)
+                if (correctResponsesresponses.Count == 0)
                     break;
 
-                var minResponse = responses.First(r => r.responseTime == responses.Min(r2 => r2.responseTime));
+                var minResponse = correctResponsesresponses.First(r => r.responseTime == correctResponsesresponses.Min(r2 => r2.responseTime));
                 best10Responses.Add(minResponse);
-                responses.Remove(minResponse);
+                correctResponsesresponses.Remove(minResponse);
             }
 
             return best10Responses.OrderBy(r => r.responseTime).ToList();

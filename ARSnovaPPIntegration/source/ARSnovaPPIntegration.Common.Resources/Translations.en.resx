@@ -373,7 +373,7 @@
   <data name="join the hashtag:" xml:space="preserve">
     <value>join the hashtag:</value>
   </data>
-  <data name="This presentation uses" xml:space="preserve">
+  <data name="This_presentation_uses" xml:space="preserve">
     <value>This presentation uses</value>
   </data>
   <data name="Move_to_the_next_slide_to_start_the_quiz." xml:space="preserve">
@@ -384,5 +384,17 @@
   </data>
   <data name="Wrong" xml:space="preserve">
     <value>Wrong</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Given_answers" xml:space="preserve">
+    <value>Given answers</value>
+  </data>
+  <data name="Answers" xml:space="preserve">
+    <value>Answers</value>
+  </data>
+  <data name="join_the_hashtag" xml:space="preserve">
+    <value>join the quiz</value>
   </data>
 </root>
