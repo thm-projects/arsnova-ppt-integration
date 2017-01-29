@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -6,9 +7,9 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
-using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.ViewManagement;
+using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {
@@ -46,10 +47,15 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void UpdateSlideContent()
+        protected void DisplayFailedValidationResults(string failedValidtionsList)
         {
-            // TODO
+            PopUpWindow.ErrorWindow(
+                this.LocalizationService.Translate("Validation error"),
+                this.LocalizationService.Translate("Validation failed") + ":"
+                    + Environment.NewLine + Environment.NewLine + failedValidtionsList);
         }
+
+        protected abstract Tuple<bool, string> Validate();
 
         protected void AddSessionToSlides(SlideQuestionModel slideQuestionModel)
         {
@@ -58,14 +64,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 var introSlide = this.RibbonHelper.CreateNewSlide(1);
 
-                if (this.SlideSessionModel.SessionType == SessionType.ArsnovaClick)
-                {
-                    this.SlideManipulator.AddIntroSlide(this.SlideSessionModel, introSlide);
-                }
-                else
-                {
-                    // TODO voting intro slide   
-                }
+                this.SlideManipulator.AddIntroSlide(this.SlideSessionModel, introSlide);
 
                 this.SlideSessionModel.IntroSlideId = introSlide.SlideID;
 

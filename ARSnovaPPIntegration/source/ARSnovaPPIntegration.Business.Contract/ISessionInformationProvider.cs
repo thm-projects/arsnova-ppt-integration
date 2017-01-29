@@ -16,5 +16,9 @@ namespace ARSnovaPPIntegration.Business.Contract
         AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType);
 
         bool IsClickQuestion(QuestionTypeEnum questionType);
+
+        bool IsSingleChoiceQuestion(QuestionTypeEnum questionType);
+
+        bool IsMultipleChoiceQuestion(QuestionTypeEnum questionType);
     }
 }

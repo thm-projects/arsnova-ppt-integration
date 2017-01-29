@@ -277,6 +277,30 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public string MaxValLabelText => this.LocalizationService.Translate("Maximum range");
 
+        protected override Tuple<bool, string> Validate()
+        {
+            var errorString = string.Empty;
+            // TODO is there anythink to check for free text answer options?
+
+            foreach (var answerOption in this.AnswerOptions)
+            {
+                if (answerOption.Text.Length >= 0)
+                    errorString += $"{this.LocalizationService.Translate("The question number")} {answerOption.Position + 1} {this.LocalizationService.Translate("has no question text set.")}{Environment.NewLine}";
+            }
+
+            if (this.sessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType)
+                && this.AnswerOptions.Count(ao => ao.IsTrue) != 1)
+                errorString += this.LocalizationService.Translate("There should be exactly one correct answer options.")
+                               + Environment.NewLine;
+
+            if (this.sessionInformationProvider.IsMultipleChoiceQuestion(this.SlideQuestionModel.QuestionType)
+                && (this.AnswerOptions.Count(ao => ao.IsTrue) < 2))
+                errorString += this.LocalizationService.Translate("There must be more than one correct answer options.")
+                               + Environment.NewLine;
+
+            return new Tuple<bool, string>(errorString == string.Empty, errorString);
+        }
+
         private void InitializeWindowCommandBindings()
         {
             this.WindowCommandBindings.AddRange(
@@ -322,11 +346,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                // TODO validate this question
+                                var validationResult = this.Validate();
 
-                                this.AddSessionToSlides(this.SlideQuestionModel);
-
-                                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+                                if (validationResult.Item1)
+                                {
+                                    this.AddSessionToSlides(this.SlideQuestionModel);
+                                    PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+                                }
+                                else
+                                {
+                                    this.DisplayFailedValidationResults(validationResult.Item2);
+                                }
                             },
                             (e, o) => o.CanExecute = true)
                     });

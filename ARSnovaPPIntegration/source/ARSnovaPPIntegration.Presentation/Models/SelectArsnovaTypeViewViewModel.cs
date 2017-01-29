@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Common.Enum;
@@ -129,6 +130,32 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.LocalizationService.Translate(
                     "Which type of question do you want to ask? Arsnova.voting is the serious, grown up one while arsnova.click is faster, more colorful and crammed up with gamification.");
 
+        protected override Tuple<bool, string> Validate()
+        {
+            var errorString = string.Empty;
+
+            if (this.IsArsnovaClickSession)
+            {
+                if (this.Hashtag.Length == 0)
+                    errorString += this.LocalizationService.Translate("There is no quizname set.") + Environment.NewLine;
+
+                if (this.Hashtag.Length > 25)
+                    errorString += this.LocalizationService.Translate("Quizname should not contains more than 25 characters.") + Environment.NewLine;
+
+                if (this.Hashtag.Any(c => c == '?'
+                        || c == '/'
+                        || c == '\\'
+                        || c == '#'
+                        || c == '"'
+                        || c == '\''))
+                {
+                    errorString += this.LocalizationService.Translate("The quizname shouldn't contain any of the following characters") + ": ?, /, \\, #, \", '" + Environment.NewLine;
+                }
+            }
+
+            return new Tuple<bool, string>(errorString == string.Empty, errorString);
+        }
+
         private void OnSessionTypeSelectionChanged()
         {
             this.OnPropertyChanged(nameof(this.IsArsnovaClickSession));
@@ -144,11 +171,20 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Finish,
                             (e, o) =>
                             {
-                                this.SessionManager.SetHashtag(this.SlideSessionModel);
-                                this.SlideSessionModel.SessionTypeSet = true;
-                                PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
-                                this.OnSelectArsnovaTypeViewClose?.Invoke();
-                                this.ViewPresenter.CloseWithoutPrompt();
+                                var validationResult = this.Validate();
+
+                                if (validationResult.Item1)
+                                {
+                                    this.SessionManager.SetHashtag(this.SlideSessionModel);
+                                    this.SlideSessionModel.SessionTypeSet = true;
+                                    PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
+                                    this.OnSelectArsnovaTypeViewClose?.Invoke();
+                                    this.ViewPresenter.CloseWithoutPrompt();
+                                }
+                                else
+                                {
+                                    this.DisplayFailedValidationResults(validationResult.Item2);
+                                }
                             },
                             (e, o) => o.CanExecute = true)
                     });

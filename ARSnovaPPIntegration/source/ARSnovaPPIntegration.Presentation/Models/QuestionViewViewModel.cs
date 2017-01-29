@@ -133,6 +133,19 @@ namespace ARSnovaPPIntegration.Presentation.Models
             set { this.SlideQuestionModel.QuestionText = value; }
         }
 
+        protected override Tuple<bool, string> Validate()
+        {
+            var errorString = string.Empty;
+
+            if (this.SlideQuestionModel.Countdown < 5)
+                errorString += this.LocalizationService.Translate("The countdown must have a value higher than 10 seconds.") + Environment.NewLine;
+
+            if (string.IsNullOrEmpty(this.QuestionText) || this.QuestionText.Length == 0)
+                errorString += this.LocalizationService.Translate("There is no question text set.") + Environment.NewLine;
+
+            return new Tuple<bool, string>(errorString == string.Empty, errorString);
+        }
+
         private void InitializeWindowCommandBindings()
         {
             this.WindowCommandBindings.AddRange(
@@ -166,8 +179,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             NavigationButtonCommands.Forward,
                             (e, o) =>
                             {
-                                this.ViewPresenter.Show(
+                                var validationResult = this.Validate();
+
+                                if (validationResult.Item1)
+                                {
+                                    this.ViewPresenter.Show(
                                     new AnswerOptionViewViewModel(this.GetViewModelRequirements(), this.questionId, this.isNew, this.questionBeforeEdit));
+                                }
+                                else
+                                {
+                                    this.DisplayFailedValidationResults(validationResult.Item2);
+                                }
                             },
                             (e, o) => o.CanExecute = true)
                     });

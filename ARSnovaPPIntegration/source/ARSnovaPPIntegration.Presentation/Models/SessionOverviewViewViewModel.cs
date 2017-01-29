@@ -38,6 +38,12 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public string GridHeaderQuestionText => this.LocalizationService.Translate("Question");
 
+        protected override Tuple<bool, string> Validate()
+        {
+            // no validation here
+            throw new NotImplementedException();
+        }
+
         private void InitializeWindowCommandBindings()
         {
             this.WindowCommandBindings.AddRange(

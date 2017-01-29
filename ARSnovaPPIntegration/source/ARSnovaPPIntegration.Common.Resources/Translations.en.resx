@@ -397,4 +397,40 @@
   <data name="join_the_hashtag" xml:space="preserve">
     <value>join the quiz</value>
   </data>
+  <data name="has_no_question_text_set." xml:space="preserve">
+    <value>has no answer text set.</value>
+  </data>
+  <data name="Quizname_should_not_contains_more_than_25_characters." xml:space="preserve">
+    <value>Quizname should not contains more than 25 characters.</value>
+  </data>
+  <data name="There_is_no_question_text_set." xml:space="preserve">
+    <value>The question text is missing</value>
+  </data>
+  <data name="There_is_no_quizname_set." xml:space="preserve">
+    <value>There is no quizname set.</value>
+  </data>
+  <data name="There_must_be_more_than_one_correct_answer_options." xml:space="preserve">
+    <value>There must be more than one correct answer options.</value>
+  </data>
+  <data name="There_should_be_exactly_one_correct_answer_options." xml:space="preserve">
+    <value>There should be exactly one correct answer options.</value>
+  </data>
+  <data name="The_countdown_must_have_a_value_higher_than_10_seconds." xml:space="preserve">
+    <value>The countdown must have a value of at least 5 seconds.</value>
+  </data>
+  <data name="The_question_number" xml:space="preserve">
+    <value>The answeroption number</value>
+  </data>
+  <data name="The_quizname_shouldn't_contain_any_of_the_following_characters" xml:space="preserve">
+    <value>The quizname shouldn't contain any of the following characters</value>
+  </data>
+  <data name="Validation_error" xml:space="preserve">
+    <value>Validation error</value>
+  </data>
+  <data name="Validation_failed" xml:space="preserve">
+    <value>Validation failed</value>
+  </data>
+  <data name="Validation_failed._Please_check_the_following_inputs" xml:space="preserve">
+    <value>Validation failed. Please check the following inputs</value>
+  </data>
 </root>

@@ -68,6 +68,21 @@ namespace ARSnovaPPIntegration.Business
             return this.clickQuestionTypes.Contains(questionType);
         }
 
+        public bool IsSingleChoiceQuestion(QuestionTypeEnum questionType)
+        {
+            return questionType == QuestionTypeEnum.SingleChoiceVoting
+                   || questionType == QuestionTypeEnum.YesNoVoting
+                   || questionType == QuestionTypeEnum.SingleChoiceClick
+                   || questionType == QuestionTypeEnum.YesNoClick
+                   || questionType == QuestionTypeEnum.TrueFalseClick;
+        }
+
+        public bool IsMultipleChoiceQuestion(QuestionTypeEnum questionType)
+        {
+            return questionType == QuestionTypeEnum.MultipleChoiceVoting
+                   || questionType == QuestionTypeEnum.MultipleChoiceClick;
+        }
+
         public AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType)
         {
             switch (questionType)
