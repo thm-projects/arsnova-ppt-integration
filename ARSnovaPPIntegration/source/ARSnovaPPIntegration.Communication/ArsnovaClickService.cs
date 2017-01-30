@@ -58,16 +58,22 @@ namespace ARSnovaPPIntegration.Communication
         {
             var resultsReturnModel = this.arsnovaClickApi.GetResultsForHashtag(hashtag);
 
-            var responses = new List<ResultModel>();
-
-            foreach (var resultModelWithId in resultsReturnModel.responses)
+            if (resultsReturnModel.responses != null
+                && resultsReturnModel.responses.Count > 0)
             {
-                var resultModel = new ResultModel();
-                this.responseMapper.Map(resultModelWithId, resultModel);
-                responses.Add(resultModel);
+                var responses = new List<ResultModel>();
+
+                foreach (var resultModelWithId in resultsReturnModel.responses)
+                {
+                    var resultModel = new ResultModel();
+                    this.responseMapper.Map(resultModelWithId, resultModel);
+                    responses.Add(resultModel);
+                }
+
+                return responses.Where(r => r.questionIndex == questionIndex).ToList();
             }
 
-            return responses.Where(r => r.questionIndex == questionIndex).ToList();
+            return null;
         }
 
         public SessionConfiguration GetSessionConfiguration(string hashtag)

@@ -436,6 +436,9 @@
   <data name="Sessiontype" xml:space="preserve">
     <value>Sessiontype</value>
   </data>
+  <data name="Choose_results_chart_type" xml:space="preserve">
+    <value>Choose results chart type</value>
+  </data>
   <data name="Select_ARSnova_App" xml:space="preserve">
     <value>Select ARSnova App</value>
   </data>

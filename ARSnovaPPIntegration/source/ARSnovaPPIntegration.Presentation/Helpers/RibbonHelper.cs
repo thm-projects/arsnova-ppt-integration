@@ -42,6 +42,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             // register events to enable the possibility to manipulate the presentation from the business layer (async methods, no return values)
             this.sessionManager.ShowNextSlideEventHandler += delegate
             {
+                // TODO the next method is throwing errors!
                 //Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
             };
 

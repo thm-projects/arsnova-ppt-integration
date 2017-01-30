@@ -10,6 +10,8 @@ using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
+using Excel = Microsoft.Office.Interop.Excel;
+
 namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class QuestionViewViewModel : BaseViewModel
@@ -43,6 +45,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.QuestionTypes = this.SlideSessionModel.SessionType == SessionType.ArsnovaClick
                 ? this.SessionInformationProvider.GetAvailableQuestionsClick()
                 : this.SessionInformationProvider.GetAvailableQuestionsVoting();
+
+            this.ExcelChartTypes = this.SessionInformationProvider.GetExcelChartTypes();
         }
 
         public string Header => this.LocalizationService.Translate("Set question");
@@ -61,6 +65,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
         }
 
         public string SetCountdownLabel => this.LocalizationService.Translate("Countdown");
+
+        public string LabelSelectChartType => this.LocalizationService.Translate("Choose results chart type");
+
+        public List<ExcelChartType> ExcelChartTypes { get; set; }
+
+        public Excel.XlChartType ChartType
+        {
+            get { return this.SlideQuestionModel.ChartType; }
+            set { this.SlideQuestionModel.ChartType = value; }
+        }
 
         public List<QuestionType> QuestionTypes { get; set; }
 

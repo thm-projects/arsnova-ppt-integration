@@ -88,6 +88,10 @@ namespace ARSnovaPPIntegration.Business
             this.RemoveShapesFromSlide(questionTimerSlide);
             this.RemoveShapesFromSlide(resultsSlide);
 
+            questionInfoSlide.FollowMasterBackground = MsoTriState.msoTrue;
+            questionTimerSlide.FollowMasterBackground = MsoTriState.msoTrue;
+            resultsSlide.FollowMasterBackground = MsoTriState.msoTrue;
+
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
             this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide);
 
@@ -338,6 +342,7 @@ namespace ARSnovaPPIntegration.Business
             workSheet.Name = "ARSnovaResults";
             Excel.Range dataRange;
 
+            //switch(slideQuestionModel)
             if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
             {
                 // TODO -> there is only right or wrong
@@ -368,7 +373,7 @@ namespace ARSnovaPPIntegration.Business
 
             newChartObject.Chart.ChartWizard(
                 dataRange,
-                Excel.XlChartType.xlColumnClustered,
+                slideQuestionModel.ChartType,
                 1, // chart format
                 Excel.XlRowCol.xlColumns,
                 slideQuestionModel.AnswerOptions.Count - 1, // category labels

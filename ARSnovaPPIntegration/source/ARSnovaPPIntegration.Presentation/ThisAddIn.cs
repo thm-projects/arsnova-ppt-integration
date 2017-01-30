@@ -44,7 +44,6 @@ namespace ARSnovaPPIntegration.Presentation
             Application.PresentationClose += OnPresentationClose;*/
 
             // mid priority: window actions
-
             
             this.Application.SlideShowBegin += this.OnSlideShowBegin;
             this.Application.SlideShowNextSlide += this.OnNextSlide;
@@ -72,7 +71,7 @@ namespace ARSnovaPPIntegration.Presentation
             try
             {
                 this.ribbonHelper.ActivateSessionIfExists();
-                this.ribbonHelper.CleanResultsPage();
+                this.ribbonHelper.CleanUpOnStart();
             }
             catch (CommunicationException arsnovaComException)
             {

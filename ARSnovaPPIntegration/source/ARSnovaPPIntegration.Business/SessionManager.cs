@@ -197,8 +197,11 @@ namespace ARSnovaPPIntegration.Business
                 this.timer.Stop();
 
                 var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.Index);
-                this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);
-
+                if (responses != null)
+                {
+                    this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);
+                }
+                
                 // move to next slide (results)
                 this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
 

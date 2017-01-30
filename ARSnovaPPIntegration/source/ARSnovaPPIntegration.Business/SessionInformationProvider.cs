@@ -4,9 +4,12 @@ using System.Linq;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -15,6 +18,8 @@ namespace ARSnovaPPIntegration.Business
         private readonly IArsnovaClickService arsnovaClickService;
 
         private readonly IQuestionTypeTranslator questionTypeTranslator;
+
+        private readonly ILocalizationService localizationService;
 
         private readonly List<QuestionTypeEnum> votingQuestionTypes = new List<QuestionTypeEnum>
         {
@@ -39,10 +44,12 @@ namespace ARSnovaPPIntegration.Business
 
         public SessionInformationProvider(
             IArsnovaClickService arsnovaClickService,
-            IQuestionTypeTranslator questionTypeTranslator)
+            IQuestionTypeTranslator questionTypeTranslator,
+            ILocalizationService localizationService)
         {
             this.arsnovaClickService = arsnovaClickService;
             this.questionTypeTranslator = questionTypeTranslator;
+            this.localizationService = localizationService;
         }
 
         public List<QuestionType> GetAvailableQuestionsClick()
@@ -61,6 +68,19 @@ namespace ARSnovaPPIntegration.Business
                 QuestionTypeEnum = qte,
                 Name = this.questionTypeTranslator.TranslateQuestionType(qte)
             }).ToList();
+        }
+
+        public List<ExcelChartType> GetExcelChartTypes()
+        {
+            return new List<ExcelChartType>
+            {
+                // TODO -> mehr Einträge + Übersetzungen (evtl. auch Bilder?)
+                new ExcelChartType
+                {
+                    Name= this.localizationService.Translate("3D-Bar-Clustered"),
+                    ChartType = Excel.XlChartType.xl3DBarClustered
+                }
+            };
         }
 
         public bool IsClickQuestion(QuestionTypeEnum questionType)

@@ -438,4 +438,7 @@
   <data name="Select_ARSnova_App" xml:space="preserve">
     <value>ARSnova App auswählen</value>
   </data>
+  <data name="Choose_results_chart_type" xml:space="preserve">
+    <value>Wähle den Graphentyp der Ergebnisansicht</value>
+  </data>
 </root>

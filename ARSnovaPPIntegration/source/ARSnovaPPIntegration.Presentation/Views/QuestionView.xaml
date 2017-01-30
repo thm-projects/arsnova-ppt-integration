@@ -47,6 +47,17 @@
                     <Label Content="{Binding SetCountdownLabel}" FontWeight="Bold"/>
                     <TextBox PreviewTextInput="NumberValidationTextBox" Width="250" Text="{Binding Countdown, Mode=TwoWay}" />
                 </StackPanel>
+                <Label Content="{Binding LabelSelectChartType}" FontWeight="Bold"/>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="ChartTypeComboBox"
+                              ItemsSource="{Binding Path=ExcelChartTypes, Mode=OneWay}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="ChartType"
+                              SelectedValue="{Binding Path=ChartType, Mode=TwoWay}" 
+                              Width="250" 
+                              HorizontalAlignment="Left"
+                              IsEditable="False"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

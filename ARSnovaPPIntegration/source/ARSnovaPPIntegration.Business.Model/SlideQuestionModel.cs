@@ -3,11 +3,12 @@ using System.Collections.ObjectModel;
 
 using ARSnovaPPIntegration.Common.Enum;
 
+using Excel = Microsoft.Office.Interop.Excel;
+
 namespace ARSnovaPPIntegration.Business.Model
 {
     public class SlideQuestionModel
     {
-        // TODO: Concept: which default values should be taken?
         private ObservableCollection<GeneralAnswerOption> answerOptions;
 
         private string questionText;
@@ -36,6 +37,8 @@ namespace ARSnovaPPIntegration.Business.Model
         public bool QuizInOneShape { get; set; } = false;
 
         public int Countdown { get; set; } = 20;
+
+        public Excel.XlChartType ChartType { get; set; } = Excel.XlChartType.xlColumnClustered;
 
         public QuestionTypeEnum QuestionType
         {

@@ -13,6 +13,8 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         List<QuestionType> GetAvailableQuestionsVoting();
 
+        List<ExcelChartType> GetExcelChartTypes();
+
         AnswerOptionType GetAnswerOptionType(QuestionTypeEnum questionType);
 
         bool IsClickQuestion(QuestionTypeEnum questionType);
