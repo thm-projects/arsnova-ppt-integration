@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -236,6 +236,11 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             {
                 this.sessionManager.RemoveClickQuizDataFromServer(slideSessionModel);
             }
+        }
+
+        public void SendKeepAlive(SlideSessionModel slideSessionModel)
+        {
+            this.sessionManager.KeepAlive(slideSessionModel);
         }
 
         private void AddQuizToSlide(Slide slide, bool contentOnOneShape = false)

@@ -28,6 +28,8 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         ValidationResult RemoveQuizData(string hashtag, string privateKey);
 
+        ValidationResult KeepAlive(string hashtag, string privateKey);
+
         List<ResultModel> GetResultsForHashtag(string hashtag, int questionIndex);
 
         bool IsThisMineHashtag(string hashtag, string privateKey);

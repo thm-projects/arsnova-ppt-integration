@@ -153,6 +153,16 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
+        public void KeepAlive(SlideSessionModel slideSessionModel)
+        {
+            var validationResult = this.arsnovaClickService.KeepAlive(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+
+            if (!validationResult.Success)
+            {
+                throw new CommunicationException(validationResult.FailureMessage);
+            }
+        }
+
         public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionTimerSlideParam, Slide resultsSlideParam)
         {
             var validationResult = new ValidationResult();

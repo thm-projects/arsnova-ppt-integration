@@ -156,6 +156,22 @@ namespace ARSnovaPPIntegration.Communication
             return this.DefaultPostRequestWithHashtagAndPrivateKey("removeLocalData", jsonBody);
         }
 
+        public ValidationResult KeepAlive(string hashtag, string privateKey)
+        {
+            var createHashtagConfig = new
+            {
+                hashtag = Uri.EscapeDataString(hashtag),
+                privateKey = Uri.EscapeDataString(privateKey)
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(new
+            {
+                sessionConfiguration = createHashtagConfig
+            });
+
+            return this.DefaultPostRequestWithHashtagAndPrivateKey("keepalive", jsonBody);
+        }
+
         public ValidationResult ShowNextReadingConfirmation(string hashtag, string privateKey)
         {
             var createHashtagConfig = new

@@ -172,6 +172,11 @@ namespace ARSnovaPPIntegration.Communication
             return this.arsnovaClickApi.RemoveQuizData(hashtag, privateKey);
         }
 
+        public ValidationResult KeepAlive(string hashtag, string privateKey)
+        {
+            return this.arsnovaClickApi.KeepAlive(hashtag, privateKey);
+        }
+
         public bool IsThisMineHashtag(string hashtag, string privateKey)
         {
             return this.arsnovaClickApi.IsThisMineHashtag(hashtag, privateKey);

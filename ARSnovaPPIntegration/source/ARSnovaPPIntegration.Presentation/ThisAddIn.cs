@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-
+using System.Threading;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -27,6 +27,8 @@ namespace ARSnovaPPIntegration.Presentation
         private Ribbon ribbon;
 
         private RibbonHelper ribbonHelper;
+
+        private Timer keppAliveTimer;
 
         private void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -72,6 +74,12 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 this.ribbonHelper.ActivateSessionIfExists();
                 this.ribbonHelper.CleanUpOnStart();
+
+                this.keppAliveTimer = new Timer(
+                                          (e) =>
+                                          {
+                                              this.KeepAliveCall();
+                                          }, null, 0, 180000);
             }
             catch (CommunicationException arsnovaComException)
             {
@@ -81,6 +89,13 @@ namespace ARSnovaPPIntegration.Presentation
             {
                 this.exceptionHandler.Handle(e.Message);
             }
+        }
+
+        private void KeepAliveCall()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            this.ribbonHelper.SendKeepAlive(slideSessionModel);
         }
 
         private void OnNextSlide(SlideShowWindow slideShowWindow)
