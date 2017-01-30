@@ -442,4 +442,16 @@
   <data name="Select_ARSnova_App" xml:space="preserve">
     <value>Select ARSnova App</value>
   </data>
+  <data name="3D-Bar-Clustered" xml:space="preserve">
+    <value>3D-Bar-Clustered</value>
+  </data>
+  <data name="Bar-Clustered" xml:space="preserve">
+    <value>Bar-Clustered</value>
+  </data>
+  <data name="Grouped_columns" xml:space="preserve">
+    <value>Grouped columns</value>
+  </data>
+  <data name="Pie" xml:space="preserve">
+    <value>Pie</value>
+  </data>
 </root>

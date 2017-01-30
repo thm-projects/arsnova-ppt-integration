@@ -147,12 +147,6 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.AddQuizToSlide(newSlide);
         }
 
-        public void AddQuizContentToShape()
-        {
-            var currentSlide = SlideTracker.CurrentSlide;
-            this.AddQuizToSlide(currentSlide, true);
-        }
-
         public void EditQuizSetup(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();
@@ -243,7 +237,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.sessionManager.KeepAlive(slideSessionModel);
         }
 
-        private void AddQuizToSlide(Slide slide, bool contentOnOneShape = false)
+        private void AddQuizToSlide(Slide slide)
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
@@ -272,8 +266,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
-                QuestionInfoSlideId = slide.SlideID,
-                QuizInOneShape = contentOnOneShape
+                QuestionInfoSlideId = slide.SlideID
             };
 
             slideSessionModel.Questions.Add(newQuestion);

@@ -67,21 +67,6 @@ namespace ARSnovaPPIntegration.Presentation
             return this.localizationService.Translate("Manage Quiz");
         }
 
-        public string GetAddButtonLabel(Office.IRibbonControl control)
-        {
-            return this.localizationService.Translate("Add new question to this slide");
-        }
-
-        public string GetAddButtonSupertip(Office.IRibbonControl control)
-        {
-            return this.localizationService.Translate("Adds a question to the current slide, you have to style it by your own.");
-        }
-
-        public Bitmap GetAddButtonImage(Office.IRibbonControl control)
-        {
-            return Images.add;
-        }
-
         public string GetAddNewSlidesLabel(Office.IRibbonControl control)
         {
             return this.localizationService.Translate("Add multiple slides with a complete quiz.");
@@ -194,29 +179,6 @@ namespace ARSnovaPPIntegration.Presentation
             return Images.ARSnova_Logo;
         }
 
-        /*public string GetAddQuizToSlideLabel(Office.IRibbonControl control)
-        {
-            return this.localizationService.Translate("Add question to this slide");
-        }*/
-
-        public void AddQuizToSlideButtonClick(Office.IRibbonControl control)
-        {
-            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count != 1)
-            {
-                PopUpWindow.ErrorWindow(
-                    this.localizationService.Translate("Check selection range"),
-                    this.localizationService.Translate("Make sure you select one form before adding a new quiz to it."));
-
-                return;
-            }
-
-            this.ribbonHelper.AddQuizContentToShape();         
-        }
-
-        /*public string GetAddQuizToNewSlideLabel(Office.IRibbonControl control)
-        {
-            return this.localizationService.Translate("Add question to new slide");
-        }*/
 
         public void AddQuizToNewSlideButtonClick(Office.IRibbonControl control)
         {

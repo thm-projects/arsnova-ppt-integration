@@ -441,4 +441,16 @@
   <data name="Choose_results_chart_type" xml:space="preserve">
     <value>Wähle den Graphentyp der Ergebnisansicht</value>
   </data>
+  <data name="3D-Bar-Clustered" xml:space="preserve">
+    <value>3D-Säulen (gruppiert)</value>
+  </data>
+  <data name="Bar-Clustered" xml:space="preserve">
+    <value>Gruppierte Balken</value>
+  </data>
+  <data name="Grouped_columns" xml:space="preserve">
+    <value>Gruppierte Säulen</value>
+  </data>
+  <data name="Pie" xml:space="preserve">
+    <value>Kreis</value>
+  </data>
 </root>

@@ -241,12 +241,12 @@ namespace ARSnovaPPIntegration.Business
                 leaderBoardColumn2TextRange.Font.Size = 20;
                 leaderBoardColumn2TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 350, 850, 150);
+                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 150, 350, 650, 250);
             }
             else
             {
                 // arsnova.voting
-                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 150, 850, 350);
+                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 150, 150, 650, 450);
             } 
         }
 

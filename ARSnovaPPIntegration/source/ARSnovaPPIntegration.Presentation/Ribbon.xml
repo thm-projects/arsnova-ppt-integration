@@ -28,14 +28,6 @@
                 getImage="GetAddNewSlidesButtonImage"
                 size="large" />
               <separator id="quizGroupSeparator"/>
-              <button id="AddButton"
-                getLabel="GetAddButtonLabel"
-                keytip="CA"
-                getSupertip="GetAddButtonSupertip"
-                getEnabled="IsNoneArsnovaSlideSelected"
-                onAction="AddQuizToSlideButtonClick"
-                getImage="GetAddButtonImage"
-                size="large" />
               <button id="EditButton"
                getLabel="GetEditButtonLabel"
                keytip="CA"
@@ -81,12 +73,6 @@
           getImage="GetAddNewSlidesButtonImage"
           getSupertip="GetAddNewSlidesSupertip"
           onAction="AddQuizToNewSlideButtonClick"/>
-        <button id="addQuizContentToSlide"
-          getLabel="GetAddButtonLabel"
-          getImage="GetAddButtonImage"
-          getSupertip="GetAddButtonSupertip"
-          getEnabled="IsNoneArsnovaSlideSelected"
-          onAction="AddQuizToSlideButtonClick"/>
       </menu>
     </contextMenu>
     <!--contextMenu idMso="ContextMenuSlideShow">

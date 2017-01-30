@@ -34,11 +34,9 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public Guid Id { get; set; }
 
-        public bool QuizInOneShape { get; set; } = false;
-
         public int Countdown { get; set; } = 20;
 
-        public Excel.XlChartType ChartType { get; set; } = Excel.XlChartType.xlColumnClustered;
+        public Excel.XlChartType ChartType { get; set; } = Excel.XlChartType.xl3DBarClustered;
 
         public QuestionTypeEnum QuestionType
         {

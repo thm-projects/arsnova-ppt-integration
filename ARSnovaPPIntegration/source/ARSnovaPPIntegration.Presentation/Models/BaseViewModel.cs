@@ -71,31 +71,19 @@ namespace ARSnovaPPIntegration.Presentation.Models
                 PresentationInformationStore.SetArsnovaIntroSlideAdded();
             }
 
-            if (slideQuestionModel.QuizInOneShape)
-            {
-                var selectedSlide = SlideTracker.CurrentSlide;
-                slideQuestionModel.ResultsSlideId = selectedSlide.SlideID;
-                slideQuestionModel.QuestionInfoSlideId = selectedSlide.SlideID;
-                slideQuestionModel.QuestionTimerSlideId = selectedSlide.SlideID;
+            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionInfoSlideId);
 
-                this.SlideManipulator.AddQuizToSlideWithoutStyling(slideQuestionModel, selectedSlide);
-            }
-            else
-            {
-                var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionInfoSlideId);
+            var questionTimerSlide = slideQuestionModel.QuestionTimerSlideId.HasValue
+                                        ? SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value) 
+                                        : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+            slideQuestionModel.QuestionTimerSlideId = questionTimerSlide.SlideID;
 
-                var questionTimerSlide = slideQuestionModel.QuestionTimerSlideId.HasValue
-                                            ? SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value) 
-                                            : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
-                slideQuestionModel.QuestionTimerSlideId = questionTimerSlide.SlideID;
+            var resultsSlide = slideQuestionModel.ResultsSlideId.HasValue
+                                        ? SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value)
+                                        : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 2);
+            slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
 
-                var resultsSlide = slideQuestionModel.ResultsSlideId.HasValue
-                                            ? SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value)
-                                            : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 2);
-                slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
-
-                this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, questionTimerSlide, resultsSlide);
-            }
+            this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, questionTimerSlide, resultsSlide);
 
             PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
             this.ViewPresenter.CloseWithoutPrompt();

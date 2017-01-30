@@ -112,6 +112,7 @@ namespace ARSnovaPPIntegration.Presentation
         private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
             this.ribbonHelper.RemoveClickQuizDataOnServer();
+            this.keppAliveTimer.Dispose();
         }
 
         private void OnSlideSelectionChanged(SlideRange slideRange)

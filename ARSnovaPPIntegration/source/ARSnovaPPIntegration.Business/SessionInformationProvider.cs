@@ -74,11 +74,20 @@ namespace ARSnovaPPIntegration.Business
         {
             return new List<ExcelChartType>
             {
-                // TODO -> mehr Einträge + Übersetzungen (evtl. auch Bilder?)
                 new ExcelChartType
                 {
-                    Name= this.localizationService.Translate("3D-Bar-Clustered"),
+                    Name= this.localizationService.Translate("Bar-Clustered"),
                     ChartType = Excel.XlChartType.xl3DBarClustered
+                },
+                new ExcelChartType
+                {
+                    Name= this.localizationService.Translate("Pie"),
+                    ChartType = Excel.XlChartType.xl3DPie
+                },
+                new ExcelChartType
+                {
+                    Name= this.localizationService.Translate("Grouped columns"),
+                    ChartType = Excel.XlChartType.xl3DColumnClustered
                 }
             };
         }
