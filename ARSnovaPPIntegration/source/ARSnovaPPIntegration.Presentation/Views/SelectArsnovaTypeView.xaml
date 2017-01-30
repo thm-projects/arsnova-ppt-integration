@@ -43,7 +43,7 @@
                         </Style>
                     </Label.Style>
                 </Label>
-                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12 15 15 0" />
+                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12 15 15 0" HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
                 <StackPanel Orientation="Horizontal">

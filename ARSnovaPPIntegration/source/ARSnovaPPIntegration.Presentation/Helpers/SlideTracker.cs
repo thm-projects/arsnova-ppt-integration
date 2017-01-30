@@ -72,7 +72,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                if (GetSlideById(slideQuestionModel.QuestionTimerSlideId).SlideNumber == currentShowedSlidePosition)
+                if (GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value).SlideNumber == currentShowedSlidePosition)
                     return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
             }
 
@@ -81,11 +81,15 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static bool IsArsnovaSlide(Slide slide)
         {
+            if (slide == null)
+                return false;
+
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
             return slideSessionModel != null && 
-                (slideSessionModel.IntroSlideId == slide.SlideID ||
-                slideSessionModel.Questions.Any(questionModel => questionModel.QuestionInfoSlideId == slide.SlideID || questionModel.ResultsSlideId == slide.SlideID));
+                slideSessionModel.Questions.Any(questionModel => questionModel.QuestionInfoSlideId == slide.SlideID
+                                                                    || questionModel.QuestionTimerSlideId == slide.SlideID
+                                                                    || questionModel.ResultsSlideId == slide.SlideID);
         }
 
         public static SlideQuestionModel GetQuestionModelFromSlide(Slide slide)
@@ -98,6 +102,17 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         public static Slide GetSlideById(int slideId)
         {
             return Globals.ThisAddIn.Application.ActivePresentation.Slides.FindBySlideID(slideId);
+        }
+
+        public static Slide GetSlideByIndex(int slideIndex)
+        {
+            foreach (Slide slide in Globals.ThisAddIn.Application.ActivePresentation.Slides)
+            {
+                if (slide.SlideIndex == slideIndex)
+                    return slide;
+            }
+
+            return null;
         }
     }
 }

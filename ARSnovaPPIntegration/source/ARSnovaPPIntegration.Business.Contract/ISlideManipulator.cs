@@ -18,5 +18,7 @@ namespace ARSnovaPPIntegration.Business.Contract
         void SetTimerOnSlide(Slide resultsSlide, int countdown);
 
         void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results);
+
+        void CleanResultsPage(Slide resultsSlide);
     }
 }

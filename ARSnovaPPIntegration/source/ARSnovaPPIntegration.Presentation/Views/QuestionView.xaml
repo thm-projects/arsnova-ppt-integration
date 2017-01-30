@@ -22,9 +22,10 @@
                         </Style>
                     </Label.Style>
                 </Label>
-                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12 15 15 0" />
+                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12 15 15 0" HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
+                <Label Content="{Binding LabelSelectSessionType}" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox x:Name="QuestionTypeComboBox"
                               ItemsSource="{Binding Path=QuestionTypes, Mode=OneWay}"
@@ -42,11 +43,9 @@
                         </resources:WatermarkService.Watermark>
                     </TextBox>
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Visibility="{Binding IsArsnovaClickQuestion, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Vertical" HorizontalAlignment="Center" Margin="-10 15 0 0">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding SetCountdownLabel}"/>
-                    <TextBox PreviewTextInput="NumberValidationTextBox" Width="150" Text="{Binding Countdown, Mode=TwoWay}"/>
+                <StackPanel Visibility="{Binding IsArsnovaClickQuestion, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Vertical" HorizontalAlignment="Center">
+                    <Label Content="{Binding SetCountdownLabel}" FontWeight="Bold"/>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Width="250" Text="{Binding Countdown, Mode=TwoWay}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

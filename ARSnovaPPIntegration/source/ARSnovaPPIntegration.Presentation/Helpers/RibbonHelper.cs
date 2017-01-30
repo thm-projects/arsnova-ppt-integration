@@ -42,7 +42,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             // register events to enable the possibility to manipulate the presentation from the business layer (async methods, no return values)
             this.sessionManager.ShowNextSlideEventHandler += delegate
             {
-                Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
+                //Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
             };
 
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
@@ -62,6 +62,29 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 if (!validationResult.Success)
                 {
                     throw new CommunicationException(validationResult.FailureMessage);
+                }
+            }
+        }
+
+        public void CleanUpOnStart()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            if (slideSessionModel != null)
+            {
+                foreach (var slideQuestionModel in slideSessionModel.Questions)
+                {
+                    if (slideQuestionModel.QuestionTimerSlideId.HasValue)
+                    {
+                        this.slideManipulator.SetTimerOnSlide(
+                            SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value),
+                            slideQuestionModel.Countdown);
+                    }
+
+                    if (slideQuestionModel.ResultsSlideId.HasValue)
+                    {
+                        this.slideManipulator.CleanResultsPage(SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value));
+                    }
                 }
             }
         }
@@ -133,7 +156,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID
+                                                                                || q.QuestionTimerSlideId == slide.SlideID
+                                                                                || q.ResultsSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -148,8 +173,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId);
-            var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId);
+            var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value);
+            var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value);
 
             this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index, questionTimerSlide, resultsSlide);
         }
@@ -158,7 +183,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = this.GetSlideSessionModel();
 
-            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID);
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID
+                                                                                || q.QuestionTimerSlideId == slide.SlideID
+                                                                                || q.ResultsSlideId == slide.SlideID);
 
             if (slideQuestionModel == null)
             {
@@ -174,6 +201,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             if (deleteQuestion)
             {
+                SlideTracker.RemoveSlide(slideQuestionModel.QuestionInfoSlideId);
+                SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId.Value);
+                SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId.Value);
                 slideSessionModel.Questions.Remove(slideQuestionModel);
             }
         }
@@ -181,9 +211,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         public Slide CreateNewSlide()
         {
             var currentSlide = SlideTracker.CurrentSlide;
+            while (SlideTracker.IsArsnovaSlide(currentSlide))
+            {
+                currentSlide = SlideTracker.GetSlideByIndex(currentSlide.SlideIndex + 1);
+            }
 
             return currentSlide == null 
-                ? this.CreateNewSlide(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count)
+                ? this.CreateNewSlide(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1)
                 : this.CreateNewSlide(currentSlide.SlideIndex + 1);
         }
 

@@ -110,6 +110,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                 if (deleteQuestion)
                                 {
                                     var questionModel = this.SelectedSlideQuestionModel;
+                                    SlideTracker.RemoveSlide(questionModel.QuestionInfoSlideId);
+                                    SlideTracker.RemoveSlide(questionModel.QuestionTimerSlideId.Value);
+                                    SlideTracker.RemoveSlide(questionModel.ResultsSlideId.Value);
                                     this.SelectedSlideQuestionModel = null;
                                     this.SlideSessionModel.Questions.Remove(questionModel);
                                 }

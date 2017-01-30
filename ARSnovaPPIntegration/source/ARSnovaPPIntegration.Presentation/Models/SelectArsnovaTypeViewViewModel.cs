@@ -106,8 +106,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                                 if (!slideQuestionModel.QuizInOneShape)
                                 {
-                                    SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId);
-                                    SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId);
+                                    SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId.Value);
+                                    SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId.Value);
                                 }
                             }
 
@@ -123,7 +123,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public string Header => this.LocalizationService.Translate("New question");
+        public string Header => this.LocalizationService.Translate("Select ARSnova App");
 
         public string Text
             =>

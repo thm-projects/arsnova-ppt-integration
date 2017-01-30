@@ -104,7 +104,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public string GetSetSessionTypeLabel(Office.IRibbonControl control)
         {
-            return this.localizationService.Translate("Set session type");
+            return this.localizationService.Translate("Select ARSnova App");
         }
 
         public string GetSetSessionTypeSupertip(Office.IRibbonControl control)

@@ -23,9 +23,11 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public int QuestionInfoSlideId { get; set; }
 
-        public int QuestionTimerSlideId { get; set; }
+        public int? QuestionTimerSlideId { get; set; }
 
-        public int ResultsSlideId { get; set; }
+        public int? ResultsSlideId { get; set; }
+
+        public string SlideNumbers => $"{this.QuestionInfoSlideId} - {this.QuestionInfoSlideId + 2}";
 
         public int Index { get; set; }
 
@@ -82,7 +84,7 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public int AnswerOptionAmount { get; set; } = 4;
 
-        public AnswerOptionType AnswerOptionInitType { get; set; }
+        public QuestionTypeEnum QuestionInitType { get; set; }
 
         public void AnswerOptionModelChanged()
         {

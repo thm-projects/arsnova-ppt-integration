@@ -84,6 +84,10 @@ namespace ARSnovaPPIntegration.Business
 
         public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
         {
+            this.RemoveShapesFromSlide(questionInfoSlide);
+            this.RemoveShapesFromSlide(questionTimerSlide);
+            this.RemoveShapesFromSlide(resultsSlide);
+
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
             this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide);
 
@@ -117,15 +121,7 @@ namespace ARSnovaPPIntegration.Business
             timerTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
             timerTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
-
-            var resultsHeaderTextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 50, 850, 50);
-            var resultsHeaderTextRange = resultsHeaderTextBox.TextFrame.TextRange;
-            resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
-            resultsHeaderTextRange.Font.Name = this.font;
-            resultsHeaderTextRange.Font.Size = 26;
-            resultsHeaderTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
-            resultsHeaderTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            this.CleanResultsPage(resultsSlide);
 
             // results will be filled in later (after the quiz)
             // TEST ONLY, REMOVE BEFORE PRODUCTIVE USEAGE!
@@ -248,6 +244,29 @@ namespace ARSnovaPPIntegration.Business
                 // arsnova.voting
                 this.AddChartToShape(slideQuestionModel, resultsSlide, results, 50, 150, 850, 350);
             } 
+        }
+
+        public void CleanResultsPage(Slide resultsSlide)
+        {
+            this.RemoveShapesFromSlide(resultsSlide);
+
+            resultsSlide.Layout = PpSlideLayout.ppLayoutBlank;
+
+            var resultsHeaderTextBox = resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 50, 850, 50);
+            var resultsHeaderTextRange = resultsHeaderTextBox.TextFrame.TextRange;
+            resultsHeaderTextRange.Text = this.localizationService.Translate("Results");
+            resultsHeaderTextRange.Font.Name = this.font;
+            resultsHeaderTextRange.Font.Size = 26;
+            resultsHeaderTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            resultsHeaderTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+        }
+
+        private void RemoveShapesFromSlide(Slide slide)
+        {
+            while (slide.Shapes.Count > 0)
+            {
+                slide.Shapes[1].Delete();
+            }
         }
 
         private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide)

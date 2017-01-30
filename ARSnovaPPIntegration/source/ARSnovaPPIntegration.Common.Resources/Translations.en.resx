@@ -433,4 +433,10 @@
   <data name="Validation_failed._Please_check_the_following_inputs" xml:space="preserve">
     <value>Validation failed. Please check the following inputs</value>
   </data>
+  <data name="Sessiontype" xml:space="preserve">
+    <value>Sessiontype</value>
+  </data>
+  <data name="Select_ARSnova_App" xml:space="preserve">
+    <value>Select ARSnova App</value>
+  </data>
 </root>

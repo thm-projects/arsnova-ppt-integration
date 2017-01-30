@@ -29,7 +29,7 @@
                           Margin="15 20 15 0"
                           IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding SlideNumber}" SortDirection="Ascending" Width="0.1*">
+                        <DataGridTextColumn Binding="{Binding SlideNumbers}" SortDirection="Ascending" Width="0.1*">
                             <DataGridTextColumn.Header>
                                 <TextBlock Text="{Binding DataContext.GridHeaderSlideNumber, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataGridTextColumn.Header>

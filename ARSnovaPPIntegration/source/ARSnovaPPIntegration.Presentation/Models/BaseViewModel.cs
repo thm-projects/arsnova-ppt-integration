@@ -84,10 +84,14 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionInfoSlideId);
 
-                var questionTimerSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
+                var questionTimerSlide = slideQuestionModel.QuestionTimerSlideId.HasValue
+                                            ? SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value) 
+                                            : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 1);
                 slideQuestionModel.QuestionTimerSlideId = questionTimerSlide.SlideID;
 
-                var resultsSlide = this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 2);
+                var resultsSlide = slideQuestionModel.ResultsSlideId.HasValue
+                                            ? SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value)
+                                            : this.RibbonHelper.CreateNewSlide(questionInfoSlide.SlideIndex + 2);
                 slideQuestionModel.ResultsSlideId = resultsSlide.SlideID;
 
                 this.SlideManipulator.AddQuizToStyledSlides(slideQuestionModel, questionInfoSlide, questionTimerSlide, resultsSlide);

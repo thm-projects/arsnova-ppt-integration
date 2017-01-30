@@ -72,6 +72,7 @@ namespace ARSnovaPPIntegration.Presentation
             try
             {
                 this.ribbonHelper.ActivateSessionIfExists();
+                this.ribbonHelper.CleanResultsPage();
             }
             catch (CommunicationException arsnovaComException)
             {

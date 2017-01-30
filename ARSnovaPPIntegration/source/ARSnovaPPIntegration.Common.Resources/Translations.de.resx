@@ -412,7 +412,7 @@
     <value>Es muss mehr als eine Antwort als richtig markiert sein.</value>
   </data>
   <data name="There_should_be_exactly_one_correct_answer_options." xml:space="preserve">
-    <value>Es muss keine eine Antwort als richtig markiert sein.</value>
+    <value>Es muss eine Antwort als richtig markiert sein.</value>
   </data>
   <data name="The_countdown_must_have_a_value_higher_than_10_seconds." xml:space="preserve">
     <value>Der Countdown muss mindestens einen Wert von 5 Sekunden haben.</value>
@@ -431,5 +431,11 @@
   </data>
   <data name="Validation_failed._Please_check_the_following_inputs" xml:space="preserve">
     <value>Validierung fehlgeschlagen. Bitte prüfe folgende Eingaben</value>
+  </data>
+  <data name="Sessiontype" xml:space="preserve">
+    <value>Umfragenart</value>
+  </data>
+  <data name="Select_ARSnova_App" xml:space="preserve">
+    <value>ARSnova App auswählen</value>
   </data>
 </root>

@@ -4,9 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-using Microsoft.Practices.ServiceLocation;
-
-using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Commands;
@@ -17,13 +14,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class AnswerOptionViewViewModel : BaseViewModel
     {
-        private readonly ISessionInformationProvider sessionInformationProvider;
-
         private readonly Guid questionId;
 
-        private bool isNew;
+        private readonly bool isNew;
 
-        private SlideQuestionModel questionBeforeEdit;
+        private readonly SlideQuestionModel questionBeforeEdit;
 
         private SlideQuestionModel SlideQuestionModel
         {
@@ -44,27 +39,25 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             this.InitializeWindowCommandBindings();
 
-            this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();
-
             this.InitAnswerOptionList();
         }
 
         public string Header => this.LocalizationService.Translate("Set the answer option(s)");
 
         public bool ShowGeneralAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowGeneralAnswerOptions;
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowGeneralAnswerOptions;
 
         public bool ShowFreeTextAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowFreeTextAnswerOptions;
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowFreeTextAnswerOptions;
 
         public bool ShowGradeOrEvaluationAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowGradeOrEvaluationAnswerOptions;
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowGradeOrEvaluationAnswerOptions;
 
         public bool ShowRangedAnswerOption =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowRangedAnswerOption;
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowRangedAnswerOption;
 
         public bool ShowTwoAnswerOptions =>
-            this.sessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowTwoAnswerOptions;
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowTwoAnswerOptions;
 
         public List<int> PossibleAnswerOptionsAmount =>
             this.SlideSessionModel.SessionType == SessionType.ArsnovaClick
@@ -88,7 +81,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                     foreach (var answerOption in currentAnswerOptionList)
                     {
-                        var answerOptionModel = answerOption as GeneralAnswerOption;
+                        var answerOptionModel = answerOption;
 
                         if (answerOptionModel == null)
                         {
@@ -140,7 +133,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             get
             {
-                var generalAnswerOption = this.SlideQuestionModel.AnswerOptions.First() as GeneralAnswerOption;
+                var generalAnswerOption = this.SlideQuestionModel.AnswerOptions.First();
                 if (generalAnswerOption != null)
                 {
                     return generalAnswerOption.Text;
@@ -152,7 +145,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
             set
             {
-                ((GeneralAnswerOption)this.SlideQuestionModel.AnswerOptions.First()).Text = value;
+                this.SlideQuestionModel.AnswerOptions.First().Text = value;
             }
         }
 
@@ -284,16 +277,16 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             foreach (var answerOption in this.AnswerOptions)
             {
-                if (answerOption.Text.Length >= 0)
-                    errorString += $"{this.LocalizationService.Translate("The question number")} {answerOption.Position + 1} {this.LocalizationService.Translate("has no question text set.")}{Environment.NewLine}";
+                if (answerOption.Position <= this.AnswerOptionAmount && answerOption.Text.Length <= 0)
+                    errorString += $"{this.LocalizationService.Translate("The question number")} {answerOption.Position} {this.LocalizationService.Translate("has no question text set.")}{Environment.NewLine}";
             }
 
-            if (this.sessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType)
+            if (this.SessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType)
                 && this.AnswerOptions.Count(ao => ao.IsTrue) != 1)
                 errorString += this.LocalizationService.Translate("There should be exactly one correct answer options.")
                                + Environment.NewLine;
 
-            if (this.sessionInformationProvider.IsMultipleChoiceQuestion(this.SlideQuestionModel.QuestionType)
+            if (this.SessionInformationProvider.IsMultipleChoiceQuestion(this.SlideQuestionModel.QuestionType)
                 && (this.AnswerOptions.Count(ao => ao.IsTrue) < 2))
                 errorString += this.LocalizationService.Translate("There must be more than one correct answer options.")
                                + Environment.NewLine;
@@ -365,7 +358,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
         private void InitAnswerOptionList()
         {
             if (this.AnswerOptions == null 
-                || this.SlideQuestionModel.AnswerOptionInitType != this.SlideQuestionModel.AnswerOptionType 
+                || this.SlideQuestionModel.QuestionInitType != this.SlideQuestionModel.QuestionType 
                 || this.AnswerOptions.Count != this.AnswerOptionAmount)
             {
                 if (this.ShowGeneralAnswerOptions)
@@ -456,7 +449,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     }
                 }
 
-                this.SlideQuestionModel.AnswerOptionInitType = this.SlideQuestionModel.AnswerOptionType;
+                this.SlideQuestionModel.QuestionInitType = this.SlideQuestionModel.QuestionType;
 
                 // default init doesn't count as manipulated
                 this.SlideQuestionModel.AnswerOptionsSet = false;
