@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technische Hochschule Mittelhessen")]
 [assembly: AssemblyProduct("ARSnova PowerPoint Integration")]
-[assembly: AssemblyCopyright("Copyright © Tjark Wilhelm Hoeck 2016")]
+[assembly: AssemblyCopyright("Copyright © Tjark Wilhelm Hoeck 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

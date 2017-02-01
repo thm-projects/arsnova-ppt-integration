@@ -235,7 +235,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
     <Compile Include="Helpers\PresentationInformationStore.cs" />
@@ -321,6 +320,10 @@
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
       <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
       <Name>ARSnovaPPIntegration.Common.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Helpers\ARSnovaPPIntegration.Common.Helpers.csproj">
+      <Project>{6C2652D9-82E7-4066-A784-8598FE09DB3A}</Project>
+      <Name>ARSnovaPPIntegration.Common.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj">
       <Project>{441718d1-3ec7-471c-963b-4e9e4b025eaa}</Project>

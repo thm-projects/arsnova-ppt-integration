@@ -11,6 +11,7 @@ using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.Content;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
+using ARSnovaPPIntegration.Common.Helpers;
 
 namespace ARSnovaPPIntegration.Presentation.Models
 {

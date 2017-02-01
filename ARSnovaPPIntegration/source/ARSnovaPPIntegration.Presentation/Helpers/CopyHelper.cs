@@ -21,6 +21,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount,
                 QuestionInitType = currentSlideQuestionModel.QuestionInitType,
                 Index = currentSlideQuestionModel.Index,
+                ChartType = currentSlideQuestionModel.ChartType,
                 AnswerOptions = new ObservableCollection<GeneralAnswerOption>()
             };
 

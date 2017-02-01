@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security;
 
 // Allgemeine Informationen über eine Assembly werden über die folgende 
 // Attributgruppe gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
@@ -11,7 +10,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technische Hochschule Mittelhessen")]
 [assembly: AssemblyProduct("ARSnova PowerPoint Integration")]
-[assembly: AssemblyCopyright("Copyright © Tjark Wilhelm Hoeck 2016")]
+[assembly: AssemblyCopyright("Copyright © Tjark Wilhelm Hoeck 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

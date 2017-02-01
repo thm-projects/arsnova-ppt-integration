@@ -63,6 +63,16 @@ namespace ARSnovaPPIntegration.Business.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _3d_pie {
+            get {
+                object obj = ResourceManager.GetObject("_3d_pie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arsnova_header {
             get {
                 object obj = ResourceManager.GetObject("arsnova_header", resourceCulture);
@@ -76,6 +86,26 @@ namespace ARSnovaPPIntegration.Business.Properties {
         internal static System.Drawing.Bitmap click_header {
             get {
                 object obj = ResourceManager.GetObject("click_header", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grouped_3d_bars {
+            get {
+                object obj = ResourceManager.GetObject("grouped_3d_bars", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grouped_3d_columns {
+            get {
+                object obj = ResourceManager.GetObject("grouped_3d_columns", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

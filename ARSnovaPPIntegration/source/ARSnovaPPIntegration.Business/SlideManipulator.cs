@@ -202,6 +202,12 @@ namespace ARSnovaPPIntegration.Business
 
         public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
         {
+            // chart init dimensions
+            var floatLeft = 150;
+            var floatTop = 300;
+            var width = 650;
+            var height = 250;
+
             if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
             {
                 // arsnova.click
@@ -241,13 +247,40 @@ namespace ARSnovaPPIntegration.Business
                 leaderBoardColumn2TextRange.Font.Size = 20;
                 leaderBoardColumn2TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 150, 350, 650, 250);
+                // chart dimensions
+                switch (slideQuestionModel.ChartType)
+                {
+                    case Excel.XlChartType.xl3DColumnClustered:
+                    case Excel.XlChartType.xl3DBarClustered:
+                        // use default values
+                        break;
+                    case Excel.XlChartType.xlPie:
+                        floatLeft = 275;
+                        width = 250;
+                        break;
+                }
             }
             else
             {
                 // arsnova.voting
-                this.AddChartToShape(slideQuestionModel, resultsSlide, results, 150, 150, 650, 450);
+                // chart dimensions
+                switch (slideQuestionModel.ChartType)
+                {
+                    case Excel.XlChartType.xl3DColumnClustered:
+                    case Excel.XlChartType.xlConeBarClustered:
+                        floatLeft = 150;
+                        floatTop = 150;
+                        height = 450;
+                        break;
+                    case Excel.XlChartType.xl3DPie:
+                        floatLeft = 200;
+                        width = 500;
+                        height = 450;
+                        break;
+                }
             } 
+
+            this.AddChartToShape(slideQuestionModel, resultsSlide, results, floatLeft, floatTop, width, height);
         }
 
         public void CleanResultsPage(Slide resultsSlide)

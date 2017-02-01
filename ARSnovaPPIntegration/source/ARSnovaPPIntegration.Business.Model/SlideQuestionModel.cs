@@ -15,6 +15,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private QuestionTypeEnum questionType = QuestionTypeEnum.SingleChoiceClick;
 
+        private Excel.XlChartType chartType = Excel.XlChartType.xl3DBarClustered;
+
         public SlideQuestionModel()
         {
             this.Id = Guid.NewGuid();
@@ -36,14 +38,19 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public int Countdown { get; set; } = 20;
 
-        public Excel.XlChartType ChartType { get; set; } = Excel.XlChartType.xl3DBarClustered;
+        public Excel.XlChartType ChartType
+        {
+            get { return this.chartType; }
+            set
+            {
+                this.chartType = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public QuestionTypeEnum QuestionType
         {
-            get
-            {
-                return this.questionType;
-            }
+            get { return this.questionType; }
             set
             {
                 this.questionType = value;

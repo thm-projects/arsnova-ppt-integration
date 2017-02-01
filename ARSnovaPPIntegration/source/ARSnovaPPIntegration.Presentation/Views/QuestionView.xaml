@@ -10,6 +10,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <DataTemplate x:Key="ComboPictureBox">
+                <WrapPanel Margin="0 5 0 5" Height="40">
+                    <Image Width="40" Height="40" Stretch="Fill" Source="{Binding Image}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 15 0" />
+                    <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" />
+                </WrapPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -51,10 +57,10 @@
                 <StackPanel Orientation="Horizontal">
                     <ComboBox x:Name="ChartTypeComboBox"
                               ItemsSource="{Binding Path=ExcelChartTypes, Mode=OneWay}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="ChartType"
-                              SelectedValue="{Binding Path=ChartType, Mode=TwoWay}" 
-                              Width="250" 
+                              ItemTemplate="{StaticResource ComboPictureBox}"
+                              SelectedValuePath="ChartTypeEnum"
+                              SelectedItem="{Binding Path=ChartType, Mode=TwoWay}" 
+                              Width="250"
                               HorizontalAlignment="Left"
                               IsEditable="False"/>
                 </StackPanel>

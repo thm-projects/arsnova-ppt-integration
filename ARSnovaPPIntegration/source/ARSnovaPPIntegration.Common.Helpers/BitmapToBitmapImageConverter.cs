@@ -3,7 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace ARSnovaPPIntegration.Presentation.Helpers
+namespace ARSnovaPPIntegration.Common.Helpers
 {
     public static class BitmapToBitmapImageConverter
     {

@@ -4,12 +4,14 @@ using System.Linq;
 
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Business.Properties;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 
 using Excel = Microsoft.Office.Interop.Excel;
+using ARSnovaPPIntegration.Common.Helpers;
 
 namespace ARSnovaPPIntegration.Business
 {
@@ -77,17 +79,20 @@ namespace ARSnovaPPIntegration.Business
                 new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Bar-Clustered"),
-                    ChartType = Excel.XlChartType.xl3DBarClustered
+                    ChartTypeEnum = Excel.XlChartType.xl3DBarClustered,
+                    Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.grouped_3d_bars)
                 },
                 new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Pie"),
-                    ChartType = Excel.XlChartType.xl3DPie
+                    ChartTypeEnum = Excel.XlChartType.xlPie,
+                    Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images._3d_pie)
                 },
                 new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Grouped columns"),
-                    ChartType = Excel.XlChartType.xl3DColumnClustered
+                    ChartTypeEnum = Excel.XlChartType.xl3DColumnClustered,
+                    Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.grouped_3d_columns)
                 }
             };
         }

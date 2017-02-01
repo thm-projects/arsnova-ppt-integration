@@ -56,16 +56,19 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Images.Designer.cs">
@@ -101,6 +104,10 @@
       <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
       <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Helpers\ARSnovaPPIntegration.Common.Helpers.csproj">
+      <Project>{6C2652D9-82E7-4066-A784-8598FE09DB3A}</Project>
+      <Name>ARSnovaPPIntegration.Common.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
       <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
       <Name>ARSnovaPPIntegration.Communication.Contract</Name>
@@ -114,8 +121,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\3d_pie.PNG" />
     <Content Include="Images\arsnova_header.png" />
     <Content Include="Images\click_header.png" />
+    <Content Include="Images\grouped_3d_bars.PNG" />
+    <Content Include="Images\grouped_3d_columns.PNG" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Images.resx">

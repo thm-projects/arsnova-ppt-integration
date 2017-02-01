@@ -10,8 +10,6 @@ using ARSnovaPPIntegration.Presentation.Commands;
 using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
-using Excel = Microsoft.Office.Interop.Excel;
-
 namespace ARSnovaPPIntegration.Presentation.Models
 {
     public class QuestionViewViewModel : BaseViewModel
@@ -70,10 +68,13 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public List<ExcelChartType> ExcelChartTypes { get; set; }
 
-        public Excel.XlChartType ChartType
+        public ExcelChartType ChartType
         {
-            get { return this.SlideQuestionModel.ChartType; }
-            set { this.SlideQuestionModel.ChartType = value; }
+            get
+            {
+                return this.ExcelChartTypes.FirstOrDefault(ect => ect.ChartTypeEnum == this.SlideQuestionModel.ChartType);
+            }
+            set { this.SlideQuestionModel.ChartType = value.ChartTypeEnum; }
         }
 
         public List<QuestionType> QuestionTypes { get; set; }
