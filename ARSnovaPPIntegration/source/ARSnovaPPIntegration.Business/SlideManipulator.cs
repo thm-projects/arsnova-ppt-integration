@@ -362,103 +362,105 @@ namespace ARSnovaPPIntegration.Business
             // Create new chart in Excel
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
-            var chartName = "ARSnova Results Chart";
 
-            if (File.Exists(excelWorkBookPath))
-            {
-                File.Delete(excelWorkBookPath);
-            }
+            var chartName = "ARSnova Results Chart";
 
             var excelApp = new Excel.Application();
             var workBook = excelApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
-            var workSheet = (Excel.Worksheet)(workBook.Worksheets[1]);
-            workSheet.Name = "ARSnovaResults";
-            Excel.Range dataRange;
 
-            //switch(slideQuestionModel)
-            if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
+            try
             {
-                // TODO -> there is only right or wrong
-                this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
-                //this.SetExcelCellValue(workSheet, "B1", );
-                this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
-                //this.SetExcelCellValue(workSheet, "B2", );
-
-                dataRange = workSheet.get_Range("A1", "B2");
-            }
-            else
-            {
-                // Range: One Column for each answer option
-                // One row for the amount of students voted for that answer option
-                for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                if (File.Exists(excelWorkBookPath))
                 {
-                    var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
-                    this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
-                    this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
+                    File.Delete(excelWorkBookPath);
                 }
 
-                dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
-            }
+                var workSheet = (Excel.Worksheet)(workBook.Worksheets[1]);
+                workSheet.Name = "ARSnovaResults";
+                Excel.Range dataRange;
 
-            var chartObjects = (Excel.ChartObjects)workSheet.ChartObjects(Type.Missing);
-            var newChartObject = chartObjects.Add(floatLeft, floatTop, width, height);
-            newChartObject.Name = chartName;
-
-            newChartObject.Chart.ChartWizard(
-                dataRange,
-                slideQuestionModel.ChartType,
-                this.GetChartFormat(slideQuestionModel.ChartType), // chart format
-                Excel.XlRowCol.xlColumns,
-                slideQuestionModel.AnswerOptions.Count - 1, // category labels
-                0, // series labels
-                false, // has legend
-                slideQuestionModel.QuestionText, // title
-                this.localizationService.Translate("Answers"), // category title
-                this.localizationService.Translate("Amount"), // value title
-                Type.Missing); // extra titel
-
-            /*var chartTitle = chartShape.Chart.ChartTitle;
-            chartTitle.Font.Italic = true;
-            chartTitle.Text = slideQuestionModel.QuestionText;
-            chartTitle.Font.Size = 16;
-            chartTitle.Font.Color = Color.Black.ToArgb();
-            chartTitle.Format.Line.Visible = MsoTriState.msoTrue;
-            chartTitle.Format.Line.ForeColor.RGB = Color.Black.ToArgb();*/
-
-            workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                    Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-            // Copy chart to PowerPoint slide
-
-            newChartObject.Copy();
-            var shapeRange = resultsSlide.Shapes.Paste();
-
-            shapeRange.Left = floatLeft;
-            shapeRange.Top = floatTop;
-
-            excelApp.Quit();
-
-            // post-editing
-            var chartObj =
-                resultsSlide.Shapes[
-                                this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType) ? 3 : 2
-                            ].Chart;
-
-            for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
-            {
-                Excel.Series serie = chartObj.SeriesCollection(i+1);
-
-                if (slideQuestionModel.AnswerOptions.First(ao => ao.Position == i).IsTrue)
+                //switch(slideQuestionModel)
+                if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
                 {
-                    serie.Interior.Color = Color.FromArgb(0, 255, 0).ToArgb(); // green
+                    // TODO -> there is only right or wrong
+                    this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
+                    //this.SetExcelCellValue(workSheet, "B1", );
+                    this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
+                    //this.SetExcelCellValue(workSheet, "B2", );
+
+                    dataRange = workSheet.get_Range("A1", "B2");
                 }
                 else
                 {
-                    serie.Interior.Color = Color.FromArgb(0, 0, 255).ToArgb(); // red
-                }
-            }
+                    // Range: One Column for each answer option
+                    // One row for the amount of students voted for that answer option
+                    for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                    {
+                        var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
+                        this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
+                        this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
+                    }
 
-            // to update content: Chart.Application.Update();
+                    dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+                }
+
+                var chartObjects = (Excel.ChartObjects)workSheet.ChartObjects(Type.Missing);
+                var newChartObject = chartObjects.Add(floatLeft, floatTop, width, height);
+                newChartObject.Name = chartName;
+
+                newChartObject.Chart.ChartWizard(
+                    dataRange,
+                    slideQuestionModel.ChartType,
+                    this.GetChartFormat(slideQuestionModel.ChartType), // chart format
+                    Excel.XlRowCol.xlColumns,
+                    slideQuestionModel.AnswerOptions.Count - 1, // category labels
+                    0, // series labels
+                    false, // has legend
+                    slideQuestionModel.QuestionText, // title
+                    this.localizationService.Translate("Answers"), // category title
+                    this.localizationService.Translate("Amount"), // value title
+                    Type.Missing); // extra titel
+
+                // editing
+                newChartObject.Chart.Perspective = 0;
+
+                Excel.Series serie = newChartObject.Chart.SeriesCollection(1);
+
+                // TODO different question types need different colors!
+                for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                {
+                    var point = (Excel.Point)serie.Points(i + 1);
+
+                    if (slideQuestionModel.AnswerOptions.First(ao => ao.Position == i + 1).IsTrue)
+                    {
+                        point.Interior.Color = Color.FromArgb(0, 255, 0).ToArgb(); // green
+                    }
+                    else
+                    {
+                        point.Interior.Color = Color.FromArgb(0, 0, 255).ToArgb(); // red
+                    }
+                }
+
+                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+                // Copy chart to PowerPoint slide
+
+                newChartObject.Copy();
+                var shapeRange = resultsSlide.Shapes.Paste();
+
+                shapeRange.Left = floatLeft;
+                shapeRange.Top = floatTop;
+
+                excelApp.Quit();
+            }
+            catch (Exception e)
+            {
+                // Error handling?
+                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                excelApp.Quit();
+            }
         }
 
         private int GetChartFormat(Excel.XlChartType chartType)
@@ -468,7 +470,7 @@ namespace ARSnovaPPIntegration.Business
                 case Excel.XlChartType.xl3DColumnClustered:
                     return 1;
                 case Excel.XlChartType.xl3DBarClustered:
-                    return 2;
+                    return 5;
                 case Excel.XlChartType.xl3DPie:
                     return 1;
                 default:
