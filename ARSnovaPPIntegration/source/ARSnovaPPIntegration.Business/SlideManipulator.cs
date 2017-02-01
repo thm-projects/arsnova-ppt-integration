@@ -267,7 +267,7 @@ namespace ARSnovaPPIntegration.Business
                 switch (slideQuestionModel.ChartType)
                 {
                     case Excel.XlChartType.xl3DColumnClustered:
-                    case Excel.XlChartType.xlConeBarClustered:
+                    case Excel.XlChartType.xl3DBarClustered:
                         floatLeft = 150;
                         floatTop = 150;
                         height = 450;
@@ -407,7 +407,7 @@ namespace ARSnovaPPIntegration.Business
             newChartObject.Chart.ChartWizard(
                 dataRange,
                 slideQuestionModel.ChartType,
-                1, // chart format
+                this.GetChartFormat(slideQuestionModel.ChartType), // chart format
                 Excel.XlRowCol.xlColumns,
                 slideQuestionModel.AnswerOptions.Count - 1, // category labels
                 0, // series labels
@@ -438,7 +438,42 @@ namespace ARSnovaPPIntegration.Business
 
             excelApp.Quit();
 
+            // post-editing
+            var chartObj =
+                resultsSlide.Shapes[
+                                this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType) ? 3 : 2
+                            ].Chart;
+
+            for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+            {
+                Excel.Series serie = chartObj.SeriesCollection(i+1);
+
+                if (slideQuestionModel.AnswerOptions.First(ao => ao.Position == i).IsTrue)
+                {
+                    serie.Interior.Color = Color.FromArgb(0, 255, 0).ToArgb(); // green
+                }
+                else
+                {
+                    serie.Interior.Color = Color.FromArgb(0, 0, 255).ToArgb(); // red
+                }
+            }
+
             // to update content: Chart.Application.Update();
+        }
+
+        private int GetChartFormat(Excel.XlChartType chartType)
+        {
+            switch (chartType)
+            {
+                case Excel.XlChartType.xl3DColumnClustered:
+                    return 1;
+                case Excel.XlChartType.xl3DBarClustered:
+                    return 2;
+                case Excel.XlChartType.xl3DPie:
+                    return 1;
+                default:
+                    return 1;
+            }
         }
 
         private void SetExcelCellValue(Excel.Worksheet workSheet, string cell, object value)
