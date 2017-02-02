@@ -133,8 +133,6 @@ namespace ARSnovaPPIntegration.Communication
                 return validationResult;
             }
 
-            validationResult = this.ValidateValidQuestionGroup(slideSessionModel);
-
             if (!validationResult.Success)
             {
                 return validationResult;
@@ -211,15 +209,6 @@ namespace ARSnovaPPIntegration.Communication
                 validationResult.FailureMessage = "No private key provided";
                 return validationResult;
             }
-
-            return validationResult;
-        }
-
-        private ValidationResult ValidateValidQuestionGroup(SlideSessionModel slideSessionModel)
-        {
-            var validationResult = new ValidationResult();
-
-            // TODO
 
             return validationResult;
         }
@@ -317,7 +306,7 @@ namespace ARSnovaPPIntegration.Communication
                 hashtag = Uri.EscapeDataString(hashtag),
                 questionIndex = questionIndex,
                 answerText = Uri.EscapeDataString(answerOption.Text),
-                answerOptionNumber = answerOption.Position,
+                answerOptionNumber = answerOption.Position - 1,
                 isCorrect = answerOption.IsTrue,
                 type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
             };

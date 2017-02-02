@@ -34,8 +34,7 @@ namespace ARSnovaPPIntegration.Presentation
         {
             // Add new context menu entries
             // Supported from v2000 until v2016 (current): http://officeone.mvps.org/vba/events_version.html
-            this.Application.WindowBeforeRightClick +=
-                this.application_windowBeforeRightClick;
+            //this.Application.WindowBeforeRightClick += this.application_windowBeforeRightClick;
 
             // Order of bindings are priorities!
             // high priority: window actions
@@ -48,7 +47,8 @@ namespace ARSnovaPPIntegration.Presentation
             // mid priority: window actions
             
             this.Application.SlideShowBegin += this.OnSlideShowBegin;
-            this.Application.SlideShowNextSlide += this.OnNextSlide;
+            this.Application.SlideShowNextSlide += this.OnSlideChange;
+            this.Application.SlideShowOnPrevious += this.OnSlideChange;
             this.Application.SlideShowEnd += this.OnSlideShowEnd;
 
             // low priority: slide actions
@@ -60,13 +60,13 @@ namespace ARSnovaPPIntegration.Presentation
             // Clean up events?
         }*/
 
-        public void application_windowBeforeRightClick(Selection selection, ref bool cancel)
+        /*public void application_windowBeforeRightClick(Selection selection, ref bool cancel)
         {
-            /*if (selection != null && selection.Type == PpSelectionType.ppSelectionSlides && selection.SlideRange != null)
+            if (selection != null && selection.Type == PpSelectionType.ppSelectionSlides && selection.SlideRange != null)
             {
-                
-            }*/
-        }
+              
+            }
+        }*/
 
         private void OnSlideShowBegin(SlideShowWindow slideShowWindow)
         {
@@ -98,8 +98,10 @@ namespace ARSnovaPPIntegration.Presentation
             this.ribbonHelper.SendKeepAlive(slideSessionModel);
         }
 
-        private void OnNextSlide(SlideShowWindow slideShowWindow)
+        private void OnSlideChange(SlideShowWindow slideShowWindow)
         {
+            // TODO check if timer is running and cancel next or previous event!
+
             // start arsnova click question when getting on results slide
             var isSlideStartArsnovaClickQuestion = SlideTracker.IsPresentationOnStartArsnovaClickSlide();
 
@@ -147,6 +149,7 @@ namespace ARSnovaPPIntegration.Presentation
 
             // Setup ViewPresenter
             this.ConfigureViewPresenter();
+
         }
 
         private void ConfigureViewPresenter()

@@ -42,7 +42,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             this.sessionManager.ShowNextSlideEventHandler += delegate
             {
                 // TODO the next method is throwing errors!
-                //Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
+                // Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow.View.Next();
             };
 
             this.sessionInformationProvider = ServiceLocator.Current.GetInstance<ISessionInformationProvider>();

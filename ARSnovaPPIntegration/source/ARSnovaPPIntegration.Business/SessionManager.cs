@@ -211,7 +211,8 @@ namespace ARSnovaPPIntegration.Business
                 {
                     this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);
                 }
-                
+
+
                 // move to next slide (results)
                 this.ShowNextSlideEventHandler?.Invoke(this, EventArgs.Empty);
 
