@@ -17,7 +17,6 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 QuestionTypeSet = currentSlideQuestionModel.QuestionTypeSet,
                 QuestionText = currentSlideQuestionModel.QuestionText,
                 AnswerOptionsSet = currentSlideQuestionModel.AnswerOptionsSet,
-                AnswerOptionType = currentSlideQuestionModel.AnswerOptionType,
                 AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount,
                 QuestionInitType = currentSlideQuestionModel.QuestionInitType,
                 Index = currentSlideQuestionModel.Index,

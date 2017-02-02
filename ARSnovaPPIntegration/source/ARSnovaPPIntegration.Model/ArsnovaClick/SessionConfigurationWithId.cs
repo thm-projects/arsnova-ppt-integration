@@ -10,6 +10,8 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
 
         public NickConfiguration nicks { get; set; }
 
+        public bool showResponseProgress { get; set; }
+
         public string theme { get; set; }
 
         public bool readingConfirmationEnabled { get; set; }

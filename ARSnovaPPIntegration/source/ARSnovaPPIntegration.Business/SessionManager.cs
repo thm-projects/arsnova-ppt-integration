@@ -200,7 +200,7 @@ namespace ARSnovaPPIntegration.Business
         {
             this.countdown--;
             if(this.countdown >= 0)
-                this.slideManipulator.SetTimerOnSlide(this.questionTimerSlide, this.countdown);
+                this.slideManipulator.SetTimerOnSlide(this.currentQuestionModel, this.questionTimerSlide, this.countdown);
 
             if (this.countdown == 0)
             {

@@ -84,6 +84,10 @@ namespace ARSnovaPPIntegration.Business
 
         public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
         {
+            var answerOptionType = this.sessionInformationProvider.GetAnswerOptionType(slideQuestionModel.QuestionType);
+            var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
+                                                || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
+
             this.RemoveShapesFromSlide(questionInfoSlide);
             this.RemoveShapesFromSlide(questionTimerSlide);
             this.RemoveShapesFromSlide(resultsSlide);
@@ -93,7 +97,7 @@ namespace ARSnovaPPIntegration.Business
             resultsSlide.FollowMasterBackground = MsoTriState.msoTrue;
 
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide);
+            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
 
             // Button not possible, just added a textbox to start quiz on next slide
             var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
@@ -106,7 +110,7 @@ namespace ARSnovaPPIntegration.Business
 
 
             questionTimerSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide);
+            this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide, isRangedOrFreetextQuestion);
 
             // Timer
             var timerLabelTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 300, 450, 150, 75);
@@ -195,9 +199,13 @@ namespace ARSnovaPPIntegration.Business
             // results
         }
 
-        public void SetTimerOnSlide(Slide questionTimerSlide, int countdown)
+        public void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide questionTimerSlide, int countdown)
         {
-            questionTimerSlide.Shapes[4].TextFrame.TextRange.Text = countdown.ToString();
+            var answerOptionType = this.sessionInformationProvider.GetAnswerOptionType(slideQuestionModel.QuestionType);
+            var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
+                                                || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
+
+            questionTimerSlide.Shapes[isRangedOrFreetextQuestion ? 3 : 4].TextFrame.TextRange.Text = countdown.ToString();
         }
 
         public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
@@ -306,16 +314,15 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
-        private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide)
+        private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide, bool isRangedOrFreetextQuestion)
         {
             // question
-            var isRangedQuestion = slideQuestionModel.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption;
             var questionTextBox = questionSlide.Shapes.AddTextbox(
                 MsoTextOrientation.msoTextOrientationHorizontal,
                 50,
-                isRangedQuestion ? 350 : 50,
+                isRangedOrFreetextQuestion ? 350 : 50,
                 850,
-                isRangedQuestion ? 200 : 75);
+                isRangedOrFreetextQuestion ? 200 : 75);
             var questionTextRange = questionTextBox.TextFrame.TextRange;
             questionTextRange.Text = slideQuestionModel.QuestionText;
             questionTextRange.Font.Name = this.font;
@@ -323,8 +330,8 @@ namespace ARSnovaPPIntegration.Business
             questionTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             // answer options
-            // no answer options on ranged questions
-            if (slideQuestionModel.AnswerOptionType != AnswerOptionType.ShowRangedAnswerOption)
+            // no answer options on ranged questions or on free text
+            if (!isRangedOrFreetextQuestion)
             {
                 var answerOptionsString = slideQuestionModel.AnswerOptions
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position - 1)}: {castedAnswerOption.Text}{Environment.NewLine}");

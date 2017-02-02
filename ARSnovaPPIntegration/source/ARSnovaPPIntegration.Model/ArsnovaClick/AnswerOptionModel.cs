@@ -13,5 +13,13 @@
         public bool isCorrect { get; set; }
 
         public string type { get; set; }
+
+        public bool configCaseSensitive { get; set; }
+
+        public bool configTrimWhitespaces { get; set; }
+
+        public bool configUseKeywords { get; set; }
+
+        public bool configUsePunctuation { get; set; }
     }
 }

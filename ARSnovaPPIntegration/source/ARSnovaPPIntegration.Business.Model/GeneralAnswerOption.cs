@@ -17,6 +17,14 @@ namespace ARSnovaPPIntegration.Business.Model
 
         private int rangedHigherLimit;
 
+        private bool configCaseSensitive = false;
+
+        private bool configTrimWhitespaces = false;
+
+        private bool configUseKeywords = true;
+
+        private bool configUsePunctuation = false;
+
         public event EventHandler ObjectChangedEventHandler;
 
         public int Position
@@ -79,5 +87,45 @@ namespace ARSnovaPPIntegration.Business.Model
         }
 
         public AnswerOptionType AnswerOptionType { get; set; } = AnswerOptionType.ShowGeneralAnswerOptions;
+
+        public bool ConfigCaseSensitive
+        {
+            get { return this.configCaseSensitive; }
+            set
+            {
+                this.configCaseSensitive = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public bool ConfigTrimWhitespaces
+        {
+            get { return this.configTrimWhitespaces; }
+            set
+            {
+                this.configTrimWhitespaces = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public bool ConfigUseKeywords
+        {
+            get { return this.configUseKeywords; }
+            set
+            {
+                this.configUseKeywords = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public bool ConfigUsePunctuation
+        {
+            get { return this.configUsePunctuation; }
+            set
+            {
+                this.configUsePunctuation = value;
+                this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 }

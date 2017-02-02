@@ -270,15 +270,55 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
         public string MaxValLabelText => this.LocalizationService.Translate("Maximum range");
 
+        public string LabelFreeTextSettings => this.LocalizationService.Translate("Freetext settings");
+
+        public string LabelUpperLowerCaseSetting => this.LocalizationService.Translate("Observe upper and lower case:");
+
+        public bool UpperLowerCaseSetting
+        {
+            get { return this.SlideQuestionModel.AnswerOptions.First().ConfigCaseSensitive; }
+            set { this.SlideQuestionModel.AnswerOptions.First().ConfigCaseSensitive = value; }
+        }
+
+        public string LabelWhiteSpacesSetting => this.LocalizationService.Translate("Observe white spaces in the answer:");
+
+        public bool WhiteSpacesSetting
+        {
+            get { return this.SlideQuestionModel.AnswerOptions.First().ConfigTrimWhitespaces; }
+            set { this.SlideQuestionModel.AnswerOptions.First().ConfigTrimWhitespaces = value; }
+        }
+
+        public string LabelSequenzeSetting => this.LocalizationService.Translate("Observe sequence of the words:");
+
+        public bool SequenzeSetting
+        {
+            get { return this.SlideQuestionModel.AnswerOptions.First().ConfigUseKeywords; }
+            set { this.SlideQuestionModel.AnswerOptions.First().ConfigUseKeywords = value; }
+        }
+
+        public string LabelPunctuationSetting => this.LocalizationService.Translate("Observe punctuation marks:");
+
+        public bool PunctuationSetting
+        {
+            get { return this.SlideQuestionModel.AnswerOptions.First().ConfigUsePunctuation; }
+            set { this.SlideQuestionModel.AnswerOptions.First().ConfigUsePunctuation = value; }
+        }
+
         protected override Tuple<bool, string> Validate()
         {
             var errorString = string.Empty;
-            // TODO is there anythink to check for free text answer options?
 
-            foreach (var answerOption in this.AnswerOptions)
+            // no text to validate in ranged or freetext answer options
+            var answerOptionType =
+                this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType);
+            if (answerOptionType != AnswerOptionType.ShowRangedAnswerOption
+                && answerOptionType != AnswerOptionType.ShowFreeTextAnswerOptions)
             {
-                if (answerOption.Position <= this.AnswerOptionAmount && answerOption.Text.Length <= 0)
-                    errorString += $"{this.LocalizationService.Translate("The question number")} {answerOption.Position} {this.LocalizationService.Translate("has no question text set.")}{Environment.NewLine}";
+                foreach (var answerOption in this.AnswerOptions)
+                {
+                    if (answerOption.Position <= this.AnswerOptionAmount && answerOption.Text.Length <= 0)
+                        errorString += $"{this.LocalizationService.Translate("The question number")} {answerOption.Position} {this.LocalizationService.Translate("has no question text set.")}{Environment.NewLine}";
+                }
             }
 
             if (this.SessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType)

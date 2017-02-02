@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -78,6 +77,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                     if (slideQuestionModel.QuestionTimerSlideId.HasValue)
                     {
                         this.slideManipulator.SetTimerOnSlide(
+                            slideQuestionModel,
                             SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value),
                             slideQuestionModel.Countdown);
                     }

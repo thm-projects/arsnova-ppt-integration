@@ -454,4 +454,19 @@
   <data name="Pie" xml:space="preserve">
     <value>Pie</value>
   </data>
+  <data name="Freetext_settings" xml:space="preserve">
+    <value>Freetext settings</value>
+  </data>
+  <data name="Observe_punctuation_marks:" xml:space="preserve">
+    <value>Observe punctuation marks:</value>
+  </data>
+  <data name="Observe_sequence_of_the_words:" xml:space="preserve">
+    <value>Observe sequence of the words:</value>
+  </data>
+  <data name="Observe_upper_and_lower_case:" xml:space="preserve">
+    <value>Observe upper and lower case:</value>
+  </data>
+  <data name="Observe_white_spaces_in_the_answer:" xml:space="preserve">
+    <value>Observe white spaces in the answer:</value>
+  </data>
 </root>

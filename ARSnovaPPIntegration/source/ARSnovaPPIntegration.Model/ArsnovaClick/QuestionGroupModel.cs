@@ -49,6 +49,8 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
         public string theme { get; set; }
 
         public bool readingConfirmationEnabled { get; set; }
+
+        public bool showResponseProgress { get; set; }
     }
 
     public class MusicModel

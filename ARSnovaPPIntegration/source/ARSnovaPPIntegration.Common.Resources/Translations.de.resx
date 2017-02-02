@@ -453,4 +453,19 @@
   <data name="Pie" xml:space="preserve">
     <value>Kreis</value>
   </data>
+  <data name="Freetext_settings" xml:space="preserve">
+    <value>Freitext Einstellungen</value>
+  </data>
+  <data name="Observe_punctuation_marks:" xml:space="preserve">
+    <value>Satzzeichen in Antwort beachten:</value>
+  </data>
+  <data name="Observe_sequence_of_the_words:" xml:space="preserve">
+    <value>Reihenfolge der Wörter beachten:</value>
+  </data>
+  <data name="Observe_upper_and_lower_case:" xml:space="preserve">
+    <value>Groß- und Kleinschreibung beachten:</value>
+  </data>
+  <data name="Observe_white_spaces_in_the_answer:" xml:space="preserve">
+    <value>Leerzeichen in Antwort beachten:</value>
+  </data>
 </root>

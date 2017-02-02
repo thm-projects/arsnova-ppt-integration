@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-
+using System.Runtime.CompilerServices;
 using ARSnovaPPIntegration.Common.Enum;
 
 using Excel = Microsoft.Office.Interop.Excel;
@@ -87,8 +87,6 @@ namespace ARSnovaPPIntegration.Business.Model
         }
 
         public bool AnswerOptionsSet { get; set; } = false;
-
-        public AnswerOptionType AnswerOptionType { get; set; }
 
         public int AnswerOptionAmount { get; set; } = 4;
 

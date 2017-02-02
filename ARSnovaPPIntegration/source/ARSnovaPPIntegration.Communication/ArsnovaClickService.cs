@@ -260,7 +260,8 @@ namespace ARSnovaPPIntegration.Communication
                                                        restrictToCASLogin = false
                                                    },
                                            theme = "theme-arsnova-dot-click-contrast",
-                                           readingConfirmationEnabled = false
+                                           readingConfirmationEnabled = false,
+                                           showResponseProgress = true
                        },
                        type = "DefaultQuestionGroup"
 
@@ -292,6 +293,8 @@ namespace ARSnovaPPIntegration.Communication
                 questionModel.rangeMin = rangedAnswerOption.RangedLowerLimit;
                 questionModel.rangeMax = rangedAnswerOption.RangedHigherLimit;
                 questionModel.correctValue = rangedAnswerOption.RangedCorrectValue;
+
+                questionModel.answerOptionList = new List<AnswerOptionModel>();
             }
             else
             {
@@ -309,27 +312,25 @@ namespace ARSnovaPPIntegration.Communication
 
         private AnswerOptionModel SlideAnswerOptionModelToAnswerOptionModel(GeneralAnswerOption answerOption, string hashtag, int questionIndex, bool isFreetextAnswerOption)
         {
-            if (answerOption.AnswerOptionType == AnswerOptionType.ShowGeneralAnswerOptions)
+            var answerOptionModel = new AnswerOptionModel
             {
-                return new AnswerOptionModel
+                hashtag = Uri.EscapeDataString(hashtag),
+                questionIndex = questionIndex,
+                answerText = Uri.EscapeDataString(answerOption.Text),
+                answerOptionNumber = answerOption.Position,
+                isCorrect = answerOption.IsTrue,
+                type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
+            };
 
-                {
-                    hashtag = Uri.EscapeDataString(hashtag),
-                    questionIndex = questionIndex,
-                    answerText = Uri.EscapeDataString(answerOption.Text),
-                    answerOptionNumber = answerOption.Position - 1,
-                    isCorrect = answerOption.IsTrue,
-                    type = isFreetextAnswerOption ? "FreeTextAnswerOption" : "DefaultAnswerOption"
-
-                };
+            if (isFreetextAnswerOption)
+            {
+                answerOptionModel.configCaseSensitive = answerOption.ConfigCaseSensitive;
+                answerOptionModel.configTrimWhitespaces = answerOption.ConfigTrimWhitespaces;
+                answerOptionModel.configUseKeywords = answerOption.ConfigUseKeywords;
+                answerOptionModel.configUsePunctuation = answerOption.ConfigUsePunctuation;
             }
 
-            if (answerOption.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption)
-            {
-                return null;
-            }
-
-            throw new ArgumentException($"Unknow answer option type {answerOption.GetType()}");
+            return answerOptionModel;
         }
 
         private string QuestionTypeToClickQuestionType(QuestionTypeEnum questionType)
