@@ -188,6 +188,7 @@ namespace ARSnovaPPIntegration.Business
             else
             {
                 // TODO start voting question
+                //validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, questionIndex);
             }
 
             if (!validationResult.Success)

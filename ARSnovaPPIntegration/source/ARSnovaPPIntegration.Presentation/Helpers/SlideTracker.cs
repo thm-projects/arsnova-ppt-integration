@@ -80,6 +80,12 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             return new Tuple<bool, SlideQuestionModel>(false, null);
         }
 
+        public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaVotingSlide()
+        {
+            // TODO
+            return new Tuple<bool, SlideQuestionModel>(false, null);
+        }
+
         public static bool IsArsnovaSlide(Slide slide)
         {
             if (slide == null)

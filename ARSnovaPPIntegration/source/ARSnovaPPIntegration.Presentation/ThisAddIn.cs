@@ -79,12 +79,6 @@ namespace ARSnovaPPIntegration.Presentation
                 this.keepAliveTimer.Elapsed += this.KeepAliveEvent;
                 this.keepAliveTimer.Interval = 180000;
                 this.keepAliveTimer.Enabled = true;
-
-                /*this.keepAliveTimer = new Timer(
-                                          (e) =>
-                                          {
-                                              this.KeepAliveCall();
-                                          }, null, 0, 180000);*/
             }
             catch (CommunicationException arsnovaComException)
             {
@@ -113,6 +107,14 @@ namespace ARSnovaPPIntegration.Presentation
             if (isSlideStartArsnovaClickQuestion.Item1)
             {
                 this.ribbonHelper.StartQuiz(isSlideStartArsnovaClickQuestion.Item2);
+                return;
+            }
+
+            var isSlideStartArsnovaVotingQuestion = SlideTracker.IsPresentationOnStartArsnovaVotingSlide();
+
+            if (isSlideStartArsnovaVotingQuestion.Item1)
+            {
+                this.ribbonHelper.StartQuiz(isSlideStartArsnovaVotingQuestion.Item2);
             }
         }
 
