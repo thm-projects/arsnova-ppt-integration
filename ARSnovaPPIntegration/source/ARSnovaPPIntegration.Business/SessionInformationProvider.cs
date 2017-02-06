@@ -125,8 +125,9 @@ namespace ARSnovaPPIntegration.Business
                 case QuestionTypeEnum.MultipleChoiceVoting:
                 case QuestionTypeEnum.SingleChoiceClick:
                 case QuestionTypeEnum.MultipleChoiceClick:
-                case QuestionTypeEnum.SurveyClick:
                     return AnswerOptionType.ShowGeneralAnswerOptions;
+                case QuestionTypeEnum.SurveyClick:
+                    return AnswerOptionType.ShowSurveyAnswerOptions;
                 case QuestionTypeEnum.FreeTextVoting:
                 case QuestionTypeEnum.FreeTextClick:
                     return AnswerOptionType.ShowFreeTextAnswerOptions;

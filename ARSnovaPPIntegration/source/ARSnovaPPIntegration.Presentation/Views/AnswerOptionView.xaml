@@ -101,6 +101,37 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
+            <StackPanel x:Name="SurveyAnswerOptions" Visibility="{Binding ShowSurveyAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding SelectAnswerOptionAmountText}"/>
+                    <ComboBox ItemsSource="{Binding Path=PossibleAnswerOptionsAmount, Mode=OneWay}"
+                              SelectedValue="{Binding Path=AnswerOptionAmount, Mode=TwoWay}" 
+                              Width="150" 
+                              HorizontalAlignment="Left"
+                              IsEditable="False"/>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding AnswerOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          AutoGenerateColumns="False"
+                          CanUserSortColumns="False"
+                          HeadersVisibility="Column"
+                          VerticalAlignment="Top"
+                          AlternatingRowBackground="Gainsboro" 
+                          CanUserAddRows="false"
+                          Margin="15 20 15 0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending" Width="0.2*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderPosition, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Text, Mode=TwoWay}" Width="0.6*">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{Binding DataContext.GridHeaderText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
             <StackPanel x:Name="FreeTextAnswerOptions" Visibility="{Binding ShowFreeTextAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15 20 15 0">
                 <TextBox Text="{Binding FreeTextAnswerOption, Mode=TwoWay}" Width="250" Height="60" MinLines="4" MaxLines="4" TextWrapping="WrapWithOverflow">
                     <resources:WatermarkService.Watermark>
@@ -199,7 +230,7 @@
                                 <TextBlock Text="{Binding DataContext.GridHeaderText, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridCheckBoxColumn Binding="{Binding IsTrue, Mode=TwoWay}" IsReadOnly="True" Width="0.2*">
+                        <DataGridCheckBoxColumn Binding="{Binding IsTrue, Mode=TwoWay}" Width="0.2*">
                             <DataGridCheckBoxColumn.Header>
                                 <TextBlock Text="{Binding DataContext.GridHeaderIsTrue, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataGridCheckBoxColumn.Header>

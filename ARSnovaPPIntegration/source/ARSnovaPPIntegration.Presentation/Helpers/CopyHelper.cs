@@ -21,6 +21,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 QuestionInitType = currentSlideQuestionModel.QuestionInitType,
                 Index = currentSlideQuestionModel.Index,
                 ChartType = currentSlideQuestionModel.ChartType,
+                ResultsSlideId = currentSlideQuestionModel.ResultsSlideId,
+                QuestionTimerSlideId = currentSlideQuestionModel.QuestionTimerSlideId,
+                QuestionInfoSlideId = currentSlideQuestionModel.QuestionInfoSlideId,
                 AnswerOptions = new ObservableCollection<GeneralAnswerOption>()
             };
 
@@ -38,7 +41,19 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         private static GeneralAnswerOption CopyAnswerOptionModel(SlideQuestionModel slideQuestionModel, GeneralAnswerOption answerOption)
         {
-            if (answerOption.AnswerOptionType == AnswerOptionType.ShowGeneralAnswerOptions)
+            if (answerOption.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption)
+            {
+                var newAnswerOption = new GeneralAnswerOption
+                {
+                    RangedLowerLimit = answerOption.RangedLowerLimit,
+                    RangedCorrectValue = answerOption.RangedCorrectValue,
+                    RangedHigherLimit = answerOption.RangedHigherLimit,
+                    AnswerOptionType = AnswerOptionType.ShowRangedAnswerOption                  
+                };
+
+                return newAnswerOption;
+            }
+            else
             {
                 var newAnswerOption = new GeneralAnswerOption();
 
@@ -50,19 +65,6 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 newAnswerOption.Position = answerOption.Position;
                 newAnswerOption.Text = answerOption.Text;
                 newAnswerOption.IsTrue = answerOption.IsTrue;
-
-                return newAnswerOption;
-            }
-
-            if (answerOption.AnswerOptionType == AnswerOptionType.ShowRangedAnswerOption)
-            {
-                var newAnswerOption = new GeneralAnswerOption
-                {
-                    RangedLowerLimit = answerOption.RangedLowerLimit,
-                    RangedCorrectValue = answerOption.RangedCorrectValue,
-                    RangedHigherLimit = answerOption.RangedHigherLimit,
-                    AnswerOptionType = AnswerOptionType.ShowRangedAnswerOption
-                };
 
                 return newAnswerOption;
             }

@@ -18,7 +18,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
             foreach (var questionModel in this.SlideSessionModel.Questions)
             {
-                questionModel.QuestionTypeText = this.QuestionTypeTranslator.TranslateQuestionType(questionModel.QuestionType);
                 questionModel.ObjectChangedEventHandler += delegate
                 {
                     this.OnPropertyChanged(nameof(this.Questions));

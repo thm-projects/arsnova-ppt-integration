@@ -72,7 +72,8 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
-                if (GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value).SlideNumber == currentShowedSlidePosition)
+                if (slideQuestionModel.QuestionTimerSlideId.HasValue 
+                    && GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value).SlideNumber == currentShowedSlidePosition)
                     return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
             }
 
@@ -101,7 +102,16 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
         public static Slide GetSlideById(int slideId)
         {
-            return Globals.ThisAddIn.Application.ActivePresentation.Slides.FindBySlideID(slideId);
+            try
+            {
+                return Globals.ThisAddIn.Application.ActivePresentation.Slides.FindBySlideID(slideId);
+            }
+            catch (Exception ex)
+            {
+                // no slide with id found
+                return null;
+            }
+            
         }
 
         public static Slide GetSlideByIndex(int slideIndex)

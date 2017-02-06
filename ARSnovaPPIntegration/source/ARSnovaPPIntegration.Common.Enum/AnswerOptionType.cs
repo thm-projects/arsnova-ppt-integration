@@ -7,7 +7,6 @@
          * QuestionTypeEnum.MultipleChoiceVoting
          * QuestionTypeEnum.SingleChoiceClick
          * QuestionTypeEnum.MultipleChoiceClick
-         * QuestionTypeEnum.SurveyClick;
          */
         ShowGeneralAnswerOptions = 1,
 
@@ -33,6 +32,11 @@
          * QuestionTypeEnum.YesNoClick
          * QuestionTypeEnum.TrueFalseClick
          */
-        ShowTwoAnswerOptions = 5
+        ShowTwoAnswerOptions = 5,
+
+        /*
+         * QuestionTypeEnum.SurveyClick;
+         */
+        ShowSurveyAnswerOptions = 6
     }
 }

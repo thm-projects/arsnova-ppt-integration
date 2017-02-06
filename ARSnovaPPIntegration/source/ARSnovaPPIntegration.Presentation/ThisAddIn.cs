@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
+using System.Timers;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -28,7 +28,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         private RibbonHelper ribbonHelper;
 
-        private Timer keppAliveTimer;
+        private Timer keepAliveTimer;
 
         private void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -75,11 +75,16 @@ namespace ARSnovaPPIntegration.Presentation
                 this.ribbonHelper.ActivateSessionIfExists();
                 this.ribbonHelper.CleanUpOnStart();
 
-                this.keppAliveTimer = new Timer(
+                this.keepAliveTimer = new Timer();
+                this.keepAliveTimer.Elapsed += this.KeepAliveEvent;
+                this.keepAliveTimer.Interval = 180000;
+                this.keepAliveTimer.Enabled = true;
+
+                /*this.keepAliveTimer = new Timer(
                                           (e) =>
                                           {
                                               this.KeepAliveCall();
-                                          }, null, 0, 180000);
+                                          }, null, 0, 180000);*/
             }
             catch (CommunicationException arsnovaComException)
             {
@@ -91,7 +96,7 @@ namespace ARSnovaPPIntegration.Presentation
             }
         }
 
-        private void KeepAliveCall()
+        private void KeepAliveEvent(object source, ElapsedEventArgs e)
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
@@ -114,7 +119,7 @@ namespace ARSnovaPPIntegration.Presentation
         private void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
             this.ribbonHelper.RemoveClickQuizDataOnServer();
-            this.keppAliveTimer?.Dispose();
+            this.keepAliveTimer?.Dispose();
         }
 
         private void OnSlideSelectionChanged(SlideRange slideRange)
@@ -190,7 +195,7 @@ namespace ARSnovaPPIntegration.Presentation
        private void InternalStartup()
         {
             // already init on CreateRibbon
-            this.Startup += new System.EventHandler(this.ThisAddInStartup);
+            this.Startup += this.ThisAddInStartup;
             //this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
 

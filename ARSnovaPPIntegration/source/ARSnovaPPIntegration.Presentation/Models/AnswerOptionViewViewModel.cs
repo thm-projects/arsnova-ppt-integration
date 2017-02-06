@@ -59,6 +59,9 @@ namespace ARSnovaPPIntegration.Presentation.Models
         public bool ShowTwoAnswerOptions =>
             this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowTwoAnswerOptions;
 
+        public bool ShowSurveyAnswerOptions =>
+            this.SessionInformationProvider.GetAnswerOptionType(this.SlideQuestionModel.QuestionType) == AnswerOptionType.ShowSurveyAnswerOptions;
+
         public List<int> PossibleAnswerOptionsAmount =>
             this.SlideSessionModel.SessionType == SessionType.ArsnovaClick
                 ? new List<int>
@@ -383,6 +386,15 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                                 if (validationResult.Item1)
                                 {
+                                    this.SlideQuestionModel.QuestionTypeText = this.QuestionTypeTranslator.TranslateQuestionType(this.SlideQuestionModel.QuestionType);
+
+                                    var questionInfoSlide = SlideTracker.GetSlideById(this.SlideQuestionModel.QuestionInfoSlideId);
+                                    if (questionInfoSlide != null)
+                                    {
+                                        var questionInfoSlideNumber = questionInfoSlide.SlideNumber;
+                                        this.SlideQuestionModel.SlideNumbers = $"{questionInfoSlideNumber} - {questionInfoSlideNumber + 2}";
+                                    }
+
                                     this.AddSessionToSlides(this.SlideQuestionModel);
                                     PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
                                 }
@@ -398,10 +410,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
         private void InitAnswerOptionList()
         {
             if (this.AnswerOptions == null 
-                || this.SlideQuestionModel.QuestionInitType != this.SlideQuestionModel.QuestionType 
-                || this.AnswerOptions.Count != this.AnswerOptionAmount)
+                || this.AnswerOptions.Count <= 0
+                || this.SlideQuestionModel.QuestionInitType != this.SlideQuestionModel.QuestionType)
             {
-                if (this.ShowGeneralAnswerOptions)
+                if (this.ShowGeneralAnswerOptions || this.ShowSurveyAnswerOptions)
                 {
                     this.SlideQuestionModel.AnswerOptions = new ObservableCollection<GeneralAnswerOption>();
 
@@ -496,7 +508,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             } 
         }
 
-        private GeneralAnswerOption CreateGeneralAnswerOption(int position = 0, string text = "", bool isTrue = false)
+        private GeneralAnswerOption CreateGeneralAnswerOption(int position = 1, string text = "", bool isTrue = false)
         {
             var generalAnswerOption =  new GeneralAnswerOption
             {
