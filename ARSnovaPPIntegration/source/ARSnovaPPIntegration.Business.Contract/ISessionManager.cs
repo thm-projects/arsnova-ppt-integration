@@ -8,7 +8,7 @@ namespace ARSnovaPPIntegration.Business.Contract
 {
     public interface ISessionManager
     {
-        ValidationResult SetSession(SlideSessionModel slideSessionModel);
+        ValidationResult SetClickSession(SlideSessionModel slideSessionModel);
 
         ValidationResult SetHashtag(SlideSessionModel slideSessionModel);
 

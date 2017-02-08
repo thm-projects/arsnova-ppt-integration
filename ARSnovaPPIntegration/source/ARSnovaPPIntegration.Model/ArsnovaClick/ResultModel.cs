@@ -13,5 +13,9 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaClick
         public string userNick { get; set; }
 
         public int responseTime { get; set; }
+
+        public string freeTextInputValue { get; set; }
+
+        public int rangedInputValue { get; set; }
     }
 }

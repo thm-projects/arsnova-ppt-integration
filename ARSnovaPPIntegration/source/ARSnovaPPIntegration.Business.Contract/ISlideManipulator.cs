@@ -14,8 +14,6 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide);
 
-        void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide);
-
         void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide resultsSlide, int countdown);
 
         void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -11,7 +11,6 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Business.Properties;
 using ARSnovaPPIntegration.Common.Contract;
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
@@ -185,18 +184,6 @@ namespace ARSnovaPPIntegration.Business
                               }
                           };
             this.SetResults(slideQuestionModel, resultsSlide, results);*/
-        }
-
-        public void AddQuizToSlideWithoutStyling(SlideQuestionModel slideQuestionModel, Slide slide)
-        {
-            // TODO
-            // question
-
-
-            // answer option
-
-
-            // results
         }
 
         public void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide questionTimerSlide, int countdown)
@@ -386,29 +373,35 @@ namespace ARSnovaPPIntegration.Business
                 workSheet.Name = "ARSnovaResults";
                 Excel.Range dataRange;
 
-                //switch(slideQuestionModel)
-                if (slideQuestionModel.QuestionType == QuestionTypeEnum.RangedQuestionClick)
+                switch (slideQuestionModel.QuestionType)
                 {
-                    // TODO -> there is only right or wrong
-                    this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
-                    //this.SetExcelCellValue(workSheet, "B1", );
-                    this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
-                    //this.SetExcelCellValue(workSheet, "B2", );
+                    case QuestionTypeEnum.MultipleChoiceVoting:
+                    case QuestionTypeEnum.MultipleChoiceClick:
+                    case QuestionTypeEnum.FreeTextVoting:
+                    case QuestionTypeEnum.FreeTextClick:
+                    case QuestionTypeEnum.RangedQuestionClick:
+                        var correctAnswerOptionsAmount = this.FilterForCorrectResponsesClick(slideQuestionModel, results).Count;
+                        var wrongAnswerOptionsAmount = results.Count - correctAnswerOptionsAmount;
 
-                    dataRange = workSheet.get_Range("A1", "B2");
-                }
-                else
-                {
-                    // Range: One Column for each answer option
-                    // One row for the amount of students voted for that answer option
-                    for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
-                    {
-                        var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
-                        this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
-                        this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
-                    }
+                        this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
+                        this.SetExcelCellValue(workSheet, "B1", correctAnswerOptionsAmount);
+                        this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
+                        this.SetExcelCellValue(workSheet, "B2", wrongAnswerOptionsAmount);
 
-                    dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+                        dataRange = workSheet.get_Range("A1", "B2");
+                        break;
+                    default:
+                        // Range: One Column for each answer option
+                        // One row for the amount of students voted for that answer option
+                        for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                        {
+                            var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
+                            this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
+                            this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
+                        }
+
+                        dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+                        break;
                 }
 
                 var chartObjects = (Excel.ChartObjects)workSheet.ChartObjects(Type.Missing);
@@ -433,19 +426,34 @@ namespace ARSnovaPPIntegration.Business
 
                 Excel.Series serie = newChartObject.Chart.SeriesCollection(1);
 
-                // TODO different question types need different colors!
-                for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                // Evaluation, grades and surveys shouldn't be colorized
+                switch (slideQuestionModel.QuestionType)
                 {
-                    var point = (Excel.Point)serie.Points(i + 1);
+                    case QuestionTypeEnum.SingleChoiceVoting:
+                    case QuestionTypeEnum.YesNoVoting:
+                    case QuestionTypeEnum.SingleChoiceClick:
+                    case QuestionTypeEnum.YesNoClick:
+                    case QuestionTypeEnum.TrueFalseClick:
+                        // normal evaluated graph (correct = green, any other answer option = red)
+                        for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                        {
+                            var point = (Excel.Point)serie.Points(i + 1);
 
-                    if (slideQuestionModel.AnswerOptions.First(ao => ao.Position == i + 1).IsTrue)
-                    {
-                        point.Interior.Color = Color.FromArgb(0, 255, 0).ToArgb(); // green
-                    }
-                    else
-                    {
-                        point.Interior.Color = Color.FromArgb(0, 0, 255).ToArgb(); // red
-                    }
+                            point.Interior.Color = slideQuestionModel.AnswerOptions.First(ao => ao.Position == i + 1).IsTrue
+                                ? Color.FromArgb(0, 255, 0).ToArgb()
+                                : Color.FromArgb(0, 0, 255).ToArgb();
+                        }
+                        break;
+                    case QuestionTypeEnum.MultipleChoiceVoting:
+                    case QuestionTypeEnum.MultipleChoiceClick:
+                    case QuestionTypeEnum.FreeTextVoting:
+                    case QuestionTypeEnum.FreeTextClick:
+                    case QuestionTypeEnum.RangedQuestionClick:
+                        // freetext, ranged and multiple: right and wrong only
+                        // the part above sets the first point of the series as the correct answer and the second one as the false one
+                        serie.Points(1).Interior.Color = Color.FromArgb(0, 255, 0).ToArgb(); // green
+                        serie.Points(2).Interior.Color = Color.FromArgb(0, 0, 255).ToArgb(); // red
+                        break;
                 }
 
                 workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
@@ -557,13 +565,10 @@ namespace ARSnovaPPIntegration.Business
                     }
                     break;
                 case QuestionTypeEnum.RangedQuestionClick:
-                    foreach (var response in responses)
-                    {
-                        // TODO
-                    }
+                    correctResponses.AddRange(this.GetCorrectRangedAnswerResults(slideQuestionModel, responses));
                     break;
                 case QuestionTypeEnum.FreeTextClick:
-                    // TODO
+                    correctResponses.AddRange(this.GetCorrectFreeTextResults(slideQuestionModel, responses));
                     break;
                 case QuestionTypeEnum.SurveyClick:
                     correctResponses = responses;
@@ -573,47 +578,92 @@ namespace ARSnovaPPIntegration.Business
             return correctResponses;
         }
 
-        private void SetArsnovaClickStyle(Slide arsnovaSlide, string hashtag)
+        private List<ResultModel> GetCorrectRangedAnswerResults(SlideQuestionModel slideQuestionModel, List<ResultModel> responses)
         {
-            var sessionConfiguration = this.arsnovaClickService.GetSessionConfiguration(hashtag);
+            var correctResponses = new List<ResultModel>();
+            var answerOption = slideQuestionModel.AnswerOptions.First();
 
-            var themeName = string.Empty;
-
-            // TODO create background-pictures
-            switch (sessionConfiguration.theme)
+            foreach (var response in responses)
             {
-                case "theme-thm":
-                    break;
-                case "theme-elegant":
-                    break;
-                case "theme-arsnova":
-                    break;
-                case "theme-blackbeauty":
-                    break;
-                case "theme-hell":
-                    break;
-                case "theme-bluetouch":
-                    break;
-                case "theme-green":
-                    break;
-                case "theme-action":
-                    break;
-                case "theme-Psychology-RangedCorrectValue-Colours":
-                    break;
-                case "theme-arsnova-dot-click-contrast":
-                    break;
-                default:
-                    throw new CommunicationException("Unexpected theme name");
+                if (response.rangedInputValue >= answerOption.RangedLowerLimit
+                    && response.rangedInputValue <= answerOption.RangedHigherLimit)
+                {
+                    correctResponses.Add(response);
+                }
             }
 
-            // TODO
-            // background
-            arsnovaSlide.FollowMasterBackground = MsoTriState.msoFalse;
-            arsnovaSlide.Background.Fill.UserPicture(@"C:\fox.jpg");
+            return correctResponses;
+        }
 
-            // footer
-            arsnovaSlide.HeadersFooters.Footer.Visible = MsoTriState.msoTrue;
-            arsnovaSlide.HeadersFooters.Footer.Text = "Copyright arsnova team / Tjark Wilhelm Hoeck";
+        private List<ResultModel> GetCorrectFreeTextResults(SlideQuestionModel slideQuestionModel, List<ResultModel> responses)
+        {
+            var correctResponses = new List<ResultModel>();
+            var answerOption = slideQuestionModel.AnswerOptions.First();
+            var answerOptionText = answerOption.Text;
+            var punctutationRegex = new Regex(@"(\.)*(,)*(!)*("")*(;)*(\?)*");
+            var whiteSpaceRegex = new Regex(@" ");
+
+            if (!answerOption.ConfigCaseSensitive)
+            {
+                answerOptionText = answerOptionText.ToLower();
+            }
+
+            if (!answerOption.ConfigUsePunctuation)
+            {
+                answerOptionText = punctutationRegex.Replace(answerOptionText, "");
+            }
+
+            if (answerOption.ConfigUseKeywords && !answerOption.ConfigTrimWhitespaces)
+            {
+                answerOptionText = whiteSpaceRegex.Replace(answerOptionText, "");
+            }
+
+            foreach (var response in responses)
+            {
+                var isCorrect = false;
+                var responseText = response.freeTextInputValue;
+
+                if (!answerOption.ConfigCaseSensitive)
+                {
+                    responseText = responseText.ToLower();
+                }
+
+                if (!answerOption.ConfigUsePunctuation)
+                {
+                    responseText = punctutationRegex.Replace(responseText, "");
+                }
+
+                if (answerOption.ConfigUseKeywords)
+                {
+                    if (!answerOption.ConfigTrimWhitespaces)
+                    {
+                        responseText = whiteSpaceRegex.Replace(responseText, "");
+                    }
+
+                    isCorrect = answerOptionText == responseText;
+                }
+                else
+                {
+                    isCorrect = true;
+                    var responseWords = responseText.Split(new char[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+                    var answerOptionWords = answerOptionText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var answerOptionWord in answerOptionWords)
+                    {
+                        if (responseWords.Any(r => r != answerOptionWord))
+                        {
+                            isCorrect = false;
+                        }
+                    }
+                }
+
+                if (isCorrect)
+                {
+                    correctResponses.Add(response);
+                }
+            }
+
+            return correctResponses;
         }
     }
 }

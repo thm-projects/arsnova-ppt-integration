@@ -53,31 +53,16 @@ namespace ARSnovaPPIntegration.Business
             this.sessionInformationProvider = sessionInformationProvider;
         }
 
-        public ValidationResult SetSession(SlideSessionModel slideSessionModel)
+        public ValidationResult SetClickSession(SlideSessionModel slideSessionModel)
         {
-            var validationResult = new ValidationResult();
-            if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
-            {
-                validationResult = this.SetArsnovaClickOnlineSession(slideSessionModel);
-
-                if (!validationResult.Success)
-                {
-                    return validationResult;
-                }
-            }
-
-            if (slideSessionModel.SessionType == SessionType.ArsnovaVoting)
-            {
-                // TODO voting
-            }
-
-            return validationResult;
+            // arsnova sessions are updated while they are changed -> should not called by arsnova sessions, nothing to do here
+            return this.SetArsnovaClickOnlineSession(slideSessionModel);
         }
 
         public ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel)
         {
             // push data to server
-            var validationResult = this.SetSession(slideSessionModel);
+            var validationResult = this.SetClickSession(slideSessionModel);
 
             if (!validationResult.Success)
             {
