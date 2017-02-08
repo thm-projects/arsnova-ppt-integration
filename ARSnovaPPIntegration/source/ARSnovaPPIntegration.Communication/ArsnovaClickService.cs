@@ -112,18 +112,6 @@ namespace ARSnovaPPIntegration.Communication
             return new Tuple<ValidationResult, string>(validationResult, privateKey);
         }
 
-        public ValidationResult ResetSession(SlideSessionModel slideSessionModel)
-        {
-            var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
-
-            if (!validationResult.Success)
-            {
-                return validationResult;
-            }
-
-            return this.arsnovaClickApi.ResetSession(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
-        }
-
         public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)
         {
             var validationResult = this.CheckForHashtagAndPrivateKey(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);

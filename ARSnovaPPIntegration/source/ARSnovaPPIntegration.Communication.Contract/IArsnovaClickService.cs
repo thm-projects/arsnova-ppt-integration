@@ -18,8 +18,6 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel);
 
-        ValidationResult ResetSession(SlideSessionModel slideSessionModel);
-
         ValidationResult StartNextQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
         ValidationResult ShowNextReadingConfirmation(SlideSessionModel slideSessionModel);
