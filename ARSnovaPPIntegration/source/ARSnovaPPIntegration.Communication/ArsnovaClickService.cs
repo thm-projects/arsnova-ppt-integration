@@ -215,10 +215,8 @@ namespace ARSnovaPPIntegration.Communication
 
         private QuestionGroupModel SlideSessionModelToQuestionGroupModel(SlideSessionModel slideSessionModel)
         {
-            // TODO  many default values
-
             var questionModelList =
-                slideSessionModel.Questions.Select(q => this.SlideQuestionModelToQuestionModel(q, slideSessionModel.Hashtag)).ToList();
+                slideSessionModel.Questions.Where(q => !q.Hidden).Select(q => this.SlideQuestionModelToQuestionModel(q, slideSessionModel.Hashtag)).ToList();
 
             return new QuestionGroupModel
                    {
@@ -248,12 +246,11 @@ namespace ARSnovaPPIntegration.Communication
                                                        blockIllegal = true,
                                                        restrictToCASLogin = false
                                                    },
-                                           theme = "theme-arsnova-dot-click-contrast",
+                                           theme = "theme-arsnova-dot-click-contrast", // choosable theme?
                                            readingConfirmationEnabled = false,
                                            showResponseProgress = true
                        },
                        type = "DefaultQuestionGroup"
-
             };
         }
 
@@ -265,7 +262,7 @@ namespace ARSnovaPPIntegration.Communication
                        questionText = Uri.EscapeDataString(slideQuestionModel.QuestionText),
                        timer = slideQuestionModel.Countdown,
                        startTime = 0,
-                       questionIndex = slideQuestionModel.Index,
+                       questionIndex = slideQuestionModel.RecalculatedOnlineIndex,
                        displayAnswerText = false,
                        type = this.QuestionTypeToClickQuestionType(slideQuestionModel.QuestionType)
             };
@@ -290,7 +287,7 @@ namespace ARSnovaPPIntegration.Communication
                 var isFreetextAnswerOption = slideQuestionModel.QuestionType == QuestionTypeEnum.FreeTextClick;
 
                 var answerOptionModelList =
-                    slideQuestionModel.AnswerOptions.Select(a => this.SlideAnswerOptionModelToAnswerOptionModel(a, hashtag, slideQuestionModel.Index, isFreetextAnswerOption))
+                    slideQuestionModel.AnswerOptions.Select(a => this.SlideAnswerOptionModelToAnswerOptionModel(a, hashtag, slideQuestionModel.RecalculatedOnlineIndex, isFreetextAnswerOption))
                                       .ToList();
 
                 questionModel.answerOptionList = answerOptionModelList;

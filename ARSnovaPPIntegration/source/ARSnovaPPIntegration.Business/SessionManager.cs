@@ -178,7 +178,7 @@ namespace ARSnovaPPIntegration.Business
             if (clickQuesitonTypes.Any(qt => qt.QuestionTypeEnum == this.currentQuestionModel.QuestionType))
             {
                 // start click question
-                validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, questionIndex);
+                validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, this.currentQuestionModel.RecalculatedOnlineIndex);
 
                 this.countdown = this.currentQuestionModel.Countdown;
                 this.timer = new Timer(1000);
@@ -207,7 +207,7 @@ namespace ARSnovaPPIntegration.Business
             {
                 this.timer.Stop();
 
-                var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.Index);
+                var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.RecalculatedOnlineIndex);
                 if (responses != null)
                 {
                     this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);

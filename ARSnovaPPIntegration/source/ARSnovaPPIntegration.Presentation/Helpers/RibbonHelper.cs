@@ -12,6 +12,7 @@ using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.ViewManagement;
 using ARSnovaPPIntegration.Presentation.Window;
+using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -203,6 +204,61 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
         }
 
+        public void HideOrShowQuizFromSelectedSlide(Slide slide)
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+
+            var slideQuestionModel = slideSessionModel.Questions.First(q => q.QuestionInfoSlideId == slide.SlideID
+                                                                                || q.QuestionTimerSlideId == slide.SlideID
+                                                                                || q.ResultsSlideId == slide.SlideID);
+
+            if (slideQuestionModel == null)
+            {
+                throw new Exception("No existing arsnova question on slide.");
+            }
+
+            var questionInfoSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionInfoSlideId);
+            var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value);
+            var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value);
+
+            if (slideQuestionModel.Hidden)
+            {
+                questionInfoSlide.SlideShowTransition.Hidden = MsoTriState.msoFalse;
+                questionTimerSlide.SlideShowTransition.Hidden = MsoTriState.msoFalse;
+                resultsSlide.SlideShowTransition.Hidden = MsoTriState.msoFalse;
+            }
+            else
+            {
+                questionInfoSlide.SlideShowTransition.Hidden = MsoTriState.msoTrue;
+                questionTimerSlide.SlideShowTransition.Hidden = MsoTriState.msoTrue;
+                resultsSlide.SlideShowTransition.Hidden = MsoTriState.msoTrue;
+            }
+
+            slideQuestionModel.Hidden = !slideQuestionModel.Hidden;
+
+            // recalculate question index: asrnova.click index needs to start with 0 and should not leave out any number!
+            var ignoredQuestions = 0;
+
+            for (var i = 0; i < slideSessionModel.Questions.Count; i++)
+            {
+                var question = slideSessionModel.Questions.FirstOrDefault(q => q.Index == i);
+
+                if (question == null)
+                    continue;
+
+                if (question.Hidden)
+                {
+                    ignoredQuestions++;
+                }
+                else
+                {
+                    question.RecalculatedOnlineIndex = question.Index - ignoredQuestions;
+                }
+            }
+
+            PresentationInformationStore.StoreSlideSessionModel(slideSessionModel);
+        }
+
         public Slide CreateNewSlide()
         {
             var currentSlide = SlideTracker.CurrentSlide;
@@ -266,6 +322,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
+                RecalculatedOnlineIndex = slideSessionModel.Questions.Count(q => !q.Hidden),
                 QuestionInfoSlideId = slide.SlideID
             };
 

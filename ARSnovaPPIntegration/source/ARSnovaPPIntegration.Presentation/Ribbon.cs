@@ -169,6 +169,26 @@ namespace ARSnovaPPIntegration.Presentation
             return Images.trash;
         }
 
+        public string GetHideButtonLabel(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("Hide/Show");
+        }
+
+        public string GetHideButtonSupertip(Office.IRibbonControl control)
+        {
+            return this.localizationService.Translate("A hidden quiz won't show up during the presentation.");
+        }
+
+        public void HideButtonClick(Office.IRibbonControl control)
+        {
+            this.ribbonHelper.HideOrShowQuizFromSelectedSlide(SlideTracker.CurrentSlide);
+        }
+
+        public Bitmap GetHideButtonImage(Office.IRibbonControl control)
+        {
+            return Images.unlock;
+        }
+
         public string GetArsnovaSlideContextMenuLabel(Office.IRibbonControl control)
         {
             return "ARSnova";

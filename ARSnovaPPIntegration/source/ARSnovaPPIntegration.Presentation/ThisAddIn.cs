@@ -142,6 +142,7 @@ namespace ARSnovaPPIntegration.Presentation
             this.ribbon.RefreshRibbonControl("AddButton");
             this.ribbon.RefreshRibbonControl("EditButton");
             this.ribbon.RefreshRibbonControl("DeleteButton");
+            this.ribbon.RefreshRibbonControl("HideButton");
         }
 
         private void Setup()

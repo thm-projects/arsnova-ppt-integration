@@ -351,6 +351,7 @@
     <Content Include="Content\Images\right.png" />
     <Content Include="Content\Images\settings.png" />
     <Content Include="Content\Images\trash.png" />
+    <Content Include="Content\Images\unlock.png" />
     <Content Include="Content\Images\world.png" />
     <None Include="Resources\favicon.bmp" />
   </ItemGroup>

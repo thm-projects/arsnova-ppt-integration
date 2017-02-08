@@ -33,6 +33,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public int Index { get; set; }
 
+        public int RecalculatedOnlineIndex { get; set; }
+
         public Guid Id { get; set; }
 
         public int Countdown { get; set; } = 20;
@@ -95,5 +97,7 @@ namespace ARSnovaPPIntegration.Business.Model
         {
             this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
         }
+
+        public bool Hidden { get; set; } = false;
     }
 }

@@ -469,4 +469,10 @@
   <data name="Observe_white_spaces_in_the_answer:" xml:space="preserve">
     <value>Observe white spaces in the answer:</value>
   </data>
+  <data name="Hide/Show" xml:space="preserve">
+    <value>Hide/Show</value>
+  </data>
+  <data name="A_hidden_quiz_won't_show_up_during_the_presentation." xml:space="preserve">
+    <value>A hidden quiz won't show up during the presentation.</value>
+  </data>
 </root>

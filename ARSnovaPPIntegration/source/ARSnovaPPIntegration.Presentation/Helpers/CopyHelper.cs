@@ -20,6 +20,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                 AnswerOptionAmount = currentSlideQuestionModel.AnswerOptionAmount,
                 QuestionInitType = currentSlideQuestionModel.QuestionInitType,
                 Index = currentSlideQuestionModel.Index,
+                RecalculatedOnlineIndex = currentSlideQuestionModel.RecalculatedOnlineIndex,
                 ChartType = currentSlideQuestionModel.ChartType,
                 ResultsSlideId = currentSlideQuestionModel.ResultsSlideId,
                 QuestionTimerSlideId = currentSlideQuestionModel.QuestionTimerSlideId,

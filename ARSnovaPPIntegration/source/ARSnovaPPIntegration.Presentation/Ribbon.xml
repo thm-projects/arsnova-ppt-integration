@@ -44,6 +44,14 @@
                onAction="DeleteButtonClick"
                getImage="GetDeleteButtonImage"
                size="large" />
+              <button id="HideButton"
+               getLabel="GetHideButtonLabel"
+               keytip="CA"
+               getSupertip="GetHideButtonSupertip"
+               getEnabled="IsOneArsnovaSlideSelected"
+               onAction="HideButtonClick"
+               getImage="GetHideButtonImage"
+               size="large" />
             </group>
               <group id="infoGroup" getLabel="GetInfoGroupLabel" visible="true">
                 <button id="HelpButton"
