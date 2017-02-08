@@ -82,12 +82,13 @@ namespace ARSnovaPPIntegration.Business
                     ChartTypeEnum = Excel.XlChartType.xl3DBarClustered,
                     Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.grouped_3d_bars)
                 },
-                new ExcelChartType
+                // TODO support more excel chart types
+                /*new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Pie"),
                     ChartTypeEnum = Excel.XlChartType.xlPie,
                     Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images._3d_pie)
-                },
+                },*/
                 new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Grouped columns"),
