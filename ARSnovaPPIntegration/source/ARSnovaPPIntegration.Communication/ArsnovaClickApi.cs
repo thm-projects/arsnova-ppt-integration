@@ -108,22 +108,6 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        public ValidationResult ResetSession(string hashtag, string privateKey)
-        {
-            var createHashtagConfig = new
-            {
-                hashtag = Uri.EscapeDataString(hashtag),
-                privateKey = Uri.EscapeDataString(privateKey)
-            };
-
-            var jsonBody = JsonConvert.SerializeObject(new
-            {
-                sessionConfiguration = createHashtagConfig
-            });
-
-            return this.DefaultPostRequestWithHashtagAndPrivateKey("resetSession", jsonBody);
-        }
-
         public ValidationResult AddHashtag(string hashtag, string privateKey)
         {
             var createHashtagConfig = new
