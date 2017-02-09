@@ -29,7 +29,7 @@ namespace ARSnovaPPIntegration.Presentation.Configuration
             // Type registration
             unityContainer
                 .RegisterType<ILocalizationService, LocalizationService>(new ContainerControlledLifetimeManager())
-                .RegisterType<IArsnovaEuService, ArsnovaEuService>(new ContainerControlledLifetimeManager())
+                .RegisterType<IArsnovaVotingService, ArsnovaVotingService>(new ContainerControlledLifetimeManager())
                 .RegisterType<ISlideManipulator, SlideManipulator>(new ContainerControlledLifetimeManager())
                 .RegisterType<IArsnovaClickService, ArsnovaClickService>(new ContainerControlledLifetimeManager())
                 .RegisterType<IQuestionTypeTranslator, QuestionTypeTranslator>(new ContainerControlledLifetimeManager())

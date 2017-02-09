@@ -86,7 +86,7 @@ namespace ARSnovaPPIntegration.Business
                 /*new ExcelChartType
                 {
                     Name= this.localizationService.Translate("Pie"),
-                    ChartTypeEnum = Excel.XlChartType.xlPie,
+                    ChartTypeEnum = Excel.XlChartType.xl3DPie,
                     Image = BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images._3d_pie)
                 },*/
                 new ExcelChartType

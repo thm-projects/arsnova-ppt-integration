@@ -40,6 +40,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.InitializeWindowCommandBindings();
 
             this.InitAnswerOptionList();
+
+            foreach (var answerOption in this.SlideQuestionModel.AnswerOptions)
+            {
+                answerOption.IsTruePropertyChangedEventHandler += this.OnIsTruePropertyChanged;
+            }
         }
 
         public string Header => this.LocalizationService.Translate("Set the answer option(s)");
@@ -114,12 +119,26 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             this.SlideQuestionModel.AnswerOptionModelChanged();
                         };
 
+                        generalAnswerOption.IsTruePropertyChangedEventHandler += this.OnIsTruePropertyChanged;
+
                         this.SlideQuestionModel.AnswerOptions.Add(generalAnswerOption);
                     }
                 }
 
                 this.SlideQuestionModel.AnswerOptionAmount = value;
                 this.OnPropertyChanged(nameof(this.AnswerOptions));
+            }
+        }
+
+        public void OnIsTruePropertyChanged(object o, EventArgs eventArgs)
+        {
+            if (this.SessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType))
+            {
+                // just interact if more than one answer option is selected
+
+                // can't deselect one, just select a new one (add reset option to model)
+
+                // just
             }
         }
 

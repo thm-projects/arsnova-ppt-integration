@@ -54,6 +54,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArsnovaEuConfig.cs" />
     <Compile Include="ExcelChartType.cs" />
     <Compile Include="GeneralAnswerOption.cs" />
     <Compile Include="QuestionType.cs" />

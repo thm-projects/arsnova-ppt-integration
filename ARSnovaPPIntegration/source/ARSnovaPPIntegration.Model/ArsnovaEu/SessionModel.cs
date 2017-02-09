@@ -1,4 +1,4 @@
-﻿namespace ARSnovaPPIntegration.Model
+﻿namespace ARSnovaPPIntegration.Communication.Model.ArsnovaEu
 {
     public class SessionModel
     {

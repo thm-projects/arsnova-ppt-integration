@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IArsnovaClickService.cs" />
-    <Compile Include="IArsnovaEuService.cs" />
+    <Compile Include="IArsnovaVotingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

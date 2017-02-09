@@ -8,7 +8,6 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
-using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 
 namespace ARSnovaPPIntegration.Business
@@ -19,7 +18,7 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly IArsnovaClickService arsnovaClickService;
 
-        private readonly IArsnovaEuService arsnovaVotingService;
+        private readonly IArsnovaVotingService arsnovaVotingService;
 
         private readonly ILocalizationService localizationService;
 
@@ -42,13 +41,13 @@ namespace ARSnovaPPIntegration.Business
         public SessionManager(
             ISlideManipulator slideManipulator,
             IArsnovaClickService arsnovaClickService,
-            IArsnovaEuService arsnovaEuService,
+            IArsnovaVotingService arsnovaVotingService,
             ILocalizationService localizationService,
             ISessionInformationProvider sessionInformationProvider)
         {
             this.slideManipulator = slideManipulator;
             this.arsnovaClickService = arsnovaClickService;
-            this.arsnovaVotingService = arsnovaEuService;
+            this.arsnovaVotingService = arsnovaVotingService;
             this.localizationService = localizationService;
             this.sessionInformationProvider = sessionInformationProvider;
         }

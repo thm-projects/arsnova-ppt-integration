@@ -73,7 +73,7 @@
   <ItemGroup>
     <Compile Include="ArsnovaClickApi.cs" />
     <Compile Include="ArsnovaClickService.cs" />
-    <Compile Include="ArsnovaEuService.cs" />
+    <Compile Include="ArsnovaVotingService.cs" />
     <Compile Include="CastHelpers\Converters\ObjectMapper.cs" />
     <Compile Include="CastHelpers\Models\AnswerOptionsReturn.cs" />
     <Compile Include="CastHelpers\Models\QuestionGroupReturn.cs" />
