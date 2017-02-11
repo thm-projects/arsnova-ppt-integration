@@ -49,12 +49,12 @@
                 <StackPanel Orientation="Horizontal">
                     <RadioButton IsChecked="{Binding IsArsnovaClickSession}" Margin="5 6 0 0"/>
                     <Image Width="25" Height="25" Margin="5 0 0 0" Source="{Binding Path=ArsnovaClickLogo}" />
-                    <Label Content="Arsnova.click" />
+                    <Label Content="ARSnova.click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton IsChecked="{Binding IsArsnovaVotingSession}" Margin="5 6 0 0"/>
                     <Image Width="25" Height="25" Margin="5 0 0 0" Source="{Binding ArsnovaVotingLogo}"/>
-                    <Label Content="Arsnova.voting" />
+                    <Label Content="ARSnova.voting" />
                 </StackPanel>
             </StackPanel>
             <TextBox Name="HashtagTextBox" Width="200"
