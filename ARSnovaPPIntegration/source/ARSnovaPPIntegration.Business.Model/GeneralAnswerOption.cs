@@ -27,7 +27,9 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public event EventHandler ObjectChangedEventHandler;
 
-        public event EventHandler IsTruePropertyChangedEventHandler;
+        //public event EventHandler IsTruePropertyChangedEventHandler;
+
+        public Guid Id { get; set; }
 
         public int Position
         {
@@ -55,7 +57,7 @@ namespace ARSnovaPPIntegration.Business.Model
             {
                 this.isTrue = value;
                 this.ObjectChangedEventHandler?.Invoke(this, EventArgs.Empty);
-                this.IsTruePropertyChangedEventHandler?.Invoke(this, EventArgs.Empty);
+                //this.IsTruePropertyChangedEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
 

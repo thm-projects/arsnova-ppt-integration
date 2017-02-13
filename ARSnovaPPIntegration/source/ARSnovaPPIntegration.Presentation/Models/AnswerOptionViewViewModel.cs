@@ -40,11 +40,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
             this.InitializeWindowCommandBindings();
 
             this.InitAnswerOptionList();
-
-            foreach (var answerOption in this.SlideQuestionModel.AnswerOptions)
-            {
-                answerOption.IsTruePropertyChangedEventHandler += this.OnIsTruePropertyChanged;
-            }
         }
 
         public string Header => this.LocalizationService.Translate("Set the answer option(s)");
@@ -109,6 +104,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     {
                         var generalAnswerOption = new GeneralAnswerOption
                                                   {
+                                                      Id = Guid.NewGuid(),
                                                       Position = i,
                                                       Text = string.Empty,
                                                       IsTrue = false
@@ -119,8 +115,6 @@ namespace ARSnovaPPIntegration.Presentation.Models
                             this.SlideQuestionModel.AnswerOptionModelChanged();
                         };
 
-                        generalAnswerOption.IsTruePropertyChangedEventHandler += this.OnIsTruePropertyChanged;
-
                         this.SlideQuestionModel.AnswerOptions.Add(generalAnswerOption);
                     }
                 }
@@ -130,17 +124,26 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public void OnIsTruePropertyChanged(object o, EventArgs eventArgs)
+        /* Fake a radio button
+         * public void OnIsTruePropertyChanged(object o, EventArgs eventArgs)
         {
             if (this.SessionInformationProvider.IsSingleChoiceQuestion(this.SlideQuestionModel.QuestionType))
             {
-                // just interact if more than one answer option is selected
+                var settedAnswerOption = (GeneralAnswerOption)o;
 
-                // can't deselect one, just select a new one (add reset option to model)
-
-                // just
+                // if set to true, set all others to false
+                if (settedAnswerOption.IsTrue && this.SlideQuestionModel.AnswerOptions.Count(a => a.IsTrue) > 1)
+                {
+                    foreach (var answerOption in this.SlideQuestionModel.AnswerOptions)
+                    {
+                        if (answerOption.Id != settedAnswerOption.Id)
+                        {
+                            answerOption.IsTrue = false;
+                        }
+                    }
+                }
             }
-        }
+        }*/
 
         public ObservableCollection<GeneralAnswerOption> AnswerOptions
         {
@@ -252,7 +255,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             }
         }
 
-        public string CorrectValLabelText => this.LocalizationService.Translate("RangedCorrectValue value");
+        public string CorrectValLabelText => this.LocalizationService.Translate("Correct value");
 
         public int RangedMaxValue {
             get
@@ -490,12 +493,18 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                            {
                                                                new GeneralAnswerOption
                                                                {
+                                                                   Id = Guid.NewGuid(),
                                                                    RangedLowerLimit = 0,
                                                                    RangedCorrectValue = 50,
                                                                    RangedHigherLimit = 100,
                                                                    AnswerOptionType = AnswerOptionType.ShowRangedAnswerOption
                                                                }
                                                            };
+
+                    this.SlideQuestionModel.AnswerOptions.First().ObjectChangedEventHandler += delegate
+                    {
+                        this.SlideQuestionModel.AnswerOptionModelChanged();
+                    };
                 }
 
                 if (this.ShowTwoAnswerOptions)
@@ -531,6 +540,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
         {
             var generalAnswerOption =  new GeneralAnswerOption
             {
+                Id = Guid.NewGuid(),
                 Position = position,
                 Text = text,
                 IsTrue = isTrue

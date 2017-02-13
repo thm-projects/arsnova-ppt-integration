@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 using ARSnovaPPIntegration.Presentation.Commands;
@@ -87,6 +88,10 @@ namespace ARSnovaPPIntegration.Presentation.Window
             }
         }
 
+        public bool ToolBarVisibility
+        {
+            get { return this.NewButtonVisibility || this.EditButtonVisibility || this.DeleteButtonVisibility; }
+        }
         public void SetWindowCommandBindings(List<CommandBinding> commandBindings)
         {
             this.CommandBindings.AddRange(commandBindings);
@@ -100,6 +105,7 @@ namespace ARSnovaPPIntegration.Presentation.Window
             this.OnPropertyChanged("NewButtonVisibility");
             this.OnPropertyChanged("EditButtonVisibility");
             this.OnPropertyChanged("DeleteButtonVisibility");
+            this.OnPropertyChanged("ToolBarVisibility");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

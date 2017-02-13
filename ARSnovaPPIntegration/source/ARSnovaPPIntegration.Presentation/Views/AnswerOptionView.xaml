@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="450"
+             d:DesignHeight="550" d:DesignWidth="800"
+             Height="550" Width="800"
              Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -66,7 +67,7 @@
                 </Label>
             </StackPanel>
             <StackPanel x:Name="GeneralAnswerOptions" Visibility="{Binding ShowGeneralAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label Content="{Binding SelectAnswerOptionAmountText}"/>
                     <ComboBox ItemsSource="{Binding Path=PossibleAnswerOptionsAmount, Mode=OneWay}"
                               SelectedValue="{Binding Path=AnswerOptionAmount, Mode=TwoWay}" 
@@ -102,7 +103,7 @@
                 </DataGrid>
             </StackPanel>
             <StackPanel x:Name="SurveyAnswerOptions" Visibility="{Binding ShowSurveyAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label Content="{Binding SelectAnswerOptionAmountText}"/>
                     <ComboBox ItemsSource="{Binding Path=PossibleAnswerOptionsAmount, Mode=OneWay}"
                               SelectedValue="{Binding Path=AnswerOptionAmount, Mode=TwoWay}" 
@@ -154,8 +155,8 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel x:Name="GradeOrEvaluationAnswerOptions" Visibility="{Binding ShowGradeOrEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <TextBlock Text="{Binding GradeOrEvaluationAnswerOptionsInfoText}" TextWrapping="Wrap" Margin="15 20 15 0" />
+            <StackPanel x:Name="GradeOrEvaluationAnswerOptions" Visibility="{Binding ShowGradeOrEvaluationAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding GradeOrEvaluationAnswerOptionsInfoText}" TextWrapping="Wrap" Margin="15 20 15 0"/>
                 <DataGrid ItemsSource="{Binding AnswerOptions}" 
                           AutoGenerateColumns="False"
                           CanUserSortColumns="False"
@@ -214,7 +215,7 @@
                         Margin="10,0,0,0"/>
                 </-->
             </StackPanel>
-            <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel x:Name="TwoAnswerOptions" Visibility="{Binding ShowTwoAnswerOptions, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding GradeOrEvaluationAnswerOptionsInfoText}" TextWrapping="Wrap" Margin="15 20 15 0" />
                 <DataGrid ItemsSource="{Binding AnswerOptions}" 
                           AutoGenerateColumns="False"

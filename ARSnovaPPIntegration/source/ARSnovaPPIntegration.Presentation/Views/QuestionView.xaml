@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:resources="clr-namespace:ARSnovaPPIntegration.Presentation.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="450"
+             d:DesignHeight="500" d:DesignWidth="600"
+             Height="500" Width="600"
              Background="White">
     <UserControl.Resources>
         <ResourceDictionary>

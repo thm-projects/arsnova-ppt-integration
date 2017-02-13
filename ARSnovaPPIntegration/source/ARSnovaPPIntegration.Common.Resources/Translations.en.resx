@@ -487,4 +487,7 @@
   <data name="This_is_an_integration_of_the_two_audience_response_systems_ARSnova.voting_and_ARSnova.click." xml:space="preserve">
     <value>This is an integration of the two Audience Response Systems ARSnova.voting and ARSnova.click.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Correct value</value>
+  </data>
 </root>

@@ -41,6 +41,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewManagement
             // show just the first window in the taskbar -> the other ones belong to this one (owner property)
             newPresentationGroup.Window = new WindowContainer(this) { ShowInTaskbar = !this.presentationGroups.Any() };
 
+
             if (this.activePresentationGroup != null)
             {
                 this.oldActivePresentationGroup = this.activePresentationGroup;
@@ -52,7 +53,7 @@ namespace ARSnovaPPIntegration.Presentation.ViewManagement
                 var ppWindowIntPtr = new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND);
                 var windowCast = new Win32Window(ppWindowIntPtr);
                 var newWindowInteropHelper = new WindowInteropHelper(newPresentationGroup.Window);
-                newWindowInteropHelper.Owner = windowCast.Handle;
+                newWindowInteropHelper.Owner = windowCast.Handle; 
             }
 
             var logoBitmap = Images.ARSnova_Logo;

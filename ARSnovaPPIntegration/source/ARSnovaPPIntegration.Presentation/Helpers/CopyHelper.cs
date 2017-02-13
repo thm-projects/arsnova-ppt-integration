@@ -46,6 +46,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             {
                 var newAnswerOption = new GeneralAnswerOption
                 {
+                    Id = answerOption.Id,
                     RangedLowerLimit = answerOption.RangedLowerLimit,
                     RangedCorrectValue = answerOption.RangedCorrectValue,
                     RangedHigherLimit = answerOption.RangedHigherLimit,
@@ -63,6 +64,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                     slideQuestionModel.AnswerOptionModelChanged();
                 };
 
+                newAnswerOption.Id = answerOption.Id;
                 newAnswerOption.Position = answerOption.Position;
                 newAnswerOption.Text = answerOption.Text;
                 newAnswerOption.IsTrue = answerOption.IsTrue;
