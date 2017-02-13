@@ -237,6 +237,7 @@
     </Compile>
     <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\ExceptionHandler.cs" />
+    <Compile Include="Helpers\Win32Window.cs" />
     <Compile Include="Helpers\PresentationInformationStore.cs" />
     <Compile Include="Helpers\RibbonHelper.cs" />
     <Compile Include="Helpers\SlideTracker.cs" />

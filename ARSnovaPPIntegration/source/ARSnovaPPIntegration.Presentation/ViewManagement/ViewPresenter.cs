@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 using ARSnovaPPIntegration.Presentation.Content;
+using ARSnovaPPIntegration.Presentation.Helpers;
 using ARSnovaPPIntegration.Presentation.Window;
 
 namespace ARSnovaPPIntegration.Presentation.ViewManagement
@@ -36,16 +38,25 @@ namespace ARSnovaPPIntegration.Presentation.ViewManagement
         {
             var newPresentationGroup = new PresentationGroup();
 
-            // show just one window in the taskbar
+            // show just the first window in the taskbar -> the other ones belong to this one (owner property)
             newPresentationGroup.Window = new WindowContainer(this) { ShowInTaskbar = !this.presentationGroups.Any() };
 
             if (this.activePresentationGroup != null)
             {
                 this.oldActivePresentationGroup = this.activePresentationGroup;
+                newPresentationGroup.Window.Owner = this.oldActivePresentationGroup.Window;
+            }
+            else
+            {
+                // powerpoint is owner (first arsnova-integration-window)
+                var ppWindowIntPtr = new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND);
+                var windowCast = new Win32Window(ppWindowIntPtr);
+                var newWindowInteropHelper = new WindowInteropHelper(newPresentationGroup.Window);
+                newWindowInteropHelper.Owner = windowCast.Handle;
             }
 
             var logoBitmap = Images.ARSnova_Logo;
-            var iconBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            var iconBitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
                                              logoBitmap.GetHbitmap(),
                                              IntPtr.Zero,
                                              Int32Rect.Empty,
