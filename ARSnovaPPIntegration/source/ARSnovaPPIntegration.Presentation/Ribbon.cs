@@ -276,7 +276,7 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetHelpButtonImage(Office.IRibbonControl control)
         {
-            return Images.information;
+            return Images.world;
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
@@ -298,14 +298,18 @@ namespace ARSnovaPPIntegration.Presentation
 
         public Bitmap GetAboutButtonImage(Office.IRibbonControl control)
         {
-            return Images.world;
+            return Images.information;
         }
 
         public void AboutButtonClick(Office.IRibbonControl control)
         {
+            var infoText = $"{this.localizationService.Translate("Product Information")}: {this.localizationService.Translate("This is an integration of the two audience response systems ARSnova.voting and ARSnova.click.")}" +
+                $"Version: 0.1 (beta){Environment.NewLine}" + 
+                $"{this.localizationService.Translate("License")}: {this.localizationService.Translate("This software is Open Source and licensed with the GNU General Public License Version 3")}";
+
             PopUpWindow.InformationWindow(
                 this.localizationService.Translate("Information"),
-                $"Version: 0.1 (beta){Environment.NewLine}");
+                infoText);
         }
 
         #endregion

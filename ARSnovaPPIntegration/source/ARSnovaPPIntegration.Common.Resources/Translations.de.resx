@@ -474,4 +474,16 @@
   <data name="A_hidden_quiz_won't_show_up_during_the_presentation." xml:space="preserve">
     <value>Ein ausgeblendetes Quiz wird während der Präsentation nicht angezeigt.</value>
   </data>
+  <data name="This_software_is_Open_Source_and_licensed_with_the_GNU_General_Public_License_Version_3" xml:space="preserve">
+    <value>Diese Software is Open Source und lizenziert mit der GNU General Public License Version 3</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="Product_Information" xml:space="preserve">
+    <value>Produktinformation</value>
+  </data>
+  <data name="This_is_an_integration_of_the_two_audience_response_systems_ARSnova.voting_and_ARSnova.click." xml:space="preserve">
+    <value>Dies ist eine Integration der beiden Audience Response Systeme ARSnova.voting und ARSnova.click</value>
+  </data>
 </root>
