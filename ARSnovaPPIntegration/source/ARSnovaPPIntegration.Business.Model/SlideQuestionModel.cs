@@ -23,6 +23,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public event EventHandler ObjectChangedEventHandler;
 
+        public string ArsnovaVotingId { get; set; }
+
         public int QuestionInfoSlideId { get; set; }
 
         public int? QuestionTimerSlideId { get; set; }

@@ -6,12 +6,10 @@ namespace ARSnovaPPIntegration.Communication.Contract
 {
     public interface IArsnovaVotingService
     {
-        SessionModel CreateNewSession(SlideSessionModel slideSessionModel);
+        void CreateNewSession(SlideSessionModel slideSessionModel);
+
+        void CreateOrUpdateQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
         SessionModel GetSessionInformation(SlideSessionModel slideSessionModel);
-
-        List<LectureQuestionModel> GetLectureQuestionInfos(SlideSessionModel slideSessionModel);
-
-        LectureQuestionModel GetLectureQuestion(SlideSessionModel slideSessionModel, string questionId);
     }
 }

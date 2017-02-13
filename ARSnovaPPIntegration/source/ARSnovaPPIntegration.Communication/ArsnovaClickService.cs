@@ -325,7 +325,7 @@ namespace ARSnovaPPIntegration.Communication
                     return "FreeTextQuestion";
                 case QuestionTypeEnum.SurveyClick:
                     return "SurveyQuestion";
-                default: return String.Empty;
+                default: return string.Empty;
             }
         }
     }

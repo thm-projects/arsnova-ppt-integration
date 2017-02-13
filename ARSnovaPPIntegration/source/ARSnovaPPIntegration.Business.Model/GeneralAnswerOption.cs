@@ -28,6 +28,10 @@ namespace ARSnovaPPIntegration.Business.Model
         public event EventHandler ObjectChangedEventHandler;
 
         //public event EventHandler IsTruePropertyChangedEventHandler;
+        public GeneralAnswerOption()
+        {
+            this.Id = Guid.NewGuid();
+        }
 
         public Guid Id { get; set; }
 

@@ -37,9 +37,10 @@ namespace ARSnovaPPIntegration.Communication
             this.apiUrl = "https://arsnova.eu/api/";
         }
 
-        public SessionModel CreateNewSession(SlideSessionModel slideSessionModel)
+        public void CreateNewSession(SlideSessionModel slideSessionModel)
         {
             this.CheckAuthentification(slideSessionModel);
+            // TODO Name for arsnova session!
             var urlSuffix = "session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
             var requestBody = "{" +
                                "\"courseId\": null," +
@@ -67,11 +68,32 @@ namespace ARSnovaPPIntegration.Communication
 
                 var responseString = this.GetResponseString(request, HttpStatusCode.Created);
 
-                return JsonConvert.DeserializeObject<SessionModel>(responseString);
+                var sessionModel = JsonConvert.DeserializeObject<SessionModel>(responseString);
+
+                slideSessionModel.Hashtag = sessionModel.keyword;
             }
             catch (JsonReaderException exception)
             {
                 throw new CommunicationException("Json-Object not mappable", exception);
+            }
+        }
+
+        public void CreateOrUpdateQuestion(SlideSessionModel slideSessionModel, int questionIndex)
+        {
+            var question = slideSessionModel.Questions.FirstOrDefault(q => q.Index == questionIndex);
+
+            if (question != null)
+            {
+                var arsnovaQuestion = this.SlideQuestionModelToLectureQuestionModel(question, slideSessionModel.Hashtag);
+
+                if (string.IsNullOrEmpty(question.ArsnovaVotingId))
+                {
+                    this.CreateQuestion(arsnovaQuestion);
+                }
+                else
+                {
+                    this.UpdateQuestion(arsnovaQuestion, question.ArsnovaVotingId);
+                }
             }
         }
 
@@ -81,7 +103,70 @@ namespace ARSnovaPPIntegration.Communication
             throw new NotImplementedException();
         }
 
-        public LectureQuestionModel GetLectureQuestion(SlideSessionModel slideSessionModel, string questionId)
+        private void CreateQuestion(LectureQuestionModel question)
+        {
+            // TODO
+        }
+
+        private void UpdateQuestion(LectureQuestionModel question, string arsnovaVotingQuestionId)
+        {
+            // TODO
+        }
+
+        private LectureQuestionModel SlideQuestionModelToLectureQuestionModel(SlideQuestionModel questionModel, string sessionKey)
+        {
+            var answerOptionList = new List<PossibleAnswerObject>();
+
+            foreach (var answerOption in questionModel.AnswerOptions)
+            {
+                answerOptionList.Add(new PossibleAnswerObject
+                {
+                    correct = answerOption.IsTrue,
+                    text = answerOption.Text,
+                    value = answerOption.IsTrue ? 10 : -10
+                });
+            }
+
+            return new LectureQuestionModel
+            {
+                abstention = false, // TODO should abstention be allowed?
+                active = false,
+                imageQuestion = false,
+                number = questionModel.Index - 1,
+                possibleAnswers = answerOptionList,
+                questionType = this.QuestionTypeToVotingQuestionType(questionModel.QuestionType),
+                questionVariant = "lecture",
+                releasedFor = "all",
+                sessionKeyword = sessionKey,
+                showStatistic = true,
+                subject = "powerpoint generated questions", // TODO
+                text = questionModel.QuestionText,
+                type = "skill_question",
+                votingDisabled = true
+            };
+        }
+
+        private string QuestionTypeToVotingQuestionType(QuestionTypeEnum questionType)
+        {
+            switch (questionType)
+            {
+                case QuestionTypeEnum.SingleChoiceVoting:
+                    return "sc";
+                case QuestionTypeEnum.MultipleChoiceVoting:
+                    return "mc";
+                case QuestionTypeEnum.YesNoVoting:
+                    return "yesno";
+                case QuestionTypeEnum.FreeTextVoting:
+                    return "freetext";
+                case QuestionTypeEnum.EvaluationVoting:
+                    return "vote";
+                case QuestionTypeEnum.GradsVoting:
+                    return "school";
+                default: return string.Empty;
+            }
+        }
+
+        private LectureQuestionModel GetLectureQuestion(SlideSessionModel slideSessionModel, string questionId)
         {
             this.CheckAuthentification(slideSessionModel);
             var urlSuffix = "lecturerquestion/" + questionId;
@@ -98,12 +183,6 @@ namespace ARSnovaPPIntegration.Communication
             {
                 throw new CommunicationException("Json-Object not mappable", exception);
             }
-        }
-
-        public List<LectureQuestionModel> GetLectureQuestionInfos(SlideSessionModel slideSessionModel)
-        {
-            // TODO
-            throw new NotImplementedException();
         }
 
         private void CheckAuthentification(SlideSessionModel slideSessionModel)
