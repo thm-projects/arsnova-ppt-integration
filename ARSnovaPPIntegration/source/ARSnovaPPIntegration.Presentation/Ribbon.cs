@@ -303,8 +303,8 @@ namespace ARSnovaPPIntegration.Presentation
 
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            var infoText = $"{this.localizationService.Translate("Product Information")}: {this.localizationService.Translate("This is an integration of the two audience response systems ARSnova.voting and ARSnova.click.")}" +
-                $"Version: 0.1 (beta){Environment.NewLine}" + 
+            var infoText = $"{this.localizationService.Translate("Product Information")}: {this.localizationService.Translate("This is an integration of the two audience response systems ARSnova.voting and ARSnova.click.")}{Environment.NewLine}{Environment.NewLine}" +
+                $"Version: 0.1 (beta){Environment.NewLine}{Environment.NewLine}" + 
                 $"{this.localizationService.Translate("License")}: {this.localizationService.Translate("This software is Open Source and licensed with the GNU General Public License Version 3")}";
 
             PopUpWindow.InformationWindow(
