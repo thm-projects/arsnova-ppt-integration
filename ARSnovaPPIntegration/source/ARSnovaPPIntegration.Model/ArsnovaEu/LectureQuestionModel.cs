@@ -4,6 +4,8 @@ namespace ARSnovaPPIntegration.Communication.Model.ArsnovaEu
 {
     public class LectureQuestionModel
     {
+        public string _id { get; set; }
+
         public string type { get; set; }
 
         public string questionType { get; set; }

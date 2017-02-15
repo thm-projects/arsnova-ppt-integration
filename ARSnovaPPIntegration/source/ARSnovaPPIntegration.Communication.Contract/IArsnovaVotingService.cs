@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ARSnovaPPIntegration.Business.Model;
+﻿using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaEu;
 
 namespace ARSnovaPPIntegration.Communication.Contract

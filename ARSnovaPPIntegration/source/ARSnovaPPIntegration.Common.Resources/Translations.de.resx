@@ -489,4 +489,10 @@
   <data name="String1" xml:space="preserve">
     <value>Richtiger Wert</value>
   </data>
+  <data name="There_is_no_session_name_set." xml:space="preserve">
+    <value>Es muss ein Session-Name ausgewählt werden.</value>
+  </data>
+  <data name="There_is_no_session_short_name_set." xml:space="preserve">
+    <value>Der Kurzname der Session muss gesetzt werden.</value>
+  </data>
 </root>

@@ -76,6 +76,18 @@ namespace ARSnovaPPIntegration.Presentation.Models
             set { this.SlideSessionModel.Hashtag = value; }
         }
 
+        public string SessionName
+        {
+            get { return this.SlideSessionModel.ArsnovaVotingSessionName; }
+            set { this.SlideSessionModel.ArsnovaVotingSessionName = value; }
+        }
+
+        public string SessionShortName
+        {
+            get { return this.SlideSessionModel.ArsnovaVotingSessionShortName; }
+            set { this.SlideSessionModel.ArsnovaVotingSessionShortName = value; }
+        }
+
         public BitmapImage ArsnovaClickLogo => BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.ARSnovaClick_Logo);
 
         public BitmapImage ArsnovaVotingLogo => BitmapToBitmapImageConverter.ConvertBitmapImageToBitmap(Images.ARSnova_Logo);
@@ -137,17 +149,30 @@ namespace ARSnovaPPIntegration.Presentation.Models
                     errorString += this.LocalizationService.Translate("There is no quizname set.") + Environment.NewLine;
 
                 if (this.Hashtag.Length > 25)
-                    errorString += this.LocalizationService.Translate("Quizname should not contains more than 25 characters.") + Environment.NewLine;
+                    errorString +=
+                        this.LocalizationService.Translate("Quizname should not contains more than 25 characters.") +
+                        Environment.NewLine;
 
                 if (this.Hashtag.Any(c => c == '?'
-                        || c == '/'
-                        || c == '\\'
-                        || c == '#'
-                        || c == '"'
-                        || c == '\''))
+                                          || c == '/'
+                                          || c == '\\'
+                                          || c == '#'
+                                          || c == '"'
+                                          || c == '\''))
                 {
-                    errorString += this.LocalizationService.Translate("The quizname shouldn't contain any of the following characters") + ": ?, /, \\, #, \", '" + Environment.NewLine;
+                    errorString +=
+                        this.LocalizationService.Translate(
+                            "The quizname shouldn't contain any of the following characters") + ": ?, /, \\, #, \", '" +
+                        Environment.NewLine;
                 }
+            }
+            else
+            {
+                if (this.SessionName.Length <= 0)
+                    errorString += this.LocalizationService.Translate("There is no session name set.") + Environment.NewLine;
+
+                if (this.SessionShortName.Length <= 0)
+                    errorString += this.LocalizationService.Translate("There is no session short name set.") + Environment.NewLine;
             }
 
             return new Tuple<bool, string>(errorString == string.Empty, errorString);
@@ -172,7 +197,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                                 if (validationResult.Item1)
                                 {
-                                    this.SessionManager.SetHashtag(this.SlideSessionModel);
+                                    
+                                    // TODO  maybe get and set user information from office
+                                    // Globals.ThisAddIn.Application.
+
+                                    this.SessionManager.CreateSession(this.SlideSessionModel);
                                     this.SlideSessionModel.SessionTypeSet = true;
                                     PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
                                     this.OnSelectArsnovaTypeViewClose?.Invoke();

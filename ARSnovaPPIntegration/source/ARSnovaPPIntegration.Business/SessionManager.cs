@@ -8,6 +8,7 @@ using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Contract.Exceptions;
+using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 
 namespace ARSnovaPPIntegration.Business
@@ -72,12 +73,17 @@ namespace ARSnovaPPIntegration.Business
             return this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
         }
 
-        public ValidationResult SetHashtag(SlideSessionModel slideSessionModel)
+        public void CreateSession(SlideSessionModel slideSessionModel)
         {
-            var tupleResult = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
-            slideSessionModel.PrivateKey = tupleResult.Item2;
-
-            return tupleResult.Item1;
+            if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
+            {
+                var privateKey = this.arsnovaClickService.CreateHashtag(slideSessionModel.Hashtag);
+                slideSessionModel.PrivateKey = privateKey;
+            }
+            else
+            {
+                this.arsnovaVotingService.CreateNewSession(slideSessionModel);
+            }
         }
 
         private ValidationResult SetArsnovaClickOnlineSession(SlideSessionModel slideSessionModel)
@@ -114,12 +120,7 @@ namespace ARSnovaPPIntegration.Business
 
             if (!alreadyCreatedHashtag)
             {
-                validationResult = this.SetHashtag(slideSessionModel);
-
-                if (!validationResult.Success)
-                {
-                    return validationResult;
-                }
+                this.CreateSession(slideSessionModel);
             }
 
             validationResult = this.arsnovaClickService.UpdateQuestionGroup(slideSessionModel);

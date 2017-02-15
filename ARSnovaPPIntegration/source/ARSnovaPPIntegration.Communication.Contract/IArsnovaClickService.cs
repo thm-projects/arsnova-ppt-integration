@@ -14,7 +14,7 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         SessionConfiguration GetSessionConfiguration(string hashtag);
 
-        Tuple<ValidationResult, string> CreateHashtag(string hashtag);
+        string CreateHashtag(string hashtag);
 
         ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel);
 

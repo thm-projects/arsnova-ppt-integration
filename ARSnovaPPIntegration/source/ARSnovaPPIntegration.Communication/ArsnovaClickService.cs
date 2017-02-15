@@ -87,29 +87,19 @@ namespace ARSnovaPPIntegration.Communication
             return sessionConfiguration;
         }
 
-        public Tuple<ValidationResult, string> CreateHashtag(string hashtag)
+        public string CreateHashtag(string hashtag)
         {
-            // Temporary: One private key per question
-            var privateKey = string.Empty;
-
             try
             {
-                privateKey = this.arsnovaClickApi.NewPrivateKey();
+                var privateKey = this.arsnovaClickApi.NewPrivateKey();
+                this.arsnovaClickApi.AddHashtag(hashtag, privateKey);
+
+                return privateKey;
             }
             catch (CommunicationException comException)
             {
-                return new Tuple<ValidationResult, string>(
-                    new ValidationResult
-                    {
-                        FailureTitel = "Error - create hashtag",
-                        FailureMessage = comException.Message
-                    },
-                    privateKey);
+                throw new Exception("Error while creating hashtag: arsnova.click server down? Statuscode: " + comException.HttpStatusCode);
             }
-
-            var validationResult = this.arsnovaClickApi.AddHashtag(hashtag, privateKey);
-
-            return new Tuple<ValidationResult, string>(validationResult, privateKey);
         }
 
         public ValidationResult UpdateQuestionGroup(SlideSessionModel slideSessionModel)

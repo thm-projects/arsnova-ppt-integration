@@ -28,10 +28,6 @@ namespace ARSnovaPPIntegration.Communication
 
         private readonly string apiUrl;
 
-        private List<Cookie> arsnovaEuCookies;
-
-        private bool isAuthentificated = false;
-
         public ArsnovaVotingService()
         {
             this.apiUrl = "https://arsnova.eu/api/";
@@ -40,13 +36,13 @@ namespace ARSnovaPPIntegration.Communication
         public void CreateNewSession(SlideSessionModel slideSessionModel)
         {
             this.CheckAuthentification(slideSessionModel);
-            // TODO Name for arsnova session!
+            
             var urlSuffix = "session/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
             var requestBody = "{" +
                                "\"courseId\": null," +
                                "\"courseType\": null," +
                                "\"creationTime\": \"" + this.ConvertToUnixTimestampString(DateTime.Now) + "\"," +
-                               "\"name\": \"testQuizOffice\"," +
+                               "\"name\": \"" + slideSessionModel.ArsnovaVotingSessionName + "\"," +
                                "\"ppAuthorMail\": null," +
                                "\"ppAuthorName\": null," +
                                "\"ppDescription\": null," +
@@ -57,12 +53,12 @@ namespace ARSnovaPPIntegration.Communication
                                "\"ppSubject\": null," +
                                "\"ppUniversity\": null," +
                                "\"sessionType\": null," +
-                               "\"shortName\": \"tqo\"" +
+                               "\"shortName\": \"" + slideSessionModel.ArsnovaVotingSessionShortName + "\"" +
                            "}";
 
             try
             {
-                var request = this.CreateWebRequest(urlSuffix, HttpMethod.Post);
+                var request = this.CreateWebRequest(slideSessionModel, urlSuffix, HttpMethod.Post);
 
                 request = this.AddContentToRequest(request, requestBody);
 
@@ -71,6 +67,9 @@ namespace ARSnovaPPIntegration.Communication
                 var sessionModel = JsonConvert.DeserializeObject<SessionModel>(responseString);
 
                 slideSessionModel.Hashtag = sessionModel.keyword;
+
+                this.SetFeatures(slideSessionModel);
+
             }
             catch (JsonReaderException exception)
             {
@@ -84,15 +83,16 @@ namespace ARSnovaPPIntegration.Communication
 
             if (question != null)
             {
+                this.CheckAuthentification(slideSessionModel);
                 var arsnovaQuestion = this.SlideQuestionModelToLectureQuestionModel(question, slideSessionModel.Hashtag);
 
                 if (string.IsNullOrEmpty(question.ArsnovaVotingId))
                 {
-                    this.CreateQuestion(arsnovaQuestion);
+                    question.ArsnovaVotingId = this.CreateQuestion(slideSessionModel, arsnovaQuestion, slideSessionModel.Hashtag);
                 }
                 else
                 {
-                    this.UpdateQuestion(arsnovaQuestion, question.ArsnovaVotingId);
+                    this.UpdateQuestion(slideSessionModel, arsnovaQuestion, question.ArsnovaVotingId);
                 }
             }
         }
@@ -103,14 +103,85 @@ namespace ARSnovaPPIntegration.Communication
             throw new NotImplementedException();
         }
 
-        private void CreateQuestion(LectureQuestionModel question)
+        private void SetFeatures(SlideSessionModel slideSessionModel)
         {
-            // TODO
+            var questionId = slideSessionModel.Hashtag;
+            // already authentificated
+            // activate questions-feature only
+
+            var urlSuffix = "session/" + questionId + "/features?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            var requestBody = "{" +
+                               "\"clicker\": false," +
+                               "\"custom\": true," +
+                               "\"peerGrading\": false," +
+                               "\"twitterWall\": false," +
+                               "\"liveFeedback\": false," +
+                               "\"interposedFeedback\": false," +
+                               "\"liveClicker\": false," +
+                               "\"flashcard\": false," +
+                               "\"total\": false," +
+                               "\"jitt\": true," +
+                               "\"lecture\": false," +
+                               "\"feedback\": false," +
+                               "\"interposed\": false," +
+                               "\"pi\": false," +
+                               "\"learningProgress\": false," +
+                               "\"flashcardFeature\": false," +
+                               "\"slides\": false," +
+                           "}";
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, urlSuffix, HttpMethod.Put);
+
+                request = this.AddContentToRequest(request, requestBody);
+
+                this.SendRequest(request);
+            }
+            catch (JsonReaderException exception)
+            {
+                throw new CommunicationException("Error while setting custom features", exception);
+            }
         }
 
-        private void UpdateQuestion(LectureQuestionModel question, string arsnovaVotingQuestionId)
+        private string CreateQuestion(SlideSessionModel slideSessionModel, LectureQuestionModel question, string sessionId)
+        {;
+            var apiPath = "session/" + sessionId + "/question?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            var requestBody = JsonConvert.SerializeObject(question);
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Post);
+                request = this.AddContentToRequest(request, requestBody);
+
+                var responseString = this.GetResponseString(request, HttpStatusCode.Created);
+
+                var questionModel = JsonConvert.DeserializeObject<LectureQuestionModel>(responseString);
+
+                return questionModel._id;
+            }
+            catch (JsonReaderException exception)
+            {
+                throw new CommunicationException("Create question failed (maybe Json-Object not mappable)", exception);
+            }
+        }
+
+        private void UpdateQuestion(SlideSessionModel slideSessionModel, LectureQuestionModel question, string arsnovaVotingQuestionId)
         {
-            // TODO
+            var apiPath = "lecturerquestion/" + arsnovaVotingQuestionId;
+            var requestBody = JsonConvert.SerializeObject(question);
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Put);
+                request = this.AddContentToRequest(request, requestBody);
+
+                this.SendRequest(request);
+            }
+            catch (JsonReaderException exception)
+            {
+                throw new CommunicationException("Update question failed", exception);
+            }
         }
 
         private LectureQuestionModel SlideQuestionModelToLectureQuestionModel(SlideQuestionModel questionModel, string sessionKey)
@@ -169,11 +240,11 @@ namespace ARSnovaPPIntegration.Communication
         private LectureQuestionModel GetLectureQuestion(SlideSessionModel slideSessionModel, string questionId)
         {
             this.CheckAuthentification(slideSessionModel);
-            var urlSuffix = "lecturerquestion/" + questionId;
+            var apiPath = "lecturerquestion/" + questionId;
 
             try
             {
-                var request = this.CreateWebRequest(urlSuffix, HttpMethod.Get);
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get);
 
                 var responseString = this.GetResponseString(request);
 
@@ -187,7 +258,7 @@ namespace ARSnovaPPIntegration.Communication
 
         private void CheckAuthentification(SlideSessionModel slideSessionModel)
         {
-            if (!this.isAuthentificated)
+            if (!slideSessionModel.ArsnovaEuConfig.IsAuthenticated)
             {
                 if (string.IsNullOrEmpty(slideSessionModel.ArsnovaEuConfig.GuestUserName)
                     && slideSessionModel.ArsnovaEuConfig.LoginMethod == LoginMethod.Guest)
@@ -199,35 +270,37 @@ namespace ARSnovaPPIntegration.Communication
                 switch (slideSessionModel.ArsnovaEuConfig.LoginMethod)
                 {
                     case LoginMethod.Guest:
-                        this.Login(slideSessionModel.ArsnovaEuConfig.GuestUserName, slideSessionModel.ArsnovaEuConfig.LoginMethod);
+                        this.FirstLogin(slideSessionModel);
                         break;
                 }
             }
         }
 
         // should be called with alternative login methods only (auto guest login)
-        private void Login(string userName, LoginMethod loginMethod)
+        private void FirstLogin(SlideSessionModel slideSessionModel)
         {
-            // TODO how long does the cookie remain? check it everytime before a HTTP-Request is fired!
-            // TODO loginMethod
-            var urlSuffix = "auth/login?type=guest&user=" + userName + "&_dc=" +
+            var userName = slideSessionModel.ArsnovaEuConfig.GuestUserName;
+            var loginMethod = slideSessionModel.ArsnovaEuConfig.LoginMethod;
+
+            var apiPath = "auth/login?type=guest&user=" + userName + "&_dc=" +
                       this.ConvertToUnixTimestampString(DateTime.Now);
 
             try
             {
-                var request = this.CreateWebRequest(urlSuffix, HttpMethod.Get);
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get);
 
                 var response = (HttpWebResponse)request.GetResponse();
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
+                    slideSessionModel.ArsnovaEuConfig.Cookies = new List<Cookie>();
                     // login success
                     foreach (Cookie cookie in response.Cookies)
                     {
-                        this.arsnovaEuCookies.Add(cookie);
+                        slideSessionModel.ArsnovaEuConfig.Cookies.Add(cookie);
                     }
 
-                    this.isAuthentificated = true;
+                    slideSessionModel.ArsnovaEuConfig.IsAuthenticated = true;
                 }
             }
             catch (WebException webException)
@@ -236,7 +309,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private HttpWebRequest CreateWebRequest(string apiUrlSuffix, HttpMethod httpMethod)
+        private HttpWebRequest CreateWebRequest(SlideSessionModel slideSessionModel, string apiUrlSuffix, HttpMethod httpMethod)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(this.apiUrl + apiUrlSuffix);
             webRequest.Accept = "*/*";
@@ -273,7 +346,7 @@ namespace ARSnovaPPIntegration.Communication
                 webRequest.Headers.Set(arsnovaEuHeader.Item1, arsnovaEuHeader.Item2);
             }
 
-            foreach (var cookie in this.arsnovaEuCookies)
+            foreach (var cookie in slideSessionModel.ArsnovaEuConfig.Cookies)
             {
                 webRequest.CookieContainer.Add(cookie);
             }

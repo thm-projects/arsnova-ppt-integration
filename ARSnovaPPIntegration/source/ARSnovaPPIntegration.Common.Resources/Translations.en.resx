@@ -490,4 +490,10 @@
   <data name="String1" xml:space="preserve">
     <value>Correct value</value>
   </data>
+  <data name="There_is_no_session_name_set." xml:space="preserve">
+    <value>There is no session name set.</value>
+  </data>
+  <data name="There_is_no_session_short_name_set." xml:space="preserve">
+    <value>There is no session short name set.</value>
+  </data>
 </root>

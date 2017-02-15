@@ -10,7 +10,7 @@ namespace ARSnovaPPIntegration.Business.Contract
     {
         ValidationResult SetClickSession(SlideSessionModel slideSessionModel);
 
-        ValidationResult SetHashtag(SlideSessionModel slideSessionModel);
+        void CreateSession(SlideSessionModel slideSessionModel);
 
         void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide);
 

@@ -1,5 +1,4 @@
 ﻿using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,10 +28,10 @@ namespace ARSnovaPPIntegration.Test.Communication
         {
             var slideSessionModel = new SlideSessionModel();
             slideSessionModel.ArsnovaEuConfig = new ArsnovaEuConfig();
-            var sessionData = this.arsnovaVotingService.CreateNewSession(slideSessionModel);
+            this.arsnovaVotingService.CreateNewSession(slideSessionModel);
 
-            Assert.IsFalse(string.IsNullOrEmpty(sessionData.keyword));
-            Assert.IsTrue(sessionData.keyword.Length == 8);
+            Assert.IsFalse(string.IsNullOrEmpty(slideSessionModel.Hashtag));
+            Assert.IsTrue(slideSessionModel.Hashtag.Length == 8);
         }
     }
 }
