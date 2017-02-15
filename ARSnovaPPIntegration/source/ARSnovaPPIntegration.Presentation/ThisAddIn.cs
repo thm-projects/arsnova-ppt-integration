@@ -102,7 +102,7 @@ namespace ARSnovaPPIntegration.Presentation
             // TODO check if timer is running and cancel next or previous event!
 
             // start arsnova click question when getting on results slide
-            var isSlideStartArsnovaClickQuestion = SlideTracker.IsPresentationOnStartArsnovaClickSlide();
+            var isSlideStartArsnovaClickQuestion = SlideTracker.IsPresentationOnStartArsnovaSlide();
 
             if (isSlideStartArsnovaClickQuestion.Item1)
             {
@@ -110,11 +110,12 @@ namespace ARSnovaPPIntegration.Presentation
                 return;
             }
 
-            var isSlideStartArsnovaVotingQuestion = SlideTracker.IsPresentationOnStartArsnovaVotingSlide();
+            var isSlideArsnovaVotingResultsSlide = SlideTracker.IsPresentationOnResultsArsnovaVotingSlide();
 
-            if (isSlideStartArsnovaVotingQuestion.Item1)
+            if (isSlideArsnovaVotingResultsSlide.Item1)
             {
-                this.ribbonHelper.StartQuiz(isSlideStartArsnovaVotingQuestion.Item2);
+                //GetResults
+                this.ribbonHelper.GetAndDisplayArsnovaVotingResults(isSlideArsnovaVotingResultsSlide.Item2);
             }
         }
 

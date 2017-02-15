@@ -9,6 +9,10 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         void CreateOrUpdateQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
-        SessionModel GetSessionInformation(SlideSessionModel slideSessionModel);
+        void SetSessionAsActive(SlideSessionModel slideSessionModel);
+
+        void StartQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
+
+        ArsnovaVotingResultReturn GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
     }
 }

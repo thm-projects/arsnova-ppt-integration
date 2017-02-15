@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
+using ARSnovaPPIntegration.Communication.Model.ArsnovaEu;
 
 namespace ARSnovaPPIntegration.Business.Contract
 {
@@ -14,9 +14,13 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide);
 
+        void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide);
+
         void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide resultsSlide, int countdown);
 
         void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results);
+
+        void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, ArsnovaVotingResultReturn results);
 
         void CleanResultsPage(Slide resultsSlide);
     }

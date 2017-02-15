@@ -14,7 +14,7 @@ using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
-
+using ARSnovaPPIntegration.Communication.Model.ArsnovaEu;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ARSnovaPPIntegration.Business
@@ -81,13 +81,29 @@ namespace ARSnovaPPIntegration.Business
             // TODO create QR-Code / get it from click server
         }
 
-        public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
+        public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide resultsSlide)
         {
             var answerOptionType = this.sessionInformationProvider.GetAnswerOptionType(slideQuestionModel.QuestionType);
             var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
                                                 || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
 
             this.RemoveShapesFromSlide(questionInfoSlide);
+            this.RemoveShapesFromSlide(resultsSlide);
+
+            questionInfoSlide.FollowMasterBackground = MsoTriState.msoTrue;
+            resultsSlide.FollowMasterBackground = MsoTriState.msoTrue;
+
+            this.SetQuestionInfoSlidecontent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
+
+            this.CleanResultsPage(resultsSlide);
+        }
+
+        public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
+        {
+            var answerOptionType = this.sessionInformationProvider.GetAnswerOptionType(slideQuestionModel.QuestionType);
+            var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
+                                                || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
+
             this.RemoveShapesFromSlide(questionTimerSlide);
             this.RemoveShapesFromSlide(resultsSlide);
 
@@ -95,17 +111,7 @@ namespace ARSnovaPPIntegration.Business
             questionTimerSlide.FollowMasterBackground = MsoTriState.msoTrue;
             resultsSlide.FollowMasterBackground = MsoTriState.msoTrue;
 
-            questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
-
-            // Button not possible, just added a textbox to start quiz on next slide
-            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
-            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
-            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
-            startQuizTextRange.Font.Name = this.font;
-            startQuizTextRange.Font.Size = 20;
-            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
-            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            this.SetQuestionInfoSlidecontent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
 
 
             questionTimerSlide.Layout = PpSlideLayout.ppLayoutBlank;
@@ -193,6 +199,12 @@ namespace ARSnovaPPIntegration.Business
                                                 || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
 
             questionTimerSlide.Shapes[isRangedOrFreetextQuestion ? 3 : 4].TextFrame.TextRange.Text = countdown.ToString();
+        }
+
+        public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide,
+            ArsnovaVotingResultReturn results)
+        {
+            // TODO!
         }
 
         public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
@@ -291,6 +303,23 @@ namespace ARSnovaPPIntegration.Business
             resultsHeaderTextRange.Font.Size = 26;
             resultsHeaderTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
             resultsHeaderTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+        }
+
+        private void SetQuestionInfoSlidecontent(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, bool isRangedOrFreetextQuestion)
+        {
+            this.RemoveShapesFromSlide(questionInfoSlide);
+
+            questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
+            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
+
+            // Button not possible, just added a textbox to start quiz on next slide
+            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
+            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
+            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
+            startQuizTextRange.Font.Name = this.font;
+            startQuizTextRange.Font.Size = 20;
+            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
         }
 
         private void RemoveShapesFromSlide(Slide slide)

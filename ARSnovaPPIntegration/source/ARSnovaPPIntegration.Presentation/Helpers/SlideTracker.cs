@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
 using ARSnovaPPIntegration.Business.Model;
+using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -59,7 +60,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             GetSlideById(slideId).Delete();
         }
 
-        public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaClickSlide()
+        public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaSlide()
         {
             var currentShowedSlidePosition = CurrentShowedPresentationSlidePosition;
 
@@ -80,9 +81,24 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             return new Tuple<bool, SlideQuestionModel>(false, null);
         }
 
-        public static Tuple<bool, SlideQuestionModel> IsPresentationOnStartArsnovaVotingSlide()
+        public static Tuple<bool, SlideQuestionModel> IsPresentationOnResultsArsnovaVotingSlide()
         {
-            // TODO
+            var currentShowedSlidePosition = CurrentShowedPresentationSlidePosition;
+
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            if (slideSessionModel == null || slideSessionModel.SessionType == SessionType.ArsnovaClick)
+            {
+                return new Tuple<bool, SlideQuestionModel>(false, null);
+            }
+
+            foreach (var slideQuestionModel in slideSessionModel.Questions)
+            {
+                if (slideQuestionModel.ResultsSlideId.HasValue
+                    && GetSlideById(slideQuestionModel.ResultsSlideId.Value).SlideNumber == currentShowedSlidePosition)
+                    return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
+            }
+
             return new Tuple<bool, SlideQuestionModel>(false, null);
         }
 

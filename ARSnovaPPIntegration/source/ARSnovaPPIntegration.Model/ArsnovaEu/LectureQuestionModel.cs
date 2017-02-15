@@ -2,10 +2,15 @@
 
 namespace ARSnovaPPIntegration.Communication.Model.ArsnovaEu
 {
-    public class LectureQuestionModel
+    public class LectureQuestionModelWithId : LectureQuestionModel
     {
         public string _id { get; set; }
 
+        public string _rev { get; set; }
+    }
+
+    public class LectureQuestionModel
+    {
         public string type { get; set; }
 
         public string questionType { get; set; }

@@ -23,8 +23,6 @@ namespace ARSnovaPPIntegration.Business
 
         private readonly ILocalizationService localizationService;
 
-        private readonly ISessionInformationProvider sessionInformationProvider;
-
         private int countdown = 0;
 
         private SlideQuestionModel currentQuestionModel;
@@ -43,14 +41,12 @@ namespace ARSnovaPPIntegration.Business
             ISlideManipulator slideManipulator,
             IArsnovaClickService arsnovaClickService,
             IArsnovaVotingService arsnovaVotingService,
-            ILocalizationService localizationService,
-            ISessionInformationProvider sessionInformationProvider)
+            ILocalizationService localizationService)
         {
             this.slideManipulator = slideManipulator;
             this.arsnovaClickService = arsnovaClickService;
             this.arsnovaVotingService = arsnovaVotingService;
             this.localizationService = localizationService;
-            this.sessionInformationProvider = sessionInformationProvider;
         }
 
         public ValidationResult SetClickSession(SlideSessionModel slideSessionModel)
@@ -59,18 +55,27 @@ namespace ARSnovaPPIntegration.Business
             return this.SetArsnovaClickOnlineSession(slideSessionModel);
         }
 
-        public ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel)
+        public void ActivateSession(SlideSessionModel slideSessionModel)
         {
-            // push data to server
-            var validationResult = this.SetClickSession(slideSessionModel);
-
-            if (!validationResult.Success)
+            if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
             {
-                return validationResult;
-            }
+                // push data to server
+                this.SetClickSession(slideSessionModel);
 
-            // set question as active
-            return this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+                // set question as active
+                this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag,
+                    slideSessionModel.PrivateKey);
+            }
+            else
+            {
+                // set session as active
+                this.arsnovaVotingService.SetSessionAsActive(slideSessionModel);
+            }
+        }
+
+        public void CreateOrUpdateArsnovaVotingQuestion(SlideSessionModel slideSessionModel, int questionIndex)
+        {
+            this.arsnovaVotingService.CreateOrUpdateQuestion(slideSessionModel, questionIndex);
         }
 
         public void CreateSession(SlideSessionModel slideSessionModel)
@@ -148,7 +153,7 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
-        public void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionTimerSlideParam, Slide resultsSlideParam)
+        public void StartClickQuestion(SlideSessionModel slideSessionModel, int questionIndex, Slide questionTimerSlideParam, Slide resultsSlideParam)
         {
             var validationResult = new ValidationResult();
 
@@ -158,28 +163,29 @@ namespace ARSnovaPPIntegration.Business
             this.resultsSlide = resultsSlideParam;
             this.currentSlideSessionModel = slideSessionModel;
 
-            var clickQuesitonTypes = this.sessionInformationProvider.GetAvailableQuestionsClick();
+            validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, this.currentQuestionModel.RecalculatedOnlineIndex);
 
-            if (clickQuesitonTypes.Any(qt => qt.QuestionTypeEnum == this.currentQuestionModel.QuestionType))
-            {
-                // start click question
-                validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, this.currentQuestionModel.RecalculatedOnlineIndex);
-
-                this.countdown = this.currentQuestionModel.Countdown;
-                this.timer = new Timer(1000);
-                this.timer.Elapsed += this.HandleTimerEvent;
-                this.timer.Start();
-            }
-            else
-            {
-                // TODO start voting question
-                //validationResult = this.arsnovaClickService.StartNextQuestion(slideSessionModel, questionIndex);
-            }
+            this.countdown = this.currentQuestionModel.Countdown;
+            this.timer = new Timer(1000);
+            this.timer.Elapsed += this.HandleTimerEvent;
+            this.timer.Start();
 
             if (!validationResult.Success)
             {
                 throw new CommunicationException(validationResult.FailureMessage);
             }
+        }
+
+        public void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel, Slide resultsSlideParam)
+        {
+            this.arsnovaVotingService.StartQuestion(slideSessionModel, slideQuestionModel);
+        }
+
+        public void GetAndDisplayArsnovaVotingResults(SlideSessionModel slideSessionModel , SlideQuestionModel slideQuestionModel , Slide resultsSlide)
+        {
+            var arsnovaVotingResponses = this.arsnovaVotingService.GetResults(slideSessionModel, slideQuestionModel);
+
+            this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, arsnovaVotingResponses);
         }
 
         private void HandleTimerEvent(object source, ElapsedEventArgs e)

@@ -55,15 +55,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
 
-            // arsnova voting don't need to be activated
-            if (slideSessionModel != null && slideSessionModel.SessionType == SessionType.ArsnovaClick)
+            if (slideSessionModel != null)
             {
-                var validationResult = this.sessionManager.ActivateClickSession(slideSessionModel);
-
-                if (!validationResult.Success)
-                {
-                    throw new CommunicationException(validationResult.FailureMessage);
-                }
+                this.sessionManager.ActivateSession(slideSessionModel);
             }
         }
 
@@ -168,11 +162,28 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
         public void StartQuiz(SlideQuestionModel slideQuestionModel)
         {
             var slideSessionModel = this.GetSlideSessionModel();
-
-            var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value);
             var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value);
 
-            this.sessionManager.StartSession(slideSessionModel, slideQuestionModel.Index, questionTimerSlide, resultsSlide);
+            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
+            {
+                // arsnova click
+                var questionTimerSlide = SlideTracker.GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value);
+                this.sessionManager.StartClickQuestion(slideSessionModel, slideQuestionModel.Index, questionTimerSlide,
+                    resultsSlide);
+            }
+            else
+            {
+                // arsnova.voting
+                this.sessionManager.StartVotingQuestion(slideSessionModel, slideQuestionModel, resultsSlide);
+            }
+        }
+
+        public void GetAndDisplayArsnovaVotingResults(SlideQuestionModel slideQuestionModel)
+        {
+            var slideSessionModel = this.GetSlideSessionModel();
+            var resultsSlide = SlideTracker.GetSlideById(slideQuestionModel.ResultsSlideId.Value);
+
+            this.sessionManager.GetAndDisplayArsnovaVotingResults(slideSessionModel, slideQuestionModel, resultsSlide);
         }
 
         public void DeleteQuizFromSelectedSlide(Slide slide)

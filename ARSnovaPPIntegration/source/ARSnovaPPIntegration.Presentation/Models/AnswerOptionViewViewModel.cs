@@ -417,6 +417,13 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                         this.SlideQuestionModel.SlideNumbers = $"{questionInfoSlideNumber} - {questionInfoSlideNumber + 2}";
                                     }
 
+                                    if (this.SlideSessionModel.SessionType == SessionType.ArsnovaVoting)
+                                    {
+                                        // arsnova.click session will be posted to server on presentation startup
+                                        this.SessionManager.CreateOrUpdateArsnovaVotingQuestion(this.SlideSessionModel,
+                                            this.SlideQuestionModel.Index);
+                                    }
+
                                     this.AddSessionToSlides(this.SlideQuestionModel);
                                     PresentationInformationStore.StoreSlideSessionModel(this.SlideSessionModel);
                                 }

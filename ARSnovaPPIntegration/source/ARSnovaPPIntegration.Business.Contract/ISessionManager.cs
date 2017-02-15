@@ -12,13 +12,20 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void CreateSession(SlideSessionModel slideSessionModel);
 
-        void StartSession(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide);
+        void StartClickQuestion(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide);
+
+        void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel, Slide resultsSlide);
+
+        void GetAndDisplayArsnovaVotingResults(SlideSessionModel slideSessionModel,
+            SlideQuestionModel slideQuestionModel, Slide resultsSlide);
 
         void RemoveClickQuizDataFromServer(SlideSessionModel slideSessionModel);
 
         void KeepAlive(SlideSessionModel slideSessionModel);
 
-        ValidationResult ActivateClickSession(SlideSessionModel slideSessionModel);
+        void ActivateSession(SlideSessionModel slideSessionModel);
+
+        void CreateOrUpdateArsnovaVotingQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
         event EventHandler ShowNextSlideEventHandler;
     }
