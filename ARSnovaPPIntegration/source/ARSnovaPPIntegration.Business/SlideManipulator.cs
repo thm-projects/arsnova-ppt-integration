@@ -189,7 +189,7 @@ namespace ARSnovaPPIntegration.Business
                                   userNick = "TestUserTH6"
                               }
                           };
-            this.SetResults(slideQuestionModel, resultsSlide, results);*/
+            this.SetVotingResults(slideQuestionModel, resultsSlide, results);*/
         }
 
         public void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide questionTimerSlide, int countdown)
@@ -201,13 +201,32 @@ namespace ARSnovaPPIntegration.Business
             questionTimerSlide.Shapes[isRangedOrFreetextQuestion ? 3 : 4].TextFrame.TextRange.Text = countdown.ToString();
         }
 
-        public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide,
+        public void SetVotingResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide,
             ArsnovaVotingResultReturn results)
         {
-            // TODO!
+            var floatLeft = 150;
+            var floatTop = 300;
+            var width = 650;
+            var height = 250;
+
+            switch (slideQuestionModel.ChartType)
+            {
+                case Excel.XlChartType.xl3DColumnClustered:
+                case Excel.XlChartType.xl3DBarClustered:
+                    floatLeft = 150;
+                    floatTop = 150;
+                    height = 450;
+                    break;
+                case Excel.XlChartType.xl3DPie:
+                    floatLeft = 200;
+                    width = 500;
+                    height = 450;
+                    break;
+            }
+            this.AddChartToShape(slideQuestionModel, resultsSlide, null, results, floatLeft, floatTop, width, height);
         }
 
-        public void SetResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
+        public void SetClickResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results)
         {
             // chart init dimensions
             var floatLeft = 150;
@@ -215,79 +234,56 @@ namespace ARSnovaPPIntegration.Business
             var width = 650;
             var height = 250;
 
-            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
+            var best10Responses = this.GetBest10Responses(slideQuestionModel, results);
+
+            var resultsColumn1Text = string.Empty;
+            var resultsColumn2Text = string.Empty;
+            var i = 1;
+
+            foreach (var response in best10Responses)
             {
-                // arsnova.click
-                var best10Responses = this.GetBest10Responses(slideQuestionModel, results);
-
-                var resultsColumn1Text = string.Empty;
-                var resultsColumn2Text = string.Empty;
-                var i = 1;
-
-                foreach (var response in best10Responses)
+                if (i % 2 == 0)
                 {
-                    if (i % 2 == 0)
-                    {
-                        resultsColumn2Text += $"{i}. {response.userNick}{Environment.NewLine}";
-                    }
-                    else
-                    {
-                        resultsColumn1Text += $"{i}. {response.userNick}{Environment.NewLine}";
-                    }
-
-                    i++;
+                    resultsColumn2Text += $"{i}. {response.userNick}{Environment.NewLine}";
+                }
+                else
+                {
+                    resultsColumn1Text += $"{i}. {response.userNick}{Environment.NewLine}";
                 }
 
-                var leaderBoardColumn1TextBox =
-                    resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
-                var leaderBoardColumn1TextRange = leaderBoardColumn1TextBox.TextFrame.TextRange;
-                leaderBoardColumn1TextRange.Text = resultsColumn1Text;
-                leaderBoardColumn1TextRange.Font.Name = this.font;
-                leaderBoardColumn1TextRange.Font.Size = 20;
-                leaderBoardColumn1TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-
-                var leaderBoardColumn2TextBox =
-                    resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
-                var leaderBoardColumn2TextRange = leaderBoardColumn2TextBox.TextFrame.TextRange;
-                leaderBoardColumn2TextRange.Text = resultsColumn2Text;
-                leaderBoardColumn2TextRange.Font.Name = this.font;
-                leaderBoardColumn2TextRange.Font.Size = 20;
-                leaderBoardColumn2TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-
-                // chart dimensions
-                switch (slideQuestionModel.ChartType)
-                {
-                    case Excel.XlChartType.xl3DColumnClustered:
-                    case Excel.XlChartType.xl3DBarClustered:
-                        // use default values
-                        break;
-                    case Excel.XlChartType.xlPie:
-                        floatLeft = 275;
-                        width = 250;
-                        break;
-                }
+                i++;
             }
-            else
-            {
-                // arsnova.voting
-                // chart dimensions
-                switch (slideQuestionModel.ChartType)
-                {
-                    case Excel.XlChartType.xl3DColumnClustered:
-                    case Excel.XlChartType.xl3DBarClustered:
-                        floatLeft = 150;
-                        floatTop = 150;
-                        height = 450;
-                        break;
-                    case Excel.XlChartType.xl3DPie:
-                        floatLeft = 200;
-                        width = 500;
-                        height = 450;
-                        break;
-                }
-            } 
 
-            this.AddChartToShape(slideQuestionModel, resultsSlide, results, floatLeft, floatTop, width, height);
+            var leaderBoardColumn1TextBox =
+                resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 120, 400, 200);
+            var leaderBoardColumn1TextRange = leaderBoardColumn1TextBox.TextFrame.TextRange;
+            leaderBoardColumn1TextRange.Text = resultsColumn1Text;
+            leaderBoardColumn1TextRange.Font.Name = this.font;
+            leaderBoardColumn1TextRange.Font.Size = 20;
+            leaderBoardColumn1TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+            var leaderBoardColumn2TextBox =
+                resultsSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 120, 400, 200);
+            var leaderBoardColumn2TextRange = leaderBoardColumn2TextBox.TextFrame.TextRange;
+            leaderBoardColumn2TextRange.Text = resultsColumn2Text;
+            leaderBoardColumn2TextRange.Font.Name = this.font;
+            leaderBoardColumn2TextRange.Font.Size = 20;
+            leaderBoardColumn2TextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
+            // chart dimensions
+            switch (slideQuestionModel.ChartType)
+            {
+                case Excel.XlChartType.xl3DColumnClustered:
+                case Excel.XlChartType.xl3DBarClustered:
+                    // use default values
+                    break;
+                case Excel.XlChartType.xlPie:
+                    floatLeft = 275;
+                    width = 250;
+                    break;
+            }
+
+            this.AddChartToShape(slideQuestionModel, resultsSlide, results, null, floatLeft, floatTop, width, height);
         }
 
         public void CleanResultsPage(Slide resultsSlide)
@@ -376,17 +372,16 @@ namespace ARSnovaPPIntegration.Business
         private void AddChartToShape(
             SlideQuestionModel slideQuestionModel,
             Slide resultsSlide,
-            List<ResultModel> results,
+            List<ResultModel> clickResults,
+            ArsnovaVotingResultReturn votingResults,
             int floatLeft,
             int floatTop,
             int width,
             int height)
         {
-            // Create new chart in Excel
+            var chartName = "ARSnova Results Chart";
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
-
-            var chartName = "ARSnova Results Chart";
 
             var excelApp = new Excel.Application();
             var workBook = excelApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
@@ -404,13 +399,11 @@ namespace ARSnovaPPIntegration.Business
 
                 switch (slideQuestionModel.QuestionType)
                 {
-                    case QuestionTypeEnum.MultipleChoiceVoting:
                     case QuestionTypeEnum.MultipleChoiceClick:
-                    case QuestionTypeEnum.FreeTextVoting:
                     case QuestionTypeEnum.FreeTextClick:
                     case QuestionTypeEnum.RangedQuestionClick:
-                        var correctAnswerOptionsAmount = this.FilterForCorrectResponsesClick(slideQuestionModel, results).Count;
-                        var wrongAnswerOptionsAmount = results.Count - correctAnswerOptionsAmount;
+                        var correctAnswerOptionsAmount = this.FilterForCorrectResponsesClick(slideQuestionModel, clickResults).Count;
+                        var wrongAnswerOptionsAmount = clickResults.Count - correctAnswerOptionsAmount;
 
                         this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
                         this.SetExcelCellValue(workSheet, "B1", correctAnswerOptionsAmount);
@@ -419,14 +412,47 @@ namespace ARSnovaPPIntegration.Business
 
                         dataRange = workSheet.get_Range("A1", "B2");
                         break;
-                    default:
+                    case QuestionTypeEnum.SingleChoiceClick:
+                    case QuestionTypeEnum.YesNoClick:
+                    case QuestionTypeEnum.TrueFalseClick:
+                    case QuestionTypeEnum.SurveyClick:
                         // Range: One Column for each answer option
                         // One row for the amount of students voted for that answer option
                         for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
                         {
                             var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
                             this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
-                            this.SetExcelCellValue(workSheet, $"B{i + 1}", results.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
+                            this.SetExcelCellValue(workSheet, $"B{i + 1}", clickResults.Count(r => r.answerOptionNumber.Contains(answerOption.Position - 1)));
+                        }
+
+                        dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+                        break;
+                    default:
+                        // arsnova.voting
+                        // 0,0,0,1 -> answeroption 4; 1,0,0,0 -> answeroption 1 etc.; create tuples of position and answerElemt
+                        var resultsList = new List<Tuple<int, ArsnovaVotingResultReturnElement>>();
+                        var charsToRemove = new string[] {"[", "]", ","};
+                        foreach (var resultElement in votingResults.answerOptionElements)
+                        {
+                            var answerTextString = resultElement.answerText;
+
+                            foreach (var charToRemove in charsToRemove)
+                            {
+                                answerTextString = answerTextString.Replace(charToRemove, string.Empty);
+                            }
+
+                            var position = answerTextString.IndexOf("1");
+
+                            resultsList.Add(new Tuple<int, ArsnovaVotingResultReturnElement>(position, resultElement));
+                        }
+
+                        for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                        {
+                            var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
+                            var arsnovaResult = resultsList.First(r => r.Item1 == i).Item2;
+
+                            this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
+                            this.SetExcelCellValue(workSheet, $"B{i + 1}", arsnovaResult.answerCount);
                         }
 
                         dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
@@ -474,8 +500,8 @@ namespace ARSnovaPPIntegration.Business
                         }
                         break;
                     case QuestionTypeEnum.MultipleChoiceVoting:
-                    case QuestionTypeEnum.MultipleChoiceClick:
                     case QuestionTypeEnum.FreeTextVoting:
+                    case QuestionTypeEnum.MultipleChoiceClick:
                     case QuestionTypeEnum.FreeTextClick:
                     case QuestionTypeEnum.RangedQuestionClick:
                         // freetext, ranged and multiple: right and wrong only
@@ -505,6 +531,7 @@ namespace ARSnovaPPIntegration.Business
                         Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 excelApp.Quit();
             }
+
         }
 
         private int GetChartFormat(Excel.XlChartType chartType)

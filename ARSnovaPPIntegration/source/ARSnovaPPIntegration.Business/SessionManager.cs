@@ -185,7 +185,7 @@ namespace ARSnovaPPIntegration.Business
         {
             var arsnovaVotingResponses = this.arsnovaVotingService.GetResults(slideSessionModel, slideQuestionModel);
 
-            this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, arsnovaVotingResponses);
+            this.slideManipulator.SetVotingResults(this.currentQuestionModel, this.resultsSlide, arsnovaVotingResponses);
         }
 
         private void HandleTimerEvent(object source, ElapsedEventArgs e)
@@ -201,7 +201,7 @@ namespace ARSnovaPPIntegration.Business
                 var responses = this.arsnovaClickService.GetResultsForHashtag(this.currentSlideSessionModel.Hashtag, this.currentQuestionModel.RecalculatedOnlineIndex);
                 if (responses != null)
                 {
-                    this.slideManipulator.SetResults(this.currentQuestionModel, this.resultsSlide, responses);
+                    this.slideManipulator.SetClickResults(this.currentQuestionModel, this.resultsSlide, responses);
                 }
 
 
