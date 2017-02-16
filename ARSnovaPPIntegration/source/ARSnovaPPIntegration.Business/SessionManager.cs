@@ -87,6 +87,8 @@ namespace ARSnovaPPIntegration.Business
             }
             else
             {
+                // create new arsnova config
+                slideSessionModel.ArsnovaEuConfig = new ArsnovaEuConfig();
                 this.arsnovaVotingService.CreateNewSession(slideSessionModel);
             }
         }

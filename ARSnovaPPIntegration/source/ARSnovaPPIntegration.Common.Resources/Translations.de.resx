@@ -495,4 +495,10 @@
   <data name="There_is_no_session_short_name_set." xml:space="preserve">
     <value>Der Kurzname der Session muss gesetzt werden.</value>
   </data>
+  <data name="Session_name" xml:space="preserve">
+    <value>Name der Session</value>
+  </data>
+  <data name="Session_short_name" xml:space="preserve">
+    <value>Kurzname der Session</value>
+  </data>
 </root>

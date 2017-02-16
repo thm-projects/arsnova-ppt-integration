@@ -76,6 +76,10 @@ namespace ARSnovaPPIntegration.Presentation.Models
             set { this.SlideSessionModel.Hashtag = value; }
         }
 
+        public string SessionNameLabel => this.LocalizationService.Translate("Session name");
+
+        public string SessionShortNameLabel => this.LocalizationService.Translate("Session short name");
+
         public string SessionName
         {
             get { return this.SlideSessionModel.ArsnovaVotingSessionName; }

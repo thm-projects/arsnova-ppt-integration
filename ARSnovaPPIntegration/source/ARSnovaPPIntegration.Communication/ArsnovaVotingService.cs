@@ -166,30 +166,22 @@ namespace ARSnovaPPIntegration.Communication
 
         private void SetFeatures(SlideSessionModel slideSessionModel)
         {
-            var questionId = slideSessionModel.Hashtag;
+            var sessionId = slideSessionModel.Hashtag;
             // already authentificated
             // activate questions-feature only
 
-            var urlSuffix = "session/" + questionId + "/features?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            var urlSuffix = "session/" + sessionId + "/features?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
             var requestBody = "{" +
-                               "\"clicker\": false," +
-                               "\"custom\": true," +
-                               "\"peerGrading\": false," +
-                               "\"twitterWall\": false," +
-                               "\"liveFeedback\": false," +
-                               "\"interposedFeedback\": false," +
-                               "\"liveClicker\": false," +
-                               "\"flashcard\": false," +
-                               "\"total\": false," +
+                               "\"feedback\": null," +
+                               "\"flashcardFeature\": null," +
+                               "\"interposed\": null," +
                                "\"jitt\": true," +
-                               "\"lecture\": false," +
-                               "\"feedback\": false," +
-                               "\"interposed\": false," +
-                               "\"pi\": false," +
-                               "\"learningProgress\": false," +
-                               "\"flashcardFeature\": false," +
-                               "\"slides\": false," +
-                           "}";
+                               "\"liveFeedback\": null," +
+                               "\"learningProgress\": null," +
+                               "\"lecture\": null," +
+                               "\"pi\": null," +
+                               "\"slides\": null" +
+                              "}";
 
             try
             {
@@ -407,9 +399,13 @@ namespace ARSnovaPPIntegration.Communication
                 webRequest.Headers.Set(arsnovaEuHeader.Item1, arsnovaEuHeader.Item2);
             }
 
-            foreach (var cookie in slideSessionModel.ArsnovaEuConfig.Cookies)
+            if (slideSessionModel.ArsnovaEuConfig.Cookies != null)
             {
-                webRequest.CookieContainer.Add(cookie);
+                foreach (var cookie in slideSessionModel.ArsnovaEuConfig.Cookies)
+                {
+                    webRequest.CookieContainer.Add(cookie);
+                }
+                
             }
 
             return webRequest;

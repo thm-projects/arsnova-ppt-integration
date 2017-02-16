@@ -496,4 +496,10 @@
   <data name="There_is_no_session_short_name_set." xml:space="preserve">
     <value>There is no session short name set.</value>
   </data>
+  <data name="Session_name" xml:space="preserve">
+    <value>Session name</value>
+  </data>
+  <data name="Session_short_name" xml:space="preserve">
+    <value>Session short name</value>
+  </data>
 </root>
