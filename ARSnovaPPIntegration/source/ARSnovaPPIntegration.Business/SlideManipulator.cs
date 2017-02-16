@@ -207,7 +207,7 @@ namespace ARSnovaPPIntegration.Business
             var floatLeft = 150;
             var floatTop = 300;
             var width = 650;
-            var height = 250;
+            var height = 350;
 
             switch (slideQuestionModel.ChartType)
             {
@@ -215,12 +215,11 @@ namespace ARSnovaPPIntegration.Business
                 case Excel.XlChartType.xl3DBarClustered:
                     floatLeft = 150;
                     floatTop = 150;
-                    height = 450;
                     break;
                 case Excel.XlChartType.xl3DPie:
                     floatLeft = 200;
-                    width = 500;
-                    height = 450;
+                    width = 350;
+                    height = 350;
                     break;
             }
             this.AddChartToShape(slideQuestionModel, resultsSlide, null, results, floatLeft, floatTop, width, height);
@@ -427,8 +426,21 @@ namespace ARSnovaPPIntegration.Business
 
                         dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
                         break;
+                    // arsnova.voting
+                    case QuestionTypeEnum.SingleChoiceVoting:
+                        for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
+                        {
+                            var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
+                            var resultItem = votingResults.FirstOrDefault(vr => vr.answerText == answerOption.Text);
+                            var answerCount = resultItem?.answerCount ?? 0;
+
+                            this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
+                            this.SetExcelCellValue(workSheet, $"B{i + 1}", answerCount);
+                        }
+                        dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+                        break;
                     default:
-                        // arsnova.voting
+                        // TODO
                         // 0,0,0,1 -> answeroption 4; 1,0,0,0 -> answeroption 1 etc.; create tuples of position and answerElemt
                         var resultsList = new List<Tuple<int, ArsnovaVotingResultReturnElement>>();
                         var charsToRemove = new string[] {"[", "]", ","};

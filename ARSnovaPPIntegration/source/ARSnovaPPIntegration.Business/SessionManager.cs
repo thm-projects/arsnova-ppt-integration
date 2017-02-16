@@ -190,7 +190,7 @@ namespace ARSnovaPPIntegration.Business
         {
             var arsnovaVotingResponses = this.arsnovaVotingService.GetResults(slideSessionModel, slideQuestionModel);
 
-            this.slideManipulator.SetVotingResults(this.currentQuestionModel, this.resultsSlide, arsnovaVotingResponses);
+            this.slideManipulator.SetVotingResults(slideQuestionModel, resultsSlide, arsnovaVotingResponses);
         }
 
         private void HandleTimerEvent(object source, ElapsedEventArgs e)
