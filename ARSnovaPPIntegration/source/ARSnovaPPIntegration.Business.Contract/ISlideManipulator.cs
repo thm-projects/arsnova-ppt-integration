@@ -20,7 +20,7 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void SetClickResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ResultModel> results);
 
-        void SetVotingResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, ArsnovaVotingResultReturn results);
+        void SetVotingResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide, List<ArsnovaVotingResultReturnElement> results);
 
         void CleanResultsPage(Slide resultsSlide);
     }

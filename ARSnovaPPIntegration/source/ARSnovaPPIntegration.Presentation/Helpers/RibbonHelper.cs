@@ -61,6 +61,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             }
         }
 
+        public bool IsARSnovaClickSession()
+        {
+            var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();
+
+            return slideSessionModel != null && slideSessionModel.SessionType == SessionType.ArsnovaClick;
+        }
+
         public void CleanUpOnStart()
         {
             var slideSessionModel = PresentationInformationStore.GetStoredSlideSessionModel();

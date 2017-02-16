@@ -73,12 +73,16 @@ namespace ARSnovaPPIntegration.Presentation
             try
             {
                 this.ribbonHelper.ActivateSessionIfExists();
-                this.ribbonHelper.CleanUpOnStart();
 
-                this.keepAliveTimer = new Timer();
-                this.keepAliveTimer.Elapsed += this.KeepAliveEvent;
-                this.keepAliveTimer.Interval = 180000;
-                this.keepAliveTimer.Enabled = true;
+                if (this.ribbonHelper.IsARSnovaClickSession())
+                {
+                    this.ribbonHelper.CleanUpOnStart();
+
+                    this.keepAliveTimer = new Timer();
+                    this.keepAliveTimer.Elapsed += this.KeepAliveEvent;
+                    this.keepAliveTimer.Interval = 180000;
+                    this.keepAliveTimer.Enabled = true;
+                }
             }
             catch (CommunicationException arsnovaComException)
             {

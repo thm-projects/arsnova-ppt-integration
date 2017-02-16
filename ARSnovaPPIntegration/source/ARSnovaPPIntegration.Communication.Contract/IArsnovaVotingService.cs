@@ -1,4 +1,6 @@
-﻿using ARSnovaPPIntegration.Business.Model;
+﻿using System.Collections.Generic;
+
+using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaEu;
 
 namespace ARSnovaPPIntegration.Communication.Contract
@@ -13,6 +15,6 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         void StartQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
 
-        ArsnovaVotingResultReturn GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
+        List<ArsnovaVotingResultReturnElement> GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
     }
 }

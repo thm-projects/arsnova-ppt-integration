@@ -1,12 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace ARSnovaPPIntegration.Communication.Model.ArsnovaEu
+﻿namespace ARSnovaPPIntegration.Communication.Model.ArsnovaEu
 {
-    public class ArsnovaVotingResultReturn
-    {
-        public List<ArsnovaVotingResultReturnElement> answerOptionElements { get; set; }
-    }
-
     public class ArsnovaVotingResultReturnElement
     {
         public string _id { get; set; }

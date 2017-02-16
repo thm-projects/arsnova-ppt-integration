@@ -137,11 +137,14 @@ namespace ARSnovaPPIntegration.Business
 
         public void RemoveClickQuizDataFromServer(SlideSessionModel slideSessionModel)
         {
-            var validationResult = this.arsnovaClickService.RemoveQuizData(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
-
-            if (!validationResult.Success)
+            if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
             {
-                throw new CommunicationException(validationResult.FailureMessage);
+                var validationResult = this.arsnovaClickService.RemoveQuizData(slideSessionModel.Hashtag, slideSessionModel.PrivateKey);
+
+                if (!validationResult.Success)
+                {
+                    throw new CommunicationException(validationResult.FailureMessage);
+                }
             }
         }
 

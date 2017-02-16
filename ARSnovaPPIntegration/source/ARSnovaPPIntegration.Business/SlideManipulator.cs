@@ -202,7 +202,7 @@ namespace ARSnovaPPIntegration.Business
         }
 
         public void SetVotingResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide,
-            ArsnovaVotingResultReturn results)
+            List<ArsnovaVotingResultReturnElement> results)
         {
             var floatLeft = 150;
             var floatTop = 300;
@@ -230,7 +230,7 @@ namespace ARSnovaPPIntegration.Business
         {
             // chart init dimensions
             var floatLeft = 150;
-            var floatTop = 300;
+            var floatTop = 280;
             var width = 650;
             var height = 250;
 
@@ -373,25 +373,25 @@ namespace ARSnovaPPIntegration.Business
             SlideQuestionModel slideQuestionModel,
             Slide resultsSlide,
             List<ResultModel> clickResults,
-            ArsnovaVotingResultReturn votingResults,
+            List<ArsnovaVotingResultReturnElement> votingResults,
             int floatLeft,
             int floatTop,
             int width,
             int height)
         {
             var chartName = "ARSnova Results Chart";
-            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
+            //var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
 
             var excelApp = new Excel.Application();
             var workBook = excelApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
             try
             {
-                if (File.Exists(excelWorkBookPath))
+               /* if (File.Exists(excelWorkBookPath))
                 {
                     File.Delete(excelWorkBookPath);
-                }
+                }*/
 
                 var workSheet = (Excel.Worksheet)(workBook.Worksheets[1]);
                 workSheet.Name = "ARSnovaResults";
@@ -432,7 +432,7 @@ namespace ARSnovaPPIntegration.Business
                         // 0,0,0,1 -> answeroption 4; 1,0,0,0 -> answeroption 1 etc.; create tuples of position and answerElemt
                         var resultsList = new List<Tuple<int, ArsnovaVotingResultReturnElement>>();
                         var charsToRemove = new string[] {"[", "]", ","};
-                        foreach (var resultElement in votingResults.answerOptionElements)
+                        foreach (var resultElement in votingResults)
                         {
                             var answerTextString = resultElement.answerText;
 
@@ -511,8 +511,8 @@ namespace ARSnovaPPIntegration.Business
                         break;
                 }
 
-                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                //workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        //Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
                 // Copy chart to PowerPoint slide
 
@@ -527,8 +527,8 @@ namespace ARSnovaPPIntegration.Business
             catch (Exception e)
             {
                 // Error handling?
-                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                //workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                       // Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 excelApp.Quit();
             }
 

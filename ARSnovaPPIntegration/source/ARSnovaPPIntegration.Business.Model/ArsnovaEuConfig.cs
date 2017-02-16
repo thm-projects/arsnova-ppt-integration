@@ -9,6 +9,8 @@ namespace ARSnovaPPIntegration.Business.Model
     {
         public string GuestUserName { get; set; }
 
+        public string SessionId { get; set; }
+
         public LoginMethod LoginMethod { get; set; } = LoginMethod.Guest;
 
         public bool IsAuthenticated { get; set; } = false;

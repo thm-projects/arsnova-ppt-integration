@@ -67,6 +67,7 @@ namespace ARSnovaPPIntegration.Communication
                 var sessionModel = JsonConvert.DeserializeObject<SessionModel>(responseString);
 
                 slideSessionModel.Hashtag = sessionModel.keyword;
+                slideSessionModel.ArsnovaEuConfig.SessionId = sessionModel._id;
 
                 this.SetFeatures(slideSessionModel);
 
@@ -101,7 +102,7 @@ namespace ARSnovaPPIntegration.Communication
         {
             this.CheckAuthentification(slideSessionModel);
 
-            var apiPath = " /api/lecturerquestion/disablevote?sessionkey=" + slideSessionModel.Hashtag + "&disable=false&lecturequestionsonly=false&preparationquestionsonly=false&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            var apiPath = "lecturerquestion/disablevote?sessionkey=" + slideSessionModel.Hashtag + "&disable=false&lecturequestionsonly=false&preparationquestionsonly=false&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             try
             {
@@ -120,19 +121,34 @@ namespace ARSnovaPPIntegration.Communication
             this.SetQuestionState(slideSessionModel, slideQuestionModel, true);
         }
 
-        public ArsnovaVotingResultReturn GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
+        public List<ArsnovaVotingResultReturnElement> GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
         {
-            this.SetQuestionState(slideSessionModel, slideQuestionModel, false);
-
-            var apiPath = "lecturerquestion/" + slideQuestionModel.ArsnovaVotingId + "/answer/?piround=1?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            // broken backend v2, need to call this before....
+            /*var preApiPath = "lecturerquestion/" + slideSessionModel.ArsnovaEuConfig.SessionId + "/answer/?all=true&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             try
             {
-                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get);
+                var preRequest = this.CreateWebRequest(slideSessionModel, preApiPath, HttpMethod.Get);
+                this.SendRequest(preRequest);
+            }
+            catch (JsonReaderException exception)
+            {
+                throw new CommunicationException("Get results or json deserialization failed", exception);
+            }*/
+
+
+            // this.SetQuestionState(slideSessionModel, slideQuestionModel, false);
+
+            var apiPath = "lecturerquestion/" + slideQuestionModel.ArsnovaVotingId + "/answer/?piround=1&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get, false);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, " sdch");
 
                 var responseString = this.GetResponseString(request);
 
-                return JsonConvert.DeserializeObject<ArsnovaVotingResultReturn>(responseString);
+                return JsonConvert.DeserializeObject<List<ArsnovaVotingResultReturnElement>>(responseString);
             }
             catch (JsonReaderException exception)
             {
@@ -259,7 +275,7 @@ namespace ARSnovaPPIntegration.Communication
                 number = questionModel.Index - 1,
                 possibleAnswers = answerOptionList,
                 questionType = this.QuestionTypeToVotingQuestionType(questionModel.QuestionType),
-                questionVariant = "lecture",
+                questionVariant = "preparation",
                 releasedFor = "all",
                 sessionKeyword = sessionKey,
                 showStatistic = true,
@@ -292,8 +308,12 @@ namespace ARSnovaPPIntegration.Communication
 
         private LectureQuestionModel GetLectureQuestion(SlideSessionModel slideSessionModel, string questionId)
         {
+            /*var allQuestions = this.GetAllQuestionsOfSession(slideSessionModel);
+
+            return allQuestions.FirstOrDefault(q => q._id == questionId);*/
+
             this.CheckAuthentification(slideSessionModel);
-            var apiPath = "lecturerquestion/" + questionId + "?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            var apiPath = "lecturerquestion/" + questionId;
 
             try
             {
@@ -301,7 +321,7 @@ namespace ARSnovaPPIntegration.Communication
 
                 var responseString = this.GetResponseString(request);
 
-                return JsonConvert.DeserializeObject<LectureQuestionModel>(responseString);
+                return JsonConvert.DeserializeObject<LectureQuestionModelWithId>(responseString);
             }
             catch (JsonReaderException exception)
             {
@@ -362,7 +382,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private HttpWebRequest CreateWebRequest(SlideSessionModel slideSessionModel, string apiUrlSuffix, HttpMethod httpMethod)
+        private HttpWebRequest CreateWebRequest(SlideSessionModel slideSessionModel, string apiUrlSuffix, HttpMethod httpMethod, bool withContentType = true)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(this.apiUrl + apiUrlSuffix);
             webRequest.Accept = "*/*";
@@ -389,7 +409,12 @@ namespace ARSnovaPPIntegration.Communication
 
             webRequest.Host = "arsnova.eu";
             webRequest.KeepAlive = true;
-            webRequest.ContentType = "application/json";
+
+            if (withContentType)
+            {
+                webRequest.ContentType = "application/json";
+            }
+            
             webRequest.Accept = "*/*";
             webRequest.Referer = "https://arsnova.eu/mobile/";
             webRequest.CookieContainer = new CookieContainer();
@@ -403,7 +428,8 @@ namespace ARSnovaPPIntegration.Communication
             {
                 foreach (var cookie in slideSessionModel.ArsnovaEuConfig.Cookies)
                 {
-                    webRequest.CookieContainer.Add(cookie);
+                    webRequest.CookieContainer.Add(new Uri("https://arsnova.eu"), new Cookie("JSESSIONID", cookie.Value));
+                    //webRequest.CookieContainer.Add(cookie);
                 }
                 
             }
