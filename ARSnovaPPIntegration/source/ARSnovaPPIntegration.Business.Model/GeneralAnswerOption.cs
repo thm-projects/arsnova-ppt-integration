@@ -1,4 +1,5 @@
 ﻿using System;
+
 using ARSnovaPPIntegration.Common.Enum;
 
 namespace ARSnovaPPIntegration.Business.Model

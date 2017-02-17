@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Timers;
+
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;

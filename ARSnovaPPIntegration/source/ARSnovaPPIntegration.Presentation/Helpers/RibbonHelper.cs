@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
 
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Presentation.Models;
 using ARSnovaPPIntegration.Business.Contract;
 using ARSnovaPPIntegration.Business.Model;
-using ARSnovaPPIntegration.Common.Contract.Exceptions;
 using ARSnovaPPIntegration.Common.Contract.Translators;
 using ARSnovaPPIntegration.Common.Enum;
 using ARSnovaPPIntegration.Presentation.ViewManagement;
 using ARSnovaPPIntegration.Presentation.Window;
-using Microsoft.Office.Core;
 
 namespace ARSnovaPPIntegration.Presentation.Helpers
 {
@@ -181,7 +181,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             else
             {
                 // arsnova.voting
-                this.sessionManager.StartVotingQuestion(slideSessionModel, slideQuestionModel, resultsSlide);
+                this.sessionManager.StartVotingQuestion(slideSessionModel, slideQuestionModel);
             }
         }
 

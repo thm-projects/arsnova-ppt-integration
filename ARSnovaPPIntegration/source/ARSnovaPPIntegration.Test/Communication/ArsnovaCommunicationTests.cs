@@ -1,7 +1,7 @@
-﻿using ARSnovaPPIntegration.Communication.Contract;
-using ARSnovaPPIntegration.Communication;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ARSnovaPPIntegration.Communication.Contract;
+using ARSnovaPPIntegration.Communication;
 using ARSnovaPPIntegration.Business.Model;
 
 namespace ARSnovaPPIntegration.Test.Communication

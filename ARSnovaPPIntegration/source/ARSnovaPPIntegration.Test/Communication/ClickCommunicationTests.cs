@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using ARSnovaPPIntegration.Communication;
 using ARSnovaPPIntegration.Communication.Contract;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ARSnovaPPIntegration.Test.Communication
 {

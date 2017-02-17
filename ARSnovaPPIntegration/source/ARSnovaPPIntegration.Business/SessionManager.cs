@@ -49,7 +49,7 @@ namespace ARSnovaPPIntegration.Business
             this.localizationService = localizationService;
         }
 
-        public ValidationResult SetClickSession(SlideSessionModel slideSessionModel)
+        private ValidationResult SetClickSession(SlideSessionModel slideSessionModel)
         {
             // arsnova sessions are updated while they are changed -> should not called by arsnova sessions, nothing to do here
             return this.SetArsnovaClickOnlineSession(slideSessionModel);
@@ -181,7 +181,7 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
-        public void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel, Slide resultsSlideParam)
+        public void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
         {
             this.arsnovaVotingService.StartQuestion(slideSessionModel, slideQuestionModel);
         }

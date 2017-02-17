@@ -37,20 +37,10 @@
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -64,17 +54,9 @@
     <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
-      <Project>{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}</Project>
-      <Name>ARSnovaPPIntegration.Common.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
       <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
       <Name>ARSnovaPPIntegration.Common.Enum</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Helpers\ARSnovaPPIntegration.Common.Helpers.csproj">
-      <Project>{6C2652D9-82E7-4066-A784-8598FE09DB3A}</Project>
-      <Name>ARSnovaPPIntegration.Common.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

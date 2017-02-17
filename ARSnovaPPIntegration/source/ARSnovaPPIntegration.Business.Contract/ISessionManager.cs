@@ -8,13 +8,11 @@ namespace ARSnovaPPIntegration.Business.Contract
 {
     public interface ISessionManager
     {
-        ValidationResult SetClickSession(SlideSessionModel slideSessionModel);
-
         void CreateSession(SlideSessionModel slideSessionModel);
 
         void StartClickQuestion(SlideSessionModel slideSessionModel, int questionIndex, Slide questionSlide, Slide resultsSlide);
 
-        void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel, Slide resultsSlide);
+        void StartVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
 
         void GetAndDisplayArsnovaVotingResults(SlideSessionModel slideSessionModel,
             SlideQuestionModel slideQuestionModel, Slide resultsSlide);

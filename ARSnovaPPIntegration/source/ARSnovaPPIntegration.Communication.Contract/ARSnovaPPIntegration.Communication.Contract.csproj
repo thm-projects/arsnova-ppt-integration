@@ -42,12 +42,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IArsnovaClickService.cs" />
@@ -58,10 +52,6 @@
     <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
       <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
       <Name>ARSnovaPPIntegration.Business.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
-      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
-      <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
       <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>

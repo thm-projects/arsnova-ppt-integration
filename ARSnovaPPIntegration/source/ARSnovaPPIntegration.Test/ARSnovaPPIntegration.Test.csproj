@@ -45,22 +45,6 @@
     <AssemblyOriginatorKeyFile>..\..\certificate\arsnovaPpIntegrationKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -81,16 +65,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
       <Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
       <Name>ARSnovaPPIntegration.Business.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
-      <Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
-      <Name>ARSnovaPPIntegration.Common.Enum</Name>
     </ProjectReference>
     <ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
       <Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
@@ -103,14 +80,6 @@
     <ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
       <Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
       <Name>ARSnovaPPIntegration.Communication.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Presentation.Configuration\ARSnovaPPIntegration.Presentation.Configuration.csproj">
-      <Project>{7186C2F8-5335-46B1-8BEB-9D620080A323}</Project>
-      <Name>ARSnovaPPIntegration.Presentation.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ARSnovaPPIntegration.Presentation\ARSnovaPPIntegration.Presentation.csproj">
-      <Project>{11B8F9F1-AF66-4FBD-9387-EECD1D166ADF}</Project>
-      <Name>ARSnovaPPIntegration.Presentation</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -1,4 +1,5 @@
 ﻿using ARSnovaPPIntegration.Common.Contract;
+
 using Microsoft.Practices.ServiceLocation;
 
 namespace ARSnovaPPIntegration.Presentation.Window
