@@ -46,6 +46,8 @@ namespace ARSnovaPPIntegration.Business.Model
             }
         }
 
+        public string AlphabeticPosition => "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[this.Position-1].ToString();
+
         public string Text
         {
             get { return this.text; }

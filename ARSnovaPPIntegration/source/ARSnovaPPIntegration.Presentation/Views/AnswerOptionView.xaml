@@ -84,7 +84,7 @@
                           CanUserAddRows="false"
                           Margin="15 20 15 0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Position}" IsReadOnly="True" SortDirection="Ascending" Width="0.2*">
+                        <DataGridTextColumn Binding="{Binding AlphabeticPosition}" IsReadOnly="True" SortDirection="Ascending" Width="0.2*">
                             <DataGridTextColumn.Header>
                                 <TextBlock Text="{Binding DataContext.GridHeaderPosition, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataGridTextColumn.Header>

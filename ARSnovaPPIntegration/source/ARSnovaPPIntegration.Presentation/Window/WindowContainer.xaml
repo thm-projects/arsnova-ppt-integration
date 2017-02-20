@@ -100,11 +100,11 @@
                     Visibility="{Binding Path=DeleteButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </ToolBar>
         </Grid>
-        
-         <Grid Grid.Row="2" x:Name="Content" x:FieldModifier="public" Height="Auto">
-             
-         </Grid>  
-        
+
+        <Grid Grid.Row="2" x:Name="Content" x:FieldModifier="public" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+        </Grid>
+
         <!-- Window Controls, bind needed ones in ViewModel! -->
         <Border Grid.Row="3" BorderThickness="0 1 0 0" Margin="0"/>
         
