@@ -29,7 +29,17 @@ namespace ARSnovaPPIntegration.Presentation.Models
 
                 while (hashtagList.Any(h => h.ToLower() == presentationName.ToLower()))
                 {
-                    presentationName += "1";
+                    var lastChar = presentationName.LastOrDefault();
+                    if (char.IsNumber(lastChar))
+                    {
+                        var newNum = int.Parse(lastChar.ToString());
+                        newNum++;
+                        presentationName = presentationName.Substring(0, presentationName.Length - 1) + newNum;
+                    }
+                    else
+                    {
+                        presentationName += "1";
+                    }
                 }
 
                 this.SlideSessionModel.Hashtag = presentationName;
