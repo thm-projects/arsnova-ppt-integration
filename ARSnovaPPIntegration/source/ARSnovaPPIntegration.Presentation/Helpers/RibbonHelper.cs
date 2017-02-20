@@ -216,8 +216,13 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             if (deleteQuestion)
             {
                 SlideTracker.RemoveSlide(slideQuestionModel.QuestionInfoSlideId);
-                SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId.Value);
+                if (this.IsARSnovaClickSession())
+                    SlideTracker.RemoveSlide(slideQuestionModel.QuestionTimerSlideId.Value);
                 SlideTracker.RemoveSlide(slideQuestionModel.ResultsSlideId.Value);
+
+                if (!this.IsARSnovaClickSession())
+                    this.sessionManager.DeleteVotingQuestion(slideSessionModel, slideQuestionModel);
+
                 slideSessionModel.Questions.Remove(slideQuestionModel);
             }
         }

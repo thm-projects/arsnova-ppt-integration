@@ -62,7 +62,7 @@ namespace ARSnovaPPIntegration.Communication
 
                 request = this.AddContentToRequest(request, requestBody);
 
-                var responseString = this.GetResponseString(request, HttpStatusCode.Created);
+                var responseString = this.GetResponseString(slideSessionModel, request, HttpStatusCode.Created);
 
                 var sessionModel = JsonConvert.DeserializeObject<SessionModel>(responseString);
 
@@ -89,20 +89,35 @@ namespace ARSnovaPPIntegration.Communication
 
                 if (string.IsNullOrEmpty(question.ArsnovaVotingId))
                 {
-                    question.ArsnovaVotingId = this.CreateQuestion(slideSessionModel, arsnovaQuestion, slideSessionModel.Hashtag);
+                    var questionIds = this.CreateQuestion(slideSessionModel, arsnovaQuestion, slideSessionModel.Hashtag);
+                    question.ArsnovaVotingId = questionIds.Item1;
+                    question.RevisionsId = questionIds.Item2;
                 }
                 else
                 {
-                    this.UpdateQuestion(slideSessionModel, question, question.ArsnovaVotingId);
+                    var questionIds = this.UpdateQuestion(slideSessionModel, question, question.ArsnovaVotingId);
+                    question.ArsnovaVotingId = questionIds.Item1;
+                    question.RevisionsId = questionIds.Item2;
                 }
             }
         }
 
         public void SetSessionAsActive(SlideSessionModel slideSessionModel)
         {
+            // clean up: delete everything and set it up again to avoid changing ids...
+            var allExistingQuestions = this.GetAllQuestionsFromSession(slideSessionModel);
+            if (allExistingQuestions != null)
+            {
+                foreach (var question in allExistingQuestions)
+                {
+                    this.DeleteAnswersToQuestion(slideSessionModel, question._id);
+                }
+            }
+
             this.CheckAuthentification(slideSessionModel);
 
-            var apiPath = "lecturerquestion/disablevote?sessionkey=" + slideSessionModel.Hashtag + "&disable=false&lecturequestionsonly=false&preparationquestionsonly=false&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            // can't get /lecturerquestion/_questionId_, when they are disabled!
+            /*var apiPath = "lecturerquestion/disablevote?sessionkey=" + slideSessionModel.Hashtag + "&disable=false&lecturequestionsonly=false&preparationquestionsonly=false&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             try
             {
@@ -113,7 +128,7 @@ namespace ARSnovaPPIntegration.Communication
             catch (JsonReaderException exception)
             {
                 throw new CommunicationException("Activate session failed", exception);
-            }
+            }*/
         }
 
         public void StartQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
@@ -121,23 +136,27 @@ namespace ARSnovaPPIntegration.Communication
             this.SetQuestionState(slideSessionModel, slideQuestionModel, true);
         }
 
-        public List<ArsnovaVotingResultReturnElement> GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
+        public void DeleteQuestion(SlideSessionModel slideSessionModel, string questionId)
         {
-            // broken backend v2, need to call this before....
-            /*var preApiPath = "lecturerquestion/" + slideSessionModel.ArsnovaEuConfig.SessionId + "/answer/?all=true&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+            this.CheckAuthentification(slideSessionModel);
+
+            var apiPath = "lecturerquestion/" + questionId + "?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
             try
             {
-                var preRequest = this.CreateWebRequest(slideSessionModel, preApiPath, HttpMethod.Get);
-                this.SendRequest(preRequest);
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Delete);
+
+                this.SendRequest(request);
             }
             catch (JsonReaderException exception)
             {
-                throw new CommunicationException("Get results or json deserialization failed", exception);
-            }*/
+                throw new CommunicationException("Delete question failed", exception);
+            }
+        }
 
-
-            // this.SetQuestionState(slideSessionModel, slideQuestionModel, false);
+        public List<ArsnovaVotingResultReturnElement> GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
+        {
+            this.SetQuestionState(slideSessionModel, slideQuestionModel, false);
 
             var apiPath = "lecturerquestion/" + slideQuestionModel.ArsnovaVotingId + "/answer/?piround=1&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
 
@@ -146,13 +165,53 @@ namespace ARSnovaPPIntegration.Communication
                 var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get, false);
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, " sdch");
 
-                var responseString = this.GetResponseString(request);
+                var responseString = this.GetResponseString(slideSessionModel, request);
 
                 return JsonConvert.DeserializeObject<List<ArsnovaVotingResultReturnElement>>(responseString);
             }
             catch (JsonReaderException exception)
             {
                 throw new CommunicationException("Get results or json deserialization failed", exception);
+            }
+        }
+
+        private void DeleteAnswersToQuestion(SlideSessionModel slideSessionModel, string questionId)
+        {
+            this.CheckAuthentification(slideSessionModel);
+
+            var apiPath = "lecturerquestion/" + questionId + "/answer/?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Delete);
+
+                this.SendRequest(request);
+            }
+            catch (JsonReaderException exception)
+            {
+                throw new CommunicationException("Delete question failed", exception);
+            }
+        }
+
+        private List<LectureQuestionModelWithId> GetAllQuestionsFromSession(SlideSessionModel slideSessionModel)
+        {
+            this.CheckAuthentification(slideSessionModel);
+
+            var apiPath = "lecturerquestion/?sessionkey=" + slideSessionModel.Hashtag + "&preparationquestionsonly=true&requestImageData=false&_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
+
+            try
+            {
+                var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get);
+
+                var responseString = this.GetResponseString(slideSessionModel, request);
+
+                return JsonConvert.DeserializeObject<List<LectureQuestionModelWithId>>(responseString);
+            }
+            catch (Exception e)
+            {
+                // throw new CommunicationException("Delete question failed", exception);
+                // no content where returned, session is empty:
+                return null;
             }
         }
 
@@ -213,7 +272,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private string CreateQuestion(SlideSessionModel slideSessionModel, LectureQuestionModel question, string sessionId)
+        private Tuple<string, string> CreateQuestion(SlideSessionModel slideSessionModel, LectureQuestionModel question, string sessionId)
         {
             var apiPath = "session/" + sessionId + "/question?_dc=" + this.ConvertToUnixTimestampString(DateTime.Now);
             var requestBody = JsonConvert.SerializeObject(question);
@@ -223,11 +282,11 @@ namespace ARSnovaPPIntegration.Communication
                 var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Post);
                 request = this.AddContentToRequest(request, requestBody);
 
-                var responseString = this.GetResponseString(request, HttpStatusCode.Created);
+                var responseString = this.GetResponseString(slideSessionModel, request, HttpStatusCode.Created);
 
                 var questionModel = JsonConvert.DeserializeObject<LectureQuestionModelWithId>(responseString);
 
-                return questionModel._id;
+                return new Tuple<string, string>(questionModel._id, questionModel._rev);
             }
             catch (JsonReaderException exception)
             {
@@ -235,7 +294,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private void UpdateQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel questionModel, string arsnovaVotingQuestionId)
+        private Tuple<string, string> UpdateQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel questionModel, string arsnovaVotingQuestionId)
         {
             var oldQuestion = this.GetLectureQuestion(slideSessionModel, arsnovaVotingQuestionId);
 
@@ -280,7 +339,11 @@ namespace ARSnovaPPIntegration.Communication
                 var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Put);
                 request = this.AddContentToRequest(request, requestBody);
 
-                this.SendRequest(request);
+                var responseString = this.GetResponseString(slideSessionModel, request);
+
+                var newQuestionModel = JsonConvert.DeserializeObject<LectureQuestionModelWithId>(responseString);
+
+                return new Tuple<string, string>(newQuestionModel._id, newQuestionModel._rev);
             }
             catch (JsonReaderException exception)
             {
@@ -373,7 +436,7 @@ namespace ARSnovaPPIntegration.Communication
             {
                 var request = this.CreateWebRequest(slideSessionModel, apiPath, HttpMethod.Get);
 
-                var responseString = this.GetResponseString(request);
+                var responseString = this.GetResponseString(slideSessionModel, request);
 
                 return JsonConvert.DeserializeObject<LectureQuestionModelWithId>(responseString);
             }
@@ -397,14 +460,14 @@ namespace ARSnovaPPIntegration.Communication
                 switch (slideSessionModel.ArsnovaEuConfig.LoginMethod)
                 {
                     case LoginMethod.Guest:
-                        this.FirstLogin(slideSessionModel);
+                        this.Login(slideSessionModel);
                         break;
                 }
             }
         }
 
         // should be called with alternative login methods only (auto guest login)
-        private void FirstLogin(SlideSessionModel slideSessionModel)
+        private void Login(SlideSessionModel slideSessionModel)
         {
             var userName = slideSessionModel.ArsnovaEuConfig.GuestUserName;
             var loginMethod = slideSessionModel.ArsnovaEuConfig.LoginMethod;
@@ -551,7 +614,7 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private string GetResponseString(HttpWebRequest httpWebRequest, HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK)
+        private string GetResponseString(SlideSessionModel slideSessionModel, HttpWebRequest httpWebRequest, HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK, bool afterAuthCheck = false)
         {
             try
             {
@@ -568,6 +631,13 @@ namespace ARSnovaPPIntegration.Communication
 
                 if (response.StatusCode != expectedHttpStatusCode)
                 {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized && !afterAuthCheck)
+                    {
+                        this.Login(slideSessionModel);
+
+                        this.GetResponseString(slideSessionModel, httpWebRequest, expectedHttpStatusCode, true);
+                    }
+
                     throw new CommunicationException("Unexpected response from server", response.StatusCode, responseString);
                 }
 

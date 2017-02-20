@@ -78,6 +78,11 @@ namespace ARSnovaPPIntegration.Business
             this.arsnovaVotingService.CreateOrUpdateQuestion(slideSessionModel, questionIndex);
         }
 
+        public void DeleteVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel)
+        {
+            this.arsnovaVotingService.DeleteQuestion(slideSessionModel, slideQuestionModel.ArsnovaVotingId);
+        }
+
         public void CreateSession(SlideSessionModel slideSessionModel)
         {
             if (slideSessionModel.SessionType == SessionType.ArsnovaClick)

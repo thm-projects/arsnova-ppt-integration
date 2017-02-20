@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -12,7 +13,6 @@ using ARSnovaPPIntegration.Business.Model;
 using ARSnovaPPIntegration.Business.Properties;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
-using ARSnovaPPIntegration.Communication.Contract;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaClick;
 using ARSnovaPPIntegration.Communication.Model.ArsnovaEu;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -23,19 +23,15 @@ namespace ARSnovaPPIntegration.Business
     {
         private readonly ILocalizationService localizationService;
 
-        private readonly IArsnovaClickService arsnovaClickService;
-
         private readonly ISessionInformationProvider sessionInformationProvider;
 
         private readonly string font;
 
         public SlideManipulator(
             ILocalizationService localizationService,
-            IArsnovaClickService arsnovaClickService,
             ISessionInformationProvider sessionInformationProvider)
         {
             this.localizationService = localizationService;
-            this.arsnovaClickService = arsnovaClickService;
             this.sessionInformationProvider = sessionInformationProvider;
             this.font = "Calibri";
         }
@@ -45,7 +41,7 @@ namespace ARSnovaPPIntegration.Business
             var isClickSession = slideSessionModel.SessionType == SessionType.ArsnovaClick;
 
             // Note: Interops reads RGB colors in the order: BGR!
-            var backgroundRgbColor = isClickSession ? Color.FromArgb(136, 150, 0).ToArgb() : Color.FromArgb(219, 219, 219).ToArgb();
+            var backgroundRgbColor = isClickSession ? Color.FromArgb(136, 150, 0).ToArgb() : Color.FromArgb(230, 229, 223).ToArgb();
             var filePath = isClickSession ? this.GetFilePath(Images.click_header, "click_header.png") : this.GetFilePath(Images.arsnova_header, "arsnova_header.png");
             var sessionTypeName = isClickSession ? "arsnova.click" : "ARSnova.voting";
 
@@ -379,18 +375,18 @@ namespace ARSnovaPPIntegration.Business
             int height)
         {
             var chartName = "ARSnova Results Chart";
-            //var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
+            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var excelWorkBookPath = Path.GetDirectoryName(currentAssembly) + "\\" + "resultsChartData.xlsx";
 
             var excelApp = new Excel.Application();
             var workBook = excelApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
             try
             {
-               /* if (File.Exists(excelWorkBookPath))
+                if (File.Exists(excelWorkBookPath))
                 {
                     File.Delete(excelWorkBookPath);
-                }*/
+                }
 
                 var workSheet = (Excel.Worksheet)(workBook.Worksheets[1]);
                 workSheet.Name = "ARSnovaResults";
@@ -428,6 +424,9 @@ namespace ARSnovaPPIntegration.Business
                         break;
                     // arsnova.voting
                     case QuestionTypeEnum.SingleChoiceVoting:
+                    case QuestionTypeEnum.YesNoVoting:
+                    case QuestionTypeEnum.EvaluationVoting:
+                    case QuestionTypeEnum.GradsVoting:
                         for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
                         {
                             var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
@@ -439,36 +438,62 @@ namespace ARSnovaPPIntegration.Business
                         }
                         dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
                         break;
-                    default:
-                        // TODO
-                        // 0,0,0,1 -> answeroption 4; 1,0,0,0 -> answeroption 1 etc.; create tuples of position and answerElemt
-                        var resultsList = new List<Tuple<int, ArsnovaVotingResultReturnElement>>();
-                        var charsToRemove = new string[] {"[", "]", ","};
-                        foreach (var resultElement in votingResults)
-                        {
-                            var answerTextString = resultElement.answerText;
+                    case QuestionTypeEnum.MultipleChoiceVoting:
+                        var correctAnswerOptionsCount = 0;
+                        var wrongAnswerOptionsCount = 0;
 
-                            foreach (var charToRemove in charsToRemove)
-                            {
-                                answerTextString = answerTextString.Replace(charToRemove, string.Empty);
-                            }
-
-                            var position = answerTextString.IndexOf("1");
-
-                            resultsList.Add(new Tuple<int, ArsnovaVotingResultReturnElement>(position, resultElement));
-                        }
-
+                        var correctAnswerOptionString = string.Empty;
                         for (var i = 0; i < slideQuestionModel.AnswerOptions.Count; i++)
                         {
                             var answerOption = slideQuestionModel.AnswerOptions.First(ao => ao.Position - 1 == i);
-                            var arsnovaResult = resultsList.First(r => r.Item1 == i).Item2;
-
-                            this.SetExcelCellValue(workSheet, $"A{i + 1}", answerOption.Text);
-                            this.SetExcelCellValue(workSheet, $"B{i + 1}", arsnovaResult.answerCount);
+                            if (answerOption.IsTrue)
+                            {
+                                correctAnswerOptionString += "1";
+                            }
+                            else
+                            {
+                                correctAnswerOptionString += "0";
+                            }
                         }
 
-                        dataRange = workSheet.get_Range("A1", $"B{slideQuestionModel.AnswerOptions.Count}");
+
+                        foreach (var resultElement in votingResults)
+                        {
+                            var answerTextString = resultElement.answerText.Replace(",", string.Empty);
+
+                            if (correctAnswerOptionString == answerTextString)
+                            {
+                                correctAnswerOptionsCount += resultElement.answerCount;
+                            }
+                            else
+                            {
+                                wrongAnswerOptionsCount += resultElement.answerCount;
+                            }
+                        }
+
+                        this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
+                        this.SetExcelCellValue(workSheet, "B1", correctAnswerOptionsCount);
+                        this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
+                        this.SetExcelCellValue(workSheet, "B2", wrongAnswerOptionsCount);
+
+                        dataRange = workSheet.get_Range("A1", "B2");
                         break;
+                    case QuestionTypeEnum.FreeTextVoting:
+                        var correctFreeTextAnswers = this.GetCorrectFreeTextResultsVoting(slideQuestionModel, votingResults).Count;
+                        var falseFreeTextAnswers = votingResults.Count - correctFreeTextAnswers;
+
+                        this.SetExcelCellValue(workSheet, "A1", this.localizationService.Translate("Right"));
+                        this.SetExcelCellValue(workSheet, "B1", correctFreeTextAnswers);
+                        this.SetExcelCellValue(workSheet, "A2", this.localizationService.Translate("Wrong"));
+                        this.SetExcelCellValue(workSheet, "B2", falseFreeTextAnswers);
+
+                        dataRange = workSheet.get_Range("A1", "B2");
+                        break;
+                    default:
+                        dataRange = workSheet.get_Range("A1", "B2");
+                        break;
+                    // 0,0,0,1 -> answeroption 4; 1,0,0,0 -> answeroption 1 etc.; create tuples of position and answerElemt
+                    // 1,1,0,0 is a answerText of a mulitple choice question1
                 }
 
                 var chartObjects = (Excel.ChartObjects)workSheet.ChartObjects(Type.Missing);
@@ -480,13 +505,17 @@ namespace ARSnovaPPIntegration.Business
                     slideQuestionModel.ChartType,
                     this.GetChartFormat(slideQuestionModel.ChartType), // chart format
                     Excel.XlRowCol.xlColumns,
-                    slideQuestionModel.AnswerOptions.Count - 1, // category labels
+                    1,//slideQuestionModel.AnswerOptions.Count - 1, // category labels
                     0, // series labels
-                    false, // has legend
+                    true, // has legend
                     slideQuestionModel.QuestionText, // title
                     this.localizationService.Translate("Answers"), // category title
                     this.localizationService.Translate("Amount"), // value title
                     Type.Missing); // extra titel
+
+                // save before edit - user needs to confirm the overwriting of the file -> don't save the file twice!
+                //workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        //Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
                 // editing
                 newChartObject.Chart.Perspective = 0;
@@ -523,8 +552,9 @@ namespace ARSnovaPPIntegration.Business
                         break;
                 }
 
-                //workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        //Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                // save again to avoid question before closing
+                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
                 // Copy chart to PowerPoint slide
 
@@ -534,13 +564,15 @@ namespace ARSnovaPPIntegration.Business
                 shapeRange.Left = floatLeft;
                 shapeRange.Top = floatTop;
 
+                shapeRange.LinkFormat.Update();
+
                 excelApp.Quit();
             }
             catch (Exception e)
             {
                 // Error handling?
-                //workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                       // Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                workBook.SaveAs(excelWorkBookPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 excelApp.Quit();
             }
 
@@ -658,6 +690,51 @@ namespace ARSnovaPPIntegration.Business
                 {
                     correctResponses.Add(response);
                 }
+            }
+
+            return correctResponses;
+        }
+
+        private List<ArsnovaVotingResultReturnElement> GetCorrectFreeTextResultsVoting(
+            SlideQuestionModel slideQuestionModel, List<ArsnovaVotingResultReturnElement> responses)
+        {
+            var correctResponses = new List<ArsnovaVotingResultReturnElement>();
+            var answerOption = slideQuestionModel.AnswerOptions.First();
+            var answerOptionText = answerOption.Text;
+            var punctutationRegex = new Regex(@"(\.)*(,)*(!)*("")*(;)*(\?)*");
+            var whiteSpaceRegex = new Regex(@" ");
+
+            if (!answerOption.ConfigCaseSensitive)
+            {
+                answerOptionText = answerOptionText.ToLower();
+            }
+
+            if (!answerOption.ConfigUsePunctuation)
+            {
+                answerOptionText = punctutationRegex.Replace(answerOptionText, "");
+            }
+
+            foreach (var response in responses)
+            {
+                var responseText = response.answerText;
+
+                if (!answerOption.ConfigCaseSensitive)
+                {
+                    responseText = responseText.ToLower();
+                }
+
+                if (!answerOption.ConfigUsePunctuation)
+                {
+                    responseText = punctutationRegex.Replace(responseText, "");
+                }
+
+                if (!answerOption.ConfigTrimWhitespaces)
+                {
+                    responseText = whiteSpaceRegex.Replace(responseText, "");
+                }
+
+                if (answerOptionText == responseText)
+                    correctResponses.Add(response);
             }
 
             return correctResponses;

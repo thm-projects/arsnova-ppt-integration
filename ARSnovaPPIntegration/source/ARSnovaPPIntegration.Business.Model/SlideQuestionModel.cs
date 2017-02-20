@@ -26,6 +26,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public string ArsnovaVotingId { get; set; }
 
+        public string RevisionsId { get; set; }
+
         public int QuestionInfoSlideId { get; set; }
 
         public int? QuestionTimerSlideId { get; set; }

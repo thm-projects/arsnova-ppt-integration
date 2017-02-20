@@ -25,6 +25,8 @@ namespace ARSnovaPPIntegration.Business.Contract
 
         void CreateOrUpdateArsnovaVotingQuestion(SlideSessionModel slideSessionModel, int questionIndex);
 
+        void DeleteVotingQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
+
         event EventHandler ShowNextSlideEventHandler;
     }
 }

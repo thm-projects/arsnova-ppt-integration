@@ -73,8 +73,9 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
             foreach (var slideQuestionModel in slideSessionModel.Questions)
             {
+                var slide = GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value);
                 if (slideQuestionModel.QuestionTimerSlideId.HasValue 
-                    && GetSlideById(slideQuestionModel.QuestionTimerSlideId.Value).SlideNumber == currentShowedSlidePosition)
+                    && slide != null && slide.SlideNumber == currentShowedSlidePosition)
                     return new Tuple<bool, SlideQuestionModel>(true, slideQuestionModel);
             }
 

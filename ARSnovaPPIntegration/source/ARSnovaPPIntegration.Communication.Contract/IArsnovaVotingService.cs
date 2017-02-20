@@ -15,6 +15,8 @@ namespace ARSnovaPPIntegration.Communication.Contract
 
         void StartQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
 
+        void DeleteQuestion(SlideSessionModel slideSessionModel, string questionId);
+
         List<ArsnovaVotingResultReturnElement> GetResults(SlideSessionModel slideSessionModel, SlideQuestionModel slideQuestionModel);
     }
 }
