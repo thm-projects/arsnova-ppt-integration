@@ -303,14 +303,17 @@ namespace ARSnovaPPIntegration.Business
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
             this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
 
-            // Button not possible, just added a textbox to start quiz on next slide
-            var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
-            var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
-            startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
-            startQuizTextRange.Font.Name = this.font;
-            startQuizTextRange.Font.Size = 20;
-            startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
-            startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            // Button not possible, just added a textbox to start quiz on next slide (when in click, voting will start immediately)
+            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
+            {
+                var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
+                var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
+                startQuizTextRange.Text = this.localizationService.Translate("Move to the next slide to start the quiz.");
+                startQuizTextRange.Font.Name = this.font;
+                startQuizTextRange.Font.Size = 20;
+                startQuizTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+                startQuizTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            } 
         }
 
         private void RemoveShapesFromSlide(Slide slide)
@@ -507,7 +510,7 @@ namespace ARSnovaPPIntegration.Business
                     Excel.XlRowCol.xlColumns,
                     1,//slideQuestionModel.AnswerOptions.Count - 1, // category labels
                     0, // series labels
-                    true, // has legend
+                    false, // has legend
                     slideQuestionModel.QuestionText, // title
                     this.localizationService.Translate("Answers"), // category title
                     this.localizationService.Translate("Amount"), // value title
