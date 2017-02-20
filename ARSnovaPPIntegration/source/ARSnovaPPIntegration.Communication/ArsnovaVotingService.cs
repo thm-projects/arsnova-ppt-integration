@@ -93,7 +93,7 @@ namespace ARSnovaPPIntegration.Communication
                 }
                 else
                 {
-                    this.UpdateQuestion(slideSessionModel, arsnovaQuestion, question.ArsnovaVotingId);
+                    this.UpdateQuestion(slideSessionModel, question, question.ArsnovaVotingId);
                 }
             }
         }
@@ -235,10 +235,45 @@ namespace ARSnovaPPIntegration.Communication
             }
         }
 
-        private void UpdateQuestion(SlideSessionModel slideSessionModel, LectureQuestionModel question, string arsnovaVotingQuestionId)
+        private void UpdateQuestion(SlideSessionModel slideSessionModel, SlideQuestionModel questionModel, string arsnovaVotingQuestionId)
         {
+            var oldQuestion = this.GetLectureQuestion(slideSessionModel, arsnovaVotingQuestionId);
+
+            // update entries
+            oldQuestion.questionType = this.QuestionTypeToVotingQuestionType(questionModel.QuestionType);
+            oldQuestion.text = questionModel.QuestionText;
+
+            if (questionModel.QuestionType == QuestionTypeEnum.FreeTextVoting)
+            {
+                var answerOption = questionModel.AnswerOptions.First();
+
+                oldQuestion.strictMode = true;
+                oldQuestion.textAnswerEnabled = true;
+                oldQuestion.correctAnswer = answerOption.Text;
+                oldQuestion.fixedAnswer = true;
+                oldQuestion.ignoreCaseSensitive = answerOption.ConfigCaseSensitive;
+                oldQuestion.ignorePunctuation = answerOption.ConfigUsePunctuation;
+                oldQuestion.ignoreWhitespaces = answerOption.ConfigTrimWhitespaces;
+            }
+            else
+            {
+                var answerOptionList = new List<PossibleAnswerObject>();
+
+                foreach (var answerOption in questionModel.AnswerOptions)
+                {
+                    answerOptionList.Add(new PossibleAnswerObject
+                    {
+                        correct = answerOption.IsTrue,
+                        text = answerOption.Text,
+                        value = answerOption.IsTrue ? 10 : -10
+                    });
+                }
+
+                oldQuestion.possibleAnswers = answerOptionList;
+            }
+
             var apiPath = "lecturerquestion/" + arsnovaVotingQuestionId;
-            var requestBody = JsonConvert.SerializeObject(question);
+            var requestBody = JsonConvert.SerializeObject(oldQuestion);
 
             try
             {
@@ -255,25 +290,12 @@ namespace ARSnovaPPIntegration.Communication
 
         private LectureQuestionModel SlideQuestionModelToLectureQuestionModel(SlideQuestionModel questionModel, string sessionKey)
         {
-            var answerOptionList = new List<PossibleAnswerObject>();
-
-            foreach (var answerOption in questionModel.AnswerOptions)
-            {
-                answerOptionList.Add(new PossibleAnswerObject
-                {
-                    correct = answerOption.IsTrue,
-                    text = answerOption.Text,
-                    value = answerOption.IsTrue ? 10 : -10
-                });
-            }
-
-            return new LectureQuestionModel
+            var leqtureQuestion = new LectureQuestionModel
             {
                 abstention = false, // TODO should abstention be allowed?
                 active = false,
                 imageQuestion = false,
                 number = questionModel.Index - 1,
-                possibleAnswers = answerOptionList,
                 questionType = this.QuestionTypeToVotingQuestionType(questionModel.QuestionType),
                 questionVariant = "preparation",
                 releasedFor = "all",
@@ -284,6 +306,38 @@ namespace ARSnovaPPIntegration.Communication
                 type = "skill_question",
                 votingDisabled = true // Disabled by default!
             };
+
+            if (questionModel.QuestionType != QuestionTypeEnum.FreeTextVoting)
+            {
+                var answerOptionList = new List<PossibleAnswerObject>();
+
+                foreach (var answerOption in questionModel.AnswerOptions)
+                {
+                    answerOptionList.Add(new PossibleAnswerObject
+                    {
+                        correct = answerOption.IsTrue,
+                        text = answerOption.Text,
+                        value = answerOption.IsTrue ? 10 : -10
+                    });
+                }
+
+                leqtureQuestion.possibleAnswers = answerOptionList;
+            }
+            else
+            {
+                // freetext
+                var answerOption = questionModel.AnswerOptions.First();
+
+                leqtureQuestion.strictMode = true;
+                leqtureQuestion.textAnswerEnabled = true;
+                leqtureQuestion.correctAnswer = answerOption.Text;
+                leqtureQuestion.fixedAnswer = true;
+                leqtureQuestion.ignoreCaseSensitive = answerOption.ConfigCaseSensitive;
+                leqtureQuestion.ignorePunctuation = answerOption.ConfigUsePunctuation;
+                leqtureQuestion.ignoreWhitespaces = answerOption.ConfigTrimWhitespaces;
+            }
+
+            return leqtureQuestion;
         }
 
         private string QuestionTypeToVotingQuestionType(QuestionTypeEnum questionType)

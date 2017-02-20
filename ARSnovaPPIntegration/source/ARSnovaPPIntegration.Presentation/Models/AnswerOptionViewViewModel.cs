@@ -73,6 +73,8 @@ namespace ARSnovaPPIntegration.Presentation.Models
                       1, 2, 3, 4, 5, 6, 7, 8
                   };
 
+        public bool IsArsnovaClickQuestion => this.SessionInformationProvider.IsClickQuestion(this.SlideQuestionModel.QuestionType);
+
         public int AnswerOptionAmount
         {
             get { return this.SlideQuestionModel.AnswerOptionAmount; }
