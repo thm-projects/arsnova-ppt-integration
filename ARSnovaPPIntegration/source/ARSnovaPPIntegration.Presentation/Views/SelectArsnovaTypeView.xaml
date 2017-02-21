@@ -23,6 +23,8 @@
                                 Value="Red"/>
                         <Setter Property="BorderThickness"
                                 Value="2"/>
+                        <Setter Property="Foreground"
+                                Value="White" />
                     </Trigger>
                 </Style.Triggers>
             </Style>

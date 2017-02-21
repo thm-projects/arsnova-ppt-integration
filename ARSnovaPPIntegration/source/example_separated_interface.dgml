@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="ARSnovaPPIntegration.Business.Contract.dll" Category="Category8" Bounds="308.455564371745,-1.00133974207535,182.266666666667,25.96" Label="ISessionInformationProvider.cs" UseManualLocation="True" />
+    <Node Id="ARSnovaPPIntegration.Business.Contract.dll1" Category="Category4" Bounds="264.748897705078,-41.0014408976741,269.68,197.8804" Group="Expanded" Label="ARSnovaPPIntegration.Business.Contract.dll" UseManualLocation="True" />
+    <Node Id="ARSnovaPPIntegration.Business.dll" Bounds="-47.6052396647136,-1.18315146446228,179.073333333333,25.96" Label="SessionInformationProvider.cs" />
+    <Node Id="ARSnovaPPIntegration.Business.dll1" Category="Category4" Bounds="-69.005237215662,-41.1832517028808,221.873333333333,197.880398440552" Group="Expanded" Label="ARSnovaPPIntegration.Business.dll" UseManualLocation="True" />
+    <Node Id="ARSnovaPPIntegration.Presentation.dll" Category="Comment" Bounds="290.930163578042,258.867853699723,223.246666666667,25.96" UseManualLocation="True">
+      <Category Ref="Category4" />
+    </Node>
+    <Node Id="ISessionManager" Category="Category8" Bounds="317.396473388672,54.9587585245262,123.29,25.96" Label="ISessionManager.cs" UseManualLocation="True" />
+    <Node Id="ISlideManipulator.cs" Category="Category8" Bounds="315.455561319987,110.91886823522,126.666666666667,25.96" />
+    <Node Id="SessionManager" Bounds="-17.116890595754,54.7769465637207,120.096666666667,25.96" Label="SessionManager.cs" UseManualLocation="True" />
+    <Node Id="SlideManipulator" Bounds="-19.8052148691813,110.73704864502,123.473333333333,25.96" Label="SlideManipulator.cs" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="ARSnovaPPIntegration.Business.Contract.dll1" Target="ARSnovaPPIntegration.Business.Contract.dll" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Business.Contract.dll1" Target="ISessionManager" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Business.Contract.dll1" Target="ISlideManipulator.cs" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Business.dll" Target="ARSnovaPPIntegration.Business.Contract.dll" Bounds="131.46809366862,11.8423623530301,167.987471865977,0.0853950931258982" />
+    <Link Source="ARSnovaPPIntegration.Business.dll1" Target="ARSnovaPPIntegration.Business.Contract.dll1" Index="2147483647" Bounds="152.868096117671,57.8133410586569,102.880802750249,0.0522984236797441" Label="implemetiert" LabelBounds="170.517847505928,37.8794902704968,67.5833333333333,15.96" Weight="3" />
+    <Link Source="ARSnovaPPIntegration.Business.dll1" Target="ARSnovaPPIntegration.Business.dll" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Business.dll1" Target="SessionManager" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Business.dll1" Target="SlideManipulator" Category="Contains" />
+    <Link Source="ARSnovaPPIntegration.Presentation.dll" Target="ARSnovaPPIntegration.Business.Contract.dll1" Bounds="401.084845841029,165.878094883849,1.28875962339464,92.9897597304092" Label="verwendet" LabelBounds="342.382558967617,204.420690400216,55.3466666666667,15.96" />
+    <Link Source="SessionManager" Target="ISessionManager" Bounds="102.979775594076,67.7894291051503,205.416699111324,0.11111625488428" />
+    <Link Source="SlideManipulator" Target="ISlideManipulator.cs" Bounds="103.668119417826,123.750372459035,202.787443213217,0.109457511958496" />
+  </Links>
+  <Categories>
+    <Category Id="Category4" Label="Kategorie 4" Background="#FF1BA1E2" IsTag="True" />
+    <Category Id="Category8" Label="Kategorie 8" Background="#FF44CCCC" IsTag="True" />
+    <Category Id="Comment" Label="Kommentar" Description="Stellt einen benutzerdefinierten Kommentar im Diagramm dar" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="Kommentare" />
+    <Category Id="Contains" Label="Enthält" Description="Gibt an, ob die Quelle der Verknüpfung das Zielobjekt enthält" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Enthalten in" IsContainment="True" OutgoingActionLabel="Enthält" />
+  </Categories>
+  <Properties>
+    <Property Id="Background" Label="Hintergrund" Description="Die Hintergrundfarbe." DataType="System.Windows.Media.Brush" />
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="Group" Label="Gruppe" Description="Knoten als Gruppe anzeigen" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="IsTag" DataType="System.Boolean" />
+    <Property Id="Label" Label="Bezeichnung" Description="Anzeigbare Bezeichnung eines Objekts, das Anmerkungen einblenden werden kann" DataType="System.String" />
+    <Property Id="LabelBounds" DataType="System.Windows.Rect" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="Weight" Label="Stärke" Description="Stärke" DataType="System.Double" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Kategorie 8" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category8')" />
+      <Setter Property="Background" Value="#FF44CCCC" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kategorie 3" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category3')" />
+      <Setter Property="Background" Value="#FF3EBCED" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kategorie 4" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category4')" />
+      <Setter Property="Background" Value="#FF1BA1E2" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kategorie 1" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category1')" />
+      <Setter Property="Background" Value="#FFE51400" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kommentar" ValueLabel="Hat Kommentar">
+      <Condition Expression="HasCategory('Comment')" />
+      <Setter Property="Background" Value="#FFFFFACD" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+      <Setter Property="StrokeThickness" Value="1" />
+      <Setter Property="NodeRadius" Value="2" />
+      <Setter Property="MaxWidth" Value="250" />
+    </Style>
+  </Styles>
+</DirectedGraph>
