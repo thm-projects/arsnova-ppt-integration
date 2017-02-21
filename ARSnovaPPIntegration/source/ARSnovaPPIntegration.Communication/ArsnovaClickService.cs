@@ -196,6 +196,7 @@ namespace ARSnovaPPIntegration.Communication
             var questionModelList =
                 slideSessionModel.Questions.Where(q => !q.Hidden).Select(q => this.SlideQuestionModelToQuestionModel(q, slideSessionModel.Hashtag)).ToList();
 
+            // a valid questionGroupModel requires a hashtag only, the rest can be null or missing (not defined) -> change values to null if not needed (from pre-config)
             return new QuestionGroupModel
                    {
                        hashtag = Uri.EscapeDataString(slideSessionModel.Hashtag),
@@ -224,9 +225,9 @@ namespace ARSnovaPPIntegration.Communication
                                                        blockIllegal = true,
                                                        restrictToCASLogin = false
                                                    },
-                                           theme = "theme-arsnova-dot-click-contrast", // choosable theme?
+                                           theme = "material",
                                            readingConfirmationEnabled = false,
-                                           showResponseProgress = true
+                                           showResponseProgress = false
                        },
                        type = "DefaultQuestionGroup"
             };
