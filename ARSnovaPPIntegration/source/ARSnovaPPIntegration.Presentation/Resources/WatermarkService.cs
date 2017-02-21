@@ -97,7 +97,7 @@ namespace ARSnovaPPIntegration.Presentation.Resources
         private static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
         {
             Control c = (Control)sender;
-            if (ShouldShowWatermark(c))
+            if (!ShouldShowWatermark(c))
             {
                 RemoveWatermark(c);
             }

@@ -44,9 +44,9 @@
                               IsEditable="False"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                    <TextBox Text="{Binding QuestionText, Mode=TwoWay}" Width="250" Height="140" MinLines="8" MaxLines="8" TextWrapping="WrapWithOverflow">
+                    <TextBox Name="QuestionTextBox" Text="{Binding QuestionText, Mode=TwoWay}" Width="250" Height="140" MinLines="8" MaxLines="8" TextWrapping="WrapWithOverflow">
                         <resources:WatermarkService.Watermark>
-                            <TextBlock>FreeTextAnswerOptionPlaceHolder</TextBlock>
+                            <TextBlock>QuestionTextPlaceHolder</TextBlock>
                         </resources:WatermarkService.Watermark>
                     </TextBox>
                 </StackPanel>

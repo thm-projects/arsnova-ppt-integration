@@ -25,7 +25,17 @@ namespace ARSnovaPPIntegration.Presentation.Views
     {
         public QuestionView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.Loaded += (o, e) =>
+                      {
+                          this.QuestionTextBox.Dispatcher.BeginInvoke(
+                                  new Action(
+                                      () =>
+                                      {
+                                          this.QuestionTextBox.Focus();
+                                      }));
+                      };
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
