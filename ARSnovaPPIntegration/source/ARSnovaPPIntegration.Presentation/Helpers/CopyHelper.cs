@@ -66,6 +66,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
 
                 newAnswerOption.Id = answerOption.Id;
                 newAnswerOption.Position = answerOption.Position;
+                newAnswerOption.AlphabeticPosition = answerOption.AlphabeticPosition;
                 newAnswerOption.Text = answerOption.Text;
                 newAnswerOption.IsTrue = answerOption.IsTrue;
 

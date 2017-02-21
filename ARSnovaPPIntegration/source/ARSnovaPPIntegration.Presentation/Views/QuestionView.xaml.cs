@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ARSnovaPPIntegration.Common.Contract;
 using ARSnovaPPIntegration.Common.Enum;
+using ARSnovaPPIntegration.Presentation.Models;
 
 namespace ARSnovaPPIntegration.Presentation.Views
 {
@@ -28,13 +29,18 @@ namespace ARSnovaPPIntegration.Presentation.Views
             this.InitializeComponent();
 
             this.Loaded += (o, e) =>
-                      {
-                          this.QuestionTextBox.Dispatcher.BeginInvoke(
-                                  new Action(
-                                      () =>
-                                      {
-                                          this.QuestionTextBox.Focus();
-                                      }));
+                           {
+                               var dataContext = (QuestionViewViewModel) this.DataContext;
+                               if (!string.IsNullOrEmpty(dataContext.QuestionText))
+                               {
+                                   // focus triggering will disable the watermark (and fix kind of a bug)
+                                   this.QuestionTextBox.Dispatcher.BeginInvoke(
+                                      new Action(
+                                          () =>
+                                          {
+                                              this.QuestionTextBox.Focus();
+                                          }));
+                               }
                       };
         }
 

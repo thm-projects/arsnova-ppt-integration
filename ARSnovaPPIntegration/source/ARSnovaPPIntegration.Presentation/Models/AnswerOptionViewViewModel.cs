@@ -109,6 +109,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
                                                   {
                                                       Id = Guid.NewGuid(),
                                                       Position = i,
+                                                      AlphabeticPosition = this.GetAlphabeticPosition(i),
                                                       Text = string.Empty,
                                                       IsTrue = false
                         };
@@ -552,6 +553,7 @@ namespace ARSnovaPPIntegration.Presentation.Models
             {
                 Id = Guid.NewGuid(),
                 Position = position,
+                AlphabeticPosition = this.GetAlphabeticPosition(position),
                 Text = text,
                 IsTrue = isTrue
             };
@@ -563,6 +565,11 @@ namespace ARSnovaPPIntegration.Presentation.Models
             };
 
             return generalAnswerOption;
+        }
+
+        private string GetAlphabeticPosition(int position)
+        {
+            return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[position - 1].ToString();
         }
     }
 }

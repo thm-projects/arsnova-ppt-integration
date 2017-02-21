@@ -69,6 +69,7 @@ namespace ARSnovaPPIntegration.Presentation.Resources
             if (d is ComboBox || d is TextBox)
             {
                 control.GotKeyboardFocus += Control_GotKeyboardFocus;
+                control.GotFocus += Control_GotKeyboardFocus;
                 control.LostKeyboardFocus += Control_Loaded;
             }
 
@@ -97,10 +98,7 @@ namespace ARSnovaPPIntegration.Presentation.Resources
         private static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
         {
             Control c = (Control)sender;
-            if (!ShouldShowWatermark(c))
-            {
-                RemoveWatermark(c);
-            }
+            RemoveWatermark(c);
         }
 
         /// <summary>
@@ -114,6 +112,10 @@ namespace ARSnovaPPIntegration.Presentation.Resources
             if (ShouldShowWatermark(control))
             {
                 ShowWatermark(control);
+            }
+            else
+            {
+                RemoveWatermark(control);
             }
         }
 
