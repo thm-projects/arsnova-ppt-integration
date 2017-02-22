@@ -74,6 +74,12 @@ namespace ARSnovaPPIntegration.Business
             subTitleTextBox2.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             subTitleTextBox2.TextEffect.FontBold = MsoTriState.msoCTrue;
 
+            if (isClickSession)
+            {
+                subTitleTextRange.Font.Color.RGB = Color.White.ToArgb();
+                subTitleTextRange2.Font.Color.RGB = Color.White.ToArgb();
+            }
+
             // TODO create QR-Code / get it from click server
         }
 
