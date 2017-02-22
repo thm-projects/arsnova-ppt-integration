@@ -345,6 +345,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
                                                                 ? QuestionTypeEnum.SingleChoiceClick
                                                                 : QuestionTypeEnum.SingleChoiceVoting,
                 Index = slideSessionModel.Questions.Count,
+                Hashtag = slideSessionModel.Hashtag,
                 RecalculatedOnlineIndex = slideSessionModel.Questions.Count(q => !q.Hidden),
                 QuestionInfoSlideId = slide.SlideID
             };

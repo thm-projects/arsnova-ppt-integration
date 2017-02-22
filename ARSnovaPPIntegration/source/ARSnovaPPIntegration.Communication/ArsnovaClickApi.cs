@@ -22,7 +22,8 @@ namespace ARSnovaPPIntegration.Communication
         public ArsnovaClickApi()
         {
             //this.apiUrl = "http://localhost:3000/api/";
-            this.apiUrl = "https://staging.arsnova.click/api/";
+            //this.apiUrl = "https://staging.arsnova.click/api/";
+            this.apiUrl = "https://arsnova.click/api/";
             /*#if DEBUG
                 
             #else

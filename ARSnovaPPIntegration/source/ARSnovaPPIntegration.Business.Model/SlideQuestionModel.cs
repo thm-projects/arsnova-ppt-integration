@@ -24,6 +24,8 @@ namespace ARSnovaPPIntegration.Business.Model
 
         public event EventHandler ObjectChangedEventHandler;
 
+        public string Hashtag { get; set; }
+
         public string ArsnovaVotingId { get; set; }
 
         public string RevisionsId { get; set; }

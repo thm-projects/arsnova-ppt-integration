@@ -13,6 +13,7 @@ namespace ARSnovaPPIntegration.Presentation.Helpers
             var newSlideQuestionModel = new SlideQuestionModel
             {
                 Id = currentSlideQuestionModel.Id,
+                Hashtag = currentSlideQuestionModel.Hashtag,
                 QuestionType = currentSlideQuestionModel.QuestionType,
                 QuestionTypeSet = currentSlideQuestionModel.QuestionTypeSet,
                 QuestionText = currentSlideQuestionModel.QuestionText,

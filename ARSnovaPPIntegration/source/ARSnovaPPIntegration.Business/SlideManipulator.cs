@@ -47,6 +47,7 @@ namespace ARSnovaPPIntegration.Business
 
             introSlide.Layout = PpSlideLayout.ppLayoutBlank;
             introSlide.FollowMasterBackground = MsoTriState.msoFalse;
+            introSlide.DisplayMasterShapes = MsoTriState.msoFalse;
 
             introSlide.Background.Fill.ForeColor.RGB = backgroundRgbColor;
 
@@ -55,18 +56,18 @@ namespace ARSnovaPPIntegration.Business
                 MsoTriState.msoTrue,
                 MsoTriState.msoTrue,
                 100,
-                isClickSession ? 175 : 125,
+                isClickSession ? 145 : 95,
                 750,
                 isClickSession ? 75 : 150);
 
-            var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 350, 750, 50);
+            var subTitleTextBox = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 320, 750, 50);
             var subTitleTextRange = subTitleTextBox.TextFrame.TextRange;
             subTitleTextRange.Text = $"{this.localizationService.Translate("This presentation uses")} {sessionTypeName}, {this.localizationService.Translate("join the hashtag")}:";
             subTitleTextRange.Font.Name = this.font;
             subTitleTextRange.Font.Size = 22;
             subTitleTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            var subTitleTextBox2 = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 400, 750, 75);
+            var subTitleTextBox2 = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 370, 750, 75);
             var subTitleTextRange2 = subTitleTextBox2.TextFrame.TextRange;
             subTitleTextRange2.Text = $"{slideSessionModel.Hashtag}";
             subTitleTextRange2.Font.Name = this.font;
@@ -74,10 +75,18 @@ namespace ARSnovaPPIntegration.Business
             subTitleTextBox2.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             subTitleTextBox2.TextEffect.FontBold = MsoTriState.msoCTrue;
 
+            var subTitleTextBox3 = introSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 100, 420, 750, 50);
+            var subTitleTextRange3 = subTitleTextBox3.TextFrame.TextRange;
+            subTitleTextRange3.Text = isClickSession ? "https://arsnova.click/" + slideSessionModel.Hashtag : "https://arsnova.eu/mobile/#id/" + slideSessionModel.Hashtag;
+            subTitleTextRange3.Font.Name = this.font;
+            subTitleTextRange3.Font.Size = 22;
+            subTitleTextBox3.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
             if (isClickSession)
             {
                 subTitleTextRange.Font.Color.RGB = Color.White.ToArgb();
                 subTitleTextRange2.Font.Color.RGB = Color.White.ToArgb();
+                subTitleTextRange3.Font.Color.RGB = Color.White.ToArgb();
             }
 
             // TODO create QR-Code / get it from click server
@@ -102,6 +111,9 @@ namespace ARSnovaPPIntegration.Business
 
         public void AddQuizToStyledSlides(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, Slide questionTimerSlide, Slide resultsSlide)
         {
+            var isClickQuestion = this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType);
+            var sessionInfoString = isClickQuestion ? "https://arsnova.click/" + slideQuestionModel.Hashtag : "https://arsnova.eu/mobile/#id/" + slideQuestionModel.Hashtag;
+
             var answerOptionType = this.sessionInformationProvider.GetAnswerOptionType(slideQuestionModel.QuestionType);
             var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
                                                 || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
@@ -117,7 +129,7 @@ namespace ARSnovaPPIntegration.Business
 
 
             questionTimerSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide, isRangedOrFreetextQuestion);
+            this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide, isRangedOrFreetextQuestion, sessionInfoString);
 
             // Timer
             var timerLabelTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 300, 450, 150, 75);
@@ -137,61 +149,6 @@ namespace ARSnovaPPIntegration.Business
             timerTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             this.CleanResultsPage(resultsSlide);
-
-            // results will be filled in later (after the quiz)
-            // TEST ONLY, REMOVE BEFORE PRODUCTIVE USEAGE!
-            /*var results = new List<ResultModel>()
-                          {
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {0},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserTH"
-                              },
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {0},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserTH2"
-                              },
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {0},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserT3"
-                              },
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {0},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserTH4"
-                              },
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {1},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserT5"
-                              },
-                              new ResultModel
-                              {
-                                  answerOptionNumber = new List<int> {1},
-                                  hashtag = "testxXx2",
-                                  questionIndex = 0,
-                                  responseTime = 18000,
-                                  userNick = "TestUserTH6"
-                              }
-                          };
-            this.SetVotingResults(slideQuestionModel, resultsSlide, results);*/
         }
 
         public void SetTimerOnSlide(SlideQuestionModel slideQuestionModel, Slide questionTimerSlide, int countdown)
@@ -304,13 +261,16 @@ namespace ARSnovaPPIntegration.Business
 
         private void SetQuestionInfoSlidecontent(SlideQuestionModel slideQuestionModel, Slide questionInfoSlide, bool isRangedOrFreetextQuestion)
         {
+            var isClickQuestion = this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType);
+            var sessionInfoString = isClickQuestion ? "https://arsnova.click/" + slideQuestionModel.Hashtag : "https://arsnova.eu/mobile/#id/" + slideQuestionModel.Hashtag;
+
             this.RemoveShapesFromSlide(questionInfoSlide);
 
             questionInfoSlide.Layout = PpSlideLayout.ppLayoutBlank;
-            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion);
+            this.AddQuestionSlideContent(slideQuestionModel, questionInfoSlide, isRangedOrFreetextQuestion, sessionInfoString);
 
             // Button not possible, just added a textbox to start quiz on next slide (when in click, voting will start immediately)
-            if (this.sessionInformationProvider.IsClickQuestion(slideQuestionModel.QuestionType))
+            if (isClickQuestion)
             {
                 var startQuizTextBox = questionInfoSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 450, 850, 50);
                 var startQuizTextRange = startQuizTextBox.TextFrame.TextRange;
@@ -330,15 +290,25 @@ namespace ARSnovaPPIntegration.Business
             }
         }
 
-        private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide, bool isRangedOrFreetextQuestion)
+        private void AddQuestionSlideContent(SlideQuestionModel slideQuestionModel, Slide questionSlide, bool isRangedOrFreetextQuestion, string sessionInfoString)
         {
+            // session info
+            var sessionInfoTextBox = questionSlide.Shapes.AddTextbox(
+                MsoTextOrientation.msoTextOrientationHorizontal, 50, 25, 850, 60);
+            var sessionInfoTextRange = sessionInfoTextBox.TextFrame.TextRange;
+            sessionInfoTextRange.Text = sessionInfoString;
+            sessionInfoTextRange.Font.Name = this.font;
+            sessionInfoTextRange.Font.Size = 22;
+            sessionInfoTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
+            sessionInfoTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+
             // question
             var questionTextBox = questionSlide.Shapes.AddTextbox(
                 MsoTextOrientation.msoTextOrientationHorizontal,
                 50,
-                isRangedOrFreetextQuestion ? 350 : 50,
+                isRangedOrFreetextQuestion ? 240 : 100,
                 850,
-                isRangedOrFreetextQuestion ? 200 : 75);
+                isRangedOrFreetextQuestion ? 100 : 60);
             var questionTextRange = questionTextBox.TextFrame.TextRange;
             questionTextRange.Text = slideQuestionModel.QuestionText;
             questionTextRange.Font.Name = this.font;
@@ -352,7 +322,7 @@ namespace ARSnovaPPIntegration.Business
                 var answerOptionsString = slideQuestionModel.AnswerOptions
                     .Aggregate(string.Empty, (current, castedAnswerOption) => current + $"{this.PositionNumberToLetter(castedAnswerOption.Position - 1)}: {castedAnswerOption.Text}{Environment.NewLine}");
 
-                var answerOptionsTextBox = questionSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 150, 850, 150);
+                var answerOptionsTextBox = questionSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 50, 170, 850, 150);
                 var answerOptionsTextRange = answerOptionsTextBox.TextFrame.TextRange;
                 answerOptionsTextRange.Text = answerOptionsString;
                 answerOptionsTextRange.Font.Name = this.font;
