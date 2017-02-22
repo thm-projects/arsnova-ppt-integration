@@ -157,7 +157,7 @@ namespace ARSnovaPPIntegration.Business
             var isRangedOrFreetextQuestion = answerOptionType == AnswerOptionType.ShowRangedAnswerOption
                                                 || answerOptionType == AnswerOptionType.ShowFreeTextAnswerOptions;
 
-            questionTimerSlide.Shapes[isRangedOrFreetextQuestion ? 3 : 4].TextFrame.TextRange.Text = countdown.ToString();
+            questionTimerSlide.Shapes[isRangedOrFreetextQuestion ? 4 : 5].TextFrame.TextRange.Text = countdown.ToString();
         }
 
         public void SetVotingResults(SlideQuestionModel slideQuestionModel, Slide resultsSlide,
