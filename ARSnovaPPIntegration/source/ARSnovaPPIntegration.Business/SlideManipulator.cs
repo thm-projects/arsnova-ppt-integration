@@ -132,7 +132,7 @@ namespace ARSnovaPPIntegration.Business
             this.AddQuestionSlideContent(slideQuestionModel, questionTimerSlide, isRangedOrFreetextQuestion, sessionInfoString);
 
             // Timer
-            var timerLabelTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 300, 450, 150, 75);
+            var timerLabelTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 300, 450, 150, 90);
             var timerLabelTextRange = timerLabelTextBox.TextFrame.TextRange;
             timerLabelTextRange.Text = this.localizationService.Translate("Countdown:");
             timerLabelTextRange.Font.Name = this.font;
@@ -140,7 +140,7 @@ namespace ARSnovaPPIntegration.Business
             timerLabelTextBox.TextEffect.FontBold = MsoTriState.msoTrue;
             timerLabelTextBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            var timerTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 450, 150, 75);
+            var timerTextBox = questionTimerSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 500, 450, 150, 90);
             var timerTextRange = timerTextBox.TextFrame.TextRange;
             timerTextRange.Text = slideQuestionModel.Countdown.ToString();
             timerTextRange.Font.Name = this.font;
