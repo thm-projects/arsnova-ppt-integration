@@ -49,18 +49,12 @@ namespace ARSnovaPPIntegration.Business
             this.localizationService = localizationService;
         }
 
-        private ValidationResult SetClickSession(SlideSessionModel slideSessionModel)
-        {
-            // arsnova sessions are updated while they are changed -> should not called by arsnova sessions, nothing to do here
-            return this.SetArsnovaClickOnlineSession(slideSessionModel);
-        }
-
         public void ActivateSession(SlideSessionModel slideSessionModel)
         {
             if (slideSessionModel.SessionType == SessionType.ArsnovaClick)
             {
                 // push data to server
-                this.SetClickSession(slideSessionModel);
+                this.SetArsnovaClickOnlineSession(slideSessionModel);
 
                 // set question as active
                 this.arsnovaClickService.MakeSessionAvailable(slideSessionModel.Hashtag,

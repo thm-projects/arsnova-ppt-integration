@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Select a Product Configuration -->
+		<InstallShieldProductConfiguration>Express</InstallShieldProductConfiguration>
+		<!-- Select a Visual Studio Configuration / InstallShield Release -->
+		<Configuration>Debug</Configuration>
+		<InstallShieldRelease>$(Configuration)</InstallShieldRelease>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- The InstallShieldProject item selects the project to build -->
+		<InstallShieldProject Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).isl"/>
+		<!-- The InstallShieldReleaseFlags sets Release Flags -->
+		<!--<InstallShieldReleaseFlags Include=""/>-->
+		<!-- The InstallShieldMergeModulePath specifies what directories are
+		searched for Merge Modules -->
+		<!--<InstallShieldMergeModulePath Include=""/>-->
+	</ItemGroup>
+	<ItemGroup>
+		<!-- The ProjectReference items refer to any Visual Studio solutions you want to automatically probe for Project Output Groups.  -->
+	</ItemGroup>
+	<ItemGroup>
+		<!-- The TaggedOutputs items allow you to explicitly add extra files to output groups. Each item must include both Name and OutputGroup, as well as TargetPath metadata values. -->
+		<!--<TaggedOutputs Include="C:\My Test Exe.exe">
+			<Name>My Test Project</Name>
+			<OutputGroup>Primary output</OutputGroup>
+			<TargetPath>My Test Exe.exe</TargetPath>
+		</TaggedOutputs> -->
+	</ItemGroup>
+	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2015Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Business\ARSnovaPPIntegration.Business.csproj">
+			<Name>ARSnovaPPIntegration.Business</Name>
+			<Project>{2872EAFD-FDA2-44BD-83AD-B169B17CB379}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Business.Contract\ARSnovaPPIntegration.Business.Contract.csproj">
+			<Name>ARSnovaPPIntegration.Business.Contract</Name>
+			<Project>{8130FB8D-5FDA-4784-819E-A8D6E7D4A36D}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Business.Model\ARSnovaPPIntegration.Business.Model.csproj">
+			<Name>ARSnovaPPIntegration.Business.Model</Name>
+			<Project>{16BC9184-CB84-4F13-B7E5-C3D4F21D5B59}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Common\ARSnovaPPIntegration.Common.csproj">
+			<Name>ARSnovaPPIntegration.Common</Name>
+			<Project>{17C619C1-739F-4CD3-8EFA-97ED743B59ED}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Common.Contract\ARSnovaPPIntegration.Common.Contract.csproj">
+			<Name>ARSnovaPPIntegration.Common.Contract</Name>
+			<Project>{D5C3F7B6-33F9-45B3-B078-89A8C4B13C3C}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Common.Enum\ARSnovaPPIntegration.Common.Enum.csproj">
+			<Name>ARSnovaPPIntegration.Common.Enum</Name>
+			<Project>{92871CB4-6B22-484A-9B19-EBD08608E547}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Common.Helpers\ARSnovaPPIntegration.Common.Helpers.csproj">
+			<Name>ARSnovaPPIntegration.Common.Helpers</Name>
+			<Project>{6C2652D9-82E7-4066-A784-8598FE09DB3A}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Common.Resources\ARSnovaPPIntegration.Common.Resources.csproj">
+			<Name>ARSnovaPPIntegration.Common.Resources</Name>
+			<Project>{441718D1-3EC7-471C-963B-4E9E4B025EAA}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Communication\ARSnovaPPIntegration.Communication.csproj">
+			<Name>ARSnovaPPIntegration.Communication</Name>
+			<Project>{2E5C6DAB-C772-4EDD-B775-F40395A148A6}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Communication.Contract\ARSnovaPPIntegration.Communication.Contract.csproj">
+			<Name>ARSnovaPPIntegration.Communication.Contract</Name>
+			<Project>{954ED932-5036-4C37-A58D-3C87753AFD57}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Model\ARSnovaPPIntegration.Communication.Model.csproj">
+			<Name>ARSnovaPPIntegration.Communication.Model</Name>
+			<Project>{3863C834-B716-4844-947B-BBF358A8FB08}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Presentation\ARSnovaPPIntegration.Presentation.csproj">
+			<Name>ARSnovaPPIntegration.Presentation</Name>
+			<Project>{11B8F9F1-AF66-4FBD-9387-EECD1D166ADF}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Presentation.Configuration\ARSnovaPPIntegration.Presentation.Configuration.csproj">
+			<Name>ARSnovaPPIntegration.Presentation.Configuration</Name>
+			<Project>{7186C2F8-5335-46B1-8BEB-9D620080A323}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\ARSnovaPPIntegration.Test\ARSnovaPPIntegration.Test.csproj">
+			<Name>ARSnovaPPIntegration.Test</Name>
+			<Project>{655BFD81-68B4-43BA-8F75-83757D66EC98}</Project>
+		</ProjectReference>
+	</ItemGroup>
+</Project>
