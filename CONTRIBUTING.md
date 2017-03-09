@@ -62,7 +62,7 @@ Test/
     Communication/
 ```
 			
-If questions regarding structures, patterns or frameworks occure, contact us or check out the [thesis][https://git.thm.de/arsnova/powerpoint-integration/blob/staging/entwicklerdoku.pdf] to this project (german only).
+If questions regarding structures, patterns or frameworks occure, contact us or check out the [thesis](https://git.thm.de/arsnova/powerpoint-integration/blob/staging/entwicklerdoku.pdf) to this project (german only).
 
 
 ### Packages
