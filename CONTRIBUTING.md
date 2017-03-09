@@ -39,25 +39,31 @@ Please take a look at our project file structure:
 
 ```
 Business/
-    Business.csproj
-    Contract.csproj
+    Business
+    Contract
+    Model
 Common/
-    Common.csproj
-    Contract.csproj
-    Enum.csproj
-    Resources.csproj
-Communication
-    Contract.csproj
-    Model.csproj
+    Common
+    Contract
+    Enum
+    Helpers
+    Resources
+Communication/
+    Communication
+    Contract
+    Model
+Installation/
+    Setup
 Presentation/
-    Presentation.csproj
-    Configuration.csproj
+    Presentation
+    Configuration
 Test/
     Business/
     Communication/
 ```
 			
-If questions regarding structures, patterns or frameworks occure, contact us.
+If questions regarding structures, patterns or frameworks occure, contact us or check out the [thesis][] to this project.
+
 
 ### Packages
 
